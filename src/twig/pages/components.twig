@@ -1,0 +1,3 @@
+{% for component in post.get_field('components') %}
+  {% include component.acf_fc_layout | replace({'_': '-'}) ~ ".twig" with component %}
+{% endfor %}

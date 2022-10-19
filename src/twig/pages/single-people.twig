@@ -1,0 +1,41 @@
+{% extends "base.twig" %}
+{% import "icons.twig" as icons %}
+
+{% block content %}
+<section class="sidebar-page">
+  <div class="sidebar-page__inner max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto mt-8">
+    <a class="inline-flex items-center font-body text-14 md:text-10 font-normal md:font-medium leading-140 text-indigo-800 py-1.5 hover:text-indigo hover:underline" href="/people/people-directory">
+      {{ icons.icon('chevron', 'w-1 fill-indigo-800 mr-2') }}Back to Index
+    </a>
+  </div>
+  <div class="sidebar-page__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto mt-16">
+    <div class="sidebar-page__secondary md:col-span-3 xl:col-span-2 mb-16 md:mb-0
+      [&>div+div]:mt-7"
+    >
+      {% include 'subpage-nav.twig' with {
+        heading: 'People',
+        items: people_menu.items,
+        menu_obj: true,
+      } %}
+    </div>
+    <div class="sidebar-page__main xl:col-start-4 md:col-span-9 space-y-16">
+      {% include 'directory-card.twig' with {
+        type: 'people',
+        name: post.title,
+        pronouns: post.meta('pronouns'),
+        title: post.meta('title'),
+        department: post.meta('department'),
+        phone: post.meta('phone'),
+        curriculum_vitae: post.meta('curriculum_vitae'),
+        email: post.meta('email'),
+        location: post.meta('location'),
+      } %}
+      <div class="grid grid-cols-9 w-full">
+        <div class="md:col-span-6">
+          {% include 'wysiwyg.twig' %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

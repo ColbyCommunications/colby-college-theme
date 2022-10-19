@@ -1,0 +1,93 @@
+{% import "macros.twig" as macros %}
+{% import "icons.twig" as icons %}
+
+<div class="directory-card grid grid-cols-8 gap-10 max-w-screen-xl w-full">
+  <div class="directory-card__image col-span-8 md:col-span-4">
+    <div class="relative pb-[119.44444444444444%]">
+      {{ macros.picture(
+        'absolute w-full h-full object-cover',
+        image.srcset,
+        image.src,
+        post.thumbnail.src('Square'),
+        post.thumbnail.src('Square_mobile'),
+        post.thumbnail.alt,
+        in_component_library
+      ) }}
+    </div>
+  </div>
+  <div class="directory-card__main grid col-span-8 md:col-span-4 items-center">
+    <div class="directory-card__content">
+      <h1 class="font-body font-semibold text-24 leading-115 text-indigo">{{ name }}</h1>
+      {% if pronouns %}
+        <div class="font-body font-semibold text-12 leading-140 text-indigo-800 mt-2">{{ pronouns }}</div>
+      {% endif %}
+        <div class="grid grid-cols-4 gap-10 w-full mt-10">
+          {% if type == 'people' %}
+            <div class="col-span-2">
+              <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Title</h2>
+              <p class="font-body font-normal text-16 leading-130 text-indigo-800">{{ title }}</p>
+            </div>
+            <div class="col-span-2">
+              <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Department</h2>
+              <p class="font-body font-normal text-16 leading-130 text-indigo-800">{{ department }}</p>
+            </div>
+            <div class="col-span-4">
+              <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Links</h2>
+              <ul class="grid grid-cols-4 gap-x-10 font-body font-normal text-12 leading-140">
+                {% if phone %}
+                  <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="tel:{{ phone }}">
+                    {{ icons.icon('phone', 'h-3 fill-indigo-800 mr-1.5') }}{{ phone }}
+                  </a></li>
+                {% endif %}
+                {% if curriculum_vitae %}
+                  <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="{{ curriculum_vitae }}" target="_blank">
+                    {{ icons.icon('clipboard', 'h-3 fill-indigo-800 mr-1.5') }}Curriculum Vitae
+                  </a></li>
+                {% endif %}
+                {% if email %}
+                  <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="mailto:{{ email }}">
+                    {{ icons.icon('email', 'h-3 fill-indigo-800 mr-1.5') }}{{ email }}
+                  </a></li>
+                {% endif %}
+                {% if location %}
+                  <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="{{ location.url }}">
+                    {{ icons.icon('location', 'h-3 fill-indigo-800 mr-1.5') }}{{ location.title }}
+                  </a></li>
+                {% endif %}
+              </ul>
+            </div>
+          {% elseif type == 'offices' %}
+            <div class="col-span-4">
+              <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Address</h2>
+              <p class="font-body font-normal text-16 leading-130 text-indigo-800">{{ address }}</p>
+            </div>
+            <div class="col-span-4">
+              <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Links</h2>
+              <ul class="grid grid-cols-4 gap-x-10 font-body font-normal text-12 leading-140">
+                {% if phone %}
+                  <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="tel:{{ phone }}">
+                    {{ icons.icon('phone', 'h-3 fill-indigo-800 mr-1.5') }}{{ phone }}
+                  </a></li>
+                {% endif %}
+                {% if curriculum_vitae %}
+                  <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="{{ curriculum_vitae }}" target="_blank">
+                    {{ icons.icon('clipboard', 'h-3 fill-indigo-800 mr-1.5') }}Curriculum Vitae
+                  </a></li>
+                {% endif %}
+                {% if email %}
+                  <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="mailto:{{ email }}">
+                    {{ icons.icon('email', 'h-3 fill-indigo-800 mr-1.5') }}{{ email }}
+                  </a></li>
+                {% endif %}
+                {% if location %}
+                  <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo">
+                    {{ icons.icon('location', 'h-3 fill-indigo-800 mr-1.5') }}{{ location }}
+                  </a></li>
+                {% endif %}
+              </ul>
+            </div>
+          {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

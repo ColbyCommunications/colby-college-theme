@@ -1,0 +1,140 @@
+{% if in_component_library %}
+  {% set logo = '@logo' %}
+  {% set actionMenu = '@action-menu' %}
+  {% set breadcrumbs = '@breadcrumbs' %}
+{% else %}
+  {% set logo = 'logo.twig' %}
+  {% set actionMenu = 'action-menu.twig' %}
+  {% set breadcrumbs = 'breadcrumbs.twig' %}
+{% endif %}
+
+<component
+  is="header"
+  v-slot="header"
+  class="header z-50 relative flex w-screen justify-center h-[145px] md:h-auto pt-7 md:pt-0"
+>
+  <div
+    class="header__inner flex justify-between max-w-screen-xl w-full gap-y-10 px-9 md:px-5"
+  >
+    <div class="header__left flex items-center justify-between w-full md:w-auto">
+      <a href="/">
+        {% include logo with {
+          class: 'fill-indigo w-[145px] md:w-[100px]',
+        } %}
+      </a>
+      {% include actionMenu with {
+        breakpoints: 'flex md:hidden'
+      } %}
+      <div class="header__hamburger-group flex md:hidden items-center space-x-4">
+        <label class="header__hamburger-label font-body font-normal text-24 text-indigo-800">Menu</label>
+        <button
+          class="header__hamburger flex items-center justify-center w-[56px] h-[52px] text-[0] bg-indigo-100 rounded-sm border border-indigo-300 border-solid"
+          @click="header.toggleActive()"
+        >
+          <span
+            class="relative block w-6 h-0.5 bg-indigo transition-all duration-200 ease-in-out"
+            :class="{ 'bg-transparent': header.active }"
+          >
+            <span
+              class="absolute left-0 w-full h-full bg-indigo origin-center top-[-8px] transition-all duration-200 ease-in-out"
+              :class="{ '!top-0 rotate-45': header.active }"></span>
+            <span
+              class="absolute left-0 w-full h-full bg-indigo origin-center top-[8px] transition-all duration-200 ease-in-out"
+              :class="{ '!top-0 rotate-[-45deg]': header.active }"></span>
+          </span>
+          Menu Button
+        </burger>
+      </div>
+    </div>
+    <div 
+      class="header__menus absolute md:static visible md:visible flex md:block flex-col-reverse justify-end top-[145px] left-0 w-full md:w-auto h-[calc(100vh_-_145px)] md:h-auto bg-white md:bg-transparent border-t md:border-t-0 border-indigo-300 border-solid md:translate-x-0 transition-all duration-200 ease-in-out"
+      :class="{ 'translate-x-[-100%] invisible': header.active == false }"
+    >
+      <div class="header__utility flex md:justify-between h-[170px] md:h-auto pt-8 md:pt-0 px-9 md:px-6 bg-indigo-100">
+        <ul class="grid md:flex grid-cols-3 md:grid-cols-none grid-rows-3 md:grid-rows-none gap-x-5 md:gap-0 w-full md:w-auto md:space-x-6">
+          {% for item in utility %}
+            <li class="font-body font-normal text-16 md:text-10 leading-110">
+              <a class="block py-2 text-indigo-700 hover:text-indigo-1000 hover:underline transition-all duration-200 ease-in-out" href="{{ item.url }}">{{ item.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+        {% include actionMenu with {
+          breakpoints: 'hidden md:flex'
+        } %}
+      </div>
+      <ul class="header__main flex md:flex-row flex-col justify-center md:justify-end h-[calc(100%_-_170px)] md:h-auto md:space-x-12 md:space-y-0 space-y-8 md:px-6 pl-24 md:pl-6 w-full md:w-auto overflow-y-scroll">
+        {% for item in main %}
+          <li class="font-extended font-normal text-24 md:text-14 leading-110">
+            <a
+              class="block md:py-7 text-indigo-800 hover:text-indigo-1000 border-b-2 border-solid border-transparent md:hover:border-azure md:focus:border-canary md:outline-0 transition-all duration-200 ease-in-out"
+              :class="{ '!text-indigo border-azure': header.checkUrl('{{item.title}}') }"
+              href="{{ item.url }}"
+            >{{ item.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</component>
+{% if fn('is_front_page') == false %}
+  {% if fn('is_archive') == false %}
+
+    {% if fn('get_post_type') == 'people' %}
+      {% set breadcrumbs_menu = [
+        {
+          title: 'People',
+          url: '/people/'
+        },
+        {
+          title: 'People Directory',
+          url: '/people/people-directory/'
+        }
+      ] %}
+    {% elseif fn('get_post_type') == 'offices' %}
+      {% set breadcrumbs_menu = [
+        {
+          title: 'People',
+          url: '/people/'
+        },
+        {
+          title: 'Offices Directory',
+          url: '/people/offices-directory/'
+        }
+      ] %}
+    {% endif %}
+
+    {% include breadcrumbs with {
+      items: breadcrumbs_menu,
+      current: {
+        title: post.post_title,
+        url: post.post_permalink,
+      },
+    } %}
+  {% elseif fn('get_queried_object').name == 'people' %}
+    {% include breadcrumbs with {
+      items: [
+        {
+          title: 'People',
+          url: '/people/'
+        }
+      ],
+      current: {
+        title: 'People Directory',
+        url: '/people/people-directory/',
+      },
+    } %}
+  {% elseif fn('get_queried_object').name == 'offices' %}
+    {% include breadcrumbs with {
+      items: [
+        {
+          title: 'People',
+          url: '/people/'
+        }
+      ],
+      current: {
+        title: 'Offices Directory',
+        url: '/people/offices-directory/',
+      },
+    } %}
+  {% endif %}
+{% endif %}

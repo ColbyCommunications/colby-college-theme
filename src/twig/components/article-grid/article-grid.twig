@@ -1,0 +1,139 @@
+{% if in_component_library %}
+  {% set article = '@article' %}
+{% else %}
+  {% set article = 'article.twig' %}
+
+  {% set newItems = [] %}
+  {% set newImage = {} %}
+
+  {% if items_retain != true %}
+
+    {% for item in items %}
+
+      {% set newImage = {} %}
+
+      {% if image_orientation %}
+        {% if image_orientation == 'rectangle' %}
+          {% if item.post %}
+            {% set newImage = {
+              sizes: {
+                desktop: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Landscape' ),
+                mobile: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Square_mobile' ),
+              },
+              alt: item.image.alt,
+            } %}
+          {% else %}
+            {% if item.image %}
+              {% set newImage = {
+                sizes: {
+                  desktop: item.image.sizes.Landscape,
+                  mobile: item.image.sizes.Square_mobile,
+                },
+                alt: item.image.alt,
+              } %}
+            {% endif %}
+          {% endif %}
+        {% elseif image_orientation == 'square' %}
+          {% if item.post %}
+            {% set newImage = {
+              sizes: {
+                desktop: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Square' ),
+                mobile: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Square_mobile' ),
+              },
+              alt: item.image.alt,
+            } %}
+          {% else %}
+            {% if item.image %}
+              {% set newImage = {
+                sizes: {
+                  desktop: item.image.sizes.Square,
+                  mobile: item.image.sizes.Square_mobile,
+                },
+                alt: item.image.alt,
+              } %}
+            {% endif %}
+          {% endif %}
+        {% elseif image_orientation == 'portrait' %}
+          {% if item.post %}
+            {% set newImage = {
+              sizes: {
+                desktop: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait' ),
+                mobile: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait_mobile' ),
+              },
+              alt: item.image.alt,
+            } %}
+          {% else %}
+            {% if item.image %}
+              {% set newImage = {
+                sizes: {
+                  desktop: item.image.sizes.Portrait,
+                  mobile: item.image.sizes.Portrait_mobile,
+                },
+                alt: item.image.alt,
+              } %}
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endif %}
+
+      {% if item.post %}
+        {% if item.post.post_type == 'people' %}
+          {% set cta_title = 'Read Bio' %}
+          {% set paragraph_text = item.post.title %}
+        {% else %}
+          {% set cta_title = 'Read More' %}
+          {% set paragraph_text = item.post.preview.length(10).read_more('') %}
+        {% endif %}
+
+        {% set newItem = [{
+          image: newImage,
+          heading: item.post.post_title,
+          paragraph: paragraph_text,
+          buttons: [
+            {
+              button: {
+                url: item.post.guid,
+                title: cta_title,
+              }
+            }
+          ],
+        }] %}
+      {% else %}
+        {% set newItem = [{
+          image: newImage,
+          subheading: item.subheading,
+          heading: item.heading,
+          paragraph: item.paragraph,
+          buttons: item.buttons,
+        }] %}
+      {% endif %}
+
+      {% set newItems = newItems|merge(newItem) %}
+    {% endfor %}
+
+    {% set items = newItems %}
+
+  {% endif %}
+{% endif %}
+
+{% if carousel %}
+  <div class="article-grid max-w-screen-xl my-0 mx-auto" data-glide-window ref="window">
+    <div class="glide__track" data-glide-el="track">
+      <div class="glide__slides">
+        {% for item in items %}
+          <div class="article-grid__item glide__slide">
+            {% include article with item %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% else %}
+  <div class="article-grid grid {% if columns == 3 %}grid-cols-9{% else %}grid-cols-8{% endif %} gap-10 max-w-screen-xl w-full my-0 mx-auto">
+    {% for item in items %}
+      <div class="article-grid__item {% if columns == 4 %}md:col-span-2 col-span-4{% elseif columns == 3 %}md:col-span-3 col-span-9{% else %}col-span-4{% endif %}">
+        {% include article with item %}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

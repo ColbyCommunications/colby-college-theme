@@ -1,0 +1,25 @@
+{% if in_component_library %}
+  {% set subpageNav = '@subpage-nav' %}
+  {% set tableComponent = '@table' %}
+{% else %}
+  {% set subpageNav = 'subpage-nav.twig' %}
+  {% set tableComponent = 'table.twig' %}
+{% endif %}
+
+<component
+  is="index-section"
+  class="index-section"
+  :render-api="true"
+>
+  <div class="index-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto">
+    <div class="index-section__secondary md:col-span-3">
+      {% include subpageNav with nav %}
+    </div>
+    <div class="index-section__main md:col-span-9">
+      <div class="index-section__top mb-12">
+        <h2 class="index-section__heading font-extended font-normal text-36 md:text-24 leading-100 -tracking-3 text-left text-indigo">{{ heading }}</h2>
+      </div>
+      {% include tableComponent with table %}
+    </div>
+  </div>
+</component>

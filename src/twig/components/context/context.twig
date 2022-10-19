@@ -1,0 +1,37 @@
+{% import "macros.twig" as macros %}
+
+{% if in_component_library %}
+  {% set buttonGroup = '@button-group' %}
+{% else %}
+  {% set buttonGroup = 'button-group.twig' %}
+{% endif %}
+
+{% if size == 'xlarge' %}
+  {% set btnSize = 'large' %}
+{% elseif size == 'large' %}
+  {% set btnSize = 'medium' %}
+{% elseif size == 'medium' %}
+  {% set btnSize = 'medium' %}
+{% elseif size == 'small' %}
+  {% set btnSize = 'small' %}
+{% elseif size == 'xsmall' %}
+  {% set btnSize = 'small' %}
+{% endif %}
+
+{% if type == 'light' %}
+  {% set btnType = 'dark' %}
+{% else %}
+  {% set btnType = 'light' %}
+{% endif %}
+
+<div class="context w-full space-y-5">
+  {{ macros.textGroup(size, align, type, subheading, heading, paragraph, static) }}
+  {% if buttons.items %}
+    {% include buttonGroup with {
+      type: btnType,
+      size: btnSize,
+      align: align,
+      items: buttons.items,
+    } %}
+  {% endif %}
+</div>

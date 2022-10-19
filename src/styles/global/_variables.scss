@@ -1,0 +1,31 @@
+@import "~foundation-sites/scss/foundation";
+@import 'functions';
+@import '../mixins/mixin-typography';
+@import '../mixins/mixin-buttons';
+
+// Colors
+$white: #fff;
+$black: #000;
+
+// Fonts
+$font-primary: Quincy, sans-serif;
+$font-secondary: Odubo, serif;
+
+// Grid
+$global-width: rem-calc(1400);
+$global-max-width: rem-calc(1400);
+$grid-row-width: $global-width;
+$grid-column-count: 12;
+$grid-column-gutter: (
+  small: 40px,
+  large: 30px,
+);
+$grid-column-align-edge: true;
+$grid-column-alias: "columns";
+$block-grid-max: 8;
+
+// Easing
+$ease-default: ease-in-out;
+
+// Transitions
+$transition-default: 0.2s $ease-default;

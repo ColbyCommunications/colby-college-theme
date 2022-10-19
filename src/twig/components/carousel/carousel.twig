@@ -1,0 +1,93 @@
+{% if in_component_library %}
+  {% set context = '@context' %}
+  {% set arrowControls = '@arrow-controls' %}
+{% else %}
+  {% set context = 'context.twig' %}
+  {% set arrowControls = 'arrow-controls.twig' %}
+{% endif %}
+
+<component
+  is="carousel"
+  v-slot="carousel"
+  class="carousel"
+  :render-api="{{ render_api }}"
+  api="{{ api }}"
+>
+  <div class="carousel__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto">
+    <div class="carousel__context md:col-span-4 lg:col-span-3 md:flex items-center">
+      {% include context with {
+        size: 'large',
+        type: 'dark',
+        arrow: true,
+        reverse: true,
+        heading: heading,
+        paragraph: paragraph,
+        buttons: {
+          items: buttons,
+        },
+      } %}
+    </div>
+    <div
+      class="carousel__main md:col-start-5 md:col-span-8 mt-12 md:mt-0"
+      @mouseEnter="carousel.pauseCarousel()"
+      @mouseOut="carousel.playCarousel()"
+    >
+      <div class="carousel__window w-full" data-glide-window ref="window">
+        <div class="glide__track" data-glide-el="track">
+          <div class="glide__slides">
+            {% for item in items %}
+              <div class="carousel__slide glide__slide">
+                {% if in_component_library %}
+                  <picture>
+                    <source media="(min-width:768px)" srcset="{{ item.image.srcset }}">
+                    <img
+                      class="w-full h-full object-cover"
+                      src="{{ item.image.src }}"
+                      alt="{{ item.image.alt }}"
+                    />
+                  </picture>
+                {% else %}
+                  <picture>
+                    <source media="(min-width:768px)" srcset="{{ item.image.sizes.Rectangle }}">
+                    <img
+                      class="w-full h-full object-cover"
+                      src="{{ item.image.sizes.Rectangle_mobile }}"
+                      alt="{{ item.image.alt }}"
+                    />
+                  </picture>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="carousel__slides-context relative mt-6 h-40">
+        {% for item in items %}
+          <div
+            class="carousel__slides-context-wrap absolute top-0 left-0 w-full invisible opacity-0 translate-y-[60px] transition-all duration-300 ease-in-out"
+            :class="{ '!visible opacity-100 !translate-y-0': carousel.activeSlide == {{ loop.index0 }} }"
+          >
+            {% include context with {
+              size: 'small',
+              type: 'dark',
+              subheading: item.subheading,
+              heading: item.heading,
+              paragraph: item.paragraph,
+              buttons: {
+                items: item.buttons,
+              },
+            } %}
+          </div>
+        {% endfor %}
+      </div>
+      <div class="carousel__controls-wrap flex justify-end">
+        <div class="carousel__controls">
+          {% include arrowControls with {
+            size: 'large',
+            type: 'light',
+          } %}
+        </div>
+      </div>
+    </div>
+  </div>
+</component>

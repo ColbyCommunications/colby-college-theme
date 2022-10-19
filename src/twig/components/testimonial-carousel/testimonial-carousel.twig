@@ -1,0 +1,86 @@
+{% import "macros.twig" as macros %}
+
+{% if in_component_library %}
+  {% set context = '@context' %}
+  {% set arrowControls = '@arrow-controls' %}
+{% else %}
+  {% set context = 'context.twig' %}
+  {% set arrowControls = 'arrow-controls.twig' %}
+{% endif %}
+
+<component
+  is="carousel"
+  v-slot="carousel"
+  class="testimonial-carousel space-y-11"
+>
+  <div class="testimonial-carousel__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto">
+    <div class="testimonial-carousel__context md:col-span-5">
+      {% include context with {
+        size: 'large',
+        type: 'dark',
+        arrow: true,
+        reverse: true,
+        heading: heading,
+        paragraph: paragraph,
+        buttons: {
+          items: buttons,
+        },
+      } %}
+    </div>
+  </div>
+  <div
+    class="testimonial-carousel__inner relative md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto"
+    @mouseEnter="carousel.pauseCarousel()"
+    @mouseOut="carousel.playCarousel()"
+  >
+    <div class="testimonial-carousel__main md:col-span-9">
+      <div class="testimonial-carousel__window w-full" data-glide-window ref="window">
+        <div class="glide__track" data-glide-el="track">
+          <div class="glide__slides">
+            {% for item in items %}
+              <div class="testimonial-carousel__slide glide__slide">
+                <div class="testimonial-carousel__image relative md:pb-[46.51162790697675%]">
+                  {{ macros.picture(
+                    'md:absolute w-full h-full object-cover',
+                    item.image.srcset,
+                    item.image.src,
+                    item.image.sizes.Landscape,
+                    item.image.sizes.Square_mobile,
+                    item.image.alt,
+                    in_component_library
+                  ) }}
+                </div>
+                {% if item.caption %}
+                  <p class="font-body font-normal text-10 leading-140 text-indigo-800 mt-2">{{ item.caption }}</p>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-carousel__quotes md:col-span-3 md:order-[-1] self-end mt-12 md:mt-0">
+      <div class="testimonial-carousel__quotes-wrap relative h-[100px]">
+        {% for item in items %}
+          <div
+            class="testimonial-carousel__quote absolute top-0 md:top-auto md:bottom-0 left-0 w-full pt-2 invisible opacity-0 space-y-2 border-t border-solid border-canary transition-all duration-300 ease-in-out"
+            :class="{ '!visible opacity-100 !translate-y-0': carousel.activeSlide == {{ loop.index0 }} }"
+          >
+            <p class="font-extended font-normal text-20 leading-110 -tracking-[0.01em] text-indigo">
+              {{ item.testimonial.quote }}
+            </p>
+            <div class="font-body font-normal text-14 leading-130 text-indigo-800">
+              {{ item.testimonial.name }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="testimonial-carousel__controls md:absolute top-[-40px] right-[20px] flex justify-end mt-4 md:mt-0 md:translate-y-[-100%]">
+      {% include arrowControls with {
+        size: 'large',
+        type: 'light',
+      } %}
+    </div>
+  </div>
+</component>

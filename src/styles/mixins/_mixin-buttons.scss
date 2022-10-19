@@ -1,0 +1,59 @@
+@mixin btn($color, $background, $hover-color: '', $hover-background: '', $border: '') {
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  border-radius: 31px;
+  border: 2px solid;
+  padding: 10px 24px;
+  width: 100%;
+  min-width: 136px;
+  font-size: rem-calc(12px);
+  background-color: $background;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  line-height: (14 / 12);
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+  font-family: $font-secondary;
+  font-size: rem-calc(12px);
+  font-weight: 600;
+  text-transform: uppercase;
+  color: $color;
+  transition:
+    color .2s $ease-default,
+    background-color .2s $ease-default,
+    border-color .2s $ease-default;
+
+  @include breakpoint(medium) {
+    width: auto;
+  }
+
+  @if outline == '' {
+    border-color: $background;
+  }
+
+  @else {
+    border-color: $border;
+  }
+
+  &:focus,
+  &:hover {
+    @if $hover-color == '' {
+      color: $color;
+    }
+
+    @else {
+      color: $hover-color;
+    }
+
+    @if $hover-background == '' {
+      background-color: $background;
+    }
+
+    @else {
+      border-color: $hover-background;
+      background-color: $hover-background;
+    }
+  }
+}

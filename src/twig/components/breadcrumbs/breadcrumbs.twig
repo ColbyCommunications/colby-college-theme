@@ -1,0 +1,21 @@
+{% import "icons.twig" as icons %}
+
+<div class="breadcrumbs flex items-center h-9 bg-gray-100">
+  <div class="breadcrumbs__inner max-w-screen-xl w-full px-9 md:px-5 mx-auto">
+    <ul class="flex items-center [&>li+li]:ml-5">
+      <li class="font-body font-bold text-10 leading-140 text-indigo-800 whitespace-nowrap">
+        <a class="text-indigo-800 hover:text-indigo transition-all duration-200 ease-in-out" href="/">
+          {{ icons.icon('home', 'w-2.5 fill-indigo-800 hover:fill-indigo transition-all duration-200 ease-in-out') }}
+        </a>
+      </li>
+      {% for item in items %}
+        <li class="font-body font-bold text-10 leading-140 text-indigo-800 whitespace-nowrap">
+          <a class="text-indigo-800 hover:text-indigo transition-all duration-200 ease-in-out" href="{{ item.url }}">{{ item.title }}</a>
+        </li>
+      {% endfor %}
+      <li class="font-body font-bold text-10 leading-140 text-indigo whitespace-nowrap">
+        <a class="text-indigo hover:text-indigo transition-all duration-200 ease-in-out" href="{{ current.url }}">{{ current.title }}</a>
+      </li>
+    </ul>
+  </div>
+</div>

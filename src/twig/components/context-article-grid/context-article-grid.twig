@@ -1,0 +1,69 @@
+{% if in_component_library %}
+  {% set context = '@context' %}
+  {% set articleGrid = '@article-grid' %}
+{% else %}
+  {% set context = 'context.twig' %}
+  {% set articleGrid = 'article-grid.twig' %}
+  {% set image_orientation = 'square' %}
+  {% set items_retain = true %}
+
+  {% if type == 'people' %}
+    {% set newItems = [] %}
+
+    {% for item in recent_people %}
+      {% set newItem = [{
+        image: {
+          sizes: {
+            desktop: item.thumbnail.src('Square'),
+            mobile: item.thumbnail.src('Square_mobile'),
+          },
+          alt: item.thumbnail.alt,
+        },
+        subheading: item.department,
+        heading: item.post_title,
+        paragraph: item.preview.length(20).read_more(''),
+        buttons: [
+          {
+            button: {
+              title: 'Read More',
+              url: item.guid,
+            }
+          }
+        ],
+      }] %}
+
+      {% set newItems = newItems|merge(newItem) %}
+    {% endfor %}
+
+    {% set items = newItems %}
+  {% endif %}
+
+{% endif %}
+
+<component
+  is="context-article-grid"
+  class="context-article-grid space-y-20"
+  subheading="{{ subheading }}"
+  heading="{{ heading }}"
+  paragraph="{{ paragraph }}"
+  :render-api="{{ render_api|json_encode }}"
+>
+  <div class="context-article-grid__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto">
+    <div class="md:col-start-3 md:col-span-8">
+      {% include context with {
+        size: 'medium',
+        subheading: subheading,
+        heading: heading,
+        paragraph: paragraph,
+        buttons: buttons,
+        align: 'center',
+      } %}
+    </div>
+  </div>
+  <div class="context-article-grid__inner gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto">
+    {% include articleGrid with {
+      columns: 3,
+      items: items,
+    } %}
+  </div>
+</component>

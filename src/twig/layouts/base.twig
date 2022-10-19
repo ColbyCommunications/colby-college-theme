@@ -1,0 +1,32 @@
+{% block html_head_container %}
+
+{% include 'html-header.twig' %}
+  {% block head %}
+  {% endblock %}
+  </head>
+{% endblock %}
+
+  <body>
+    <div id="app">
+      {% include 'header.twig' with {
+        utility: utility_menu.items,
+        main: main_menu.items
+      } %}
+      <main id="main" class="page [&>div+div]:mt-20 md:[&>div+div]:mt-[100px] pb-20 md:pb-[100px]">
+        {% block content %}
+          Sorry, no content
+        {% endblock %}
+      </main>
+      {% include 'footer.twig' with {
+        address: global_address,
+        phone: global_phone,
+        main: footer_menu.items,
+        utility: action_menu.items,
+        social: global_social,
+      } %}
+      {% block footer %}
+        {{ function('wp_footer') }}
+      {% endblock %}
+    </div>
+  </body>
+</html>

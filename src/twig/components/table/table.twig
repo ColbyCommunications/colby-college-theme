@@ -1,0 +1,67 @@
+{% if items_per_page == null %}
+  {% set items_per_page = 20 %}
+{% endif %}
+
+{# {% set external_items = null %} #}
+
+{% if api == 'Departments' %}
+  {% set external_items = departments %}
+  {% set render_api = false %}
+{% elseif api == 'Offices' %}
+  {% set external_items = offices %}
+  {% set render_api = false %}
+{% endif %}
+
+<component
+  is="table"
+  v-slot="table"
+  :render-api="{{ render_api|json_encode }}"
+  api="{{ api }}"
+  :external-items="{{ external_items|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE')) | e }}"
+  department-code="{{ department_code }}"
+  :items-per-page="{{ items_per_page }}"
+>
+  <table class="table w-full">
+    <tbody>
+      {% if headings %}
+        <tr>
+          {% for heading in headings %}
+            <th class="hidden md:table-cell h-12 md:h-11 px-6 font-body text-20 md:text-14 font-semibold leading-120 text-indigo text-left bg-indigo-200">{{ heading.heading }}</th>
+          {% endfor %}
+        </tr>
+      {% endif %}
+      {% for item in items %}
+        <tr class="w-full h-12 md:h-10 odd:bg-gray-100">
+          <td class="px-6">
+            <{% if item.link %}a{% else %}span{% endif %}
+              class="inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140 {% if item.link %}text-indigo hover:underline{% else %}text-indigo-800{% endif %}"
+              {% if item.link %}href="{{ item.link.url }}"{% endif %}
+            >
+              {% if item.image %}
+                <div class="table__image hidden md:block relative mr-3 rounded-[50%] overflow-hidden">
+                  <picture>
+                    <source media="(min-width:768px)" srcset="{{ item.image.srcset }}">
+                    <img
+                      class="w-6"
+                      src="{{ item.image.src }}"
+                      alt="{{ item.image.alt }}"
+                    />
+                  </picture>
+                </div>
+              {% endif %}
+
+              {% if item.link %}
+                {{ item.link.title }}
+              {% else %}
+                {{ item.title }}
+              {% endif %}
+            </{% if item.link %}a{% else %}span{% endif %}>
+          </td>
+          {% for column in item.columns %}
+            <td class="hidden md:table-cell px-6 font-body text-20 md:text-12 font-normal leading-140 text-indigo-800">{{ column.column }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</component>

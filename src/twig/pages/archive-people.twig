@@ -1,0 +1,46 @@
+{% extends "base.twig" %}
+
+{% block content %}
+
+{% set newPosts = [] %}
+
+{% for person in people %}
+  {% set newPost = [{
+    thumbnail: person.thumbnail.src('Square_mobile'),
+    post_title: person.post_title,
+    post_name: person.post_name,
+    custom: person.custom,
+    department: person.department,
+  }] %}
+
+  {% set newPosts = newPosts|merge(newPost) %}
+{% endfor %}
+
+{% include 'hero.twig' with {
+  subheading: 'People Directory',
+  heading: 'Together, We Are Creating the Future',
+  paragraph: 'The Colby community is comprised of scholars, entrepreneurs, and innovators that shape the world.',
+} %}
+<section class="sidebar-page">
+  <div class="sidebar-page__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto md:mt-20 mt-16">
+    <div class="sidebar-page__secondary md:col-span-3 xl:col-span-2 mb-16 md:mb-0
+      [&>div+div]:mt-7"
+    >
+      {% include 'subpage-nav.twig' with {
+        heading: 'People',
+        items: people_menu.items,
+        menu_obj: true,
+      } %}
+    </div>
+    <div class="sidebar-page__main xl:col-start-4 md:col-span-9">
+      <component
+        is="table"
+        :external-items="{{ newPosts|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE')) | e }}"
+        api="People"
+      >
+      </component>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

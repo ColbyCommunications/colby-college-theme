@@ -1,0 +1,25 @@
+<div class="list-section">
+  <div class="list-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto">
+    <div class="list-section__main md:col-span-12">
+      <div class="list-section__lists md:flex flex-wrap justify-center md:space-x-5 lg:space-x-10 space-y-10 md:space-y-0">
+        {% for list in lists %}
+          <div class="list-section__list md:w-[calc(20%-16px)] lg:w-[calc(20%-32px)] space-y-6">
+            <h2 class="list-section__heading font-extended text-20 font-normal leading-110 -tracking-3 text-indigo">
+              {{ list.heading }}
+            </h2>
+            <ul class="space-y-2.5 list-disc ml-[13px]">
+              {% for item in list.items %}
+                {% if not in_component_library %}
+                  {% set item = item.link %}
+                {% endif %}
+                <li class="font-body text-14 font-normal leading-130 text-indigo-800">
+                  <a class="text-indigo-800 hover:text-indigo hover:underline transition-all duration-200 ease-in-out" href="{{ item.url }}">{{ item.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

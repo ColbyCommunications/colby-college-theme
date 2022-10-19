@@ -1,0 +1,46 @@
+{% extends "base.twig" %}
+
+{% block content %}
+
+{% set newPosts = [] %}
+
+{% for office in offices %}
+  {% set newPost = [{
+    thumbnail: office.thumbnail.src('Square_mobile'),
+    post_title: office.post_title,
+    post_name: office.post_name,
+    custom: office.custom,
+    department: office.department,
+  }] %}
+
+  {% set newPosts = newPosts|merge(newPost) %}
+{% endfor %}
+
+{% include 'hero.twig' with {
+  subheading: 'Office Directory',
+  heading: 'Connect With Us',
+  paragraph: 'Within Colby College, our offices and departments serve to nurture the unique needs and passions of our students, staff, and faculty.',
+} %}
+<section class="sidebar-page">
+  <div class="sidebar-page__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto md:mt-20 mt-16">
+    <div class="sidebar-page__secondary md:col-span-3 xl:col-span-2 mb-16 md:mb-0
+      [&>div+div]:mt-7"
+    >
+      {% include 'subpage-nav.twig' with {
+        heading: 'People',
+        items: people_menu.items,
+        menu_obj: true,
+      } %}
+    </div>
+    <div class="sidebar-page__main xl:col-start-4 md:col-span-9">
+      <component
+        is="table"
+        :external-items="{{ newPosts|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE')) | e }}"
+        api="Offices"
+      >
+      </component>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

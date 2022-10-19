@@ -1,0 +1,29 @@
+<!-- Not Tested. For use in Fractal/Twig migration - Greg S. -->
+<accordion
+    class="accordion"
+    data-accordion-container
+    data-accordion-config-single="{{ accordion.config.single }}"
+>
+    {% for item in panels %}
+        <article class="accordion__panel" data-accordion-panel>
+            <h3 class="accordion__header font-display text-48 leading-115">
+                <button
+                    class="accordion__button h4"
+                    data-accordion-button
+                    aria-expanded="false"
+                >{{ item.heading }}</button>
+            </h3>
+            <div
+                class="accordion__window"
+                data-accordion-window
+            >
+                <div
+                    class="accordion__content"
+                    data-accordion-content
+                >
+                    {{ item.content }}
+                </div>
+            </div>
+        </article>
+    {% endfor %}
+</accordion>

@@ -1,0 +1,76 @@
+{% import "macros.twig" as macros %}
+{% import "icons.twig" as icons %}
+
+{% if in_component_library %}
+  {% set context = '@context' %}
+  {% set videoComponent = '@video' %}
+{% else %}
+  {% set context = 'context.twig' %}
+  {% set videoComponent = 'video.twig' %}
+{% endif %}
+
+<component
+  is="overlay-hero"
+  v-slot="overlayHero"
+  class="overlay-hero relative {% if not video %} h-[calc(100vh_-_100px)] {% if size == 'medium' %} md:h-[400px] {% endif %}{% else %}h-[calc(100vh_-_100px)] md:h-auto{% endif %} overflow-hidden"
+>
+  <div
+    :class="{'invisible opacity-0': overlayHero.active == true}"
+    class="overlay-hero__bottom z-[11] absolute bottom-0 left-0 w-full pt-40 pb-16 space-y-12 md:space-y-20 transition-all duration-200 ease-in-out"
+    style="background: linear-gradient(180deg, rgba(1, 33, 105, 0) 0%, rgba(14, 20, 34, 0.4) 25%)"
+  >
+    <div class="overlay-hero__inner grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto">
+      <div class="overlay-hero__main md:col-span-5">
+        {% include context with {
+          size: size ? size : 'large',
+          type: 'light',
+          subheading: subheading,
+          heading: heading,
+          paragraph: paragraph,
+          buttons: {
+            items: buttons,
+          },
+        } %}
+        {% if video %}
+          <button
+            class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-800 font-body font-normal text-12 leading-130 text-white bg-indigo/20 focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1 px-3.5 transition-all duration-200 ease-in-out mt-4"
+            @click="overlayHero.setActive()"
+          >
+            {{ icons.icon('play', 'w-3 fill-canary group-hover:fill-white transition-all duration-400 ease-in-out') }}
+            <span class="btn__text">
+              Watch
+              <div class="btn__border block bg-white h-px w-0 group-hover:w-full transition-all duration-200 ease-in-out"></div>
+            </span>
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% if video %}
+    <div
+      class="overlay-hero__screen absolute top-0 left-0 w-full h-full"
+      :class="{'invisible opacity-0': overlayHero.active == true}"
+    ></div>
+    {% include videoComponent with {
+      playIcon: false,
+      video: video,
+      image: image,
+    } %}
+  {% else %}
+    {% if video_loop %}
+      <video class="z-[-10] absolute min-w-full min-h-full w-auto h-auto bg-repeat bg-cover top-0 right-0 bottom-0 left-0 object-cover" autoplay muted loop>
+        <source src="{{ video_loop }}" type="video/mp4">
+      </video>
+    {% else %}
+      {{ macros.picture(
+        'z-[-10] absolute top-0 left-0 w-full h-full object-cover',
+        image.srcset,
+        image.src,
+        image.sizes.Hero,
+        image.sizes.Hero,
+        image.alt,
+        in_component_library
+      ) }}
+    {% endif %}
+  {% endif %}
+</component>

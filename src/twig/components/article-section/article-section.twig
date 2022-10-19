@@ -1,0 +1,50 @@
+{% if in_component_library %}
+  {% set context = '@context' %}
+  {% set arrowControls = '@arrow-controls' %}
+  {% set articleGrid = '@article-grid' %}
+{% else %}
+  {% set context = 'context.twig' %}
+  {% set arrowControls = 'arrow-controls.twig' %}
+  {% set articleGrid = 'article-grid.twig' %}
+
+  {% set image_orientation = 'rectangle' %}
+{% endif %}
+
+<component
+  is="carousel"
+  v-slot="carousel"
+  class="article-section"
+  :per-view="2"
+  :gap="40"
+  :render-api="{{ render_api|json_encode }}"
+  api="{{ api }}"
+  heading="{{ heading }}"
+  paragraph="{{ paragraph }}"
+>
+  <div class="article-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto space-y-16 md:space-y-0">
+    <div class="article-section__intro md:col-span-4 lg:col-span-3 space-y-10">
+      {% include context with {
+        size: 'small',
+        subheading: subheading,
+        heading: heading,
+        paragraph: paragraph,
+        buttons: {
+          items: buttons,
+        },
+      } %}
+      {% if carousel %}
+        {% include arrowControls with {
+          size: 'large',
+          type: 'light',
+        } %}
+      {% endif %}
+    </div>
+    <div
+      class="article-section__grid md:col-start-5 md:col-span-8"
+      @mouseEnter="carousel.pauseCarousel()"
+      @mouseOut="carousel.playCarousel()"
+    >
+      {% include articleGrid %}
+    </div>
+  </div>
+</component>

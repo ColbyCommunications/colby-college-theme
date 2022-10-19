@@ -1,0 +1,33 @@
+{% import "macros.twig" as macros %}
+{% import "icons.twig" as icons %}
+
+<component
+  class="video relative w-full pb-[56.25%] overflow-hidden"
+  v-slot="video"
+  id="{{ video.id }}"
+  is="video"
+>
+  <div
+    class="video__overlay group z-10 absolute flex items-center justify-center w-full h-full cursor-pointer transition-all duration-200 ease-in-out"
+    :class="{'invisible opacity-0': video.active == true}"
+  >
+    {% if playIcon != false %}
+      {{ icons.icon('play', 'z-10 w-12 fill-indigo-800 group-hover:fill-indigo transition-all duration-400 ease-in-out') }}
+    {% endif %}
+    {% if video_loop %}
+      <video class="hidden md:block z-[1] absolute min-w-full min-h-full w-auto h-auto bg-repeat bg-cover top-0 right-0 bottom-0 left-0 object-cover" autoplay muted loop>
+        <source src="{{ video_loop }}" type="video/mp4">
+      </video>
+    {% endif %}
+    {{ macros.picture(
+      'absolute top-0 left-0 w-full h-full object-cover',
+      image.srcset,
+      image.src,
+      image.sizes.Rectangle,
+      image.sizes.Rectangle_mobile,
+      image.alt,
+      in_component_library
+    ) }}
+  </div>
+  <div class="iframe absolute top-0 left-0 w-full h-full"></div>
+</component>

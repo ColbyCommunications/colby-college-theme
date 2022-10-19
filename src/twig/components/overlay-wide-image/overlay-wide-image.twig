@@ -1,0 +1,33 @@
+{% import "macros.twig" as macros %}
+
+{% if in_component_library %}
+  {% set context = '@context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+{% endif %}
+
+<div class="overlay-wide-image max-w-screen-xl my-0 mx-auto">
+  <div class="overlay-wide-image__inner relative md:pb-[45.45454545454545%]">
+    <div class="overlay-wide-image__overlay z-10 absolute top-0 left-0 flex items-center w-full h-full p-9 md:p-24 bg-gray-1000/40">
+      {% include context with {
+        size: 'medium',
+        type: 'light',
+        subheading: subheading,
+        heading: heading,
+        paragraph: paragraph,
+        buttons: {
+          items: buttons,
+        }
+      } %}
+    </div>
+    {{ macros.picture(
+      'md:absolute w-full h-full object-cover',
+      image.srcset,
+      image.src,
+      image.sizes.Landscape,
+      image.sizes.Landscape_mobile,
+      image.alt,
+      in_component_library
+    ) }}
+  </div>
+</div>

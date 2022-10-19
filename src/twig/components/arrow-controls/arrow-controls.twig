@@ -1,0 +1,17 @@
+{% if in_component_library %}
+  {% set arrowButton = '@arrow-button' %}
+{% else %}
+  {% set arrowButton = 'arrow-button.twig' %}
+{% endif %}
+
+<div class="arrow-controls space-x-4">
+  {% include arrowButton with {
+    size: size,
+    type: type,
+  } %}
+  {% include arrowButton with {
+    size: size,
+    type: type,
+    reverse: true
+  } %}
+</div>

@@ -1,0 +1,33 @@
+html {
+  scroll-behavior: smooth;
+}
+
+.page {
+  overflow: hidden;
+}
+
+p {
+  a {
+    color: inherit;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+
+// This random css has been placed here instead of appropriate talewind styles
+// because of a rendering issue using twig, vue, tailwind, and wordpress at once.
+// the ampersand when pointing to direct children in tailwind classes kills
+// our template when viewed in wordpress. Will revisit later.
+.overlay-hero {
+  .video {
+    height: 100%;
+
+    @include breakpoint(medium) {
+      height: auto;
+    }
+  }
+}

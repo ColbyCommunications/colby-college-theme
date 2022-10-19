@@ -1,0 +1,33 @@
+{% import "macros.twig" as macros %}
+
+{% if in_component_library %}
+  {% set context = '@context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+{% endif %}
+
+<article class="article space-y-4{% if border %} pt-1 border-t-2 border-solid border-indigo-600{% endif %}">
+  {% if image %}
+    <div class="article__image relative">
+      {{ macros.picture(
+        'w-full object-cover',
+        image.srcset,
+        image.src,
+        image.sizes.desktop,
+        image.sizes.mobile,
+        image.alt,
+        in_component_library
+      ) }}
+    </div>
+  {% endif %}
+  {% include context with {
+    size: size ? size : 'small',
+    static: true,
+    subheading: subheading,
+    heading: heading,
+    paragraph: paragraph,
+    buttons: {
+      items: buttons,
+    },
+  } %}
+</article>

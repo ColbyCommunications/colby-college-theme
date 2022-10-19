@@ -1,0 +1,59 @@
+{% extends "base.twig" %}
+
+{% block content %}
+
+{% set image_orientation = 'portrait' %}
+{% set items_retain = true %}
+
+{% set newItems = [] %}
+
+{% for item in posts %}
+  {% set newItem = [{
+    image: {
+      sizes: {
+        desktop: item.thumbnail.src('Portrait'),
+        mobile: item.thumbnail.src('Portrait_mobile'),
+      },
+      alt: item.thumbnail.alt,
+    },
+    heading: item.post_title,
+    paragraph: item.title,
+    buttons: [
+      {
+        button: {
+          title: 'Read Bio',
+          url: item.guid,
+        }
+      }
+    ],
+  }] %}
+
+  {% set newItems = newItems|merge(newItem) %}
+{% endfor %}
+
+{% set items = newItems %}
+
+{% include 'hero.twig' with {
+  subheading: title,
+  heading: 'Lorem ipsum dolor sit amet consec dolor.',
+  paragraph: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue pulvinar lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit nam congu.',
+} %}
+<section class="sidebar-page">
+  <div class="sidebar-page__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto md:mt-20 mt-16">
+    <div class="sidebar-page__secondary md:col-span-3 xl:col-span-2 mb-16 md:mb-0
+      [&>div+div]:mt-7"
+    >
+      {% include 'subpage-nav.twig' with {
+        heading: alpha_parent.title,
+        items: alpha_parent.children,
+      } %}
+    </div>
+    <div class="sidebar-page__main xl:col-start-4 md:col-span-9">
+      {% include 'article-grid.twig' with {
+        columns: 4,
+        items: items,
+      } %}
+    </div>
+  </div>
+</section>
+{% endblock %}

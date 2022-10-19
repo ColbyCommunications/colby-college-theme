@@ -1,0 +1,23 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "ie": 11
+        }
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    ["module-resolver", {
+      "alias": {
+        "components": "./src/twig/components",
+        "src": "./src",
+        "styles": "./src/styles"
+      }
+    }]
+  ],
+
+}

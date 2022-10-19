@@ -1,0 +1,9 @@
+/*
+ * Theme Name: Colby College
+ * Description: Colby College atomicly designed and developed component suite, built utilzing Tailwind CSS for styling, Vue.js for dynamic javascript interactivity, and Twig in conjuction with Timber for Wordpress templating integration.
+ * Author: Greg @ Truth & Consequences
+*/
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

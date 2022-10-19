@@ -1,0 +1,61 @@
+{% if in_component_library %}
+  {% set context = '@context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+{% endif %}
+
+<div class="featured-post">
+  <div class="featured-post__inner relative md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto">
+    <div class="featured-post__context md:col-start-9 lg:col-start-10 md:col-span-4 lg:col-span-3 md:flex md:order-2 items-center">
+      {% include context with {
+        size: 'large',
+        type: 'dark',
+        arrow: true,
+        reverse: true,
+        heading: heading,
+        paragraph: paragraph,
+        buttons: {
+          items: buttons,
+        },
+      } %}
+    </div>
+    <div class="featured-post__caption md:z-[-1] md:absolute top-0 left-[20px] md:w-[calc(100%_-_40px)] md:pt-3.5 pb-3.5 md:pb-0 font-extended font-bold text-12 tracking-8 text-azure uppercase text-right md:border-t border-b md:border-b-0 border-azure border-solid mt-14 md:mt-0">
+      {{ caption }}
+    </div>
+    <div class="featured-post__main md:col-span-8">
+      <div class="featured-post__image">
+        {% if in_component_library %}
+          <picture>
+            <source media="(min-width:768px)" srcset="{{ post.image.srcset }}">
+            <img
+              class="w-full h-full object-cover"
+              src="{{ post.image.src }}"
+              alt="{{ post.image.alt }}"
+            />
+          </picture>
+        {% else %}
+          <picture>
+            <source media="(min-width:768px)" srcset="{{ post.image.sizes.Rectangle }}">
+            <img
+              class="w-full h-full object-cover"
+              src="{{ post.image.sizes.Rectangle_mobile }}"
+              alt="{{ post.image.alt }}"
+            />
+          </picture>
+        {% endif %}
+      </div>
+      <div class="featured-post__post relative mt-6 h-40">
+        {% include context with {
+          size: 'small',
+          type: 'dark',
+          subheading: post.date,
+          heading: post.heading,
+          paragraph: post.paragraph,
+          buttons: {
+            items: post.buttons,
+          },
+        } %}
+      </div>
+    </div>
+  </div>
+</div>
