@@ -13,9 +13,9 @@
       [&>div+div]:mt-7"
     >
       {% include 'subpage-nav.twig' with {
-        heading: 'Office',
-        items: people_menu.items,
-        menu_obj: true,
+        heading: alpha_parent.title,
+        items: alpha_parent.children,
+        menu_obj: alpha_parent.menu
       } %}
     </div>
     <div class="sidebar-page__main xl:col-start-4 md:col-span-9 space-y-16">

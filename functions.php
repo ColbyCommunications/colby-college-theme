@@ -109,30 +109,6 @@ class StarterSite extends Timber\Site {
                 'supports'      => ['title', 'editor', 'revisions', 'excerpt', 'thumbnail'],
             ]
         );
-
-        // register_post_type(
-        //     'offices',
-        //     [
-        //         'labels' => [
-        //             'name'               => __( 'Offices' ),
-        //             'singular_name'      => __( 'Office' ),
-        //             'add_new_item'       => __( 'Add Office' ),
-        //             'edit_item'          => __( 'Edit Office' ),
-        //             'new_item'           => __( 'New Office' ),
-        //             'view_item'          => __( 'View Office' ),
-        //             'search_items'       => __( 'Search Offices' ),
-        //             'not_found'          => __( 'Office not found.' ),
-        //             'not_found_in_trash' => __( 'No Office found in trash.' ),
-        //         ],
-        //         'rewrite'     => array( 'slug' => 'people/offices-directory' ),
-        //         'public'        => true,
-        //         'has_archive' => true,
-        //         'show_in_rest' => true,
-        //         'menu_icon'     => 'dashicons-admin-multisite',
-        //         'show_in_nav_menus' => true,
-        //         'supports'      => ['title', 'editor', 'revisions', 'excerpt', 'thumbnail'],
-        //     ]
-        // );
     }
 
     /** This is where you can register custom taxonomies. */
