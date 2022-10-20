@@ -131,7 +131,7 @@
       </div>
     </div>
     <div
-      v-if="renderApi && api == 'Academic News'"
+      v-if="(renderApi && api == 'Academic News') || (renderApi && api == 'Faculty Accomplishments')"
       class="article-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto space-y-16 md:space-y-0"
     >
       <div class="article-section__intro md:col-span-4 lg:col-span-3 space-y-10">
@@ -192,7 +192,10 @@
                   class="article-grid__item glide__slide"
                 >
                   <article class="article space-y-4">
-                    <div class="article__image relative">
+                    <div
+                      v-if="item.yoast_head_json.og_image[0].url"
+                      class="article__image relative"
+                    >
                       <picture>
                         <source
                           media="(min-width:768px)"
@@ -208,11 +211,13 @@
                     <div class="context w-full space-y-5">
                       <div class="text-group">
                         <div
+                          v-if="item['post-meta-fields'].primary_category"
                           class="text-group__subheading font-extended font-bold text-12 leading-130 tracking-8 text-left text-azure uppercase"
                           v-text="item['post-meta-fields'].primary_category"
                         />
                         <h2
-                          class="text-group__heading font-extended font-normal text-20 leading-110 -tracking-3 text-left text-indigo mt-2"
+                          class="text-group__heading font-extended font-normal text-20 leading-110 -tracking-3 text-left text-indigo"
+                          :class="{'mt-2': item['post-meta-fields'].primary_category}"
                           v-text="item.title.rendered"
                         />
                         <p
@@ -267,11 +272,39 @@ export default {
           this.endpoint = 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=5&categories=8,12,14,15&_embed=1';
           this.subheading = this.api;
           break;
+        case 'Faculty Accomplishments':
+          this.endpoint = 'https://dev-54ta5gq-4nvswumupeimi.us-4.platformsh.site/wp-json/wp/v2/external_post?story_type_slug=faculty-accomplishments&per_page=5&_embed=1';
+          this.subheading = this.api;
+          break;
       }
 
       await axios.get(this.endpoint)
         .then(outputa => {
-          this.featuredNews = outputa.data;
+          if (this.api == 'Faculty Accomplishments') {
+            this.featuredNews = outputa.data.map(item => {
+              return {
+                yoast_head_json: {
+                  og_image: [
+                    {
+                      url: '',
+                    },
+                  ]
+                },
+                title: {
+                  rendered: item.title.rendered.replace(/<\/?[^>]+(>|$)/g, ""),
+                },
+                "post-meta-fields": {
+                  primary_category: '',
+                  summary: [`${item.content.rendered.replace(/<\/?[^>]+(>|$)/g, "").substring(0, 120)}...`],
+                },
+                guid: {
+                  rendered: item.guid.rendered,
+                },
+              };
+            });
+          } else {
+            this.featuredNews = outputa.data;
+          }
 
           this.renderGlide();
         });
