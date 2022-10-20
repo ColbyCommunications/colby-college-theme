@@ -19,6 +19,7 @@
         "components:watch": "concurrently \"npm:fractal\" \"npm:scripts:watch\" \"npm:tailwind:watch\"",
         "components:build": "run-s scripts:build fractal:build",
         "build": "npm-run-all scripts:build components:build tailwind:build",
+        "build:platform": "npm-run-all scripts:build tailwind:build",
         "watch": "npm run components:watch"
     },
     "devDependencies": {

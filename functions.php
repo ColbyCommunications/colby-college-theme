@@ -669,3 +669,471 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
     // Render the block.
     Timber::render( 'src/twig/components/'. $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged );
 }
+
+/**
+ * ===================================================
+ * 
+ * Colby Directory Import/Sync
+ * 
+ * ===================================================
+ */
+
+function updateStaffDirectory() {
+   
+    if (!is_admin()) {
+        $directory_data = json_decode(file_get_contents(WP_CONTENT_DIR . "/directory_data/extra.json"), true)['Report_Entry'];
+        // $directory_data = json_decode(file_get_contents(WP_CONTENT_DIR . "/directory_data/Colby_Directory_Webservice_Output.json"), true)['Report_Entry'];
+        //   deletePeople($directory_data);
+        //   getNewPeople($directory_data);
+    }
+}
+
+function deletePeople($directory_data) {
+    $args = array(
+        'numberposts' => -1,
+        'post_type'   => 'people',
+        'post_status' => 'publish',
+    );
+    
+    $all_posts   = get_posts($args);
+    $total_posts = count($all_posts);
+
+    if ($total_posts > 0) {
+        foreach ($all_posts as $post) {
+            // Get the employee_id meta value using the post ID
+            $employee_id = get_post_meta($post->ID, 'employee_id', true);
+            
+            // Check if the employee id in the DB exists in the WD file
+            $match = false;
+   
+            foreach ($directory_data as $WDPerson) {
+                $WDEmployeeID = str_pad($WDPerson['employeeID'], 7, "0", STR_PAD_LEFT);
+                if ($employee_id === $WDEmployeeID) {
+                    $match = true;
+                    break;
+                }
+            }
+   
+            // If record is missing from WD, delete the record in the DB
+            if ($match !== true) {
+                $thumb_id = get_post_thumbnail_id($post->ID);
+                wp_delete_attachment($thumb_id, true);
+                wp_delete_post($post->ID, true);
+            }
+        }
+    }
+}
+
+// use phpseclib3\Crypt\RSA;
+use phpseclib3\Net\SFTP;
+
+require_once ABSPATH . 'wp-admin/includes/media.php';
+require_once ABSPATH . 'wp-admin/includes/file.php';
+require_once ABSPATH . 'wp-admin/includes/image.php';
+
+function getNewPeople($directory_data) {
+    //  $key  = PLATFORM_VARIABLES['sftp_pw'];
+    $sftp = new SFTP('colby0.colby.edu');
+    $sftp->login(PLATFORM_VARIABLES['sftp_username'], PLATFORM_VARIABLES['sftp_pw']);
+
+    // Loop through the WD array
+    foreach ($directory_data as $WDPerson) {
+        // Assign variables to desired WD fields
+        $WDEmployeeID    = str_pad($WDPerson['employeeID'], 7, "0", STR_PAD_LEFT);
+        $WDPrefFirstName = $WDPerson['preferredFirstName'];
+        $WDLastName      = $WDPerson['lastName'];
+
+        // Skip person if no email associated
+        if (!$WDPerson['primaryWorkEmail']) {
+            continue;
+        }
+
+        $WDEmail = $WDPerson['primaryWorkEmail'];
+        $WDTitle = $WDPerson['businessTitle'];
+        $WDPhone = "";
+
+        if (isset($WDPerson['primaryWorkPhone'])) {
+            $WDPhone = $WDPerson['primaryWorkPhone'];
+        }
+
+        $WDBuilding = "";
+
+        if (isset($WDPerson['workSpaceSuperiorLocation'])) {
+            $WDBuilding = $WDPerson['workSpaceSuperiorLocation'];
+        }
+  
+        $emailSlug = strtolower(substr($WDEmail, 0, strpos($WDEmail, "@")));
+
+        /* Academic unit for faculty, Superior org for staff (department metadata) */
+
+        $WDAcademicUnit = $WDPerson['Academic_Units'];
+        $WDSupOrg       = $WDPerson['supervisoryOrganization'];
+        $WDSOH          = $WDPerson['supervisoryOrgHierarchy'];
+        $WDOrgsManaged  = $WDPerson['organizationsManaged'];
+        $supOrgRegex    = '/.+?(?=[-|(])/';
+        $orgResult;
+
+        if (count(explode('>', $WDSOH)) === 2 || count(explode('>', $WDSOH)) === 3) {
+            if (preg_match($supOrgRegex, $WDOrgsManaged)) {
+                preg_match($supOrgRegex, $WDOrgsManaged, $matches);
+                $orgResult = $matches[0];
+            }
+        } else {
+            if (preg_match($supOrgRegex, $WDSupOrg)) {
+                preg_match($supOrgRegex, $WDSupOrg, $matches);
+                $orgResult = $matches[0];
+            }
+        }
+
+        $WDDepartment = $WDAcademicUnit;
+        if (is_null($WDAcademicUnit)) {
+            $WDDepartment = $orgResult;
+        }
+
+        // Set api endpoint url with $emailSlug
+        $url = 'https://www.colby.edu/endpoints/v1/profile/' . $emailSlug;
+
+        // Initialize a CURL session.
+        $ch = curl_init();
+        // Return Page contents.
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        //grab URL and pass it to the variable.
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $CXPerson = json_decode(curl_exec($ch), true);
+
+        // Extract and assign desired fields from CX
+        $CXEducation = "";
+        if (isset($CXPerson['profedu']) && $CXPerson['profedu']['text']) {
+            $CXEducation = '<h2>Education</h2>' . $CXPerson['profedu']['text'];
+        }
+
+        $CXExpertise      = "";
+        $CXExpertiseArray = [];
+
+        if (!empty($CXPerson['expertise1'])) {
+            for ($i = 1; $i <= 20; $i++) {
+                if (($CXPerson['expertise' . strval($i)])) {
+                    $CXAOEValue = $CXPerson['expertise' . strval($i)];
+                    array_push($CXExpertiseArray, '<li>' . '<p>' . $CXAOEValue . '</p>' . '</li>');
+                }
+            }
+
+            $CXExpertiseLI = implode(" ", $CXExpertiseArray);
+            $CXExpertise   = '<h2>Areas of Expertise</h2>' . '<ul>' . $CXExpertiseLI . '</ul>';
+        }
+
+        $CXCourses = "";
+  
+        if (isset($CXPerson['courses'])) {
+            $CXCourses = $CXPerson['courses'];
+        }
+
+        $CXPersonalInfo = "";
+        if (isset($CXPerson['profbio']) && $CXPerson['profbio']['text']) {
+            $CXPersonalInfo = '<h2>Personal Information</h2>' . $CXPerson['profbio']['text'];
+        }
+
+        $CXCurrentResearch = "";
+        if (isset($CXPerson['research']) && $CXPerson['research']['text']) {
+            $CXCurrentResearch = '<h2>Current Research</h2>' . $CXPerson['research']['text'];
+        }
+
+        $CXPubs = "";
+        if (isset($CXPerson['publicat']) && $CXPerson['publicat']['text']) {
+            $CXPubs = '<h2>Publications</h2>' . $CXPerson['publicat']['text'];
+        }
+
+        // Concatenate all CX fields for bio
+        $CXBio = $CXEducation . '<br><br>' . $CXExpertise . '<br><br>' . $CXPersonalInfo . '<br><br>' . $CXCurrentResearch . '<br><br>' . $CXPubs;
+
+        $args = array(
+            'numberposts' => -1,
+            'post_type'   => 'person',
+            'post_status' => 'publish',
+            'meta_query'  => array(
+                array(
+                    'key'     => 'employee_id',
+                    'value'   => $WDEmployeeID,
+                    'compare' => '=',
+                ),
+            ),
+        );
+
+        // Combine fields from WD and CX
+        $post = array(
+            'post_title'   => $WDPrefFirstName . " " . $WDLastName,
+            'post_content' => "",
+            'post_type'    => 'person',
+            'post_status'  => 'publish',
+            'meta_input'   => array(
+                'employee_id'     => $WDEmployeeID,
+                'first_name'      => $WDPrefFirstName,
+                'last_name'       => $WDLastName,
+                'pronouns'        => "",
+                'title'           => $WDTitle,
+                'department'      => $WDDepartment,
+                'phone'           => $WDPhone,
+                'email'           => $WDEmail,
+                'building'        => $WDBuilding,
+                'cv'              => "",
+                'bio'             => $CXBio,
+                'current_courses' => json_encode($CXCourses),
+            ),
+        );
+
+        $DBMatchingPost = get_posts($args);
+
+        $photosWithDates = array_filter(
+            $sftp->nlist('/web/staticweb/college/WorkdayPhotosTest'), function ($item) {
+                return strpos($item, '.jpg') !== false;
+            }
+        );
+
+        $matchingPhoto = false;
+        if ((!$DBMatchingPost)) {
+            $ID = wp_insert_post($post);
+
+            foreach ($photosWithDates as $photo) {
+                if (strpos($photo, $WDEmployeeID) !== false) {
+                    $matchingPhoto = $photo;
+                    break;
+                }
+            }
+
+            if ($matchingPhoto) {
+                $imageURL = 'https://colby.edu/college/WorkdayPhotosTest/' . $matchingPhoto;
+                $desc     = $WDPrefFirstName . ' ' . $WDLastName;
+                $image    = media_sideload_image($imageURL, $ID, $desc, 'id');
+                set_post_thumbnail($ID, $image);
+            }
+        } else {
+            $ID              = $DBMatchingPost[0]->ID;
+            $person_metadata = get_post_meta($ID);
+
+            // Update title metadata with latest title from WD
+            update_post_meta($ID, 'title', $WDTitle);
+
+            // Update courses metadata with latest courses from CX
+            if ($CXCourses) {
+                update_post_meta($ID, 'current_courses', json_encode($CXCourses));
+            }
+
+            // Update metadata for fields not changed in Gravity Forms with latest WD data
+            if (empty($person_metadata['preferred_name_changed'])) {
+                update_post_meta($ID, 'first_name', $WDPrefFirstName);
+            }
+
+            if (empty($person_metadata['phone_number_changed'][0])) {
+                update_post_meta($ID, 'phone', $WDPhone);
+            }
+
+            if (empty($person_metadata['location_changed'][0])) {
+                update_post_meta($ID, 'building', $WDBuilding);
+            }
+
+            if (empty($person_metadata['department_changed'][0])) {
+                update_post_meta($ID, 'department', "");
+            }
+
+            if (empty($person_metadata['curriculum_vitae_changed'][0])) {
+                update_post_meta($ID, 'cv', "");
+            }
+
+            if (empty($person_metadata['bio_changed'][0])) {
+                update_post_meta($ID, 'bio', $CXBio);
+            }
+
+            if (empty($person_metadata['image_changed'][0]) && empty($person_metadata['remove_image_changed'][0])) {
+                foreach ($photosWithDates as $photo) {
+                    if (strpos($photo, $WDEmployeeID) !== false) {
+                        $matchingPhoto = $photo;
+                        break;
+                    }
+                }
+
+                if ($matchingPhoto) {
+                    $img_parts    = explode("_", $matchingPhoto);
+                    $date         = substr($img_parts[1], 0, 8);
+                    $imageURL     = 'https://colby.edu/college/WorkdayPhotosTest/' . $matchingPhoto;
+                    $desc         = $WDPrefFirstName . ' ' . $WDLastName;
+                    $DBImageName  = get_the_post_thumbnail_url($ID);
+                    $DB_img_parts = explode("_", $DBImageName);
+                    $DB_date      = substr($DB_img_parts[1], 0, 8);
+                    
+                    if ($date !== $DB_date) {
+                        $thumb_id = get_post_thumbnail_id($ID);
+                        wp_delete_attachment($thumb_id, true);
+                        $image = media_sideload_image($imageURL, $ID, $desc, 'id');
+                        set_post_thumbnail($ID, $image);
+                    }
+                }
+            }
+        }
+    }
+}
+
+add_action('gform_after_submission', 'update_directory_profile', 10, 2);
+
+function update_directory_profile($entry, $form) {
+
+    /*
+        1 - bio
+        2- image
+        5 - dept
+        6 - phone #
+        7 - location
+        9 - CV
+        10 - employee ID
+        11 - pronouns
+        12 - pref name
+        13 - Remove image
+    */
+
+    $employee_id      = str_pad($entry[10], 7, "0", STR_PAD_LEFT);
+    $preferred_name   = $entry[12];
+    $pronouns         = $entry[11];
+    $phone_number     = $entry[6];
+    $location         = $entry[7];
+    $department       = $entry[5];
+    $image            = $entry[2];
+    $remove_image     = $entry[13];
+    $curriculum_vitae = $entry[9];
+    $bio              = $entry[1];
+
+    // get person post by employee ID
+    $args = array(
+        'post_type'  => 'person',
+        'meta_query' => array(
+            array(
+                'key'     => 'employee_id',
+                'value'   => $employee_id,
+                'compare' => '=',
+            ),
+        ),
+    );
+
+    $person_post     = get_posts($args);
+    $person_metadata = get_post_meta($person_post[0]->ID);
+
+    $preferred_name_changed   = false;
+    $pronouns_changed         = false;
+    $phone_number_changed     = false;
+    $location_changed         = false;
+    $department_changed       = false;
+    $curriculum_vitae_changed = false;
+    $bio_changed              = false;
+    $image_changed            = false;
+    $remove_image_changed     = false;
+
+    if ($preferred_name) {
+    $preferred_name_changed = true;
+    }
+
+    if ($pronouns) {
+    $pronouns_changed = true;
+    }
+
+    if ($phone_number) {
+    $phone_number_changed = true;
+    }
+
+    if ($location) {
+    $location_changed = true;
+    }
+
+    if ($department) {
+    $department_changed = true;
+    }
+
+    if ($curriculum_vitae) {
+    $curriculum_vitae_changed = true;
+    }
+
+    if ($bio) {
+    $bio_changed = true;
+    }
+
+    if ($image) {
+    $image_changed        = true;
+    $remove_image_changed = false;
+    }
+
+    if ($remove_image === 'Yes') {
+    $remove_image_changed = true;
+    $image_changed        = false;
+    }
+
+    //update post
+    $metaValues = array(
+        'first_name'               => $preferred_name_changed ? $preferred_name : $person_metadata['first_name'][0],
+        'pronouns'                 => $pronouns_changed ? $pronouns : $person_metadata['pronouns'][0],
+        'phone'                    => $phone_number_changed ? $phone_number : $person_metadata['phone'][0],
+        'building'                 => $location_changed ? $location : $person_metadata['building'][0],
+        'department'               => $department_changed ? $department : $person_metadata['department'][0],
+        'cv'                       => $curriculum_vitae_changed ? $curriculum_vitae : $person_metadata['cv'][0],
+        'bio'                      => $bio_changed ? $bio : $person_metadata['bio'][0],
+
+        // save override fields
+        'preferred_name_changed'   => $preferred_name_changed,
+        'pronouns_changed'         => $pronouns_changed,
+        'phone_number_changed'     => $phone_number_changed,
+        'location_changed'         => $location_changed,
+        'department_changed'       => $department_changed,
+        'curriculum_vitae_changed' => $curriculum_vitae_changed,
+        'bio_changed'              => $bio_changed,
+        'image_changed'            => $image_changed,
+        'remove_image_changed'     => $remove_image_changed,
+    );
+
+    wp_update_post(
+        array(
+            'ID'         => $person_post[0]->ID,
+            'post_title' => $preferred_name_changed ? $preferred_name . " " . $person_metadata['last_name'][0] : $person_metadata['first_name'][0] . " " . $person_metadata['last_name'][0],
+            'meta_input' => $metaValues,
+        )
+    );
+
+    $ID       = $person_post[0]->ID;
+    $desc     = $employee_id;
+    $thumb_id = get_post_thumbnail_id($ID);
+
+    wp_delete_attachment($thumb_id, true);
+
+    if ($image_changed) {
+        $image = media_sideload_image($image, $ID, $desc, 'id');
+        set_post_thumbnail($ID, $image);
+    }
+}
+
+function gravity_forms_buttons() {
+    return array(
+        'formatselect',
+        'bold',
+        'italic',
+        'bullist',
+        'underline',
+        'numlist',
+        'undo',
+        'redo',
+        'link',
+        'unlink',
+        'sub',
+        'sup',
+        'strikethrough',
+        'image',
+        'justifyleft',
+        'justifycenter',
+        'justifyright',
+        'justifyfull',
+        'hr',
+    );
+}
+
+add_filter('gform_rich_text_editor_buttons', 'gravity_forms_buttons', 1, 1);
+
+add_action('directory_sync', 'updateStaffDirectory');
+
+// if (! wp_next_scheduled('directory_sync')) {
+//     $time = strtotime('today');
+//     wp_schedule_event($time, 'daily', 'directory_sync');
+// }
