@@ -30,6 +30,10 @@
         email: post.meta('email'),
         location: post.meta('building'),
       } %}
+      {# {% include 'table.twig' with {
+        items: post.meta('current_courses')
+      } %} #}
+      {{ post.meta('current_courses')|json_encode }}
       <div class="grid grid-cols-9 w-full">
         <div class="md:col-span-6">
           {% include 'wysiwyg.twig' with {
