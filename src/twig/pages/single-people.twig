@@ -32,7 +32,9 @@
       } %}
       <div class="grid grid-cols-9 w-full">
         <div class="md:col-span-6">
-          {% include 'wysiwyg.twig' %}
+          {% include 'wysiwyg.twig' with {
+            text: post.meta('bio')
+          } %}
         </div>
       </div>
     </div>
