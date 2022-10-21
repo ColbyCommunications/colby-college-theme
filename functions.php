@@ -932,7 +932,7 @@ function getNewPeople($directory_data) {
             }
 
             if (empty($person_metadata['department_changed'][0])) {
-                update_post_meta($ID, 'department', "");
+                update_post_meta($ID, 'department', $WDDepartment);
             }
 
             if (empty($person_metadata['curriculum_vitae_changed'][0])) {
