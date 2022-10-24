@@ -6,6 +6,22 @@
   {% set newItems = [] %}
   {% set newImage = {} %}
 
+  {% if render_posts %}
+    {% set items = fn('Timber::get_posts', {
+      post_type: 'post',
+      post_per_page: 6,
+      tax_query: [
+        {
+          taxonomy: 'category',
+          field: 'term_id',
+          terms: render_posts_category
+        }
+      ]
+    })|map(i => {
+      post: i,
+    }) %}
+  {% endif %}
+
   {% if items_retain != true %}
 
     {% for item in items %}
