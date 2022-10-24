@@ -683,8 +683,8 @@ function updateStaffDirectory() {
     if (!is_admin()) {
         $directory_data = json_decode(file_get_contents(WP_CONTENT_DIR . "/directory_data/extra.json"), true)['Report_Entry'];
         // $directory_data = json_decode(file_get_contents(WP_CONTENT_DIR . "/directory_data/Colby_Directory_Webservice_Output.json"), true)['Report_Entry'];
-        //   deletePeople($directory_data);
-        //   getNewPeople($directory_data);
+        deletePeople($directory_data);
+        getNewPeople($directory_data);
     }
 }
 
@@ -694,7 +694,7 @@ function deletePeople($directory_data) {
         'post_type'   => 'people',
         'post_status' => 'publish',
     );
-    
+
     $all_posts   = get_posts($args);
     $total_posts = count($all_posts);
 
@@ -848,7 +848,7 @@ function getNewPeople($directory_data) {
 
         $args = array(
             'numberposts' => -1,
-            'post_type'   => 'person',
+            'post_type'   => 'people',
             'post_status' => 'publish',
             'meta_query'  => array(
                 array(
@@ -863,7 +863,7 @@ function getNewPeople($directory_data) {
         $post = array(
             'post_title'   => $WDPrefFirstName . " " . $WDLastName,
             'post_content' => "",
-            'post_type'    => 'person',
+            'post_type'    => 'people',
             'post_status'  => 'publish',
             'meta_input'   => array(
                 'employee_id'     => $WDEmployeeID,
@@ -875,7 +875,7 @@ function getNewPeople($directory_data) {
                 'phone'           => $WDPhone,
                 'email'           => $WDEmail,
                 'building'        => $WDBuilding,
-                'cv'              => "",
+                'curriculum_vitae'              => "",
                 'bio'             => $CXBio,
                 'current_courses' => json_encode($CXCourses),
             ),
@@ -932,11 +932,11 @@ function getNewPeople($directory_data) {
             }
 
             if (empty($person_metadata['department_changed'][0])) {
-                update_post_meta($ID, 'department', "");
+                update_post_meta($ID, 'department', $WDDepartment);
             }
 
             if (empty($person_metadata['curriculum_vitae_changed'][0])) {
-                update_post_meta($ID, 'cv', "");
+                update_post_meta($ID, 'curriculum_vitae', "");
             }
 
             if (empty($person_metadata['bio_changed'][0])) {
@@ -1002,7 +1002,7 @@ function update_directory_profile($entry, $form) {
 
     // get person post by employee ID
     $args = array(
-        'post_type'  => 'person',
+        'post_type'  => 'people',
         'meta_query' => array(
             array(
                 'key'     => 'employee_id',
@@ -1070,7 +1070,7 @@ function update_directory_profile($entry, $form) {
         'phone'                    => $phone_number_changed ? $phone_number : $person_metadata['phone'][0],
         'building'                 => $location_changed ? $location : $person_metadata['building'][0],
         'department'               => $department_changed ? $department : $person_metadata['department'][0],
-        'cv'                       => $curriculum_vitae_changed ? $curriculum_vitae : $person_metadata['cv'][0],
+        'curriculum_vitae'                       => $curriculum_vitae_changed ? $curriculum_vitae : $person_metadata['curriculum_vitae'][0],
         'bio'                      => $bio_changed ? $bio : $person_metadata['bio'][0],
 
         // save override fields
@@ -1133,7 +1133,7 @@ add_filter('gform_rich_text_editor_buttons', 'gravity_forms_buttons', 1, 1);
 
 add_action('directory_sync', 'updateStaffDirectory');
 
-// if (! wp_next_scheduled('directory_sync')) {
-//     $time = strtotime('today');
-//     wp_schedule_event($time, 'daily', 'directory_sync');
-// }
+if (! wp_next_scheduled('directory_sync')) {
+    $time = strtotime('today');
+    wp_schedule_event($time, 'daily', 'directory_sync');
+}
