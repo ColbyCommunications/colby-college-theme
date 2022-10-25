@@ -36,7 +36,7 @@
         v-for="(item, index) in paginatedItems"
         class="w-full h-12 md:h-10 odd:bg-gray-100"
       >
-        <td class="px-6">
+        <td class="px-6 py-2">
           <a
             class="inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140"
             :class="{ '!text-indigo hover:underline': item.link.url, 'text-indigo-800': item.link.url != true }"
@@ -48,7 +48,7 @@
               <picture>
                 <source media="(min-width:768px)" srcset="{{ item.image.srcset }}">
                 <img
-                  class="w-6"
+                  class="w-6 h-6"
                   :src="item.image.src"
                   :alt="item.image.alt"
                 />

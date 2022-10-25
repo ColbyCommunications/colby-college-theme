@@ -32,7 +32,7 @@
       {% endif %}
       {% for item in items %}
         <tr class="w-full h-12 md:h-10 odd:bg-gray-100">
-          <td class="px-6">
+          <td class="px-6 py-2">
             <{% if item.link %}a{% else %}span{% endif %}
               class="inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140 {% if item.link %}text-indigo hover:underline{% else %}text-indigo-800{% endif %}"
               {% if item.link %}href="{{ item.link.url }}"{% endif %}
@@ -42,7 +42,7 @@
                   <picture>
                     <source media="(min-width:768px)" srcset="{{ item.image.srcset }}">
                     <img
-                      class="w-6"
+                      class="w-6 h-6"
                       src="{{ item.image.src }}"
                       alt="{{ item.image.alt }}"
                     />
@@ -58,7 +58,7 @@
             </{% if item.link %}a{% else %}span{% endif %}>
           </td>
           {% for column in item.columns %}
-            <td class="hidden md:table-cell px-6 font-body text-20 md:text-12 font-normal leading-140 text-indigo-800">{{ column.column }}</td>
+            <td class="hidden md:table-cell px-6 font-body text-20 md:text-12 font-normal leading-140 text-indigo-800 py-2">{{ column.column }}</td>
           {% endfor %}
         </tr>
       {% endfor %}
