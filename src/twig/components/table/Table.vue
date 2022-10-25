@@ -12,6 +12,12 @@
     />
     <div v-if="filterTerms.length > 0" class="flex">
       <button
+        class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
+        :class="{'!text-indigo font-bold': '' == this.filterTerm}"
+        v-text="'All'"
+        @click="toggleTerm('')"
+      />
+      <button
         v-for="(term, index) in filterTerms"
         class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
         :class="{'!text-indigo font-bold': term == this.filterTerm}"
