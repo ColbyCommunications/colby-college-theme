@@ -84,7 +84,7 @@
                 />
                 <h2
                   class="text-group__heading font-extended font-normal text-36 md:text-20 leading-100 -tracking-3 text-left text-indigo mt-2"
-                  v-text="item.title.rendered"
+                  v-text="decodeHtmlEntities(item.title.rendered)"
                 />
                 <p
                   class="text-group__p font-body font-normal text-18 md:text-14 leading-130 text-left text-indigo-800 mt-2"
@@ -218,7 +218,7 @@
                         <h2
                           class="text-group__heading font-extended font-normal text-20 leading-110 -tracking-3 text-left text-indigo"
                           :class="{'mt-2': item['post-meta-fields'].primary_category}"
-                          v-text="item.title.rendered"
+                          v-text="decodeHtmlEntities(item.title.rendered)"
                         />
                         <p
                           class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
@@ -401,6 +401,10 @@ export default {
         this.glide.mount();
       }, 100);
     },
+    decodeHtmlEntities(input) {
+      const doc = new DOMParser().parseFromString(input, "text/html");
+      return doc.documentElement.textContent;
+    }
   },
 }
 </script>
