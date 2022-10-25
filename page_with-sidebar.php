@@ -58,15 +58,15 @@ if (has_term('office', 'page-categories')) {
   $template = 'page_with-sidebar.twig';
 }
 
-if ($parent == 585) {
-  $menu_items = wp_get_nav_menu_items(11);
+if (get_post($post->post_parent)->post_name == 'people') {
+  $menu_items = wp_get_nav_menu_items('People Menu');
 
   $parent_map = array(
     'id' => $parent,
     'title' => get_the_title($parent),
     'children' => $menu_items,
     'menu' => true,
-    );
+  );
 } else {
   $parent_map = array(
     'id' => $parent,

@@ -477,11 +477,11 @@ class StarterSite extends Timber\Site {
         $context['stuff'] = 'I am a value set in your functions.php file';
         $context['notes'] = 'These values are available everytime you call Timber::context();';
         $context['menu']  = new Timber\Menu();
-        $context['main_menu']  = new Timber\Menu( 3 );
-        $context['utility_menu']  = new Timber\Menu( 4 );
-        $context['footer_menu']  = new Timber\Menu( 5 );
-        $context['action_menu']  = new Timber\Menu( 6 );
-        $context['people_menu']  = new Timber\Menu( 11 );
+        $context['main_menu']  = new Timber\Menu( 'Main Menu' );
+        $context['utility_menu']  = new Timber\Menu( 'Utility Menu' );
+        $context['footer_menu']  = new Timber\Menu( 'Footer Menu' );
+        $context['action_menu']  = new Timber\Menu( 'Action Menu' );
+        $context['people_menu']  = new Timber\Menu( 'People Menu' );
         $context['global_address'] = get_field('address', 'options');
         $context['global_phone'] = get_field('phone', 'options');
         $context['global_social'] = get_field('social_media', 'options');
@@ -633,8 +633,8 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
         'tax_query' => array(
             array (
                 'taxonomy' => 'page-categories',
-                'field' => 'term_id',
-                'terms' => 18,
+                'field' => 'slug',
+                'terms' => 'department',
             )
         )
     ));
@@ -645,8 +645,8 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
         'tax_query' => array(
             array (
                 'taxonomy' => 'page-categories',
-                'field' => 'term_id',
-                'terms' => 19,
+                'field' => 'slug',
+                'terms' => 'office',
             )
         )
     ));
