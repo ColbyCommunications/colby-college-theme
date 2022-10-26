@@ -71,7 +71,7 @@ module.exports = {
       '-3': '-0.03em',
     },
     backgroundImage: {
-      'hero__pattern': 'url("/wp-content/themes/colby/src/images/hero__pattern.jpg")',
+      'hero__pattern': 'url("/wp-content/uploads/2022/10/hero__pattern.jpg")',
     }
   },
   plugins: [],
