@@ -2,19 +2,21 @@
 {% import "icons.twig" as icons %}
 
 <div class="directory-card grid grid-cols-8 gap-10 max-w-screen-xl w-full">
-  <div class="directory-card__image col-span-8 md:col-span-4">
-    <div class="relative pb-[119.44444444444444%]">
-      {{ macros.picture(
-        'absolute w-full h-full object-cover',
-        image.srcset,
-        image.src,
-        post.thumbnail.src('Square'),
-        post.thumbnail.src('Square_mobile'),
-        post.thumbnail.alt,
-        in_component_library
-      ) }}
+  {% if post.thumbnail or image %}
+    <div class="directory-card__image col-span-8 md:col-span-4">
+      <div class="relative pb-[119.44444444444444%]">
+        {{ macros.picture(
+          'absolute w-full h-full object-cover',
+          image.srcset,
+          image.src,
+          post.thumbnail.src('Square'),
+          post.thumbnail.src('Square_mobile'),
+          post.thumbnail.alt,
+          in_component_library
+        ) }}
+      </div>
     </div>
-  </div>
+  {% endif %}
   <div class="directory-card__main grid col-span-8 md:col-span-4 items-center">
     <div class="directory-card__content">
       <h1 class="font-body font-semibold text-24 leading-115 text-indigo">{{ name }}</h1>
