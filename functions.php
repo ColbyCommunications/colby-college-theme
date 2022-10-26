@@ -681,7 +681,7 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 function updateStaffDirectory() {
    
     if (!is_admin()) {
-        $directory_data = json_decode(file_get_contents(WP_CONTENT_DIR . "/directory_data/extra.json"), true)['Report_Entry'];
+        $directory_data = json_decode(file_get_contents(WP_CONTENT_DIR . "/directory_data/Colby_Directory_Webservice_Output.json"), true)['Report_Entry'];
         // $directory_data = json_decode(file_get_contents(WP_CONTENT_DIR . "/directory_data/Colby_Directory_Webservice_Output.json"), true)['Report_Entry'];
         deletePeople($directory_data);
         getNewPeople($directory_data);
