@@ -103,6 +103,7 @@
 
         {% set newItem = [{
           image: newImage,
+          subheading: item.post.type.name == 'post' ? item.post.date|date("M d, Y") : null,
           heading: item.post.post_title,
           paragraph: paragraph_text,
           buttons: [
