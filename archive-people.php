@@ -21,7 +21,7 @@ $context['archive_id'] = get_queried_object_id();
 $people_args = array(
   'posts_per_page' => -1,
   'post_type'=> 'people',
-  'order' => 'DESC',
+  'order' => 'ASC',
   'orderby' => 'name',
 );
 
