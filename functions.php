@@ -106,7 +106,7 @@ class StarterSite extends Timber\Site {
                 'show_in_rest' => false,
                 'menu_icon'     => 'dashicons-id-alt',
                 'show_in_nav_menus' => true,
-                'supports'      => ['title', 'editor', 'revisions', 'excerpt', 'thumbnail'],
+                'supports'      => ['title', 'revisions', 'excerpt', 'thumbnail'],
             ]
         );
     }
