@@ -73,7 +73,7 @@ p {
 
 .fsSubFieldGroup {
   display: flex;
-  gap: 20px;
+  gap: 2.5rem;
 }
 
 .fsSubField {
@@ -106,4 +106,49 @@ p {
   &:hover {
     background-color: #eef4ff;
   }
+}
+
+// This non tailwind css is required to style event embeds from livewhale
+.lwcw {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+}
+
+.lw-colby-event {
+  flex-grow: 1;
+  width: 50%;
+
+  @include breakpoint(medium) {
+    width: 33%;
+  }
+}
+
+.lw-event-date {
+  font-family: nimbus-sans-extended, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #366bcf;
+}
+
+.lw-event-time {
+  font-family: Libre Franklin, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: (18 / 14);
+  color: #365185;
+  margin-top: 0.5rem;
+}
+
+.lw-event-name a {
+  font-family: nimbus-sans-extended, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 110%;
+  letter-spacing: -0.03em;
+  color: #012169;
+  margin-top: 0.5rem;
 }
