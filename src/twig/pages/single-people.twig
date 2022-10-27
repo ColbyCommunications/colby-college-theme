@@ -30,9 +30,21 @@
         email: post.meta('email'),
         location: post.meta('building'),
       } %}
-      {% if post.meta('current_courses') %}
-        {% set current_courses = post.meta('current_courses')|map(i => {
+      {% if person_decoded_courses %}
+        {% set current_courses = person_decoded_courses|map(i => {
+          title: i.crs,
+          columns: [
+            {
+              column: i.title,
+            },
+            {
+              column: i.sec,
+            },
+          ]
+        }) %}
+        {% include 'table.twig' with {
           render_api: false,
+          external_items: null,
           headings: [
             {
               heading: 'CRS',
@@ -44,29 +56,15 @@
               heading: 'Sec',
             }
           ],
-          items: [
-            {
-              title: crs,
-              columns: [
-                {
-                  column: title,
-                },
-                {
-                  column: sec,
-                },
-              ]
-            }
-          ]
-        }) %}
-        {% include 'table.twig' with {
           items: current_courses,
         } %}
       {% endif %}
-      {{ post.meta('current_courses')|json_encode }}
       <div class="grid grid-cols-9 w-full">
         <div class="md:col-span-6">
           {% include 'wysiwyg.twig' with {
-            text: post.meta('bio')
+            post: {
+              content: post.meta('bio'),
+            },
           } %}
         </div>
       </div>
