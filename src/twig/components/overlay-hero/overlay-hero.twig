@@ -22,6 +22,7 @@
     <div class="overlay-hero__inner grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto">
       <div class="overlay-hero__main md:col-span-5">
         {% include context with {
+          hero: true,
           size: size ? size : 'large',
           type: 'light',
           subheading: subheading,

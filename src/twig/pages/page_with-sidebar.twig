@@ -4,8 +4,12 @@
 
 {% if post.type.name == 'post' %}
   {% set template_subheading = post.date|date("M d, Y") %}
+  {% set template_heading = post.title %}
+  {% set template_paragraph = fn('has_excerpt') ? fn('get_the_excerpt') : null %}
 {% else %}
   {% set template_subheading = post.title %}
+  {% set template_heading = post.meta('heading') %}
+  {% set template_paragraph = post.meta('paragraph') %}
 {% endif %}
 
 {% if post.meta('hero_type') == 'none' %}
@@ -14,8 +18,8 @@
   {% include 'overlay-hero.twig' with {
     size: 'medium',
     subheading: template_subheading,
-    heading: post.meta('heading'),
-    paragraph: post.meta('paragraph'),
+    heading: template_heading,
+    paragraph: template_paragraph,
     image: post.meta('image'),
     buttons: post.meta('buttons')
   } %}
@@ -23,8 +27,8 @@
   {% include 'hero.twig' with {
     image_orientation: post.meta('image_orientation'),
     subheading: template_subheading,
-    heading: post.meta('heading'),
-    paragraph: post.meta('paragraph'),
+    heading: template_heading,
+    paragraph: template_paragraph,
     align: post.meta('align'),
     image: post.meta('image'),
     buttons: post.meta('buttons')

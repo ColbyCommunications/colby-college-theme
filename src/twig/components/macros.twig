@@ -1,4 +1,4 @@
-{% macro textGroup(size, align, type, subheading, heading, paragraph, static) %}
+{% macro textGroup(size, align, type, subheading, heading, paragraph, static, hero) %}
 
 {% if size == 'xlarge' %}
   {% set subheadingSize = 'text-24' %}
@@ -58,7 +58,9 @@
   {% set paragraphColor = 'text-indigo-800' %}
 {% endif %}
 
-{% if heading %}
+{% if hero %}
+  {% set subheadingTag = 'h1' %}
+{% elseif heading %}
   {% set subheadingTag = 'div' %}
 {% else %}
   {% set subheadingTag = 'h2' %}
