@@ -1216,7 +1216,7 @@ function wpse248405_custom_column( $col, $post_id ) {
                     esc_attr( sprintf( __( '&#8220;%s&#8221; (Edit)' ), $title ) ),
                     $pad,
                     $title
-                );
+                );      
             } else {
                 printf(
                     '<span>%s%s</span>',
@@ -1226,11 +1226,15 @@ function wpse248405_custom_column( $col, $post_id ) {
             }
 
             // _post_states( $post );
+            if ( isset( $parent_name ) ) {
+                if ( html_entity_decode($parent_name) === html_entity_decode('_FINISHED_ Departments & Programs') ) {
+                    echo ' - Department Homepage';
+                }
 
-            // if ( isset( $parent_name ) ) {
-            //     $post_type_object = get_post_type_object( $post->post_type );
-            //     echo ' | ' . $post_type_object->labels->parent_item_colon . ' ' . esc_html( $parent_name );
-            // }
+                if ( $parent_name === '_FINISHED_ Offices Directory' )  {
+                    echo ' - Office Homepage';
+                }
+            }
 
             echo "</strong>\n";
 
@@ -1244,6 +1248,8 @@ function wpse248405_custom_column( $col, $post_id ) {
                     echo esc_html( get_the_excerpt() );
                 }
             }
+
+            
 
 		    get_inline_data( $post );
         }
@@ -1302,4 +1308,30 @@ function yoast_seo_admin_remove_columns( $columns ) {
 
     }
   return $columns;
+}
+
+add_filter( 'admin_body_class', 'admin_body_classes' );
+function admin_body_classes( $classes ) {
+    if( is_user_logged_in() ) {
+		$user = wp_get_current_user();
+ 		$roles = $user->roles;
+ 		$classes .= ' user-role-' . $roles[0] . ' ';
+	} 
+	return $classes;
+}
+
+add_action('admin_head', 'custom_admin_css');
+
+function custom_admin_css() {
+  echo '<style>
+    .user-role-editor.post-type-page .fixed .column-parent,
+    .user-role-editor.post-type-page .fixed .column-author,
+    .user-role-editor.post-type-page .fixed .column-date {
+      width: auto;
+    } 
+
+    .user-role-editor.post-type-page .fixed .column-foo {
+        width: 40%;
+    }
+  </style>';
 }
