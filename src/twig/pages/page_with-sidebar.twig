@@ -37,21 +37,21 @@
 
 <section class="sidebar-page">
   <div class="sidebar-page__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto md:mt-20 mt-16">
-    <div class="sidebar-page__secondary md:col-span-3 xl:col-span-2 mb-16 md:mb-0
-      [&>div+div]:mt-7"
-    >
-      {% if post.type.name != 'post' %}
+    {% if post.type.name != 'post' %}
+      <div class="sidebar-page__secondary md:col-span-3 xl:col-span-2 mb-16 md:mb-0
+        [&>div+div]:mt-7"
+      >
         {% include 'subpage-nav.twig' with {
           heading: alpha_parent.title,
           items: alpha_parent.children,
           menu_obj: alpha_parent.menu
         } %}
-      {% endif %}
-      {% for widget in post.meta('widgets') %}
-        {% include 'widget.twig' with widget %}
-      {% endfor %}
-    </div>
-    <div class="sidebar-page__main xl:col-start-4 md:col-span-9">
+        {% for widget in post.meta('widgets') %}
+          {% include 'widget.twig' with widget %}
+        {% endfor %}
+      </div>
+    {% endif %}
+    <div class="sidebar-page__main {% if post.type.name != 'post' %}xl:col-start-4 md:col-span-9{% else %}md:col-span-12{% endif %}">
       <div class="wysiwyg
         [&>h2]:font-extended [&>h2]:font-normal [&>h2]:text-24 [&>h2]:leading-110 [&>h2]:-tracking-3 [&>h2]:text-indigo [&>h2+p]:mt-2 [&>h2+ul]:mt-8
         [&>h3]:font-extended [&>h3]:font-bold [&>h3]:text-18 [&>h3]:text-indigo [&>h3+p]:mt-2 [&>h3+table]:mt-5
