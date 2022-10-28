@@ -52,9 +52,9 @@
                   </a></li>
                 {% endif %}
                 {% if location %}
-                  <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="{{ location.url }}">
-                    {{ icons.icon('location', 'h-3 fill-indigo-800 mr-1.5') }}{{ location.title }}
-                  </a></li>
+                  <li class="col-span-2 mb-3"><div class="flex items-center text-indigo-800">
+                    {{ icons.icon('location', 'h-3 fill-indigo-800 mr-1.5') }}{{ location }}
+                  </div></li>
                 {% endif %}
               </ul>
             </div>
@@ -82,9 +82,9 @@
                   </a></li>
                 {% endif %}
                 {% if location %}
-                  <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo">
+                  <li class="col-span-2 mb-3"><div class="flex items-center text-indigo-800">
                     {{ icons.icon('location', 'h-3 fill-indigo-800 mr-1.5') }}{{ location }}
-                  </a></li>
+                  </div></li>
                 {% endif %}
               </ul>
             </div>
