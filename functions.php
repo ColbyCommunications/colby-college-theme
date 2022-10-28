@@ -1137,3 +1137,169 @@ if (! wp_next_scheduled('directory_sync')) {
     $time = strtotime('today');
     wp_schedule_event($time, 'daily', 'directory_sync');
 }
+
+add_filter( 'manage_pages_columns', 'wpse248405_columns', 25, 1 );
+function wpse248405_columns ($cols) {
+    $user = wp_get_current_user();
+    if(!in_array("administrator", $user->roles) && in_array("editor", $user->roles)) {
+   // remove title column
+//    die(var_dump($cols));
+   unset( $cols['title'] );
+   unset( $cols['taxonomy-page-categories'] );
+   // add custom column in second place
+   $cols = array('foo' => __( 'Title', 'textdomain' ), 'parent' => __( 'Parent Page', 'textdomain' ) ) + $cols;
+//    die(var_dump($cols));
+   // return columns
+   
+    }
+    return $cols;
+   }
+
+add_action( 'manage_pages_custom_column', 'wpse248405_custom_column', 10, 2 );
+function wpse248405_custom_column( $col, $post_id ) {
+    $user = wp_get_current_user();
+    if(!in_array("administrator", $user->roles) && in_array("editor", $user->roles)) {
+
+        global $mode;
+        // var_dump($col);
+        if ($col === 'foo') {
+
+            $current_level = 0;
+            $post               = get_post( $post_id );
+            // Sent current_level 0 by accident, by default, or because we don't know the actual level.
+            $find_main_page = (int) $post->post_parent;
+
+            while ( $find_main_page > 0 ) {
+                $parent = get_post( $find_main_page );
+
+                if ( is_null( $parent ) ) {
+                    break;
+                }
+
+                $current_level++;
+                $find_main_page = (int) $parent->post_parent;
+
+                if ( ! isset( $parent_name ) ) {
+                    /** This filter is documented in wp-includes/post-template.php */
+                    $parent_name = apply_filters( 'the_title', $parent->post_title, $parent->ID );
+                }
+            }
+
+            $can_edit_post = current_user_can( 'edit_post', $post->ID );
+
+            if ( $can_edit_post && 'trash' !== $post->post_status ) {
+                $lock_holder = wp_check_post_lock( $post->ID );
+
+                if ( $lock_holder ) {
+                    $lock_holder   = get_userdata( $lock_holder );
+                    $locked_avatar = get_avatar( $lock_holder->ID, 18 );
+                    /* translators: %s: User's display name. */
+                    $locked_text = esc_html( sprintf( __( '%s is currently editing' ), $lock_holder->display_name ) );
+                } else {
+                    $locked_avatar = '';
+                    $locked_text   = '';
+                }
+
+                echo '<div class="locked-info"><span class="locked-avatar">' . $locked_avatar . '</span> <span class="locked-text">' . $locked_text . "</span></div>\n";
+            }
+
+            $pad = "";
+            echo '<strong>';
+
+            $title = _draft_or_post_title();
+
+            if ( $can_edit_post && 'trash' !== $post->post_status ) {
+                printf(
+                    '<a class="row-title" href="%s" aria-label="%s">%s%s</a>',
+                    get_edit_post_link( $post->ID ),
+                    /* translators: %s: Post title. */
+                    esc_attr( sprintf( __( '&#8220;%s&#8221; (Edit)' ), $title ) ),
+                    $pad,
+                    $title
+                );
+            } else {
+                printf(
+                    '<span>%s%s</span>',
+                    $pad,
+                    $title
+                );
+            }
+
+            // _post_states( $post );
+
+            // if ( isset( $parent_name ) ) {
+            //     $post_type_object = get_post_type_object( $post->post_type );
+            //     echo ' | ' . $post_type_object->labels->parent_item_colon . ' ' . esc_html( $parent_name );
+            // }
+
+            echo "</strong>\n";
+
+            if ( 'excerpt' === $mode
+                && ! is_post_type_hierarchical( $this->screen->post_type )
+                && current_user_can( 'read_post', $post->ID )
+            ) {
+                if ( post_password_required( $post ) ) {
+                    echo '<span class="protected-post-excerpt">' . esc_html( get_the_excerpt() ) . '</span>';
+                } else {
+                    echo esc_html( get_the_excerpt() );
+                }
+            }
+
+		    get_inline_data( $post );
+        }
+        
+        if ($col === 'parent') {
+
+            $current_level = 0;
+            $post               = get_post( $post_id );
+            // Sent current_level 0 by accident, by default, or because we don't know the actual level.
+            $find_main_page = (int) $post->post_parent;
+
+            while ( $find_main_page > 0 ) {
+                $parent = get_post( $find_main_page );
+
+                if ( is_null( $parent ) ) {
+                    break;
+                }
+
+                $current_level++;
+                $find_main_page = (int) $parent->post_parent;
+
+                if ( ! isset( $parent_name ) ) {
+                    /** This filter is documented in wp-includes/post-template.php */
+                    $pid = $parent->ID;
+                    $parent_name = apply_filters( 'the_title', $parent->post_title, $parent->ID );
+                }
+            }
+            // echo $parent_name;
+            if ( isset( $parent_name ) ) {
+                printf(
+                    '<a href="%s" aria-label="%s">%s</a>',
+                    get_edit_post_link( $pid ),
+                    $parent_name,
+                    $parent_name
+                );
+            }
+        }
+    }
+}
+
+add_filter( 'manage_edit-post_columns', 'yoast_seo_admin_remove_columns', 10, 1 );
+add_filter( 'manage_edit-page_columns', 'yoast_seo_admin_remove_columns', 10, 1 );
+
+function yoast_seo_admin_remove_columns( $columns ) {
+    $user = wp_get_current_user();
+    if(!in_array("administrator", $user->roles) && in_array("editor", $user->roles)) {
+
+  unset($columns['wpseo-score']);
+  unset($columns['wpseo-score-readability']);
+  unset($columns['wpseo-title']);
+  unset($columns['wpseo-metadesc']);
+  unset($columns['wpseo-focuskw']);
+  unset($columns['wpseo-links']);
+  unset($columns['wpseo-linked']);
+  unset($columns['editor']);
+
+    }
+  return $columns;
+}
