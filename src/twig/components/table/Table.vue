@@ -55,7 +55,7 @@
                 <source media="(min-width:768px)" srcset="{{ item.image.srcset }}">
                 <img
                   class="w-6 h-6"
-                  :src="item.image.src"
+                  :src="item.image.src ? item.image.src : '/wp-content/uploads/2022/10/profile_placeholder.jpeg'"
                   :alt="item.image.alt"
                 />
               </picture>
