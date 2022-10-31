@@ -8,7 +8,7 @@ env:
 jobs:
   job1:
     name: Lint JavaScript
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out Git repository
