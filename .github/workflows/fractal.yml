@@ -20,7 +20,7 @@ jobs:
 
       - uses: borales/actions-yarn@v3.0.0
         with:
-          cmd: components:build
+          cmd: build
 
       - name: Deploy to GitHub Pages
         if: success()
