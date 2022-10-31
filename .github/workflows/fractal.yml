@@ -7,7 +7,7 @@ env:
   WEBMASTER_GITHUB_ACTIONS_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}
 jobs:
   job1:
-    name: Lint JavaScript
+    name: Build Fractal
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,9 @@ jobs:
 
       - uses: borales/actions-yarn@v3.0.0
         with:
-          cmd: build
+          cmd: components:build
+      
+      - run: ls -la components
 
       - name: Deploy to GitHub Pages
         if: success()
