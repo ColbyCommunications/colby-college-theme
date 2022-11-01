@@ -8,7 +8,7 @@ env:
 jobs:
   job1:
     name: Build Fractal
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Check out Git repository
