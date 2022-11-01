@@ -22,6 +22,8 @@ jobs:
 
       - run: yarn components:build
 
+      - run: ls -la components/styles
+
       - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
