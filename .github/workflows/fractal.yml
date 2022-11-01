@@ -14,19 +14,13 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v2
 
-      - uses: borales/actions-yarn@v3.0.0
+      - uses: actions/setup-node@v3
         with:
-          cmd: install
-
-      - uses: borales/actions-yarn@v3.0.0
-        with:
-          cmd: scripts:build
-
-      - uses: borales/actions-yarn@v3.0.0
-        with:
-          cmd: fractal:build
+          node-version: 16
       
-      - run: ls -la components/styles
+      - run: yarn
+
+      - run: yarn components:build
 
       - name: Deploy to GitHub Pages
         if: success()
