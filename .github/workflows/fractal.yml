@@ -8,21 +8,20 @@ env:
 jobs:
   job1:
     name: Build Fractal
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
-      
-      - name: Setup node
-        uses: actions/setup-node@v2
+
+      - uses: borales/actions-yarn@v3.0.0
         with:
-          node-version: '16.x'
+          cmd: install
 
-      - run: npm install
+      - uses: borales/actions-yarn@v3.0.0
+        with:
+          cmd: components:build
       
-      - run: npm run build
-
       - run: ls -la components/styles
 
       - name: Deploy to GitHub Pages
