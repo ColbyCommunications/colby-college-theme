@@ -20,7 +20,11 @@ jobs:
 
       - uses: borales/actions-yarn@v3.0.0
         with:
-          cmd: components:build
+          cmd: scripts:build
+
+      - uses: borales/actions-yarn@v3.0.0
+        with:
+          cmd: fractal:build
       
       - run: ls -la components/styles
 
