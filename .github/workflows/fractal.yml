@@ -8,21 +8,21 @@ env:
 jobs:
   job1:
     name: Build Fractal
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v3
+      - uses: borales/actions-yarn@v3.0.0
         with:
-          node-version: 16
+          cmd: install
+
+      - uses: borales/actions-yarn@v3.0.0
+        with:
+          cmd: components:build
       
-      - run: yarn
-
-      - run: yarn components:build
-
-      - run: ls -la components/styles
+      - run: sudo mv dist/styles/tailwind.css components/styles/tailwind.css
 
       - name: Deploy to GitHub Pages
         if: success()
