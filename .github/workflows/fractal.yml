@@ -22,7 +22,7 @@ jobs:
         with:
           cmd: components:build
       
-      - run: ls -la components
+      - run: ls -la components/styles
 
       - name: Deploy to GitHub Pages
         if: success()
