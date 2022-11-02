@@ -1,6 +1,6 @@
 <template>
   <slot
-    v-if="renderApi == false"
+    v-if="renderApi == false && !externalItems"
   />
   <div
     v-if="renderApi || externalItems"
@@ -10,20 +10,35 @@
       class="font-extended font-normal text-24 leading-110 -tracking-3 text-indigo"
       v-text="heading"
     />
-    <div v-if="filterTerms.length > 0" class="flex">
-      <button
-        class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
-        :class="{'!text-indigo font-bold': '' == this.filterTerm}"
-        v-text="'All'"
-        @click="toggleTerm('')"
-      />
-      <button
-        v-for="(term, index) in filterTerms"
-        class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
-        :class="{'!text-indigo font-bold': term == this.filterTerm}"
-        v-text="term"
-        @click="toggleTerm(term)"
-      />
+    <div class="flex space-x-12">
+      <label class="relative flex text-[0] w-full max-w-sm">
+        Search
+        <svg class="absolute top-3 left-3 fill-indigo-700 w-2.5" viewBox="0 0 9.6 9.6">
+          <path d="M3.6 1.2c-1.3 0-2.4 1.1-2.4 2.4C1.2 4.9 2.3 6 3.6 6 4.9 6 6 4.9 6 3.6c0-1.3-1.1-2.4-2.4-2.4zM0 3.6C0 1.6 1.6 0 3.6 0s3.6 1.6 3.6 3.6c0 .8-.2 1.5-.7 2.1l2.9 2.9c.2.2.2.6 0 .8-.2.2-.6.2-.8 0L5.7 6.5c-.6.5-1.3.7-2.1.7-2 0-3.6-1.6-3.6-3.6z" style="fill-rule:evenodd; clip-rule:evenodd;"/>
+        </svg>
+        <input
+          class="w-full h-[34px] max-w-sm p-2.5 pl-7 border border-indigo-400 border-solid rounded-md font-body font-normal text-10 leading-130 text-indigo-700 placeholder-indigo-700 bg-white"
+          type="text"
+          name="search-input"
+          placeholder="Search"
+          v-model="searchTerm"
+        />
+      </label>
+      <div v-if="filterTerms.length > 0" class="flex">
+        <button
+          class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
+          :class="{'!text-indigo font-bold': '' == this.filterTerm}"
+          v-text="'All'"
+          @click="toggleTerm('')"
+        />
+        <button
+          v-for="(term, index) in filterTerms"
+          class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
+          :class="{'!text-indigo font-bold': term == this.filterTerm}"
+          v-text="term"
+          @click="toggleTerm(term)"
+        />
+      </div>
     </div>
   </div>
   <table
@@ -117,15 +132,18 @@
 
 <script>
 import axios from 'axios';
+import Fuse from 'fuse.js';
 
 export default {
   data() {
     return {
+      fuse: null,
       heading: undefined,
       headings: undefined,
       endpoint: undefined,
       items: [],
       currentPage: 1,
+      searchTerm: '',
       filterTerm: '',
       filterTerms: [],
     };
@@ -141,7 +159,24 @@ export default {
         g = this.items.filter((item) => item.type == this.filterTerm);
       }
 
+      if (this.fuse) {
+        this.fuse.setCollection(g);
+      }
+
       return g;
+    },
+    inputFilteredItems() {
+      let u = [];
+
+      if (this.fuse) {
+        if (this.fuse.search(this.searchTerm).length > 0) {
+          u = this.fuse.search(this.searchTerm).map(item => item.item);
+        } else {
+          u = this.filteredItems;
+        }
+      }
+
+      return u;
     },
     pageIndexStart() {
       return (this.currentPage - 1) * this.itemsPerPage;
@@ -150,10 +185,10 @@ export default {
       return this.pageIndexStart + this.itemsPerPage;
     },
     paginatedItems() {
-      return this.filteredItems.slice(this.pageIndexStart, this.pageIndexEnd);
+      return this.inputFilteredItems.slice(this.pageIndexStart, this.pageIndexEnd);
     },
     totalPages() {
-      return Math.ceil(this.filteredItems.length / this.itemsPerPage);
+      return Math.ceil(this.inputFilteredItems.length / this.itemsPerPage);
     },
   },
   async mounted() {
@@ -260,10 +295,14 @@ export default {
               this.headings = ['Name', 'Department', 'Type'];
               break;
           }
+
+          this.initFuse();
         });
     }
 
     if (this.externalItems) {
+      this.heading = this.api;
+
       switch(this.api) {
         case 'People':
           this.items = this.externalItems.map(item => {
@@ -304,6 +343,8 @@ export default {
           this.headings = ['Name', 'Address', 'Phone'];
           break;
         case 'Departments':
+          this.heading = 'Departments & Programs';
+
           this.items = this.externalItems.map(item => {
             return {
               title: item.post_title,
@@ -320,6 +361,8 @@ export default {
           this.headings = ['Name', 'Description'];
           break;
       }
+
+      this.initFuse();
     }
   },
   props: {
@@ -364,6 +407,21 @@ export default {
         this.filterTerm = '';
       } else {
         this.filterTerm = term;
+      }
+    },
+    initFuse() {
+      if (this.filteredItems) {
+        this.fuse = new Fuse(this.filteredItems, {
+          shouldSort: true,
+          threshold: 0.2,
+          location: 0,
+          distance: 100,
+          maxPatternLength: 32,
+          minMatchCharLength: 1,
+          keys: [
+            'title',
+          ],
+        });
       }
     },
   },
