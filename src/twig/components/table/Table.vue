@@ -236,12 +236,13 @@ export default {
                     url: null,
                   },
                   columns: [
+                    item.crsno,
                     item.abstr,
                   ]
                 };
               });
 
-              this.headings = ['Name', 'Description'];
+              this.headings = ['Name', 'Course Number', 'Description'];
 
               this.filterTerms = [
                 'Fall',
@@ -250,26 +251,42 @@ export default {
               ];
               break;
             case 'Course Catalogue':
-              console.log(this.departmentCode);
-              console.log(outputa.data.courses);
-
-              // const filteredItems = outputa.data.courses.filter((item) => item.dept == this.departmentCode);
               const filteredItems = outputa.data.courses;
 
               this.items = filteredItems.map(item => {
+                switch(item.sessOffered) {
+                  case 'Fall':
+                    item.sess = 'Fall';
+                    break;
+                  case 'Sprg':
+                    item.sess = 'Spring';
+                    break;
+                  case 'Jan':
+                    item.sess = 'January';
+                    break;
+                }
+
                 return {
                   title: item.longTitle,
+                  type: item.sess,
                   link: {
                     title: item.longTitle,
                     url: null,
                   },
                   columns: [
+                    item.crsno,
                     item.dept,
                   ]
                 };
               });
 
-              this.headings = ['Name', 'Department'];
+              this.headings = ['Name', 'Course Number', 'Department'];
+
+              this.filterTerms = [
+                'Fall',
+                'Spring',
+                'January',
+              ];
               break;
             case 'Majors and Minors':
               this.items = outputa.data.map(item => {
