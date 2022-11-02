@@ -630,6 +630,8 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
     $context['departments'] = Timber::get_posts(array(
         'post_type' => 'page',
         'posts_per_page' => -1,
+        'order' => 'ASC',
+        'orderby' => 'title',
         'tax_query' => array(
             array (
                 'taxonomy' => 'page-categories',
@@ -642,6 +644,8 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
     $context['offices'] = Timber::get_posts(array(
         'post_type' => 'page',
         'posts_per_page' => -1,
+        'order' => 'ASC',
+        'orderby' => 'title',
         'tax_query' => array(
             array (
                 'taxonomy' => 'page-categories',
