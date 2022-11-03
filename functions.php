@@ -616,6 +616,7 @@ add_action('wp_enqueue_scripts', 'theme_scripts');
  * @param   string $content    The block content (emtpy string).
  * @param   bool   $is_preview True during AJAX preview.
  */
+<<<<<<< HEAD
 function my_acf_block_render_callback($block, $content = '', $is_preview = false)
 {
  $context = Timber::context();
@@ -677,6 +678,72 @@ function my_acf_block_render_callback($block, $content = '', $is_preview = false
 
  // Render the block.
  Timber::render('src/twig/components/' . $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged);
+=======
+function my_acf_block_render_callback( $block, $content = '', $is_preview = false ) {
+    $context = Timber::context();
+
+    // Store block values.
+    $context['block'] = $block;
+
+    // Store field values.
+    $context['fields'] = get_fields();
+
+    // Store $is_preview value.
+    $context['is_preview'] = $is_preview;
+
+    $context['block_name'] = substr($block['name'], 4);
+
+    $context['recent_people'] = Timber::get_posts(array(
+        'post_type' => 'people',
+        'posts_per_page' => 3,
+    ));
+
+    $context['departments'] = Timber::get_posts(array(
+        'post_type' => 'page',
+        'posts_per_page' => -1,
+        'order' => 'ASC',
+        'orderby' => 'title',
+        'tax_query' => array(
+            array (
+                'taxonomy' => 'page-categories',
+                'field' => 'slug',
+                'terms' => 'department',
+            )
+        )
+    ));
+
+    $context['offices'] = Timber::get_posts(array(
+        'post_type' => 'page',
+        'posts_per_page' => -1,
+        'order' => 'ASC',
+        'orderby' => 'title',
+        'tax_query' => array(
+            array (
+                'taxonomy' => 'page-categories',
+                'field' => 'slug',
+                'terms' => 'office',
+            )
+        )
+    ));
+
+    // Store latest 3 posts and then merging it into the fields object before rendering component
+    // Check for whether or not block is a related-articles block should be placed here for optimization
+    if( $context['block_name'] == 'context-article-grid' ) {
+        $context_merged = array_merge($context['fields'], array(
+            'recent_people' => $context['recent_people']
+        ));
+    } elseif( $context['block_name'] == 'table' ) {
+        $context_merged = array_merge($context['fields'], array(
+            'departments' => $context['departments'],
+            'offices' => $context['offices']
+        ));
+    } else {
+        $context_merged = $context['fields'];
+    }
+
+    // Render the block.
+    Timber::render( 'src/twig/components/'. $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged );
+>>>>>>> 178bf36090ddd20158185d46d1d7750099c61fb0
 }
 
 /**

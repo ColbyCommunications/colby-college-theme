@@ -8,6 +8,7 @@ import Video from './twig/components/video/Video.vue';
 import IndexSection from './twig/components/index-section/IndexSection.vue';
 import Table from './twig/components/table/Table.vue';
 import ContextArticleGrid from './twig/components/context-article-grid/ContextArticleGrid.vue';
+import Search from './twig/components/search/Search.vue';
 import Accordion from './twig/components/accordion/Accordion.vue';
 
 import './styles/styles.scss';
@@ -22,6 +23,7 @@ const app = createApp({
     IndexSection,
     Table,
     ContextArticleGrid,
+    Search,
     Accordion,
   },
 });

@@ -28,7 +28,7 @@ $timber_post     = new Timber\Post();
 $context['post'] = $timber_post;
 $context['page_blocks'] = parse_blocks($timber_post->post_content);
 
-if (has_term(array('department', 'office'), 'page-categories')) {
+if (has_term(array('department', 'office', 'site'), 'page-categories')) {
   $parent = $post->ID;
 } else {
   if ($post->post_parent)	{
@@ -37,7 +37,7 @@ if (has_term(array('department', 'office'), 'page-categories')) {
     $ancestor_found = false;
   
     foreach ($ancestors as $ancestor) {
-      if (has_term(array('department', 'office'), 'page-categories', $ancestor)) {
+      if (has_term(array('department', 'office', 'site'), 'page-categories', $ancestor)) {
         $parent = $ancestor;
         $ancestor_found = true;
       }
