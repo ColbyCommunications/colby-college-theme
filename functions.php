@@ -1138,7 +1138,6 @@ function gravity_forms_buttons()
   'sub',
   'sup',
   'strikethrough',
-  'image',
   'justifyleft',
   'justifycenter',
   'justifyright',
