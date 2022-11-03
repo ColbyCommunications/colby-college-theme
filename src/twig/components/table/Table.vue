@@ -13,11 +13,11 @@
     <div class="flex space-x-12">
       <label class="relative flex text-[0] w-full max-w-sm">
         Search
-        <svg class="absolute top-3 left-3 fill-indigo-700 w-2.5" viewBox="0 0 9.6 9.6">
+        <svg class="absolute top-3 left-3 fill-indigo-800 w-2.5" viewBox="0 0 9.6 9.6">
           <path d="M3.6 1.2c-1.3 0-2.4 1.1-2.4 2.4C1.2 4.9 2.3 6 3.6 6 4.9 6 6 4.9 6 3.6c0-1.3-1.1-2.4-2.4-2.4zM0 3.6C0 1.6 1.6 0 3.6 0s3.6 1.6 3.6 3.6c0 .8-.2 1.5-.7 2.1l2.9 2.9c.2.2.2.6 0 .8-.2.2-.6.2-.8 0L5.7 6.5c-.6.5-1.3.7-2.1.7-2 0-3.6-1.6-3.6-3.6z" style="fill-rule:evenodd; clip-rule:evenodd;"/>
         </svg>
         <input
-          class="w-full h-[34px] max-w-sm p-2.5 pl-7 border border-indigo-400 border-solid rounded-md font-body font-normal text-10 leading-130 text-indigo-700 placeholder-indigo-700 bg-white"
+          class="w-full h-[34px] max-w-sm p-2.5 pl-7 border border-indigo-400 border-solid rounded-md font-body font-normal text-10 leading-130 text-indigo-800 placeholder-indigo-800 bg-white"
           type="text"
           name="search-input"
           placeholder="Search"

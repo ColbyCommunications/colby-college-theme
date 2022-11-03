@@ -45,7 +45,7 @@
             <li class="text-[0]">
               <a class="flex text-indigo-100" href="{{ item.platform.url }}">
                 {{ icons.icon(item.platform.title|lower, 'fill-indigo-100 hover:fill-indigo-500 max-w-5 md:max-w-4 max-h-4 md:max-h-3.5 w-full transition-all duration-200 ease-in-out') }}
-                {{ item.platform.title }}
+                <span class="sr-only">{{ item.platform.title }}</span>
               </a>
             </li>
           {% endfor %}

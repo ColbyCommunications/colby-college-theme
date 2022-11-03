@@ -374,10 +374,14 @@ export default {
       this.glide.go(s);
     },
     pauseCarousel() {
-      this.glide.pause();
+      if (this.glide) {
+        this.glide.pause();
+      }
     },
     playCarousel() {
-      this.glide.play();
+      if (this.glide) {
+        this.glide.play();
+      }
     },
     renderGlide() {
       // JS was apparently initializing faster than
@@ -388,21 +392,21 @@ export default {
       setTimeout(() => {
         this.window = this.$refs.carousel.querySelector('[data-glide-window]');
 
-        console.log(this.window);
+        if (this.window) {
+          this.glide = new Glide(this.window, {
+            type: 'carousel',
+            gap: this.gap,
+            animationDuration: 600,
+            autoplay: 4000,
+            perView: this.perView,
+          });
 
-        this.glide = new Glide(this.window, {
-          type: 'carousel',
-          gap: this.gap,
-          animationDuration: 600,
-          autoplay: 4000,
-          perView: this.perView,
-        });
+          this.glide.on('run', () => {
+            this.activeSlide = this.glide.index;
+          });
 
-        this.glide.on('run', () => {
-          this.activeSlide = this.glide.index;
-        });
-
-        this.glide.mount();
+          this.glide.mount();
+          }
       }, 100);
     },
     decodeHtmlEntities(input) {
