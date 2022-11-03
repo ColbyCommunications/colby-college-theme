@@ -10,7 +10,7 @@
     />
     <div
       v-if="renderApi && api == 'Latest News'"
-      class="carousel__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto"
+      class="carousel__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto"
     >
       <div class="carousel__context md:col-span-4 lg:col-span-3 md:flex items-center">
         <div class="context space-y-5">
@@ -70,7 +70,7 @@
             </div>
           </div>
         </div>
-        <div class="carousel__slides-context relative mt-6 h-40">
+        <div class="carousel__slides-context relative mt-6 h-80 md:h-40">
           <div
             v-for="(item, index) in featuredNews"
             class="carousel__slides-context-wrap absolute top-0 left-0 w-full invisible opacity-0 translate-y-[60px] transition-all duration-300 ease-in-out"
@@ -134,7 +134,7 @@
     </div>
     <div
       v-if="(renderApi && api == 'Academic News') || (renderApi && api == 'Faculty Accomplishments')"
-      class="article-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto space-y-16 md:space-y-0"
+      class="article-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto space-y-16 md:space-y-0"
     >
       <div class="article-section__intro md:col-span-4 lg:col-span-3 space-y-10">
         <div class="context w-full space-y-5">

@@ -4,13 +4,13 @@
   />
   <div
     v-if="renderApi || externalItems"
-    class="flex justify-between mb-10"  
+    class="md:flex justify-between mb-10"  
   >
     <h2
       class="font-extended font-normal text-24 leading-110 -tracking-3 text-indigo"
       v-text="heading"
     />
-    <div class="flex space-x-12">
+    <div class="flex space-x-12 mt-6 md:mt-0">
       <label class="relative flex text-[0] w-full max-w-sm">
         Search
         <svg class="absolute top-3 left-3 fill-indigo-800 w-2.5" viewBox="0 0 9.6 9.6">
