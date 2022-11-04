@@ -9,7 +9,14 @@
 </template>
 
 <script>
+import Modal from '/src/twig/components/modal/Modal.vue';
+import Search from '/src/twig/components/search/Search.vue';
+
 export default {
+  components: {
+    Modal,
+    Search
+  },
   data() {
     return {
       active: false,
