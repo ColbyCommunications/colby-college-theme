@@ -60,7 +60,7 @@
         <td class="px-6 py-2">
           <a
             class="inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140"
-            :class="{ '!text-indigo hover:underline': item.link.url, 'text-indigo-800': item.link.url != true }"
+            :class="{ '!text-indigo hover:underline': item.link.url || item.description, 'text-indigo-800': item.link.url != true }"
             :href="item.link.url ? item.link.url : null"
           >
             <div
@@ -75,7 +75,22 @@
                 />
               </picture>
             </div>
-            <span v-html="item.link.title" />
+            <modal v-if="item.description">
+              <template v-slot:content>
+                <h3
+                  class="flex items-center h-12 md:h-11 px-6 font-body text-20 md:text-14 font-semibold leading-120 text-indigo text-left bg-indigo-200"
+                  v-text="'Description'"
+                />
+                <p
+                  class="font-body text-20 md:text-12 font-normal leading-140 text-indigo-800 p-5"
+                  v-text="item.description"
+                />
+              </template>
+              <template v-slot:button>
+                <span v-html="item.link.title" />
+              </template>
+            </modal>
+            <span v-if="!item.description" v-html="item.link.title" />
           </a>
         </td>
         <td
@@ -134,7 +149,12 @@
 import axios from 'axios';
 import Fuse from 'fuse.js';
 
+import Modal from '/src/twig/components/modal/Modal.vue';
+
 export default {
+  components: {
+    Modal,
+  },
   data() {
     return {
       fuse: null,
@@ -268,6 +288,7 @@ export default {
 
                 return {
                   title: item.longTitle,
+                  description: item.abstr,
                   type: item.sess,
                   link: {
                     title: item.longTitle,
@@ -419,6 +440,7 @@ export default {
       }
     },
     toggleTerm(term) {
+      this.currentPage = 1;
 
       if (this.filterTerm == term) {
         this.filterTerm = '';

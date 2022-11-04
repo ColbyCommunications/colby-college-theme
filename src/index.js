@@ -1,5 +1,6 @@
 import { createApp } from 'vue/dist/vue.esm-bundler';
 import mitt from 'mitt';
+import { $vfm, VueFinalModal, ModalsContainer } from 'vue-final-modal';
 
 import Header from './twig/components/header/Header.vue';
 import OverlayHero from './twig/components/overlay-hero/OverlayHero.vue';
@@ -9,7 +10,7 @@ import IndexSection from './twig/components/index-section/IndexSection.vue';
 import Table from './twig/components/table/Table.vue';
 import ContextArticleGrid from './twig/components/context-article-grid/ContextArticleGrid.vue';
 import Search from './twig/components/search/Search.vue';
-import Accordion from './twig/components/accordion/Accordion.vue';
+import Modal from './twig/components/modal/Modal.vue';
 
 import './styles/styles.scss';
 
@@ -24,7 +25,9 @@ const app = createApp({
     Table,
     ContextArticleGrid,
     Search,
-    Accordion,
+    Modal,
+    VueFinalModal,
+    ModalsContainer
   },
 });
 

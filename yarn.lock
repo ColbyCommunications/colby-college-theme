@@ -8783,6 +8783,11 @@ vorpal@^1.12.0:
     strip-ansi "^3.0.0"
     wrap-ansi "^2.0.0"
 
+vue-final-modal@^3.4.10:
+  version "3.4.10"
+  resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-3.4.10.tgz#05158dc2723f74294d0927fab68c2a0271dcb6f4"
+  integrity sha512-dFTkVyI6ueXtPEnjb7mnznttojuzHZquUA/DfqlzOUj/qggncfMXQ6qkv1gsconniRnMTZAvM+sEZ72eEWRgBQ==
+
 vue-loader@^17.0.0:
   version "17.0.0"
   resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-17.0.0.tgz#2eaa80aab125b19f00faa794b5bd867b17f85acb"
