@@ -29,6 +29,6 @@ jobs:
         uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: ghpages
-          build_dir: components
+          build_dir: fractal
         env:
           GITHUB_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}
