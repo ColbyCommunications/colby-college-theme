@@ -22,7 +22,7 @@ jobs:
         with:
           cmd: build
       
-      - run: sudo mv dist/styles/tailwind.css components/styles/tailwind.css
+      - run: sudo mv dist/styles/tailwind.css fractal/styles/tailwind.css
 
       - name: Deploy to GitHub Pages
         if: success()
