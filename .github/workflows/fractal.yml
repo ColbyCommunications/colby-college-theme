@@ -22,13 +22,13 @@ jobs:
         with:
           cmd: build
       
-      - run: sudo mv dist/styles/tailwind.css components/styles/tailwind.css
+      - run: sudo mv dist/styles/tailwind.css fractal/styles/tailwind.css
 
       - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
         with:
           target_branch: ghpages
-          build_dir: components
+          build_dir: fractal
         env:
           GITHUB_TOKEN: ${{ secrets.WEBMASTER_GITHUB_ACTIONS_TOKEN }}

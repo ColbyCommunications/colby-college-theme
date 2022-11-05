@@ -30,27 +30,27 @@
 </template>
 
 <script>
-import { $vfm, VueFinalModal, ModalsContainer } from 'vue-final-modal';
+    import { $vfm, VueFinalModal, ModalsContainer } from 'vue-final-modal';
 
-export default {
-  components: {
-    VueFinalModal,
-    ModalsContainer
-  },
-  data() {
-    return {
-      showModal: false,
+    export default {
+        components: {
+            VueFinalModal,
+            ModalsContainer,
+        },
+        data() {
+            return {
+                showModal: false,
+            };
+        },
+        props: {
+            full: {
+                type: Boolean,
+                required: false,
+            },
+            classes: {
+                type: String,
+                required: false,
+            },
+        },
     };
-  },
-  props: {
-    full: {
-      type: Boolean,
-      required: false,
-    },
-    classes: {
-      type: String,
-      required: false,
-    },
-  }
-}
 </script>

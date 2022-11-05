@@ -20,7 +20,7 @@ fractal.components.set('ext', '.twig');
 fractal.web.set('static.path', __dirname + '/dist');
 
 /* Builds a stand-alone static version of your fractal site at the root of the project */
-fractal.web.set('builder.dest', __dirname + '/components');
+fractal.web.set('builder.dest', __dirname + '/fractal');
 
 /* Provide global context */
 fractal.components.set('default.context', {
