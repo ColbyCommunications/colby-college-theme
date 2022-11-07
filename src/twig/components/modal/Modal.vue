@@ -3,7 +3,7 @@
     v-model="showModal"
     :class="classes"
     :classes="{'!px-0': this.full == true, 'modal__container flex justify-center items-center px-5': true}"
-    :content-class="{'w-full max-w-none h-full max-h-none': this.full == true, 'max-w-xl max-h-96 rounded': !this.full, 'modal__content relative w-full overflow-hidden bg-white overflow-scroll': true }"
+    :content-class="{'w-full max-w-none h-full max-h-none': this.full == true, 'max-w-xl max-h-96 rounded': !this.full, 'modal__content relative w-full overflow-hidden bg-white overflow-auto': true }"
   >
     <button
       class="absolute top-5 right-3"
