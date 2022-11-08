@@ -51,6 +51,8 @@
         "webpack-notifier": "^1.15.0"
     },
     "dependencies": {
+        "@algolia/autocomplete-js": "^1.7.3",
+        "@algolia/autocomplete-plugin-query-suggestions": "^1.7.3",
         "@frctl/fractal": "^1.5.13",
         "@frctl/twig": "^1.2.12",
         "@glidejs/glide": "^3.5.2",
@@ -59,7 +61,7 @@
         "foundation-sites": "^6.7.4",
         "fuse.js": "^6.6.2",
         "gsap": "^3.10.0",
-        "instantsearch.js": "4.7.0",
+        "instantsearch.js": "^4.49.1",
         "mitt": "^3.0.0",
         "tailwindcss": "^3.1.4",
         "vue": "^3.2.31",

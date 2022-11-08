@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <div class="flex justify-between mb-10">
+    <div class="flex justify-between mb-5">
       <h1
         class="font-extended font-normal text-24 leading-110 -tracking-3 text-indigo"
         v-text="'Search'"
@@ -19,6 +19,18 @@
           v-model="searchTerm"
         />
       </label>
+    </div>
+    <div class="button-group flex justify-end flex-wrap gap-4 mb-10">
+      <button
+        v-for="(item, index) in suggestedQueryItems"
+        @click="searchTerm = item.objectID"
+        class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 font-body font-normal text-10 leading-130 text-indigo bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1 px-3 transition-all duration-200 ease-in-out"
+      >
+        <span class="btn__text">
+          {{ item.objectID }}
+          <div class="btn__border block bg-indigo h-px w-0 group-hover:w-full transition-all duration-200 ease-in-out"></div>
+        </span>
+      </button>
     </div>
     <p
       class="font-extended font-normal text-24 leading-110 -tracking-3 text-indigo"
@@ -63,6 +75,7 @@
 
 <script>
 import algoliasearch from 'algoliasearch/lite';
+import { createQuerySuggestionsPlugin } from '@algolia/autocomplete-plugin-query-suggestions';
 
 export default {
   data() {
@@ -74,11 +87,14 @@ export default {
         '63c304c04c478fd0c4cb1fb36cd666cb'
       ),
       index: undefined,
+      queryIndex: undefined,
+      suggestedQueryItems: [],
       items: [],
     };
   },
   created() {
     this.index = this.searchClient.initIndex('prod_colbyedu_aggregated');
+    this.queryIndex = this.searchClient.initIndex('prod_colbyedu_aggregated_query_suggestions');
 
     setInterval(this.runSearch, 2000);
   },
@@ -92,6 +108,11 @@ export default {
             this.checkedTerm = this.searchTerm;
 
             return hits;
+          });
+
+        this.queryIndex.search(this.searchTerm)
+          .then(({ hits }) => {
+            this.suggestedQueryItems = hits;
           });
       }
     }
