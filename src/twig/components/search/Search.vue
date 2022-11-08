@@ -98,6 +98,12 @@ export default {
 
     setInterval(this.runSearch, 2000);
   },
+  mounted() {
+    this.queryIndex.search('')
+      .then(({ hits }) => {
+        this.suggestedQueryItems = hits;
+      });
+  },
   methods: {
     runSearch() {
 
