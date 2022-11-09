@@ -1137,7 +1137,6 @@ function gravity_forms_buttons()
   'unlink',
   'sub',
   'sup',
-  'strikethrough',
   'justifyleft',
   'justifycenter',
   'justifyright',
