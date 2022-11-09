@@ -28,7 +28,7 @@
                 />
             </span>
         </button>
-        <slot name="content" />
+        <slot name="content" :showModal="showModal" />
     </vue-final-modal>
     <button
         class="text-left group active"
@@ -37,7 +37,10 @@
         }"
         @click="showModal = !showModal"
     >
-        <slot name="button" :showModal="showModal" />
+        <slot
+          name="button"
+          :showModal="showModal"
+        />
     </button>
 </template>
 

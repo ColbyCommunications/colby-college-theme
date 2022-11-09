@@ -10,8 +10,8 @@
       class="font-extended font-normal text-24 leading-110 -tracking-3 text-indigo"
       v-text="heading"
     />
-    <div class="flex space-x-12 mt-6 md:mt-0">
-      <label class="relative flex text-[0] w-full max-w-sm">
+    <div class="flex flex-wrap md:flex-nowrap justify-between md:justify-start md:space-x-12 mt-6 md:mt-0">
+      <label class="relative flex shrink-0 md:shrink mb-6 md:mb-0 text-[0] w-full max-w-sm">
         Search
         <svg class="absolute top-3 left-3 fill-indigo-800 w-2.5" viewBox="0 0 9.6 9.6">
           <path d="M3.6 1.2c-1.3 0-2.4 1.1-2.4 2.4C1.2 4.9 2.3 6 3.6 6 4.9 6 6 4.9 6 3.6c0-1.3-1.1-2.4-2.4-2.4zM0 3.6C0 1.6 1.6 0 3.6 0s3.6 1.6 3.6 3.6c0 .8-.2 1.5-.7 2.1l2.9 2.9c.2.2.2.6 0 .8-.2.2-.6.2-.8 0L5.7 6.5c-.6.5-1.3.7-2.1.7-2 0-3.6-1.6-3.6-3.6z" style="fill-rule:evenodd; clip-rule:evenodd;"/>
@@ -24,19 +24,35 @@
           v-model="searchTerm"
         />
       </label>
-      <div v-if="filterTerms.length > 0" class="flex">
+      <select
+        v-if="this.api == 'Course Catalogue'"
+        v-model="selectedDepartment"
+        @change="toggleTerm('SELECT', $event)"
+        class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
+      >
+        <option
+          v-text="'All Departments'"
+          :value="'All Departments'"
+        />
+        <option
+          v-for="(item, index) in filterDepartments"
+          v-text="item.Text"
+          :value="item.Dept"
+        />
+      </select>
+      <div v-if="filterOptions.length > 0" class="flex">
         <button
           class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
-          :class="{'!text-indigo font-bold': '' == this.filterTerm}"
+          :class="{'!text-indigo font-bold': this.filterTerm.some(t => this.filterOptions.includes(t)) == false}"
           v-text="'All'"
-          @click="toggleTerm('')"
+          @click="toggleTerm('All', $event)"
         />
         <button
-          v-for="(term, index) in filterTerms"
+          v-for="(term, index) in filterOptions"
           class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
-          :class="{'!text-indigo font-bold': term == this.filterTerm}"
+          :class="{'!text-indigo font-bold': this.filterTerm.includes(term)}"
           v-text="term"
-          @click="toggleTerm(term)"
+          @click="toggleTerm(term, $event)"
         />
       </div>
     </div>
@@ -164,19 +180,25 @@ export default {
       items: [],
       currentPage: 1,
       searchTerm: '',
-      filterTerm: '',
-      filterTerms: [],
+      filterTerm: [],
+      filterOptions: [],
+      filterDepartments: [],
+      selectedDepartment: 'All Departments',
     };
   },
   computed: {
     filteredItems() {
-      const f = this.items.filter((item) => item.type == this.filterTerm);
+      const f = this.items.filter((item) => this.filterTerm.includes(item.type));
       let g;
 
       if (f.length == 0) {
         g = this.items;
       } else {
-        g = this.items.filter((item) => item.type == this.filterTerm);
+        g = this.items.filter((item) => this.filterTerm.includes(item.type));
+      }
+
+      if (this.selectedDepartment !== 'All Departments') {
+        g = g.filter((item) => this.filterTerm.includes(item.department));
       }
 
       if (this.fuse) {
@@ -212,6 +234,15 @@ export default {
     },
   },
   async mounted() {
+
+    // Seperate call to the majors and minors api specifically to populate the Course catalog filter
+    if (this.api == 'Course Catalogue') {
+      await axios.get('https://author.colby.edu/majorsminors/')
+        .then(outputa => {
+          this.filterDepartments = outputa.data;
+        });
+    }
+
     if (this.renderApi) {
 
       switch(this.api) {
@@ -264,7 +295,7 @@ export default {
 
               this.headings = ['Name', 'Course Number', 'Description'];
 
-              this.filterTerms = [
+              this.filterOptions = [
                 'Fall',
                 'Spring',
                 'January',
@@ -290,6 +321,7 @@ export default {
                   title: item.longTitle,
                   description: item.abstr,
                   type: item.sess,
+                  department: item.dept,
                   link: {
                     title: item.longTitle,
                     url: null,
@@ -303,7 +335,7 @@ export default {
 
               this.headings = ['Name', 'Course Number', 'Department'];
 
-              this.filterTerms = [
+              this.filterOptions = [
                 'Fall',
                 'Spring',
                 'January',
@@ -325,7 +357,7 @@ export default {
                 };
               });
 
-              this.filterTerms = [
+              this.filterOptions = [
                 'Majors',
                 'Minors',
               ];
@@ -439,13 +471,31 @@ export default {
         }
       }
     },
-    toggleTerm(term) {
+    toggleTerm(term, event) {
       this.currentPage = 1;
+      let select;
 
-      if (this.filterTerm == term) {
-        this.filterTerm = '';
+      if (term == 'SELECT') {
+        term = event.target.value;
+        select = true;
+      }
+
+      if (this.filterTerm.includes(term)) {
+        this.filterTerm.splice(this.filterTerm.indexOf(term));
       } else {
-        this.filterTerm = term;
+        if (select) {
+          this.filterTerm = [];
+        }
+
+        if (this.filterTerm.some(t => this.filterOptions.includes(t))) {
+          this.filterTerm.forEach((t) => {
+            if (this.filterOptions.includes(t)) {
+              this.filterTerm.splice(this.filterTerm.indexOf(t));
+            }
+          });
+        }
+
+        this.filterTerm.push(term);
       }
     },
     initFuse() {
