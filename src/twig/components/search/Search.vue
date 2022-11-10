@@ -108,6 +108,13 @@ export default {
     runSearch() {
 
       if (this.searchTerm !== this.checkedTerm) {
+
+        if (this.searchTerm == '') {
+          this.items = [];
+
+          return;
+        }
+
         this.index.search(this.searchTerm)
           .then(({ hits }) => {
             this.items = hits;
