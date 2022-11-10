@@ -143,37 +143,6 @@ class StarterSite extends Timber\Site
     ),
    )
   );
-
-  register_taxonomy(
-   'groups',
-   'people',
-   array(
-    'hierarchical'      => true,
-    'show_ui'           => true,
-    'show_in_rest'      => true,
-    'show_admin_column' => true,
-    'query_var'         => true,
-    'public'            => true,
-    'show_tagcloud'     => false,
-    'capabilities'      => [
-     'manage_terms' => 'manage_options',
-     'edit_terms'   => 'manage_options',
-     'delete_terms' => 'manage_options',
-     'assign_terms' => 'manage_options',
-    ],
-    'rewrite'           => array(
-     'slug'         => 'people/groups',
-     'hierarchical' => true,
-    ),
-    'labels'            => array(
-     'name'          => __('Groups'),
-     'singular_name' => __('Group'),
-     'add_new_item'  => __('Add New Group'),
-     'menu_name'     => __('Groups'),
-     'parent_item'   => __('Parent Group'),
-    ),
-   )
-  );
  }
 
  public function my_acf_init()
