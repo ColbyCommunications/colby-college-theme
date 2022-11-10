@@ -6,7 +6,7 @@
 @import 'utilities/buttons';
 
 .sidebar-page__main {
-    ul:not(.pagination__container) {
+    ul:not(.pagination__container):not(.directiory_information) {
         list-style-type: disc;
         padding: 0 0 0 40px;
     }
@@ -16,7 +16,7 @@
         padding: 0 0 0 40px;
     }
 
-    ul:not(.pagination__container),
+    ul:not(.pagination__container):not(.directiory_information),
     ol {
         ul {
             list-style-type: circle;
