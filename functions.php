@@ -859,6 +859,21 @@ function getNewPeople($directory_data)
    $CXPubs = '<h2>Publications</h2>' . $CXPerson['publicat']['text'];
   }
 
+  $CXMailing = "";
+  if (isset($CXPerson['box'])) {
+   $CXMailing = $CXPerson['box'] . " Mayflower Hill Drive\nWaterville, Maine 04901-8853";
+  }
+
+  $CXOfficeHours = "";
+  if (isset($CXPerson['officehours'])) {
+   $CXOfficeHours = $CXPerson['officehours'];
+  }
+  
+  $CXFax = "";
+  if (isset($CXPerson['deptfax'])) {
+   $CXFax = '207-' . $CXPerson['deptfax'];
+  }
+
   // Concatenate all CX fields for bio
   $CXBio = $CXEducation . '<br><br>' . $CXExpertise . '<br><br>' . $CXPersonalInfo . '<br><br>' . $CXCurrentResearch . '<br><br>' . $CXPubs;
 
@@ -894,6 +909,9 @@ function getNewPeople($directory_data)
     'curriculum_vitae' => "",
     'bio'              => $CXBio,
     'current_courses'  => json_encode($CXCourses),
+    'fax'              => $CXFax,
+    'mailing_address'  => $CXMailing,
+    'office_hours'     => $CXOfficeHours,
    ),
   );
 
@@ -955,6 +973,14 @@ function getNewPeople($directory_data)
     update_post_meta($ID, 'curriculum_vitae', "");
    }
 
+   if (empty($person_metadata['fax_changed'][0])) {
+    update_post_meta($ID, 'fax', $CXFax);
+   }
+
+   if (empty($person_metadata['office_hours_changed'][0])) {
+    update_post_meta($ID, 'office_hours', $CXOfficeHours);
+   }
+
    if (empty($person_metadata['bio_changed'][0])) {
     update_post_meta($ID, 'bio', $CXBio);
    }
@@ -1004,6 +1030,8 @@ function update_directory_profile($entry, $form)
  11 - pronouns
  12 - pref name
  13 - Remove image
+ 14 - fax
+ 15 - office hours
   */
 
  $employee_id      = str_pad($entry[10], 7, "0", STR_PAD_LEFT);
@@ -1015,6 +1043,8 @@ function update_directory_profile($entry, $form)
  $image            = $entry[2];
  $remove_image     = $entry[13];
  $curriculum_vitae = $entry[9];
+ $fax              = $entry[14];
+ $office_hours     = $entry[15];
  $bio              = $entry[1];
 
  // get person post by employee ID
@@ -1041,6 +1071,8 @@ function update_directory_profile($entry, $form)
  $bio_changed              = false;
  $image_changed            = false;
  $remove_image_changed     = false;
+ $fax_changed              = false;
+ $office_hours_changed     = false;
 
  if ($preferred_name) {
   $preferred_name_changed = true;
@@ -1070,6 +1102,14 @@ function update_directory_profile($entry, $form)
   $bio_changed = true;
  }
 
+ if ($fax) {
+    $fax_changed = true;
+}
+
+if ($office_hours) {
+    $office_hours = true;
+}
+
  if ($image) {
   $image_changed        = true;
   $remove_image_changed = false;
@@ -1088,6 +1128,8 @@ function update_directory_profile($entry, $form)
   'building'                 => $location_changed ? $location : $person_metadata['building'][0],
   'department'               => $department_changed ? $department : $person_metadata['department'][0],
   'curriculum_vitae'         => $curriculum_vitae_changed ? $curriculum_vitae : $person_metadata['curriculum_vitae'][0],
+  'fax'                      => $fax_changed ? $fax : $person_metadata['fax'][0],
+  'office_hours'             => $office_hours_changed ? $office_hours : $person_metadata['office_hours'][0],
   'bio'                      => $bio_changed ? $bio : $person_metadata['bio'][0],
 
   // save override fields
@@ -1100,6 +1142,8 @@ function update_directory_profile($entry, $form)
   'bio_changed'              => $bio_changed,
   'image_changed'            => $image_changed,
   'remove_image_changed'     => $remove_image_changed,
+  'fax_changed'              => $fax_changed,
+  'office_hours_changed'     => $office_hours_changed,
  );
 
  wp_update_post(
