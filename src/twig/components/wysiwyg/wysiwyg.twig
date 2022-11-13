@@ -1,11 +1,21 @@
 <div class="wysiwyg
-  [&>h2]:font-extended [&>h2]:font-normal [&>h2]:text-24 [&>h2]:leading-110 [&>h2]:-tracking-3 [&>h2]:text-indigo [&>h2+p]:mt-2
-  [&>h3]:font-extended [&>h3]:font-bold [&>h3]:text-18 [&>h3]:text-indigo [&>h3+p]:mt-2 [&>h3+table]:mt-5
+  [&>h2]:font-extended [&>h2]:font-normal [&>h2]:text-24 [&>h2]:leading-110 [&>h2]:-tracking-3 [&>h2]:text-indigo [&>h2+p]:mt-2 [&>h2+ul]:mt-8 [&>h2+ol]:mt-8
+  [&>h3]:font-extended [&>h3]:font-bold [&>h3]:text-18 [&>h3]:text-indigo [&>h3+p]:mt-2 [&>h3+ul]:mt-8 [&>h3+ol]:mt-8 [&>h3+table]:mt-5
+  [&>h4]:font-extended [&>h4]:font-normal [&>h4]:text-20 [&>h4]:leading-110 [&>h4]:-tracking-3 [&>h4]:text-indigo [&>h4+p]:mt-2 [&>h4+ul]:mt-2 [&>h4+ol]:mt-2
+  [&>h5]:font-extended [&>h5]:font-bold [&>h5]:text-14 [&>h5]:leading-130 [&>h5]:tracking-8 [&>h5]:text-azure [&>h5]:uppercase [&>h5+p]:mt-2 [&>h5+ul]:mt-2 [&>h5+ol]:mt-2
+  [&>h6]:font-extended [&>h6]:font-bold [&>h6]:text-12 [&>h6]:tracking-8 [&>h6]:text-azure [&>h6]:uppercase [&>h6+p]:mt-2
   [&>p]:font-body [&>p]:font-normal [&>p]:text-16 [&>p]:leading-130 [&>p]:text-indigo-900
   [&>p>a]:underline hover:[&>p>a]:no-underline hover:[&>p>a]:text-indigo
-  [&>div+div]:mt-20 md:[&>div+div]:mt-[100px] [&>div+h2]:mt-16 md:[&>div+h2]:mt-20
-  [&>p+div]:mt-10 md:[&>p+div]:mt-[50px] [&>p+h2]:mt-20 [&>p+h3]:mt-6 [&>p+p]:mt-6 [&>p+table]:mt-10 md:[&>p+table]:mt-[50px]
-  [&>table+div]:mt-20 md:[&>table+div]:mt-[50px] [&>table+h2]:mt-20 [&>table+h3]:mt-6 [&>table+p]:mt-6 [&>table+table]:mt-20 md:[&>table+table]:mt-[50px]
+  [&>ul+h2]:mt-20
+  [&>ul>li]:font-body [&>ul>li]:font-normal [&>ul>li]:text-16 [&>ul>li]:leading-130 [&>ul>li]:text-indigo-900 [&>ul>li]:list-disc [&>ul>li]:list-outside [&>ul>li]:ml-3 [&>ul>li+li]:mt-2
+  [&>ul>li>a]:underline hover:[&>ul>li>a]:no-underline hover:[&>ul>li>a]:text-indigo
+  [&>ol+h2]:mt-20
+  [&>ol>li]:font-body [&>ol>li]:font-normal [&>ol>li]:text-16 [&>ol>li]:leading-130 [&>ol>li]:text-indigo-900 [&>ol>li]:list-decimal [&>ol>li]:list-outside [&>ol>li]:ml-3 [&>ol>li+li]:mt-2
+  [&>ol>li>a]:underline hover:[&>ol>li>a]:no-underline hover:[&>ol>li>a]:text-indigo
+  [&>div+div]:mt-20 md:[&>div+div]:mt-[100px] [&>div+figure]:mt-20 md:[&>div+figure]:mt-[100px] [&>div+h2]:mt-16 md:[&>div+h2]:mt-20
+  [&>figure+figure]:mt-20 md:[&>figure+figure]:mt-[100px] [&>figure+div]:mt-20 md:[&>figure+div]:mt-[100px] [&>figure+h2]:mt-16 md:[&>figure+h2]:mt-20
+  [&>p+div]:mt-10 md:[&>p+div]:mt-[50px] [&>p+h2]:mt-20 [&>p+h3]:mt-6 [&>p+p]:mt-6 [&>p+ul]:mt-6 [&>p+table]:mt-10 md:[&>p+table]:mt-[50px]
+  [&>hr]:border-t [&>hr]:border-solid [&>hr]:border-indigo-300 [&>hr]:my-16
 ">
   {{ post.content }}
 </div>
