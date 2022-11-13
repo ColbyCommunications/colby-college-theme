@@ -51,11 +51,11 @@
               />
               <h2
                 class="text-group__heading font-extended font-normal text-20 leading-110 -tracking-3 text-left text-indigo mt-2"
-                v-text="item.post_title"
+                v-html="highlight(item.post_title)"
               />
               <p
                 class="text-group__p font-body font-normal text-12 md:text-12 leading-130 text-left text-indigo-800 mt-2"
-                v-text="item.content ? `${item.content.substring(0, 120)} ...` : ''"
+                v-html="item.content ? `${highlight(item.content.substring(0, 120))} ...` : ''"
               />
             </div>
             <div class="button-group flex flex-wrap gap-4">
@@ -75,7 +75,7 @@
 
 <script>
 import algoliasearch from 'algoliasearch/lite';
-import { createQuerySuggestionsPlugin } from '@algolia/autocomplete-plugin-query-suggestions';
+import Emitter from 'component-emitter';
 
 export default {
   data() {
@@ -96,13 +96,17 @@ export default {
     this.index = this.searchClient.initIndex('prod_colbyedu_aggregated');
     this.queryIndex = this.searchClient.initIndex('prod_colbyedu_aggregated_query_suggestions');
 
-    setInterval(this.runSearch, 2000);
+    setInterval(this.runSearch, 500);
   },
   mounted() {
     this.queryIndex.search('')
       .then(({ hits }) => {
         this.suggestedQueryItems = hits;
       });
+
+    this.emitter.on('close-modal', () => {
+      this.searchTerm = '';
+    });
   },
   methods: {
     runSearch() {
@@ -112,6 +116,11 @@ export default {
         if (this.searchTerm == '') {
           this.items = [];
 
+          this.queryIndex.search('')
+            .then(({ hits }) => {
+              this.suggestedQueryItems = hits;
+            });
+
           return;
         }
 
@@ -119,6 +128,8 @@ export default {
           .then(({ hits }) => {
             this.items = hits;
             this.checkedTerm = this.searchTerm;
+
+            this.highlight();
 
             return hits;
           });
@@ -128,7 +139,19 @@ export default {
             this.suggestedQueryItems = hits;
           });
       }
-    }
+    },
+    highlight(text) {
+      let newText;
+      const re = new RegExp(this.searchTerm, 'i');
+
+      if (text) {
+        newText = String(text).replace(re, `<mark>${text.match(re)}</mark>`);    
+      } else {
+        newText = String(text).replace(re, `<mark>${this.searchTerm}</mark>`);    
+      }
+
+      return newText;
+    },
   }
 }
 

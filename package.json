@@ -52,7 +52,6 @@
     },
     "dependencies": {
         "@algolia/autocomplete-js": "^1.7.3",
-        "@algolia/autocomplete-plugin-query-suggestions": "^1.7.3",
         "@frctl/fractal": "^1.5.13",
         "@frctl/twig": "^1.2.12",
         "@glidejs/glide": "^3.5.2",

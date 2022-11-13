@@ -13,9 +13,9 @@
         }"
     >
         <button
-            class="absolute top-5 right-3"
+            class="absolute top-5 right-3 py-2.5"
             :class="{ 'right-5': this.full == true }"
-            @click="showModal = false"
+            @click="closeModal()"
         >
             <span
                 class="relative block w-6 h-0.5 bg-indigo transition-all duration-200 ease-in-out bg-transparent"
@@ -35,7 +35,7 @@
         :class="{
             '[&>span]:text-indigo-1000 [&>span>svg]:fill-indigo-1000': this.showModal == true,
         }"
-        @click="showModal = !showModal"
+        @click="toggleModal()"
     >
         <slot
           name="button"
@@ -67,5 +67,18 @@
                 required: false,
             },
         },
+        methods: {
+          toggleModal() {
+            this.showModal = !this.showModal;
+
+            if (this.showModal == false) {
+              this.emitter.emit('close-modal', {});
+            }
+          },
+          closeModal() {
+            this.showModal = false;
+            this.emitter.emit('close-modal', {});
+          }
+        }
     };
 </script>
