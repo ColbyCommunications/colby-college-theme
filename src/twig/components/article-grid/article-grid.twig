@@ -71,13 +71,23 @@
           {% endif %}
         {% elseif image_orientation == 'portrait' %}
           {% if item.post %}
-            {% set newImage = {
-              sizes: {
-                desktop: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait' ),
-                mobile: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait_mobile' ),
-              },
-              alt: item.image.alt,
-            } %}
+            {% if item.post.post_type == 'people' %}
+              {% set newImage = {
+                sizes: {
+                  desktop: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait' ) ? fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait' ) : '/wp-content/uploads/2022/10/profile_placeholder-380x580.jpeg',
+                  mobile: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait_mobile' ) ? fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait_mobile' ) : '/wp-content/uploads/2022/10/profile_placeholder-380x580.jpeg',
+                },
+                alt: item.image.alt,
+              } %}
+            {% else %}
+              {% set newImage = {
+                sizes: {
+                  desktop: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait' ),
+                  mobile: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait_mobile' ),
+                },
+                alt: item.image.alt,
+              } %}
+            {% endif %}
           {% else %}
             {% if item.image %}
               {% set newImage = {
