@@ -73,6 +73,8 @@
 
             if (this.showModal == false) {
               this.emitter.emit('close-modal', {});
+            } else {
+                this.emitter.emit('open-modal', {});
             }
           },
           closeModal() {

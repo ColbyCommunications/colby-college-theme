@@ -1,6 +1,7 @@
 import { createApp } from 'vue/dist/vue.esm-bundler';
 import mitt from 'mitt';
 import { $vfm, VueFinalModal, ModalsContainer } from 'vue-final-modal';
+import InstantSearch from 'vue-instantsearch/vue3/es';
 
 import Header from './twig/components/header/Header.vue';
 import OverlayHero from './twig/components/overlay-hero/OverlayHero.vue';
@@ -32,4 +33,6 @@ const app = createApp({
 });
 
 app.config.globalProperties.emitter = emitter;
+app.use(InstantSearch);
+
 app.mount('#app');

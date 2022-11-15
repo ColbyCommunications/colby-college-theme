@@ -4811,7 +4811,7 @@ inquirer@^7.3.3:
     strip-ansi "^6.0.0"
     through "^2.3.6"
 
-instantsearch.js@^4.49.1:
+instantsearch.js@^4.47.0:
   version "4.49.1"
   resolved "https://registry.yarnpkg.com/instantsearch.js/-/instantsearch.js-4.49.1.tgz#4ee266610f5acdeb81a893cfaa3de26f75a068c9"
   integrity sha512-iYGRF+UujVaxn/twZXTfYkI+wc1luCiHZ/ozBME5MiVoit0wBvtERGUFR01uauZJSXCCXmjBg/JJojPngf7mAA==
@@ -5949,6 +5949,11 @@ mitt@^1.1.3:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/mitt/-/mitt-1.2.0.tgz#cb24e6569c806e31bd4e3995787fe38a04fdf90d"
   integrity sha512-r6lj77KlwqLhIUku9UWYes7KJtsczvolZkzp8hbaDPPaE24OmWl5s539Mytlj22siEQKosZ26qCBgda2PKwoJw==
+
+mitt@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/mitt/-/mitt-2.1.0.tgz#f740577c23176c6205b121b2973514eade1b2230"
+  integrity sha512-ILj2TpLiysu2wkBbWjAmww7TkZb65aiQO+DkVdUTBpBXq+MHYiETENkKFMtsJZX1Lf4pe4QOrTSjIfUwN5lRdg==
 
 mitt@^3.0.0:
   version "3.0.0"
@@ -8828,6 +8833,14 @@ vue-final-modal@^3.4.10:
   version "3.4.10"
   resolved "https://registry.yarnpkg.com/vue-final-modal/-/vue-final-modal-3.4.10.tgz#05158dc2723f74294d0927fab68c2a0271dcb6f4"
   integrity sha512-dFTkVyI6ueXtPEnjb7mnznttojuzHZquUA/DfqlzOUj/qggncfMXQ6qkv1gsconniRnMTZAvM+sEZ72eEWRgBQ==
+
+vue-instantsearch@^4.3.3:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/vue-instantsearch/-/vue-instantsearch-4.6.0.tgz#bb6b25bcb07e3b6402e2d13c92b37fcf51d021b8"
+  integrity sha512-pZOX/b7VIU/QY2LLry8vdQzXvkDWBfEzuVbti9RwpUQBCq85aSgsJvElnDVXoe2pigFaT4EkzMeVbPhQicbXlA==
+  dependencies:
+    instantsearch.js "^4.47.0"
+    mitt "^2.1.0"
 
 vue-loader@^17.0.0:
   version "17.0.0"
