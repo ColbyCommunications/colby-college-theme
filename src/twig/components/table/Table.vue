@@ -519,9 +519,8 @@ export default {
       if (this.filteredItems) {
         this.fuse = new Fuse(this.filteredItems, {
           shouldSort: true,
-          threshold: 0.6,
-          location: 0,
-          distance: 60,
+          threshold: 0.0,
+          ignoreLocation: true,
           maxPatternLength: 32,
           minMatchCharLength: 1,
           keys: ["title"],
