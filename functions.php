@@ -426,24 +426,26 @@ class StarterSite extends Timber\Site
   $context['post'] = Timber::get_post();
 
   global $wp;
+    if (!is_404()) {
+        $crumbs = get_post_ancestors($context['post']->ID);
 
-  $crumbs = get_post_ancestors($context['post']->ID);
+        if ($crumbs) {
+            $breadcrumbs_menu = [];
 
-  if ($crumbs) {
-   $breadcrumbs_menu = [];
+            foreach ($crumbs as $ancestor) {
+                array_push($breadcrumbs_menu, array(
+                    'id'    => $ancestor,
+                    'title' => get_the_title($ancestor),
+                    'url'   => get_permalink($ancestor),
+                    ));
+            }
+        }
 
-   foreach ($crumbs as $ancestor) {
-    array_push($breadcrumbs_menu, array(
-     'id'    => $ancestor,
-     'title' => get_the_title($ancestor),
-     'url'   => get_permalink($ancestor),
-    ));
-   }
-  }
-
-  if (isset($breadcrumbs_menu)) {
-   $context['breadcrumbs_menu'] = array_reverse($breadcrumbs_menu);
-  }
+        if (isset($breadcrumbs_menu)) {
+            $context['breadcrumbs_menu'] = array_reverse($breadcrumbs_menu);
+        }
+    }
+  
 
   $context['current_url']    = home_url($wp->request);
   $context['foo']            = 'bar';
