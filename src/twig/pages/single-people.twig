@@ -29,6 +29,9 @@
         curriculum_vitae: post.meta('curriculum_vitae'),
         email: post.meta('email'),
         location: post.meta('building'),
+        office_hours: post.meta('office_hours'),
+        address: post.meta('mailing_address'),
+        fax: post.meta('fax'),
       } %}
       {% if person_decoded_courses %}
         {% set current_courses = person_decoded_courses|map(i => {
