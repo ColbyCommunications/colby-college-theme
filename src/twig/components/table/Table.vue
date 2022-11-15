@@ -219,14 +219,14 @@ export default {
   computed: {
     filteredItems() {
       const f = this.items.filter((item) =>
-        this.filterTerm.includes(item.type)
+        this.filterTerm.some(r => item.type.includes(r))
       );
       let g;
 
       if (f.length == 0) {
         g = this.items;
       } else {
-        g = this.items.filter((item) => this.filterTerm.includes(item.type));
+        g = this.items.filter((item) => this.filterTerm.some(r => item.type.includes(r)));
       }
 
       if (this.selectedDepartment !== "All Departments") {
@@ -302,21 +302,26 @@ export default {
             );
 
             this.items = deptItems.map((item) => {
-              switch (item.sessOffered) {
-                case "Fall":
-                  item.sess = "Fall";
-                  break;
-                case "Sprg":
-                  item.sess = "Spring";
-                  break;
-                case "Jan":
-                  item.sess = "January";
-                  break;
-              }
+              let itemTypes = item.sessOffered.split(',');
+
+              itemTypes.forEach((type, index) => {
+
+                switch (type) {
+                  case "FA":
+                    itemTypes[index] = 'Fall';
+                    break;
+                  case "SP":
+                    itemTypes[index] = "Spring";
+                    break;
+                  case "JP":
+                    itemTypes[index] = "January";
+                    break;
+                }
+              });
 
               return {
                 title: item.longTitle,
-                type: item.sess,
+                type: itemTypes,
                 link: {
                   title: item.longTitle,
                   url: null,
@@ -333,22 +338,27 @@ export default {
             const filteredItems = outputa.data.courses;
 
             this.items = filteredItems.map((item) => {
-              switch (item.sessOffered) {
-                case "Fall":
-                  item.sess = "Fall";
-                  break;
-                case "Sprg":
-                  item.sess = "Spring";
-                  break;
-                case "Jan":
-                  item.sess = "January";
-                  break;
-              }
+              let itemTypes = item.sessOffered.split(',');
+
+              itemTypes.forEach((type, index) => {
+
+                switch (type) {
+                  case "FA":
+                    itemTypes[index] = 'Fall';
+                    break;
+                  case "SP":
+                    itemTypes[index] = "Spring";
+                    break;
+                  case "JP":
+                    itemTypes[index] = "January";
+                    break;
+                }
+              });
 
               return {
                 title: item.longTitle,
                 description: item.abstr,
-                type: item.sess,
+                type: itemTypes,
                 department: item.dept,
                 link: {
                   title: item.longTitle,

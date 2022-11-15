@@ -13,7 +13,7 @@
         }"
     >
         <button
-            class="absolute top-5 right-3 py-2.5"
+            class="absolute top-3 right-3 py-2.5"
             :class="{ 'right-5': this.full == true }"
             @click="closeModal()"
         >
