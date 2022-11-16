@@ -12,6 +12,7 @@ import Table from './twig/components/table/Table.vue';
 import ContextArticleGrid from './twig/components/context-article-grid/ContextArticleGrid.vue';
 import Search from './twig/components/search/Search.vue';
 import Modal from './twig/components/modal/Modal.vue';
+import Accordion from './twig/components/accordion/Accordion.vue';
 
 import './styles/styles.scss';
 
@@ -28,7 +29,8 @@ const app = createApp({
     Search,
     Modal,
     VueFinalModal,
-    ModalsContainer
+    ModalsContainer,
+    Accordion,
   },
 });
 
