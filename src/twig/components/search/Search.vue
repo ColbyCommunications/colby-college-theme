@@ -38,7 +38,7 @@
                 </ais-index>
             </div>
             <p
-                class="font-extended font-normal text-24 leading-110 -tracking-3 text-indigo"
+                class="font-extended font-normal text-24 leading-110 -tracking-3 text-indigo text-left"
                 v-if="!query"
                 v-text="'What are you looking for?'"
             />

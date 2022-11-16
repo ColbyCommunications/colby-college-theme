@@ -74,7 +74,7 @@ module.exports = {
             hero__pattern:
                 'url("/wp-content/themes/colby-college-theme/src/images/hero__pattern.jpg")',
             notfound__pattern:
-                'url("/wp-content/themes/colby-college-theme/src/images/miller.png")',
+                'url("/wp-content/themes/colby-college-theme/src/images/miller3.jpeg")',
         },
     },
     plugins: [],
