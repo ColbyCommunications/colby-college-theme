@@ -74,8 +74,8 @@
             {% if item.post.post_type == 'people' %}
               {% set newImage = {
                 sizes: {
-                  desktop: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait' ) ? fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait' ) : '/wp-content/uploads/2022/10/profile_placeholder-380x580.jpeg',
-                  mobile: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait_mobile' ) ? fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait_mobile' ) : '/wp-content/uploads/2022/10/profile_placeholder-380x580.jpeg',
+                  desktop: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait' ) ? fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait' ) : '/wp-content/uploads/2022/11/directory-placeholder_E4E8F0_90_100-380x430.jpg',
+                  mobile: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait_mobile' ) ? fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait_mobile' ) : '/wp-content/uploads/2022/11/directory-placeholder_E4E8F0_90_100-380x430.jpg',
                 },
                 alt: item.image.alt,
               } %}
