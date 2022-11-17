@@ -1,0 +1,25 @@
+{% if in_component_library %}
+  {% set context = '@context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+{% endif %}
+
+{% import "macros.twig" as macros %}
+
+<div class="colby-image-text-block flex {{ (align_image == 'left' or align_image == 'right') ? 'flex-col md:flex-row' : 'flex-col' }}" >
+    {% if image and (align_image == 'left' or align_image == 'none') %}
+        <div class="{{ (align_image == 'left') ? 'w-full md:w-1/4 md:mr-4 mb-4 md:mb-0' : '' }} {{ (align_image == 'none') ? 'mb-4' : '' }}">
+          <img src="{{image['url']}}" alt="{{ image['alt'] }}" />
+        </div>
+    {% endif %}
+    <div class="
+      {{ (align_image == 'left' or align_image == 'right') ? 'w-full md:w-3/4' : '' }} 
+    ">
+        {{ paragraph_text }}
+    </div>
+    {% if image and ( align_image == 'right') %}
+        <div class="{{ (align_image == 'right') ? 'w-full md:w-1/4 md:ml-4' : '' }}">
+          <img src="{{image['url']}}" alt="{{ image['alt'] }}" />
+        </div>
+    {% endif %}
+</div>

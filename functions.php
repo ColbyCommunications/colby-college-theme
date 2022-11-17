@@ -158,8 +158,12 @@ class StarterSite extends Timber\Site
     'description'     => __('A custom accordion block.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('accordion', 'panels'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register a home hero
@@ -169,8 +173,11 @@ class StarterSite extends Timber\Site
     'description'     => __('Large hero component, supporting both video and basic images.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'cover-image',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('hero', 'video', 'image', 'home', 'loop'),
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register a carousel
@@ -180,8 +187,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Standard carousel component section.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'images-alt2',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('carousel', 'slider', 'image', 'news'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register a featured post
@@ -191,8 +202,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Large image layout for featuring important content.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'format-image',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('featured', 'content', 'image', 'news', 'events', 'post'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register dark interstitial
@@ -202,8 +217,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Navy colored divider component, typically utilized to highlight facts and figures or breakup page monotony.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'align-center',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('featured', 'content', 'image', 'divider', 'dark'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register facts and figures
@@ -213,8 +232,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Informational section supporting both an image and supplementary factoids.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'align-pull-left',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('featured', 'facts', 'figures', 'numbers', 'image'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register testimonial carousel
@@ -224,8 +247,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Testimonial section with carousel functionality and image support.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'format-quote',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('featured', 'testimonial', 'quote', 'carousel', 'image'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register full bleed image
@@ -235,8 +262,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Large image section with caption for full width pages.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'cover-image',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('image', 'large', 'full'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register related content
@@ -246,8 +277,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Section typically found at the bottom of full-width page styles for links to supplementary pages.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'columns',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('related', 'content'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register hero
@@ -257,8 +292,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Traditional hero component typically deployed on all first-level landing pages.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('hero', 'image', 'heading'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register overlay hero
@@ -268,8 +307,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Dynamic hero component typically deployed on all first-level landing pages, featuring text overlay.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('hero', 'image', 'heading', 'landscape'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register section nav
@@ -279,8 +322,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Top level landing page subnavigation, typically found below the hero. Used for navigation within a site subdivision.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('list', 'section', 'sub', 'navigation'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register article grid
@@ -290,8 +337,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Layout dedicated to article display. Features several column layout styles and supports varying image sizes.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('layout', 'article', 'grid', 'image'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register bordered article row
@@ -301,8 +352,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Special article grid layout featuring borders.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('layout', 'bordered', 'article', 'row'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register article section
@@ -312,8 +367,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Layout dedicated to article display. Features several variants including a carousel.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('layout', 'article', 'section', 'carousel'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register media context
@@ -323,8 +382,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Traditional side-by-side layout for any style of media with cooresponding context.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('media', 'image', 'context', 'layout'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register hw image section
@@ -334,8 +397,11 @@ class StarterSite extends Timber\Site
     'description'     => __('Traditional side-by-side layout for any style of media with cooresponding context but in a nearly full-width display.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('media', 'image', 'context', 'layout', 'half', 'width'),
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // list section
@@ -345,8 +411,11 @@ class StarterSite extends Timber\Site
     'description'     => __('Basic layout and section dedicated for the display of groups of lists.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('list', 'section', 'unordered', 'layout'),
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register table
@@ -356,8 +425,11 @@ class StarterSite extends Timber\Site
     'description'     => __('Standard table layout with Colby API integrations for several data types.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('table', 'row', 'column', 'layout'),
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register image grid
@@ -367,8 +439,11 @@ class StarterSite extends Timber\Site
     'description'     => __('Layout dedicated to a bevy of image layout styles. Supports captions.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('image', 'row', 'column', 'layout', 'grid', 'caption'),
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register list context
@@ -378,8 +453,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Standard context component with accompanying large list.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('layout', 'list', 'context'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register overlay wide image
@@ -389,8 +468,11 @@ class StarterSite extends Timber\Site
     'description'     => __('Landscape image layout with context overlayed on a dimmed background.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('layout', 'image', 'overlay', 'landscape'),
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register context article grid
@@ -400,8 +482,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Article Grid accompanied by context, with the ability to pull posts directly.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('layout', 'context', 'article', 'grid'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    // register stat group
@@ -411,8 +497,12 @@ class StarterSite extends Timber\Site
     'description'     => __('Display style component for a group of statistics with optional context.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('layout', 'context', 'stat', 'grid', 'group'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    acf_register_block(array(
@@ -421,18 +511,40 @@ class StarterSite extends Timber\Site
     'description'     => __('A custom paragraph block.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('paragraph', 'body'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
 
    acf_register_block(array(
-    'name'            => 'image-paragraph',
-    'title'           => __('Image with Paragraph'),
-    'description'     => __('A custom image with paragraph block.'),
+    'name'            => 'image-text',
+    'title'           => __('Image with Text'),
+    'description'     => __('A custom image with text block.'),
     'render_callback' => 'my_acf_block_render_callback',
     'category'        => 'layout',
-    'icon'            => 'block-default',
+    'icon'              => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
     'keywords'        => array('paragraph', 'body', 'image'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
+   ));
+
+   acf_register_block(array(
+    'name'            => 'image',
+    'title'           => __('Image'),
+    'description'     => __('A custom image  block.'),
+    'render_callback' => 'my_acf_block_render_callback',
+    'category'        => 'layout',
+    'icon'              => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+    'keywords'        => array('image'),
+    'mode'	=> 'edit',
+    'supports'	=> array(
+		'align'		=> false,
+	)
    ));
   }
  }

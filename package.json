@@ -22,7 +22,8 @@
         "build:platform": "npm-run-all scripts:build tailwind:build",
         "watch": "npm run components:watch",
         "mix": "mix",
-        "mix:watch": "mix watch"
+        "mix:watch": "mix watch",
+        "mix:production": "mix --production"
     },
     "devDependencies": {
         "@babel/core": "^7.17.8",

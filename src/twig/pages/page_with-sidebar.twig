@@ -54,7 +54,8 @@
       </div>
     {% endif %}
     <div class="sidebar-page__main {% if post.type.name != 'post' %}xl:col-start-4 md:col-span-9{% else %}md:col-span-12{% endif %}">
-      <div class="wysiwyg">
+      <div class="wysiwyg
+      [&>.wp-block-paragraph+.wp-block-heading]:mt-20">
         {{ post.content }}
       </div>
     </div>

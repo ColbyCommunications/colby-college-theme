@@ -42,21 +42,6 @@
     }
 }
 
-/*
-        [&>ul+h2]:mt-20
-        [&>ul>li]:font-body [&>ul>li]:font-normal [&>ul>li]:text-16 [&>ul>li]:leading-130 [&>ul>li]:text-indigo-900 [&>ul>li]:list-disc [&>ul>li]:list-outside [&>ul>li]:ml-3 [&>ul>li+li]:mt-2
-        [&>ul>li>a]:underline hover:[&>ul>li>a]:no-underline hover:[&>ul>li>a]:text-indigo
-        [&>ol+h2]:mt-20
-        [&>ol>li]:font-body [&>ol>li]:font-normal [&>ol>li]:text-16 [&>ol>li]:leading-130 [&>ol>li]:text-indigo-900 [&>ol>li]:list-decimal [&>ol>li]:list-outside [&>ol>li]:ml-3 [&>ol>li+li]:mt-2
-        [&>ol>li>a]:underline hover:[&>ol>li>a]:no-underline hover:[&>ol>li>a]:text-indigo
-        
-        [&>figure+figure]:mt-20 md:[&>figure+figure]:mt-[100px] [&>figure+div]:mt-20 md:[&>figure+div]:mt-[100px] [&>figure+h2]:mt-16 md:[&>figure+h2]:mt-20
-        [&>hr]:border-t [&>hr]:border-solid [&>hr]:border-indigo-300 [&>hr]:my-16
-        [&>table+div]:mt-20 md:[&>table+div]:mt-[50px] [&>table+h2]:mt-20 [&>table+h3]:mt-6 [&>table+p]:mt-6 [&>table+table]:mt-20 md:[&>table+table]:mt-[50px]
-        [&>.article-section>div]:px-0 md:[&>.article-section>div]:px-0
-        
-        */
-
 .wysiwyg {
     h2,
     h3,
@@ -65,21 +50,17 @@
     h6 {
         @apply font-extended;
         @apply font-normal;
-        @apply clear-both;
     }
 
     h2 {
         @apply text-24;
-        @apply mb-2;
         @apply leading-110;
         @apply -tracking-3;
         @apply text-indigo;
-        @apply pt-4;
     }
 
     h3 {
         @apply text-20;
-        @apply mb-2;
         @apply leading-110;
         @apply -tracking-3;
         @apply text-indigo;
@@ -87,7 +68,6 @@
 
     h4 {
         @apply text-16;
-        @apply mb-2;
         @apply leading-110;
         @apply -tracking-3;
         @apply text-indigo;
@@ -95,7 +75,6 @@
 
     h5 {
         @apply text-14;
-        @apply mb-2;
         @apply font-bold;
         @apply leading-130;
         @apply -tracking-8;
@@ -105,7 +84,6 @@
 
     h6 {
         @apply text-12;
-        @apply mb-2;
         @apply leading-110;
         @apply -tracking-8;
         @apply text-azure;
@@ -113,7 +91,6 @@
     }
 
     p {
-        @apply mb-4;
         @apply font-normal;
         @apply font-body;
         @apply text-16;
@@ -121,8 +98,23 @@
         @apply leading-140;
     }
 
-    ul {
-        @apply mb-8;
+    .colby-paragraph-block {
+        @apply mb-20;
+
+        > p {
+            @apply mb-4;
+        }
+
+        > p:last-of-type {
+            @apply mb-0;
+        }
+    }
+
+    .wp-block-paragraph {
+        @apply mb-0;
+        > p {
+            @apply mb-4;
+        }
     }
 
     a {
@@ -159,22 +151,12 @@
         }
     }
 
-    img.alignleft {
-        @apply float-left;
-        @apply pr-2;
-        @apply pb-2;
-    }
-
-    figure {
-        @apply mb-8;
-    }
-
-    .wp-block-image {
-        margin-bottom: 1.5em;
-    }
-
-    div {
+    > div {
         @apply clear-both;
-        @apply mb-8;
+        @apply mb-20;
+    }
+
+    .wp-block-heading {
+        @apply mb-2;
     }
 }

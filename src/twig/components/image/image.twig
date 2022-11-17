@@ -1,0 +1,15 @@
+{% if in_component_library %}
+  {% set context = '@context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+{% endif %}
+
+{% import "macros.twig" as macros %}
+
+
+<div class="colby-image-block">
+    <figure>
+        <img src="{{ image['url'] }}" alt="{{ image['alt'] }}" />
+        <figcaption class="text-indigo text-12 pt-2">{{ caption }}</figcaption>
+    </figure>
+</div>
