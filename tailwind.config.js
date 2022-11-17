@@ -71,10 +71,8 @@ module.exports = {
             '-3': '-0.03em',
         },
         backgroundImage: {
-            hero__pattern:
-                'url("/wp-content/themes/colby-college-theme/src/images/hero__pattern.jpg")',
-            notfound__pattern:
-                'url("/wp-content/themes/colby-college-theme/src/images/miller3.jpeg")',
+            hero__pattern: 'url("~/src/images/hero__pattern.jpg")',
+            notfound__pattern: 'url("~/src/images/miller3.jpeg")',
         },
         listStyleType: {
             none: 'none',
