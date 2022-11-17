@@ -76,6 +76,13 @@ module.exports = {
             notfound__pattern:
                 'url("/wp-content/themes/colby-college-theme/src/images/miller3.jpeg")',
         },
+        listStyleType: {
+            none: 'none',
+            disc: 'disc',
+            decimal: 'decimal',
+            square: 'square',
+            circle: 'circle',
+        },
     },
     plugins: [],
 };

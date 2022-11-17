@@ -414,6 +414,26 @@ class StarterSite extends Timber\Site
     'icon'            => 'block-default',
     'keywords'        => array('layout', 'context', 'stat', 'grid', 'group'),
    ));
+
+   acf_register_block(array(
+    'name'            => 'paragraph',
+    'title'           => __('Paragraph'),
+    'description'     => __('A custom paragraph block.'),
+    'render_callback' => 'my_acf_block_render_callback',
+    'category'        => 'layout',
+    'icon'            => 'block-default',
+    'keywords'        => array('paragraph', 'body'),
+   ));
+
+   acf_register_block(array(
+    'name'            => 'image-paragraph',
+    'title'           => __('Image with Paragraph'),
+    'description'     => __('A custom image with paragraph block.'),
+    'render_callback' => 'my_acf_block_render_callback',
+    'category'        => 'layout',
+    'icon'            => 'block-default',
+    'keywords'        => array('paragraph', 'body', 'image'),
+   ));
   }
  }
 
@@ -575,7 +595,7 @@ new StarterSite();
 function theme_scripts()
 {
  wp_enqueue_style('hvh', get_template_directory_uri() . '/dist/styles/scripts.css', array(), date("H:i:s"));
- wp_enqueue_style('tailwind', get_template_directory_uri() . '/dist/styles/tailwind.css', array(), date("H:i:s"));
+//  wp_enqueue_style('tailwind', get_template_directory_uri() . '/dist/styles/tailwind.css', array(), date("H:i:s"));
  wp_enqueue_script('main', get_template_directory_uri() . '/dist/scripts.js', array(), date("H:i:s"), true);
 }
 add_action('wp_enqueue_scripts', 'theme_scripts');
@@ -1176,3 +1196,26 @@ function stop_redirect_guess()
 {
  return false;
 }
+
+
+function wporg_block_wrapper( $block_content, $block ) {
+	if ( $block['blockName'] === 'core/paragraph' ) {
+		$content = '<div class="wp-block-paragraph">';
+		$content .= $block_content;
+		$content .= '</div>';
+		return $content;
+	} elseif ( $block['blockName'] === 'core/heading' ) {
+		$content = '<div class="wp-block-heading">';
+		$content .= $block_content;
+		$content .= '</div>';
+		return $content;
+	} elseif ( $block['blockName'] === 'core/image' ) {
+		$content = '<div class="wp-block-image">';
+		$content .= $block_content;
+		$content .= '</div>';
+		return $content;
+	}
+	return $block_content;
+}
+
+add_filter( 'render_block', 'wporg_block_wrapper', 10, 2 );

@@ -1,35 +1,12 @@
-@import 'global/reset';
+// @import 'global/reset';
+// @import 'global/fonts';
+// @import 'utilities/typography';
+// @import 'utilities/buttons';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 @import 'global/variables';
-@import 'global/fonts';
 @import 'global/layout';
-@import 'utilities/typography';
-@import 'utilities/buttons';
-
-.sidebar-page__main {
-    ul:not(.pagination__container):not(.directiory_information) {
-        list-style-type: disc;
-        padding: 0 0 0 40px;
-    }
-
-    ol {
-        list-style-type: decimal;
-        padding: 0 0 0 40px;
-    }
-
-    ul:not(.pagination__container):not(.directiory_information),
-    ol {
-        ul {
-            list-style-type: circle;
-        }
-
-        ul,
-        ol {
-            ul {
-                list-style-type: square;
-            }
-        }
-    }
-}
 
 // gravity form
 #gform_wrapper_1 {
@@ -62,5 +39,142 @@
         cursor: pointer;
         border-radius: 4px;
         text-decoration: underline;
+    }
+}
+
+/*
+        [&>ul+h2]:mt-20
+        [&>ul>li]:font-body [&>ul>li]:font-normal [&>ul>li]:text-16 [&>ul>li]:leading-130 [&>ul>li]:text-indigo-900 [&>ul>li]:list-disc [&>ul>li]:list-outside [&>ul>li]:ml-3 [&>ul>li+li]:mt-2
+        [&>ul>li>a]:underline hover:[&>ul>li>a]:no-underline hover:[&>ul>li>a]:text-indigo
+        [&>ol+h2]:mt-20
+        [&>ol>li]:font-body [&>ol>li]:font-normal [&>ol>li]:text-16 [&>ol>li]:leading-130 [&>ol>li]:text-indigo-900 [&>ol>li]:list-decimal [&>ol>li]:list-outside [&>ol>li]:ml-3 [&>ol>li+li]:mt-2
+        [&>ol>li>a]:underline hover:[&>ol>li>a]:no-underline hover:[&>ol>li>a]:text-indigo
+        
+        [&>figure+figure]:mt-20 md:[&>figure+figure]:mt-[100px] [&>figure+div]:mt-20 md:[&>figure+div]:mt-[100px] [&>figure+h2]:mt-16 md:[&>figure+h2]:mt-20
+        [&>hr]:border-t [&>hr]:border-solid [&>hr]:border-indigo-300 [&>hr]:my-16
+        [&>table+div]:mt-20 md:[&>table+div]:mt-[50px] [&>table+h2]:mt-20 [&>table+h3]:mt-6 [&>table+p]:mt-6 [&>table+table]:mt-20 md:[&>table+table]:mt-[50px]
+        [&>.article-section>div]:px-0 md:[&>.article-section>div]:px-0
+        
+        */
+
+.wysiwyg {
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-extended;
+        @apply font-normal;
+        @apply clear-both;
+    }
+
+    h2 {
+        @apply text-24;
+        @apply mb-2;
+        @apply leading-110;
+        @apply -tracking-3;
+        @apply text-indigo;
+        @apply pt-4;
+    }
+
+    h3 {
+        @apply text-20;
+        @apply mb-2;
+        @apply leading-110;
+        @apply -tracking-3;
+        @apply text-indigo;
+    }
+
+    h4 {
+        @apply text-16;
+        @apply mb-2;
+        @apply leading-110;
+        @apply -tracking-3;
+        @apply text-indigo;
+    }
+
+    h5 {
+        @apply text-14;
+        @apply mb-2;
+        @apply font-bold;
+        @apply leading-130;
+        @apply -tracking-8;
+        @apply text-azure;
+        @apply uppercase;
+    }
+
+    h6 {
+        @apply text-12;
+        @apply mb-2;
+        @apply leading-110;
+        @apply -tracking-8;
+        @apply text-azure;
+        @apply uppercase;
+    }
+
+    p {
+        @apply mb-4;
+        @apply font-normal;
+        @apply font-body;
+        @apply text-16;
+        @apply text-indigo-900;
+        @apply leading-140;
+    }
+
+    ul {
+        @apply mb-8;
+    }
+
+    a {
+        @apply underline;
+        @apply hover:no-underline;
+        @apply hover:text-indigo;
+    }
+
+    ul:not(.pagination__container):not(.directiory_information) {
+        @apply list-disc;
+        @apply pl-10;
+        @apply text-indigo;
+    }
+
+    ol {
+        @apply list-decimal;
+        @apply pl-10;
+        @apply text-indigo;
+    }
+
+    ul:not(.pagination__container):not(.directiory_information),
+    ol {
+        ul {
+            @apply list-circle;
+            @apply text-indigo;
+        }
+
+        ul,
+        ol {
+            ul {
+                @apply list-square;
+                @apply text-indigo;
+            }
+        }
+    }
+
+    img.alignleft {
+        @apply float-left;
+        @apply pr-2;
+        @apply pb-2;
+    }
+
+    figure {
+        @apply mb-8;
+    }
+
+    .wp-block-image {
+        margin-bottom: 1.5em;
+    }
+
+    div {
+        @apply clear-both;
+        @apply mb-8;
     }
 }

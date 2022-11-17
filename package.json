@@ -20,7 +20,9 @@
         "components:build": "run-s scripts:build fractal:build",
         "build": "npm-run-all scripts:build components:build tailwind:build",
         "build:platform": "npm-run-all scripts:build tailwind:build",
-        "watch": "npm run components:watch"
+        "watch": "npm run components:watch",
+        "mix": "mix",
+        "mix:watch": "mix watch"
     },
     "devDependencies": {
         "@babel/core": "^7.17.8",
@@ -34,21 +36,20 @@
         "expose-loader": "^3.1.0",
         "file-loader": "^6.2.0",
         "img-loader": "^4.0.0",
+        "laravel-mix": "^6.0.49",
         "mini-css-extract-plugin": "^2.6.0",
         "node-sass": "^7.0.1",
         "npm-run-all": "^4.1.5",
         "optimize-css-assets-webpack-plugin": "^6.0.1",
         "postcss-loader": "^6.2.1",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.56.1",
         "sass-lint": "^1.13.1",
         "sass-lint-webpack": "^1.0.4",
         "sass-loader": "^12.6.0",
         "style-loader": "^3.3.1",
         "svg-spritemap-webpack-plugin": "^4.4.0",
-        "terser-webpack-plugin": "^5.3.1",
-        "webpack": "^5.70.0",
-        "webpack-cli": "^4.9.2",
-        "webpack-merge": "^5.8.0",
-        "webpack-notifier": "^1.15.0"
+        "terser-webpack-plugin": "^5.3.1"
     },
     "dependencies": {
         "@algolia/autocomplete-js": "^1.7.3",
@@ -61,13 +62,14 @@
         "fuse.js": "^6.6.2",
         "gsap": "^3.10.0",
         "mitt": "^3.0.0",
+        "mix-tailwindcss": "^1.3.0",
         "tailwindcss": "^3.1.4",
         "vue": "^3.2.31",
         "vue-final-modal": "^3.4.10",
+        "vue-instantsearch": "^4.3.3",
         "vue-loader": "^17.0.0",
         "vue-template-compiler": "^2.6.14",
         "waypoints": "^4.0.1",
-        "yt-player": "^3.6.1",
-        "vue-instantsearch": "^4.3.3"
+        "yt-player": "^3.6.1"
     }
 }

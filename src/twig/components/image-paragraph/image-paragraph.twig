@@ -1,0 +1,23 @@
+{% if in_component_library %}
+  {% set context = '@context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+{% endif %}
+
+{% import "macros.twig" as macros %}
+
+<div class="fdsafdsa flex {{ (align_image == 'left' or align_image == 'right') ? 'flex-row' : 'flex-col' }}" >
+    {% if image and (align_image == 'left' or align_image == 'none') %}
+        <div class="w-1/4">
+        <img src="{{image['url']}}" />
+        </div>
+    {% endif %}
+    <div class="w-3/4">
+        {{ paragraph_text }}
+    </div>
+    {% if image and ( align_image == 'right') %}
+        <div>
+        <img src="{{image['url']}}" />
+        </div>
+    {% endif %}
+</div>
