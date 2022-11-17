@@ -13,7 +13,9 @@
   {% endif %}
 >
   {% for item in panels %}
-    <article class="accordion__panel [&>h3>button]:odd:bg-gray-100" data-accordion-panel>
+    <code v-pre>
+    <article class="accordion__panel [&:nth-of-type(odd)>h3>button]:bg-gray-100 " data-accordion-panel>
+    </code>
       <h3 class="accordion__header font-extended font-normal text-20 leading-110 -tracking-3 text-indigo">
         <button
             class="accordion__button"
@@ -30,11 +32,13 @@
           class="accordion__content"
           data-accordion-content
         >
+          <code v-pre>
           {% include wysiwyg with {
             post: {
               content: item.content
             }
           } %}
+          </code>
         </div>
       </div>
     </article>
