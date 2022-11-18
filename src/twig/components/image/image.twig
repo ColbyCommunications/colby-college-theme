@@ -6,8 +6,7 @@
 
 {% import "macros.twig" as macros %}
 
-
-<div class="colby-image-block">
+<div class="colby-image-block {{ (align_center[0] == 'yes') ? 'flex justify-center' : ''}}">
     <figure>
         <img src="{{ image['url'] }}" alt="{{ image['alt'] }}" />
         <figcaption class="text-indigo text-12 pt-2">{{ caption }}</figcaption>
