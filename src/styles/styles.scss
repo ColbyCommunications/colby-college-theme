@@ -135,7 +135,14 @@
     }
 }
 
-/* gravity form */
+/* Directory profile page */
+.directory-person-main {
+    .colby-table-block {
+        @apply mt-2;
+    }
+}
+
+/* Directory Gravity Form */
 #gform_wrapper_1 {
     input:not([type='file']):not([type='submit']) {
         border: 1px solid #b7c2d5;
