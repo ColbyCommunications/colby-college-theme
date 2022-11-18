@@ -19,6 +19,7 @@
   department-code="{{ department_code }}"
   :items-per-page="{{ items_per_page }}"
 >
+<div class="colby-table-block">
   <table class="table w-full">
     <tbody>
       {% if headings %}
@@ -30,7 +31,7 @@
       {% endif %}
       {% for item in items %}
         <tr class="w-full h-12 md:h-10 odd:bg-gray-100">
-          <td class="px-6 py-2 [&>a]:no-underline [&>a]:hover:underline">
+          <td class="px-6 py-2">
             <{% if item.link %}a{% else %}span{% endif %}
               class="inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140 {% if item.link %}text-indigo hover:underline{% else %}text-indigo-800{% endif %}"
               {% if item.link %}href="{{ item.link.url }}"{% endif %}
@@ -62,4 +63,5 @@
       {% endfor %}
     </tbody>
   </table>
+  </div>
 </component>

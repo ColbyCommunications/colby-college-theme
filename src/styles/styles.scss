@@ -159,4 +159,15 @@
     .wp-block-heading {
         @apply mb-2;
     }
+
+    .colby-table-block {
+        td {
+            a {
+                @apply no-underline;
+            }
+            a:hover {
+                @apply underline;
+            }
+        }
+    }
 }

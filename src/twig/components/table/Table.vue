@@ -57,7 +57,7 @@
             </div>
         </div>
     </div>
-    <table v-if="renderApi || externalItems" class="table w-full">
+    <table v-if="renderApi || externalItems" class="table w-full colby-table-block">
         <tbody>
             <tr v-if="headings">
                 <th
@@ -67,7 +67,7 @@
                 />
             </tr>
             <tr v-for="(item, index) in paginatedItems" class="w-full h-12 md:h-10 odd:bg-gray-100">
-                <td class="px-6 py-2 [&>a]:no-underline [&>a]:hover:underline">
+                <td class="px-6 py-2">
                     <a
                         class="inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140"
                         :class="{
