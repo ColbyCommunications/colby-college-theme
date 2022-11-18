@@ -1,47 +1,10 @@
-// @import 'global/reset';
-// @import 'global/fonts';
-// @import 'utilities/typography';
-// @import 'utilities/buttons';
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import 'global/variables';
 @import 'global/layout';
 
-// gravity form
-#gform_wrapper_1 {
-    input:not([type='file']):not([type='submit']) {
-        border: 1px solid #b7c2d5;
-        border-radius: 3px;
-    }
-    input[type='submit'] {
-        background-color: #002878;
-        border: 2px solid #002878;
-        color: #fff;
-        padding: 5px 12px;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-    input[type='submit']:hover {
-        background-color: #fff;
-        border: 2px solid #002878;
-        color: #003878;
-        padding: 5px 12px;
-        cursor: pointer;
-        border-radius: 4px;
-        text-decoration: underline;
-    }
-    input[type='submit']:focus {
-        background-color: #fff;
-        border: 2px solid #002878;
-        color: #003878;
-        padding: 5px 12px;
-        cursor: pointer;
-        border-radius: 4px;
-        text-decoration: underline;
-    }
-}
-
+/* Page w/ sidebar content styles */
 .wysiwyg {
     h2,
     h3,
@@ -169,5 +132,39 @@
                 @apply underline;
             }
         }
+    }
+}
+
+/* gravity form */
+#gform_wrapper_1 {
+    input:not([type='file']):not([type='submit']) {
+        border: 1px solid #b7c2d5;
+        border-radius: 3px;
+    }
+    input[type='submit'] {
+        background-color: #002878;
+        border: 2px solid #002878;
+        color: #fff;
+        padding: 5px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    input[type='submit']:hover {
+        background-color: #fff;
+        border: 2px solid #002878;
+        color: #003878;
+        padding: 5px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+        text-decoration: underline;
+    }
+    input[type='submit']:focus {
+        background-color: #fff;
+        border: 2px solid #002878;
+        color: #003878;
+        padding: 5px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+        text-decoration: underline;
     }
 }

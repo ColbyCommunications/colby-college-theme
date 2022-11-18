@@ -1,5 +1,4 @@
-@import "~foundation-sites/scss/foundation";
-@import 'functions';
+@import '~foundation-sites/scss/foundation';
 @import '../mixins/mixin-typography';
 @import '../mixins/mixin-buttons';
 
@@ -17,11 +16,11 @@ $global-max-width: rem-calc(1400);
 $grid-row-width: $global-width;
 $grid-column-count: 12;
 $grid-column-gutter: (
-  small: 40px,
-  large: 30px,
+    small: 40px,
+    large: 30px,
 );
 $grid-column-align-edge: true;
-$grid-column-alias: "columns";
+$grid-column-alias: 'columns';
 $block-grid-max: 8;
 
 // Easing

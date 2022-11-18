@@ -1,0 +1,48 @@
+{% if in_component_library %}
+  {% set wysiwyg = '@wysiwyg' %}
+{% else %}
+  {% set wysiwyg = 'wysiwyg.twig' %}
+{% endif %}
+
+<component
+  class="accordion"
+  is="accordion"
+  v-slot="accordion"
+  {% if single %}
+    :single="{{ single }}"
+  {% endif %}
+>
+<div class="colby-accordion-block">
+  {% for item in panels %}
+    <code v-pre>
+    <article class="accordion__panel [&:nth-of-type(odd)>h3>button]:bg-gray-100 " data-accordion-panel>
+    </code>
+      <h3 class="accordion__header font-extended font-normal text-20 leading-110 -tracking-3 text-indigo">
+        <button
+            class="accordion__button"
+            data-accordion-button
+            :aria-expanded="accordion.active.includes({{ loop.index0 }}) ? true : false"
+            @click="accordion.toggleActive({{ loop.index0 }}, $event)"
+        >{{ item.heading }}</button>
+      </h3>
+      <div
+        class="accordion__window"
+        data-accordion-window
+      >
+        <div
+          class="accordion__content"
+          data-accordion-content
+        >
+          <code v-pre>
+          {% include wysiwyg with {
+            post: {
+              content: item.content
+            }
+          } %}
+          </code>
+        </div>
+      </div>
+    </article>
+  {% endfor %}
+  <div>
+</component>
