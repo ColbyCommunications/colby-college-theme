@@ -8,7 +8,7 @@
 
 <div class="colby-image-block {{ (align_center[0] == 'yes') ? 'flex justify-center' : ''}}" >
     <figure style="width: {{ image_scale }}%;">
-        <img src="{{ image['url'] }}" alt="{{ image['alt'] }}" />
+        <img src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
         <figcaption class="text-indigo text-12 pt-2">{{ caption }}</figcaption>
     </figure>
 </div>
