@@ -117,6 +117,10 @@
         @apply mb-20;
     }
 
+    > div:last-child {
+        @apply mb-0;
+    }
+
     .wp-block-heading {
         @apply mb-2;
     }
