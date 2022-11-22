@@ -139,7 +139,8 @@
     .colby-paragraph-block {
         @apply mb-20;
 
-        > p {
+        > p,
+        > table {
             @apply mb-4;
         }
 
