@@ -6,20 +6,85 @@
 
 {% import "macros.twig" as macros %}
 
-<div class="colby-image-text-block flex {{ (align_image == 'left' or align_image == 'right') ? 'flex-col md:flex-row' : 'flex-col' }}" >
-    {% if image and (align_image == 'left' or align_image == 'none') %}
-        <div class="{{ (align_image == 'left') ? 'w-full md:w-1/4 md:mr-4 mb-4 md:mb-0' : '' }} {{ (align_image == 'none') ? 'mb-4' : '' }}">
-          <img src="{{image['url']}}" alt="{{ image['alt'] }}" />
-        </div>
-    {% endif %}
-    <div class="
-      {{ (align_image == 'left' or align_image == 'right') ? 'w-full md:w-3/4' : '' }} 
-    ">
+<div class="colby-image-text-block">
+{% set width100 = (image['width']) %}
+{% set width75 = (image['width'] * 0.75) %}
+{% set width50 = (image['width'] * 0.50) %}
+{% set width25 = (image['width'] * 0.25) %}
+
+  {% if wrapping_text == 'wrap' %}
+    {% if (image or image_path) and (align_image == 'left') %}
+        <div class="flex flex-col md:block">
+        {% if image_scale == '100' %}
+          <img style="width: {{width100}}px;" class="self-center md:!self-start !mr-4 float-left" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+        {% if image_scale == '75' %}
+          <img style="width: {{width75}}px;" class="self-center md:!self-start !mr-4 float-left" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+        {% if image_scale == '50' %}
+          <img style="width: {{width50}}px;" class="self-center md:!self-start !mr-4 float-left" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+        {% if image_scale == '25' %}
+          <img style="width: {{width25}}px;" class="self-center md:!self-start !mr-4 float-left" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
         {{ paragraph_text }}
-    </div>
-    {% if image and ( align_image == 'right') %}
-        <div class="{{ (align_image == 'right') ? 'w-full md:w-1/4 md:ml-4' : '' }}">
-          <img src="{{image['url']}}" alt="{{ image['alt'] }}" />
         </div>
     {% endif %}
+    {% if (image or image_path) and (align_image == 'right') %}
+        <div class="flex flex-col md:block">
+        {% if image_scale == '100' %}
+          <img style="width: {{width100}}px;" class="self-center md:!self-start !ml-4 float-right" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+        {% if image_scale == '75' %}
+          <img style="width: {{width75}}px;" class="self-center md:!self-start !ml-4 float-right" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+        {% if image_scale == '50' %}
+          <img style="width: {{width50}}px;" class="self-center md:!self-start !ml-4 float-right" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+        {% if image_scale == '25' %}
+          <img style="width: {{width25}}px;" class="self-center md:!self-start !ml-4 float-right" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+        {{ paragraph_text }}
+        </div>
+    {% endif %}
+  {% else %}
+    {% if (image or image_path) and (align_image == 'left') %}
+        <div class="flex flex-col lg:flex-row">
+        {% if image_scale == '100' %}
+          <img style="width: {{width100}}px; margin: 0 auto;" class="self-center md:self-start !mr-4" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+        {% if image_scale == '75' %}
+          <img style="width: {{width75}}px; margin: 0 auto;" class="self-start md:self-start !mr-4" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+        {% if image_scale == '50' %}
+          <img style="width: {{width50}}px; margin: 0 auto;" class="self-start md:self-start !mr-4" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+        {% if image_scale == '25' %}
+          <img style="width: {{width25}}px; margin: 0 auto;" class="self-start md:self-start !mr-4" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+          <div class="flex flex-col">
+            {{ paragraph_text }}
+          </div>
+        </div>
+    {% endif %}
+    {% if (image or image_path) and (align_image == 'right') %}
+        <div class="flex flex-col md:!flex-row-reverse">
+        {% if image_scale == '100' %}
+          <img style="width: {{width100}}px; margin: 0 auto;" class="self-center md:self-start !ml-4" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+        {% if image_scale == '75' %}
+          <img style="width: {{width75}}px; margin: 0 auto;" class="self-center md:self-start !ml-4" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+        {% if image_scale == '50' %}
+          <img style="width: {{width50}}px; margin: 0 auto;" class="self-center md:self-start !ml-4" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+        {% if image_scale == '25' %}
+          <img style="width: {{width25}}px; margin: 0 auto;" class="self-center md:self-start !ml-4" src="{{ (image_path) ? image_path : image['url'] }}" alt="{{ image['alt'] }}" />
+        {% endif %}
+          <div class="flex flex-col">
+            {{ paragraph_text }}
+          </div>
+        </div>
+    {% endif %}
+  {% endif %}
 </div>
