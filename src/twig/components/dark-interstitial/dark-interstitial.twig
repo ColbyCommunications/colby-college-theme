@@ -33,10 +33,10 @@
     <div class="dark-interstitial__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto mt-12">
       <div class="dark-interstitial__figures md:col-start-3 md:col-span-8 grid grid-cols-8 gap-x-10 max-w-screen-xl w-full">
         {% for fact in facts %}
-          <div class="dark-interstitial__fact col-span-4 space-y-3">
+          <component is="dark-interstitial-fact" class="dark-interstitial__fact col-span-4 space-y-3">
             <h3 class="font-extended font-normal text-36 text-canary leading-100">{{ fact.figure }}</h3>
             <p class="font-body font-normal text-14 text-indigo-200 leading-130">{{ fact.paragraph }}</p>
-          </div>
+          </component>
         {% endfor %}
       </div>
     </div>

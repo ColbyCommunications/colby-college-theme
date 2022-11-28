@@ -5453,6 +5453,11 @@ latest-version@^5.1.0:
   dependencies:
     package-json "^6.3.0"
 
+letterizejs@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/letterizejs/-/letterizejs-2.0.1.tgz#ff691da3cca70b669c97347fd2ced9648ddc2fa2"
+  integrity sha512-ofKV11GGUdEZELXSwR97AteC3Uv9cmLt7IB+L5BLyMp8khDBCwGs+B+c6FHoL/n7vAPC2aeva5WU3gdOuFIhmA==
+
 levn@^0.3.0, levn@~0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/levn/-/levn-0.3.0.tgz#3b09924edf9f083c0490fdd4c0bc4421e04764ee"

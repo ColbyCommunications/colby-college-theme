@@ -76,7 +76,7 @@
   {% set headingTag = 'h2' %}
 {% endif %}
 
-<div class="text-group">
+<component is="text-group" class="text-group text-group--animated">
   {% if subheading %}
     <{{ subheadingTag }} class="text-group__subheading font-extended font-bold {{ subheadingSize }} leading-130 tracking-8 {{ textAlign }} {{ subheadingColor }} uppercase">{{ subheading }}</{{ subheadingTag }}>
   {% endif %}
@@ -86,7 +86,7 @@
   {% if paragraph %}
     <p class="text-group__p font-body font-normal {{ paragraphSizeMobile }} {{ paragraphSize }} leading-130 {{ textAlign }} {{ paragraphColor }} mt-2">{{ paragraph }}</p>
   {% endif %}
-</div>
+</component>
 {% endmacro %}
 
 {% macro button(size, type, arrow, transparentBg, url, title, reverse) %}
@@ -141,7 +141,7 @@
   {% set borderColor = 'border-transparent' %}
 {% endif  %}
 
-<a class="btn group inline-flex flex-row items-center {{ space }} rounded border border-solid {{ borderColor }} font-body font-normal {{ textSize }} leading-130 {{ textColor }} {% if not transparentBg %}{{ backgroundColor }} {{ hoverBackgroundColor }} {{ focusBackgroundColor }}{% endif %} focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] {{ paddingY }} {{ paddingX }} transition-all duration-200 ease-in-out" href="{{ url }}">
+<a class="btn group inline-flex flex-row items-center {{ space }} rounded border border-solid {{ borderColor }} font-body font-normal {{ textSize }} leading-130 !no-underline {{ textColor }} {% if not transparentBg %}{{ backgroundColor }} {{ hoverBackgroundColor }} {{ focusBackgroundColor }}{% endif %} focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] {{ paddingY }} {{ paddingX }} transition-all duration-200 ease-in-out" href="{{ url }}">
   {% if arrow and not reverse %}
     <svg class="btn__arrow {{ arrowWidth }} {{ arrowHeight }} {{ arrowColor }}" viewBox="0 0 12 12" style="enable-background:new 0 0 12 12" xml:space="preserve">
       <path d="M10 1H.7V0H12v11.7h-1V1.4L.7 12l-.7-.7L10 1z" style="fill-rule:evenodd; clip-rule:evenodd;"/>

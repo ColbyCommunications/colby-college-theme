@@ -14,6 +14,13 @@ import Search from './twig/components/search/Search.vue';
 import Modal from './twig/components/modal/Modal.vue';
 import Accordion from './twig/components/accordion/Accordion.vue';
 
+// Animated
+import TextGroup from './twig/components/text-group/TextGroup.vue';
+import ButtonGroup from './twig/components/button-group/ButtonGroup.vue';
+import SectionNav from './twig/components/section-nav/SectionNav.vue';
+import DarkInterstitialFact from './twig/components/dark-interstitial/DarkInterstitialFact.vue';
+import SubpageNav from './twig/components/subpage-nav/SubpageNav.vue';
+
 import './styles/styles.scss';
 
 const emitter = mitt();
@@ -31,6 +38,11 @@ const app = createApp({
     VueFinalModal,
     ModalsContainer,
     Accordion,
+    TextGroup,
+    ButtonGroup,
+    SectionNav,
+    DarkInterstitialFact,
+    SubpageNav
   },
 });
 
