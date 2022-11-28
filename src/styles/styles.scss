@@ -155,6 +155,12 @@
             @apply mb-0;
         }
     }
+
+    .colby-image-text-block {
+        p {
+            @apply mb-4;
+        }
+    }
 }
 
 /* Directory profile page */

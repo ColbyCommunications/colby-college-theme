@@ -20,9 +20,7 @@ jobs:
 
       - uses: borales/actions-yarn@v3.0.0
         with:
-          cmd: build
-      
-      - run: sudo mv dist/styles/tailwind.css fractal/styles/tailwind.css
+          cmd: components:build
 
       - name: Deploy to GitHub Pages
         if: success()
