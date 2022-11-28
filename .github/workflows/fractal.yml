@@ -20,7 +20,7 @@ jobs:
 
       - uses: borales/actions-yarn@v3.0.0
         with:
-          cmd: build
+          cmd: components:build
       
       - run: sudo mv dist/styles/tailwind.css fractal/styles/tailwind.css
 
