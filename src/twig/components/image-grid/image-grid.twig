@@ -3,7 +3,7 @@
 <div class="image-grid grid grid-cols-8 gap-10 max-w-screen-xl w-full">
   {% for image in images %}
     <div class="image-grid__item col-span-8 {% if not (image_orientation == 'landscape') %}md:col-span-4{% endif %}">
-      <div class="image-grid__image relative {% if image_orientation == 'landscape' %}pb-[69.04761904761905%] md:pb-[48.86363636363636%]{% elseif image_orientation == 'rectangle' %}pb-[69.04761904761905%]{% else %}pb-[100%]{% endif %}">
+      <div class="image-grid__image relative {% if image_orientation == 'landscape' %}pb-[69.04761904761905%] md:pb-[48.86363636363636%]{% elseif image_orientation == 'rectangle' %}pb-[69.04761904761905%]{% elseif image_orientation == 'portrait' %}pb-[152.63157894736844%]{% else %}pb-[100%]{% endif %}">
         {% if image_orientation == 'landscape' %}
           {{ macros.picture(
             'absolute w-full h-full object-cover',
@@ -11,6 +11,16 @@
             image.src,
             image.image.sizes.Landscape,
             image.image.sizes.Landscape_mobile,
+            image.alt,
+            in_component_library
+          ) }}
+        {% elseif image_orientation == 'portrait' %}
+          {{ macros.picture(
+            'absolute w-full h-full object-cover',
+            image.srcset,
+            image.src,
+            image.image.sizes.Portrait,
+            image.image.sizes.Portrait_mobile,
             image.alt,
             in_component_library
           ) }}
