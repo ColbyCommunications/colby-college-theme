@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-5 w-full flex items-center border-b border-black">
+    <div class="mb-5 w-full flex items-center border-b border-black pb-4">
         <div v-if="state" :class="`${suit()} w-full`">
             <slot
                 :current-refinement="currentRefinement"
