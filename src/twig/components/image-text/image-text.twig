@@ -30,7 +30,7 @@
   {% if wrapping_text == 'wrap' %}
     {% if (image) and (align_image == 'left') %}
         <div class="flex flex-col md:block">
-          <div style="width: {{image_width}}px;" class="self-center md:!mr-4 float-left {{ media_caption ? '!mb-4' : ''}}">
+          <div style="width: {{image_width}}px;" class="self-center md:!mr-4 !mb-4 float-left {{ media_caption ? '!mb-4' : ''}}">
             <img src="{{ image['url'] }}" alt="{{ image['alt'] }}" />
             {% if media_caption %}
               <figcaption class="text-center text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
@@ -41,7 +41,7 @@
     {% endif %}
     {% if (image_path) and (align_image == 'left') %}
          <div class="flex flex-col md:block">
-          <div style="width: {{image_path_width}}px;" class="self-center md:!mr-4 float-left {{ caption ? '!mb-4' : ''}}">
+          <div style="width: {{image_path_width}}px;" class="self-center md:!mr-4 !mb-4 float-left {{ caption ? '!mb-4' : ''}}">
               <img src="{{ image_path }}" />
             {% if caption %}
               <figcaption class="text-center text-indigo text-12 pt-2">{{ caption }}</figcaption>
@@ -52,7 +52,7 @@
     {% endif %}
     {% if (image) and (align_image == 'right') %}
         <div class="flex flex-col md:block">
-          <div style="width: {{image_width}}px;" class="self-center md:!ml-4 float-right {{ media_caption ? '!mb-4' : ''}}">
+          <div style="width: {{image_width}}px;" class="self-center md:!ml-4 !mb-4 float-right {{ media_caption ? '!mb-4' : ''}}">
             <img src="{{ image['url'] }}" alt="{{ image['alt'] }}" />
             {% if media_caption %}
               <figcaption class="text-center text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
@@ -63,7 +63,7 @@
     {% endif %}
         {% if (image_path) and (align_image == 'right') %}
         <div class="flex flex-col md:block">
-          <div style="width: {{image_path_width}}px;" class="self-center md:!ml-4 float-right {{ caption ? '!mb-4' : ''}}">
+          <div style="width: {{image_path_width}}px;" class="self-center md:!ml-4 !mb-4 float-right {{ caption ? '!mb-4' : ''}}">
               <img src="{{ image_path }}" />
             {% if caption %}
               <figcaption class="text-center text-indigo text-12 pt-2">{{ caption }}</figcaption>
