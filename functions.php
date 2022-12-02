@@ -1419,6 +1419,11 @@ function wporg_block_wrapper( $block_content, $block )
         $content .= $block_content;
         $content .= '</div>';
         return $content;
+    } elseif ($block['blockName'] === 'core/table' ) {
+        $content = '<div class="wp-block-table">';
+        $content .= $block_content;
+        $content .= '</div>';
+        return $content;
     }
     return $block_content;
 }

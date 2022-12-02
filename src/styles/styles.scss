@@ -154,6 +154,12 @@
         ol:last-child {
             @apply mb-0;
         }
+
+        table,
+        tr,
+        td {
+            border: 1px solid #ccc;
+        }
     }
 
     .colby-image-text-block {
