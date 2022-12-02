@@ -256,7 +256,7 @@
         async mounted() {
             // Seperate call to the majors and minors api specifically to populate the Course catalog filter
             if (this.api == 'Course Catalogue') {
-                await axios.get('https://colby.edu/endpoints/v1/majorsminors/').then((outputa) => {
+                await axios.get('https://colby.edu/endpoints/v1/majorsminors').then((outputa) => {
                     this.filterDepartments = outputa.data;
                 });
             }
