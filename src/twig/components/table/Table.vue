@@ -257,7 +257,7 @@
             // Seperate call to the majors and minors api specifically to populate the Course catalog filter
             if (this.api == 'Course Catalogue') {
                 await axios
-                    .get('https://www.colby.edu/endpoints/v1/majorsminors')
+                    .get('https://www.colby.edu/endpoints/v1/majorsminors/')
                     .then((outputa) => {
                         this.filterDepartments = outputa.data;
                     });
@@ -266,15 +266,15 @@
             if (this.renderApi) {
                 switch (this.api) {
                     case 'Department Courses':
-                        this.endpoint = 'https://www.colby.edu/endpoints/v1/courses';
+                        this.endpoint = 'https://www.colby.edu/endpoints/v1/courses/';
                         this.heading = `${this.departmentCode} Department Courses`;
                         break;
                     case 'Course Catalogue':
-                        this.endpoint = 'https://www.colby.edu/endpoints/v1/courses';
+                        this.endpoint = 'https://www.colby.edu/endpoints/v1/courses/';
                         this.heading = this.api;
                         break;
                     case 'Majors and Minors':
-                        this.endpoint = 'https://www.colby.edu/endpoints/v1/majorsminors';
+                        this.endpoint = 'https://www.colby.edu/endpoints/v1/majorsminors/';
                         this.heading = this.api;
                         break;
                 }
