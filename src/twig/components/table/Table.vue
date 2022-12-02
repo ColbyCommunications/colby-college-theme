@@ -264,15 +264,15 @@
             if (this.renderApi) {
                 switch (this.api) {
                     case 'Department Courses':
-                        this.endpoint = 'https://colby.edu/endpoints/v1/courses/';
+                        this.endpoint = 'https://colby.edu/endpoints/v1/courses';
                         this.heading = `${this.departmentCode} Department Courses`;
                         break;
                     case 'Course Catalogue':
-                        this.endpoint = 'https://colby.edu/endpoints/v1/courses/';
+                        this.endpoint = 'https://colby.edu/endpoints/v1/courses';
                         this.heading = this.api;
                         break;
                     case 'Majors and Minors':
-                        this.endpoint = 'https://colby.edu/endpoints/v1/majorsminors/';
+                        this.endpoint = 'https://colby.edu/endpoints/v1/majorsminors';
                         this.heading = this.api;
                         break;
                 }
