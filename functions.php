@@ -661,6 +661,7 @@ class StarterSite extends Timber\Site
         $context['global_address'] = get_field('address', 'options');
         $context['global_phone']   = get_field('phone', 'options');
         $context['global_social']  = get_field('social_media', 'options');
+        $context['global_alert']   = get_field('alert', 'options');
         $context['site']           = $this;
         return $context;
     }

@@ -1,0 +1,21 @@
+{% if in_component_library %}
+  {% set buttonGroup = '@button-group' %}
+{% else %}
+  {% set buttonGroup = 'button-group.twig' %}
+{% endif %}
+
+<div class="alert py-7 bg-indigo">
+  <div class="alert__inner grid md:items-center gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto">
+    <div class="md:flex lg:items-center md:justify-between">
+      <div class="alert__content md:flex md:mr-4 mb-4 md:mb-0">
+        <div class="alert__heading font-extended font-bold text-14 md:text-12 tracking-8 text-canary uppercase mr-4 whitespace-nowrap mb-2 md:mb-0">{{ heading }}:</div>
+        <p class="alert__p font-normal text-14 md:text-16 leading-130 text-white">{{ paragraph }}</p>
+      </div>
+      {% include buttonGroup with {
+        type: 'dark',
+        size: 'medium',
+        items: buttons,
+      } %}
+    </div>
+  </div>
+</div>

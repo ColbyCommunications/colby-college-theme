@@ -8,6 +8,9 @@
 
   <body>
     <div id="app">
+      {% if global_alert and global_alert.active == true %}
+        {% include 'alert.twig' with global_alert %}
+      {% endif %}
       {% include 'header.twig' with {
         utility: utility_menu.items,
         main: main_menu.items

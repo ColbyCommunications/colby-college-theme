@@ -99,7 +99,7 @@
                         <modal v-if="item.description">
                             <template v-slot:content>
                                 <h3
-                                    class="flex items-center h-12 md:h-11 px-6 font-body text-20 md:text-14 font-semibold leading-120 text-indigo text-left bg-indigo-200"
+                                    class="flex items-center h-12 md:h-11 px-5 font-body text-20 md:text-14 font-semibold leading-120 text-indigo text-left bg-indigo-200"
                                     v-text="'Description'"
                                 />
                                 <p
