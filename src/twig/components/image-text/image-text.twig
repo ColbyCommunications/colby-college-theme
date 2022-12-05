@@ -107,7 +107,7 @@
               <figcaption class="text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
             {% endif %}
           </div>
-          <div>
+          <div class="{{ align_text == 'center' ? 'flex items-center' : '' }}">
             {{ paragraph_text }}
           </div>
         </div>
@@ -120,7 +120,7 @@
               <figcaption class="text-indigo text-12 pt-2">{{ caption }}</figcaption>
             {% endif %}
           </div>
-          <div>
+          <div class="{{ align_text == 'center' ? 'flex items-center' : '' }}">
             {{ paragraph_text }}
           </div>
         </div>
