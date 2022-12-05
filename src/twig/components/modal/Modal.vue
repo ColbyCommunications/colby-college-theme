@@ -13,7 +13,7 @@
         }"
     >
         <button
-            class="absolute top-3 right-3 py-2.5"
+            class="absolute top-7 right-3 py-2.5"
             :class="{ 'right-5': this.full == true }"
             @click="closeModal()"
         >
@@ -37,10 +37,7 @@
         }"
         @click="toggleModal()"
     >
-        <slot
-          name="button"
-          :showModal="showModal"
-        />
+        <slot name="button" :showModal="showModal" />
     </button>
 </template>
 
@@ -68,19 +65,19 @@
             },
         },
         methods: {
-          toggleModal() {
-            this.showModal = !this.showModal;
+            toggleModal() {
+                this.showModal = !this.showModal;
 
-            if (this.showModal == false) {
-              this.emitter.emit('close-modal', {});
-            } else {
-                this.emitter.emit('open-modal', {});
-            }
-          },
-          closeModal() {
-            this.showModal = false;
-            this.emitter.emit('close-modal', {});
-          }
-        }
+                if (this.showModal == false) {
+                    this.emitter.emit('close-modal', {});
+                } else {
+                    this.emitter.emit('open-modal', {});
+                }
+            },
+            closeModal() {
+                this.showModal = false;
+                this.emitter.emit('close-modal', {});
+            },
+        },
     };
 </script>

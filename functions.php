@@ -1126,7 +1126,7 @@ function getNewPeople($directory_data)
             }
 
             if ($matchingPhoto) {
-                $imageURL = 'https://colby.edu/college/WorkdayPhotosTest/' . $matchingPhoto;
+                $imageURL = 'https://colby.edu/college/WorkdayPhotos/v2/' . $matchingPhoto;
                 $desc     = $WDPrefFirstName . ' ' . $WDLastName;
                 $image    = media_sideload_image($imageURL, $ID, $desc, 'id');
                 set_post_thumbnail($ID, $image);
