@@ -986,9 +986,6 @@ function getNewPeople($directory_data)
 
   $orgResult = matchPattern($supOrgRegex, $WDPerson['supervisoryOrganization']);
 
-  preg_match($supOrgRegex, $WDPerson['supervisoryOrganization'], $matches);
-  $orgResult = $matches[0];
-
   if (count(explode('>', $WDSOH)) === 2 || count(explode('>', $WDSOH)) === 3) {
    if (preg_match($supOrgRegex, $WDOrgsManaged)) {
     $orgResult = matchPattern($supOrgRegex, $WDOrgsManaged);
