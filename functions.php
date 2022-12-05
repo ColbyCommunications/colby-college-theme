@@ -978,21 +978,21 @@ function getNewPeople($directory_data)
   $WDOrgsManaged  = $WDPerson['organizationsManaged'];
   $supOrgRegex    = '/.+?(?=[-|(])/';
 
-  function matchPattern($pattern, $value)
+  function matchDirectoryPattern($pattern, $value)
   {
    preg_match($pattern, $value, $matches);
    return $matches[0];
   }
 
-  $orgResult = matchPattern($supOrgRegex, $WDPerson['supervisoryOrganization']);
+  $orgResult = matchDirectoryPattern($supOrgRegex, $WDPerson['supervisoryOrganization']);
 
   if (count(explode('>', $WDSOH)) === 2 || count(explode('>', $WDSOH)) === 3) {
    if (preg_match($supOrgRegex, $WDOrgsManaged)) {
-    $orgResult = matchPattern($supOrgRegex, $WDOrgsManaged);
+    $orgResult = matchDirectoryPattern($supOrgRegex, $WDOrgsManaged);
    }
   } else {
    if (preg_match($supOrgRegex, $WDSupOrg)) {
-    $orgResult = matchPattern($supOrgRegex, $WDSupOrg);
+    $orgResult = matchDirectoryPattern($supOrgRegex, $WDSupOrg);
    }
   }
 
