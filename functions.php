@@ -977,24 +977,19 @@ function getNewPeople($directory_data)
   $WDSOH          = $WDPerson['supervisoryOrgHierarchy'];
   $WDOrgsManaged  = $WDPerson['organizationsManaged'];
   $supOrgRegex    = '/.+?(?=[-|(])/';
-
-  function matchDeptPattern($pattern, $value)
-  {
-   preg_match($pattern, $value, $matches);
-   return $matches[0];
-  }
-
-  $orgResult = matchDeptPattern($supOrgRegex, $WDSupOrg);
+  preg_match($supOrgRegex, $WDSupOrg, $deptResult);
+  $orgResult = $deptResult[0];
 
   if (count(explode('>', $WDSOH)) === 2 || count(explode('>', $WDSOH)) === 3) {
    if (preg_match($supOrgRegex, $WDOrgsManaged)) {
-    $GLOBALS['orgResult'] = matchDeptPattern($supOrgRegex, $WDOrgsManaged);
+    preg_match($supOrgRegex, $WDOrgsManaged, $matches);
+    $orgResult = $matches[0];
    }
   }
 
   $WDDepartment = $WDAcademicUnit;
   if (is_null($WDAcademicUnit)) {
-   $WDDepartment = $GLOBALS['orgResult'];
+   $WDDepartment = $orgResult;
   }
 
   // Set api endpoint url with $emailSlug
