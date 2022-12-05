@@ -196,9 +196,10 @@
                   class="article-grid__item glide__slide"
                 >
                   <article class="article space-y-4">
-                    <div
+                    <a
                       v-if="item.yoast_head_json.og_image[0].url"
-                      class="article__image relative"
+                      class="article__image relative block overflow-hidden"
+                      :href="item.guid.rendered"
                     >
                       <picture>
                         <source
@@ -206,12 +207,12 @@
                           :srcset="item.yoast_head_json.og_image[0].url"
                         >
                         <img
-                          class="w-full object-cover"
+                          class="w-full object-cover hover:scale-105 transition-all duration-500 ease-in-out"
                           :src="item.yoast_head_json.og_image[0].url"
                           alt=""
                         >
                       </picture>
-                    </div>
+                    </a>
                     <div class="context w-full space-y-5">
                       <div class="text-group">
                         <div
