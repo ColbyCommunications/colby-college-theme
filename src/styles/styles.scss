@@ -4,6 +4,12 @@
 @import 'global/variables';
 @import 'global/layout';
 
+/* Body No Scroll */
+.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+}
+
 /* Page w/ sidebar content styles */
 .wysiwyg {
     h2,
