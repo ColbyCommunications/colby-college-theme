@@ -722,7 +722,7 @@ class StarterSite extends Timber\Site {
 		add_image_size( 'Landscape_mobile', 430, 200, true );
 		add_image_size( 'Portrait', 380, 580, true );
 		add_image_size( 'Portrait_mobile', 190, 290, true );
-		add_image_size( 'Hero', 1280, 700, true );
+		add_image_size( 'Hero', 2400, 1320, true );
 
 		if ( function_exists( 'acf_add_options_page' ) ) {
 			acf_add_options_page(

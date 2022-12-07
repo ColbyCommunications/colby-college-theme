@@ -20,6 +20,7 @@ import ButtonGroup from './twig/components/button-group/ButtonGroup.vue';
 import SectionNav from './twig/components/section-nav/SectionNav.vue';
 import DarkInterstitialFact from './twig/components/dark-interstitial/DarkInterstitialFact.vue';
 import SubpageNav from './twig/components/subpage-nav/SubpageNav.vue';
+import AnimatedBorder from './twig/components/featured-post/AnimatedBorder.vue';
 
 import './styles/styles.scss';
 
@@ -42,7 +43,8 @@ const app = createApp({
     ButtonGroup,
     SectionNav,
     DarkInterstitialFact,
-    SubpageNav
+    SubpageNav,
+    AnimatedBorder,
   },
 });
 
