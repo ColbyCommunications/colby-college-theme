@@ -15,7 +15,7 @@
  * (in which case you'll want to duplicate this file and save to the above path)
  *
  * Methods for TimberHelper can be found in the /lib sub-directory
- * 
+ *
  * Template Name: Page with Sidebar
  * @package  WordPress
  * @subpackage  Timber
@@ -24,58 +24,60 @@
 
 $context = Timber::context();
 
-$timber_post     = new Timber\Post();
-$context['post'] = $timber_post;
-$context['page_blocks'] = parse_blocks($timber_post->post_content);
+$timber_post            = new Timber\Post();
+$context['post']        = $timber_post;
+$context['page_blocks'] = parse_blocks( $timber_post->post_content );
 
-if (has_term(array('department', 'office', 'site'), 'page-categories')) {
-  $parent = $post->ID;
+if ( has_term( array( 'department', 'office', 'site' ), 'page-categories' ) ) {
+	$parent = $post->ID;
 } else {
-  if ($post->post_parent)	{
-    $ancestors=get_post_ancestors($post->ID);
-  
-    $ancestor_found = false;
-  
-    foreach ($ancestors as $ancestor) {
-      if (has_term(array('department', 'office', 'site'), 'page-categories', $ancestor)) {
-        $parent = $ancestor;
-        $ancestor_found = true;
-      }
-    }
-  
-    if (!$ancestor_found) {
-      $root=count($ancestors)-1;
-      $parent = $ancestors[$root];
-    }
-  } else {
-    $parent = $post->ID;
-  }
+	if ( $post->post_parent ) {
+		$ancestors = get_post_ancestors( $post->ID );
+
+		$ancestor_found = false;
+
+		foreach ( $ancestors as $ancestor ) {
+			if ( has_term( array( 'department', 'office', 'site' ), 'page-categories', $ancestor ) ) {
+				$parent         = $ancestor;
+				$ancestor_found = true;
+			}
+		}
+
+		if ( ! $ancestor_found ) {
+			$root   = count( $ancestors ) - 1;
+			$parent = $ancestors[ $root ];
+		}
+	} else {
+		$parent = $post->ID;
+	}
 }
 
-if (has_term('office', 'page-categories')) {
-  $template = 'single-office.twig';
+if ( has_term( 'office', 'page-categories' ) ) {
+	$template = 'single-office.twig';
 } else {
-  $template = 'page_with-sidebar.twig';
+	$template = 'page_with-sidebar.twig';
 }
 
-if (get_post($post->post_parent)->post_name == 'people') {
-  $menu_items = wp_get_nav_menu_items('People Menu');
+if ( get_post( $post->post_parent )->post_name == 'people' ) {
+	$menu_items = wp_get_nav_menu_items( 'People Menu' );
 
-  $parent_map = array(
-    'id' => $parent,
-    'title' => get_the_title($parent),
-    'children' => $menu_items,
-    'menu' => true,
-  );
+	$parent_map = array(
+		'id'       => $parent,
+		'title'    => get_the_title( $parent ),
+		'children' => $menu_items,
+		'menu'     => true,
+	);
 } else {
-  $parent_map = array(
-    'id' => $parent,
-    'title' => get_the_title($parent),
-    'children' => get_pages(array(
-          'parent'      => $parent,
-          'sort_column' => 'menu_order',
-      )),
-    );
+	$parent_map = array(
+		'id'       => $parent,
+		'title'    => get_the_title( $parent ),
+		'children' => get_pages(
+			array(
+				'parent'      => $parent,
+				'sort_column' => 'menu_order',
+			)
+		),
+	);
 }
 
 $context['alpha_parent'] = $parent_map;
