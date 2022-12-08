@@ -76,7 +76,7 @@
     {% if (image) and (align_image == 'left') %}
         <div class="flex flex-col md:!flex-row">
           <div class="mb-4 flex flex-col items-center md:mr-4 shrink-0">
-            <img style="width: {{image_path_width}}px !important;" src="{{ image['url'] }}" alt="{{ image['alt'] }}" />
+            <img style="width: {{image_width}}px !important;" src="{{ image['url'] }}" alt="{{ image['alt'] }}" />
             {% if media_caption %}
               <figcaption class="text-center text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
             {% endif %}
@@ -102,7 +102,7 @@
     {% if (image) and (align_image == 'right') %}
         <div class="flex flex-col md:!flex-row-reverse">
           <div class="mb-4 flex flex-col items-center md:ml-4 shrink-0">
-            <img style="width: {{image_path_width}}px !important;" src="{{ image['url'] }}" alt="{{ image['alt'] }}" />
+            <img style="width: {{image_width}}px !important;" src="{{ image['url'] }}" alt="{{ image['alt'] }}" />
             {% if media_caption %}
               <figcaption class="text-center text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
             {% endif %}
