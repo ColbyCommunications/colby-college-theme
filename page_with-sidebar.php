@@ -62,16 +62,18 @@ if ( get_post( $post->post_parent )->post_name == 'people' ) {
 	$menu_items = wp_get_nav_menu_items( 'People Menu' );
 
 	$parent_map = array(
-		'id'       => $parent,
-		'title'    => get_the_title( $parent ),
-		'children' => $menu_items,
-		'menu'     => true,
+		'id'        => $parent,
+		'title'     => get_the_title( $parent ),
+		'permalink' => get_permalink( $parent ),
+		'children'  => $menu_items,
+		'menu'      => true,
 	);
 } else {
 	$parent_map = array(
-		'id'       => $parent,
-		'title'    => get_the_title( $parent ),
-		'children' => get_pages(
+		'id'        => $parent,
+		'title'     => get_the_title( $parent ),
+		'permalink' => get_permalink( $parent ),
+		'children'  => get_pages(
 			array(
 				'parent'      => $parent,
 				'sort_column' => 'menu_order',

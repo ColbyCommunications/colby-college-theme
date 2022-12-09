@@ -15,7 +15,8 @@
       {% include 'subpage-nav.twig' with {
         heading: alpha_parent.title,
         items: alpha_parent.children,
-        menu_obj: alpha_parent.menu
+        menu_obj: alpha_parent.menu,
+        parent_permalink: alpha_parent.permalink
       } %}
       {% for widget in post.meta('widgets') %}
         {% include 'widget.twig' with widget %}
