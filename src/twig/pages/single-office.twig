@@ -17,6 +17,9 @@
         items: alpha_parent.children,
         menu_obj: alpha_parent.menu
       } %}
+      {% for widget in post.meta('widgets') %}
+        {% include 'widget.twig' with widget %}
+      {% endfor %}
     </div>
     <div class="sidebar-page__main xl:col-start-4 md:col-span-9 space-y-16">
       {% include 'directory-card.twig' with {
