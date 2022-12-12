@@ -25,7 +25,6 @@
         @apply text-24;
         @apply leading-110;
         @apply -tracking-3;
-        @apply text-indigo;
     }
 
     h3 {
@@ -63,13 +62,14 @@
         @apply font-normal;
         @apply font-body;
         @apply text-16;
-        @apply text-indigo-900;
+
         @apply leading-140;
     }
 
     .wp-block-paragraph {
         @apply mb-0;
         > p {
+            @apply text-indigo-900;
             @apply mb-4;
         }
     }
@@ -145,6 +145,10 @@
     .colby-paragraph-block {
         @apply mb-20;
 
+        > p {
+            @apply text-indigo-900;
+        }
+
         > p,
         > table,
         hr {
@@ -177,6 +181,12 @@
     .colby-accordion-block {
         p {
             @apply mb-4;
+        }
+    }
+
+    .wp-block-heading {
+        > h2 {
+            @apply text-indigo;
         }
     }
 }
