@@ -81,31 +81,34 @@
       >
         <td class="px-6 py-2">
           <a
-            v-if="item.link.url"
+            v-if="item.link.url && !item.image"
             class="text-indigo hover:underline inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140"
             :href="item.link.url ? item.link.url : null"
           >
             {{ item.link.title }}
           </a>
-          <div
-            v-if="item.image"
-            class="table__image hidden md:block relative mr-3 rounded-[50%] overflow-hidden"
-          >
-            <picture>
-              <source
-                media="(min-width:768px)"
-                srcset="{{ item.image.srcset }}"
-              />
-              <img
-                class="w-6 h-6"
-                :src="
-                  item.image.src
-                    ? item.image.src
-                    : '/wp-content/uploads/2022/10/profile_placeholder.jpeg'
-                "
-                :alt="item.image.alt"
-              />
-            </picture>
+          <div v-if="item.image">
+            <a :href="item.link.url" class="flex">
+              <picture>
+                <source
+                  media="(min-width:768px)"
+                  srcset="{{ item.image.srcset }}"
+                />
+                <img
+                  class="w-6 h-6 table__image hidden md:block relative mr-3 rounded-[50%] overflow-hidden"
+                  :src="
+                    item.image.src
+                      ? item.image.src
+                      : '/wp-content/uploads/2022/10/profile_placeholder.jpeg'
+                  "
+                  :alt="item.image.alt"
+                />
+              </picture>
+              <span
+                class="text-indigo hover:underline inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140"
+                >{{ item.link.title }}</span
+              >
+            </a>
           </div>
           <modal v-if="item.description">
             <template v-slot:content>
@@ -203,9 +206,7 @@
 <script>
 import axios from "axios";
 import Fuse from "fuse.js";
-
 import Modal from "/src/twig/components/modal/Modal.vue";
-
 export default {
   components: {
     Modal,
@@ -231,7 +232,6 @@ export default {
         this.filterTerm.some((r) => item.type.includes(r))
       );
       let g;
-
       if (f.length == 0) {
         g = this.items;
       } else {
@@ -239,20 +239,16 @@ export default {
           this.filterTerm.some((r) => item.type.includes(r))
         );
       }
-
       if (this.selectedDepartment !== "All Departments") {
         g = g.filter((item) => this.filterTerm.includes(item.department));
       }
-
       if (this.fuse) {
         this.fuse.setCollection(g);
       }
-
       return g;
     },
     inputFilteredItems() {
       let u = [];
-
       if (this.fuse) {
         if (this.fuse.search(this.searchTerm).length > 0) {
           u = this.fuse.search(this.searchTerm).map((item) => item.item);
@@ -260,7 +256,6 @@ export default {
           u = this.filteredItems;
         }
       }
-
       return u;
     },
     pageIndexStart() {
@@ -288,7 +283,6 @@ export default {
           this.filterDepartments = outputa.data;
         });
     }
-
     if (this.renderApi) {
       switch (this.api) {
         case "Department Courses":
@@ -304,17 +298,14 @@ export default {
           this.heading = this.api;
           break;
       }
-
       await axios.get(this.endpoint).then((outputa) => {
         switch (this.api) {
           case "Department Courses":
             const deptItems = outputa.data.courses.filter(
               (item) => item.dept == this.departmentCode
             );
-
             this.items = deptItems.map((item) => {
               let itemTypes = item.sessOffered.split(",");
-
               itemTypes.forEach((type, index) => {
                 switch (type) {
                   case "FA":
@@ -328,7 +319,6 @@ export default {
                     break;
                 }
               });
-
               return {
                 title: item.longTitle,
                 type: itemTypes,
@@ -339,17 +329,13 @@ export default {
                 columns: [item.crsno, item.abstr],
               };
             });
-
             this.headings = ["Name", "Course Number", "Description"];
-
             this.filterOptions = ["Fall", "Spring", "January"];
             break;
           case "Course Catalogue":
             const filteredItems = outputa.data.courses;
-
             this.items = filteredItems.map((item) => {
               let itemTypes = item.sessOffered.split(",");
-
               itemTypes.forEach((type, index) => {
                 switch (type) {
                   case "FA":
@@ -363,7 +349,6 @@ export default {
                     break;
                 }
               });
-
               return {
                 title: item.longTitle,
                 description: item.abstr,
@@ -376,9 +361,7 @@ export default {
                 columns: [item.crsno, item.dept],
               };
             });
-
             this.headings = ["Name", "Course Number", "Department"];
-
             this.filterOptions = ["Fall", "Spring", "January"];
             break;
           case "Majors and Minors":
@@ -393,20 +376,15 @@ export default {
                 columns: [item.Dept, item.Type],
               };
             });
-
             this.filterOptions = ["Majors", "Minors"];
-
             this.headings = ["Name", "Department", "Type"];
             break;
         }
-
         this.initFuse();
       });
     }
-
     if (this.externalItems) {
       this.heading = this.api;
-
       switch (this.api) {
         case "People":
           this.items = this.externalItems.map((item) => {
@@ -423,7 +401,6 @@ export default {
               columns: [item.custom.title, item.department],
             };
           });
-
           this.headings = ["Name", "Title", "Department"];
           break;
         case "Offices":
@@ -437,12 +414,10 @@ export default {
               columns: [item.custom.address, item.custom.phone],
             };
           });
-
           this.headings = ["Name", "Address", "Phone"];
           break;
         case "Departments":
           this.heading = "Departments & Programs";
-
           this.items = this.externalItems.map((item) => {
             return {
               title: item.post_title,
@@ -453,11 +428,9 @@ export default {
               columns: [item.custom.heading],
             };
           });
-
           this.headings = ["Name", "Description"];
           break;
       }
-
       this.initFuse();
     }
   },
@@ -500,19 +473,16 @@ export default {
     toggleTerm(term, event) {
       this.currentPage = 1;
       let select;
-
       if (term == "SELECT") {
         term = event.target.value;
         select = true;
       }
-
       if (this.filterTerm.includes(term)) {
         this.filterTerm.splice(this.filterTerm.indexOf(term));
       } else {
         if (select) {
           this.filterTerm = [];
         }
-
         if (this.filterTerm.some((t) => this.filterOptions.includes(t))) {
           this.filterTerm.forEach((t) => {
             if (this.filterOptions.includes(t)) {
@@ -520,7 +490,6 @@ export default {
             }
           });
         }
-
         this.filterTerm.push(term);
       }
     },
