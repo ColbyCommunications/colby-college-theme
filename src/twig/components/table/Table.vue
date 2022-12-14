@@ -85,6 +85,7 @@
             class="text-indigo hover:underline inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140"
             :href="item.link.url ? item.link.url : null"
           >
+            {{ item.link.title }}
           </a>
           <div
             v-if="item.image"
@@ -125,7 +126,7 @@
             </template>
           </modal>
           <span
-            v-if="!item.description"
+            v-if="!item.description && !item.image && !item.link.url"
             class="text-indigo inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140"
           >
             {{ item.link.title }}
