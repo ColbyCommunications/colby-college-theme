@@ -59,7 +59,8 @@
     }
 
     p,
-    > ul {
+    > ul,
+    > ol {
         @apply font-normal;
         @apply font-body;
         @apply text-16;
