@@ -48,7 +48,7 @@
           <ais-state-results>
             <template v-slot="{ results: { hits, query } }">
               <ais-hits
-                class="article-grid grid grid-cols-8 gap-10 max-w-screen-xl w-full my-0 mx-auto"
+                class="article-grid grid grid-cols-8 gap-10 max-w-screen-xl w-full my-0 mx-auto pb-6"
                 v-if="hits.length > 0"
               >
                 <template #default="{ items, sendEvent }">
