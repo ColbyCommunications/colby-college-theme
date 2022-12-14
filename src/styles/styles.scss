@@ -178,12 +178,14 @@
     .colby-image-text-block {
         p {
             @apply mb-4;
+            @apply text-indigo-900;
         }
     }
 
     .colby-accordion-block {
         p {
             @apply mb-4;
+            @apply text-indigo-900;
         }
     }
 
@@ -232,5 +234,13 @@
         cursor: pointer;
         border-radius: 4px;
         text-decoration: underline;
+    }
+}
+
+@media (max-width: 768px) {
+    .colby-image-text-block {
+        > div > div {
+            flex-basis: auto !important;
+        }
     }
 }

@@ -81,6 +81,13 @@ module.exports = {
             square: 'square',
             circle: 'circle',
         },
+        extend: {
+            maxWidth: {
+                25: '25%',
+                50: '50%',
+                75: '75%',
+            },
+        },
     },
     plugins: [],
 };

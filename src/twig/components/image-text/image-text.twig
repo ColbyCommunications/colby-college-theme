@@ -6,34 +6,46 @@
 
 <div class="colby-image-text-block inline-block">
 {% if (image_scale == '100') %}
+  {% set image_container_width = 920 %}
   {% set image_width = (image['width']) %}
+  {% set image_height = (image['height']) %}
   {% if image_path %}
     {% set image_path_width = (function ('getimagesize', image_path)[0]) %}
+    {% set height = (function ('getimagesize', image_path)[1]) %}
   {% endif %}
 {% elseif (image_scale == '75') %}
+    {% set image_container_width = (920 * 0.75) %}
     {% set image_width = (image['width'] * 0.75) %}
+    {% set image_height = (image['height'] * 0.75) %}
   {% if image_path %}
     {% set image_path_width = (function ('getimagesize', image_path)[0] * 0.75) %}
+    {% set image_path_height = (function ('getimagesize', image_path)[q] * 0.75) %}
   {% endif %}
 {% elseif (image_scale == '50') %}
+  {% set image_container_width = (920 * 0.50) %}
   {% set image_width = (image['width'] * 0.50) %}
+  {% set image_height = (image['height'] * 0.50) %}
   {% if image_path %}
     {% set image_path_width = (function ('getimagesize', image_path)[0] * 0.5) %}
+    {% set image_path_height = (function ('getimagesize', image_path)[1] * 0.5) %}
   {% endif %}
 {% elseif (image_scale == '25') %}
+  {% set image_container_width = (920 * 0.25) %}
   {% set image_width = (image['width'] * 0.25) %}
+  {% set image_height = (image['height'] * 0.25) %}
   {% if image_path %}
     {% set image_path_width = (function ('getimagesize', image_path)[0] * 0.25) %}
+    {% set image_path_height = (function ('getimagesize', image_path)[1] * 0.25) %}
   {% endif %}
 {% endif %}
 
   {% if wrapping_text == 'wrap' %}
     {% if (image) and (align_image == 'left') %}
         <div class="flex flex-col md:block">
-          <div style="width: {{image_width}}px;" class="self-center md:!mr-4 !mb-4 float-left {{ media_caption ? '!mb-4' : ''}}">
-            <img src="{{ image['url'] }}" alt="{{ image['alt'] }}" />
+          <div class="self-center md:!mr-4 !mb-4 float-left {{ media_caption ? '!mb-4' : ''}}">
+            <img width="{{image_width}}" height="{{image_height}}" src="{{ image['url'] }}" alt="{{ image['alt'] }}" class="max-w-full" />
             {% if media_caption %}
-              <figcaption class="text-center text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
+              <figcaption class="text-center text-indigo text-12 pt-2" style="width:{{image_width}}px;">{{ image['caption'] }}</figcaption>
             {% endif %}
           </div>
           {{ paragraph_text }}
@@ -41,10 +53,10 @@
     {% endif %}
     {% if (image_path) and (align_image == 'left') %}
          <div class="flex flex-col md:block">
-          <div style="width: {{image_path_width}}px;" class="self-center md:!mr-4 !mb-4 float-left {{ caption ? '!mb-4' : ''}}">
-              <img src="{{ image_path }}" />
+          <div class="self-center md:!mr-4 !mb-4 float-left {{ caption ? '!mb-4' : ''}}">
+              <img width="{{image_path_width}}" height="{{image_path_height}}" src="{{ image_path }}" class="max-w-full" />
             {% if caption %}
-              <figcaption class="text-center text-indigo text-12 pt-2">{{ caption }}</figcaption>
+              <figcaption class="text-center text-indigo text-12 pt-2" style="width:{{image_path_width}}px;">{{ caption }}</figcaption>
             {% endif %}
           </div>
           {{ paragraph_text }}
@@ -52,10 +64,10 @@
     {% endif %}
     {% if (image) and (align_image == 'right') %}
         <div class="flex flex-col md:block">
-          <div style="width: {{image_width}}px;" class="self-center md:!ml-4 !mb-4 float-right {{ media_caption ? '!mb-4' : ''}}">
-            <img src="{{ image['url'] }}" alt="{{ image['alt'] }}" />
+          <div class="self-center md:!ml-4 !mb-4 float-right {{ media_caption ? '!mb-4' : ''}}">
+            <img width="{{image_width}}" height="{{image_height}}" src="{{ image['url'] }}" alt="{{ image['alt'] }}" class="max-w-full" />
             {% if media_caption %}
-              <figcaption class="text-center text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
+              <figcaption class="text-center text-indigo text-12 pt-2" style="width:{{image_width}}px;">{{ image['caption'] }}</figcaption>
             {% endif %}
           </div>
           {{ paragraph_text }}
@@ -63,10 +75,10 @@
     {% endif %}
         {% if (image_path) and (align_image == 'right') %}
         <div class="flex flex-col md:block">
-          <div style="width: {{image_path_width}}px;" class="self-center md:!ml-4 !mb-4 float-right {{ caption ? '!mb-4' : ''}}">
-              <img src="{{ image_path }}" />
+          <div class="self-center md:!ml-4 !mb-4 float-right {{ caption ? '!mb-4' : ''}}">
+              <img width="{{image_path_width}}" height="{{image_path_height}}" src="{{ image_path }}" class="max-w-full" />
             {% if caption %}
-              <figcaption class="text-center text-indigo text-12 pt-2">{{ caption }}</figcaption>
+              <figcaption class="text-center text-indigo text-12 pt-2" style="width:{{image_path_width}}px;">{{ caption }}</figcaption>
             {% endif %}
           </div>
           {{ paragraph_text }}
@@ -74,53 +86,53 @@
     {% endif %}
   {% else %}
     {% if (image) and (align_image == 'left') %}
-        <div class="flex flex-col md:!flex-row">
-          <div class="mb-4 flex flex-col items-center md:mr-4 shrink-0">
-            <img style="width: {{image_width}}px !important;" src="{{ image['url'] }}" alt="{{ image['alt'] }}" />
+        <div class="flex flex-col md:flex-row md:flex-wrap">
+          <div class="mb-4 flex flex-col items-center md:mr-4 shrink-0 {% if image_scale == '75' %}md:max-w-75{% elseif image_scale == '50' %}md:max-w-50{% elseif image_scale == '25' %}md:max-w-25{% else %}max-w-full{% endif %}" style="flex-basis: {{image_width}}px;">
+            <img width="{{image_width}}" height="{{image_height}}" src="{{ image['url'] }}" alt="{{ image['alt'] }}" class="max-w-full" />
             {% if media_caption %}
               <figcaption class="text-center text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
             {% endif %}
           </div>
-          <div class="{{ align_text == 'center' ? 'flex items-center' : '' }}">
+          <div class="{{ align_text == 'center' ? 'flex items-center' : '' }}" style="{% if image_width > image_container_width and image_scale == '100' %}flex-basis: 100%{% elseif image_width < image_container_width %}flex-basis: calc(100% - {{image_width}}px - 1rem){% else  %}flex-basis: calc(100% - {{image_scale}}% - 1rem){% endif %};">
             {{ paragraph_text }}
           </div>
         </div>
     {% endif %}
         {% if (image_path) and (align_image == 'left') %}
-          <div class="bg-blue-200 flex flex-col md:!flex-row">
-          <div class="mb-4 flex flex-col items-center md:mr-4 shrink-0">
-            <img style="width: {{image_path_width}}px !important;" src="{{ image_path }}" />
+          <div class="bg-blue-200 flex flex-col md:flex-row">
+          <div class="mb-4 flex flex-col items-center md:mr-4 shrink-0 {% if image_scale == '75' %}md:max-w-75{% elseif image_scale == '50' %}md:max-w-50{% elseif image_scale == '25' %}md:max-w-25{% else %}max-w-full{% endif %}" style="flex-basis: {{image_path_width}}px;">
+            <img width="{{image_path_width}}" height="{{image_path_height}}" src="{{ image_path }}" class="max-w-full" />
             {% if caption %}
-              <figcaption class="text-center text-indigo text-12 pt-2">{{ caption }}</figcaption>
+              <figcaption class="text-center text-indigo text-12 pt-2" >{{ caption }}</figcaption>
             {% endif %}
           </div>
-          <div class="{{ align_text == 'center' ? 'flex items-center' : '' }}">
+          <div class="{{ align_text == 'center' ? 'flex items-center' : '' }}" style="{% if image_path_width > image_container_width and image_scale == '100' %}flex-basis: 100%{% elseif image_path_width < image_container_width %}flex-basis: calc(100% - {{image_path_width}}px - 1rem){% else  %}flex-basis: calc(100% - {{image_scale}}% - 1rem){% endif %};">
             {{ paragraph_text }}
           </div>
         </div>
     {% endif %}
     {% if (image) and (align_image == 'right') %}
-        <div class="flex flex-col md:!flex-row-reverse">
-          <div class="mb-4 flex flex-col items-center md:ml-4 shrink-0">
-            <img style="width: {{image_width}}px !important;" src="{{ image['url'] }}" alt="{{ image['alt'] }}" />
+        <div class="flex flex-col md:flex-row-reverse md:flex-wrap">
+          <div class="mb-4 flex flex-col items-center md:ml-4 shrink-0 {% if image_scale == '75' %}md:max-w-75{% elseif image_scale == '50' %}md:max-w-50{% elseif image_scale == '25' %}md:max-w-25{% else %}max-w-full{% endif %}" style="flex-basis: {{image_width}}px;">
+            <img width="{{image_width}}" height="{{image_height}}" src="{{ image['url'] }}" alt="{{ image['alt'] }}" class="max-w-full" />
             {% if media_caption %}
               <figcaption class="text-center text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
             {% endif %}
           </div>
-          <div class="{{ align_text == 'center' ? 'flex items-center' : '' }}">
+          <div class="{{ align_text == 'center' ? 'flex items-center' : '' }}" style="{% if image_width > image_container_width and image_scale == '100' %}flex-basis: 100%{% elseif image_width < image_container_width %}flex-basis: calc(100% - {{image_width}}px - 1rem){% else  %}flex-basis: calc(100% - {{image_scale}}% - 1rem){% endif %};">
             {{ paragraph_text }}
           </div>
         </div>
     {% endif %}
         {% if (image_path) and (align_image == 'right') %}
-        <div class="flex flex-col md:!flex-row-reverse">
-          <div class="mb-4 flex flex-col items-center md:ml-4 shrink-0">
-            <img style="width: {{image_path_width}}px !important;" src="{{ image_path }}" />
+        <div class="flex flex-col md:flex-row-reverse md:flex-wrap">
+          <div class="mb-4 flex flex-col items-center md:ml-4 shrink-0 {% if image_scale == '75' %}md:max-w-75{% elseif image_scale == '50' %}md:max-w-50{% elseif image_scale == '25' %}md:max-w-25{% else %}max-w-full{% endif %}" style="flex-basis: {{image_path_width}}px;">
+            <img width="{{image_path_width}}" height="{{image_path_height}}" src="{{ image_path }}" class="max-w-full" />
             {% if caption %}
               <figcaption class="text-center text-indigo text-12 pt-2">{{ caption }}</figcaption>
             {% endif %}
           </div>
-          <div class="{{ align_text == 'center' ? 'flex items-center' : '' }}">
+          <div class="{{ align_text == 'center' ? 'flex items-center' : '' }}" style="{% if image_path_width > image_container_width and image_scale == '100' %}flex-basis: 100%{% elseif image_path_width < image_container_width %}flex-basis: calc(100% - {{image_path_width}}px - 1rem){% else  %}flex-basis: calc(100% - {{image_scale}}% - 1rem){% endif %};">
             {{ paragraph_text }}
           </div>
         </div>
