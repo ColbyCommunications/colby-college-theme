@@ -13,8 +13,8 @@
         }"
     >
         <button
-            class="absolute top-7 right-3 py-2.5"
-            :class="{ 'right-5': this.full == true }"
+            class="absolute py-2.5"
+            :class="{ 'right-5 top-7': this.full == true, 'top-3 right-3': this.full == false }"
             @click="closeModal()"
         >
             <span
