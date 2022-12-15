@@ -124,6 +124,7 @@
               }
             }
           ],
+        post_type: item.post.post_type
         }] %}
       {% else %}
         {% set newItem = [{
@@ -132,6 +133,7 @@
           heading: item.heading,
           paragraph: item.paragraph,
           buttons: item.buttons,
+          post_type: item.post.post_type
         }] %}
       {% endif %}
 

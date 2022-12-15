@@ -58,17 +58,6 @@
         @apply uppercase;
     }
 
-    p,
-    > ul,
-    > ol {
-        @apply font-normal;
-        @apply font-body;
-        @apply text-16;
-        @apply text-indigo-900;
-
-        @apply leading-140;
-    }
-
     .wp-block-paragraph {
         @apply mb-0;
         > p {
@@ -186,6 +175,15 @@
         p {
             @apply mb-4;
             @apply text-indigo-900;
+        }
+
+        p,
+        ul,
+        ol {
+            @apply font-normal;
+            @apply font-body;
+            @apply text-16;
+            @apply leading-140;
         }
     }
 
