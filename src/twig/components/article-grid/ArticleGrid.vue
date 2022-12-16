@@ -21,7 +21,7 @@
                     class="article space-y-4"
                     :class="{ 'pt-1 border-t-2 border-solid border-indigo-600': border }"
                 >
-                    <div class="context w-full space-y-5">
+                    <div class="context w-full py-4">
                         <div class="text-group">
                             <div
                                 v-if="item.date"
