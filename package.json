@@ -63,6 +63,7 @@
         "gsap": "^3.10.0",
         "letterizejs": "^2.0.1",
         "mitt": "^3.0.0",
+        "moment": "^2.29.4",
         "tailwindcss": "^3.1.4",
         "vue": "^3.2.31",
         "vue-final-modal": "^3.4.10",

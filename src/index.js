@@ -13,6 +13,7 @@ import ContextArticleGrid from './twig/components/context-article-grid/ContextAr
 import Search from './twig/components/search/Search.vue';
 import Modal from './twig/components/modal/Modal.vue';
 import Accordion from './twig/components/accordion/Accordion.vue';
+import ArticleGrid from './twig/components/article-grid/ArticleGrid.vue';
 
 // Animated
 import TextGroup from './twig/components/text-group/TextGroup.vue';
@@ -26,26 +27,27 @@ import './styles/styles.scss';
 
 const emitter = mitt();
 const app = createApp({
-  components: {
-    Header,
-    OverlayHero,
-    Carousel,
-    Video,
-    IndexSection,
-    Table,
-    ContextArticleGrid,
-    Search,
-    Modal,
-    VueFinalModal,
-    ModalsContainer,
-    Accordion,
-    TextGroup,
-    ButtonGroup,
-    SectionNav,
-    DarkInterstitialFact,
-    SubpageNav,
-    AnimatedBorder,
-  },
+    components: {
+        Header,
+        OverlayHero,
+        Carousel,
+        Video,
+        IndexSection,
+        Table,
+        ContextArticleGrid,
+        Search,
+        Modal,
+        VueFinalModal,
+        ModalsContainer,
+        Accordion,
+        TextGroup,
+        ButtonGroup,
+        SectionNav,
+        DarkInterstitialFact,
+        SubpageNav,
+        AnimatedBorder,
+        ArticleGrid,
+    },
 });
 
 app.config.globalProperties.emitter = emitter;
