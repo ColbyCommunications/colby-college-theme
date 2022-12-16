@@ -63,6 +63,7 @@
         > p {
             @apply text-indigo-900;
             @apply mb-4;
+            @apply font-body;
         }
     }
 
@@ -81,6 +82,7 @@
         li {
             @apply text-indigo-900;
             @apply mt-2;
+            @apply font-body;
         }
     }
 
@@ -93,6 +95,7 @@
         li {
             @apply text-indigo-900;
             @apply mt-2;
+            @apply font-body;
         }
     }
 
@@ -136,6 +139,7 @@
 
     .colby-paragraph-block {
         @apply mb-20;
+        @apply font-body;
 
         > p {
             @apply text-indigo-900;
@@ -168,6 +172,7 @@
         p {
             @apply mb-4;
             @apply text-indigo-900;
+            @apply font-body;
         }
     }
 
