@@ -197,6 +197,14 @@
             @apply text-indigo;
         }
     }
+
+    .wp-block-embed {
+        .wp-element-caption {
+            @apply font-body;
+            @apply text-indigo-900;
+            @apply font-normal;
+        }
+    }
 }
 
 /* Directory profile page */
