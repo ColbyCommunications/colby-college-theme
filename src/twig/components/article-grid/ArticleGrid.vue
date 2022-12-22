@@ -22,7 +22,7 @@
                     :class="{ 'pt-1 border-t-2 border-solid border-indigo-600': border }"
                 >
                     <div class="context w-full py-4">
-                        <div class="text-group">
+                        <component is="text-group" class="text-group">
                             <div
                                 v-if="item.date"
                                 class="text-group__subheading font-extended font-bold text-12 leading-130 tracking-8 text-left text-azure uppercase"
@@ -39,10 +39,10 @@
                                 class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
                                 v-text="item['post-meta-fields'].summary[0]"
                             />
-                        </div>
+                        </component>
                         <div class="button-group flex flex-wrap gap-4 mt-4">
                             <a
-                                class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 font-body font-normal text-10 leading-130 text-indigo bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1 px-3 transition-all duration-200 ease-in-out"
+                                class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 font-body font-normal text-10 leading-130 text-indigo bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1 px-3 transition-all duration-200 ease-in-out !no-underline"
                                 :href="item.url"
                             >
                                 <span class="btn__text">
@@ -62,8 +62,12 @@
 <script>
     import axios from 'axios';
     import moment from 'moment';
+    import TextGroup from '/src/twig/components/text-group/TextGroup.vue';
 
     export default {
+        components: {
+            TextGroup,
+        },
         data() {
             return {
                 data: [],
