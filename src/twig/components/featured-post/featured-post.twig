@@ -5,7 +5,7 @@
 {% endif %}
 
 <div class="featured-post">
-  <div class="featured-post__inner relative md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto">
+  <div class="featured-post__inner relative md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto">
     <div class="featured-post__context md:col-start-9 lg:col-start-10 md:col-span-4 lg:col-span-3 md:flex md:order-2 items-center">
       {% include context with {
         size: 'large',
@@ -19,7 +19,8 @@
         },
       } %}
     </div>
-    <div class="featured-post__caption md:z-[-1] md:absolute top-0 left-[20px] md:w-[calc(100%_-_40px)] md:pt-3.5 pb-3.5 md:pb-0 font-extended font-bold text-12 tracking-8 text-azure uppercase text-right md:border-t border-b md:border-b-0 border-azure border-solid mt-14 md:mt-0">
+    <div class="featured-post__caption md:z-[-1] md:absolute top-0 right-[20px] md:w-1/2 pb-3.5 md:pb-0 font-extended font-bold text-12 tracking-8 text-azure uppercase text-right border-b md:border-b-0 border-azure border-solid mt-14 md:mt-0">
+      <component is="animated-border" class="featured-post__border hidden md:block w-0 h-px md:mb-3.5 bg-azure transition-all duration-200 ease-in-out"></component>
       {{ caption }}
     </div>
     <div class="featured-post__main md:col-span-8">
@@ -44,7 +45,7 @@
           </picture>
         {% endif %}
       </div>
-      <div class="featured-post__post relative mt-6 h-40">
+      <div class="featured-post__post relative mt-6">
         {% include context with {
           size: 'small',
           type: 'dark',

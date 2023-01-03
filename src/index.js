@@ -1,5 +1,7 @@
 import { createApp } from 'vue/dist/vue.esm-bundler';
 import mitt from 'mitt';
+import { $vfm, VueFinalModal, ModalsContainer } from 'vue-final-modal';
+import InstantSearch from 'vue-instantsearch/vue3/es';
 
 import Header from './twig/components/header/Header.vue';
 import OverlayHero from './twig/components/overlay-hero/OverlayHero.vue';
@@ -8,23 +10,47 @@ import Video from './twig/components/video/Video.vue';
 import IndexSection from './twig/components/index-section/IndexSection.vue';
 import Table from './twig/components/table/Table.vue';
 import ContextArticleGrid from './twig/components/context-article-grid/ContextArticleGrid.vue';
+import Search from './twig/components/search/Search.vue';
+import Modal from './twig/components/modal/Modal.vue';
 import Accordion from './twig/components/accordion/Accordion.vue';
+import ArticleGrid from './twig/components/article-grid/ArticleGrid.vue';
+
+// Animated
+import TextGroup from './twig/components/text-group/TextGroup.vue';
+import ButtonGroup from './twig/components/button-group/ButtonGroup.vue';
+import SectionNav from './twig/components/section-nav/SectionNav.vue';
+import DarkInterstitialFact from './twig/components/dark-interstitial/DarkInterstitialFact.vue';
+import SubpageNav from './twig/components/subpage-nav/SubpageNav.vue';
+import AnimatedBorder from './twig/components/featured-post/AnimatedBorder.vue';
 
 import './styles/styles.scss';
 
 const emitter = mitt();
 const app = createApp({
-  components: {
-    Header,
-    OverlayHero,
-    Carousel,
-    Video,
-    IndexSection,
-    Table,
-    ContextArticleGrid,
-    Accordion,
-  },
+    components: {
+        Header,
+        OverlayHero,
+        Carousel,
+        Video,
+        IndexSection,
+        Table,
+        ContextArticleGrid,
+        Search,
+        Modal,
+        VueFinalModal,
+        ModalsContainer,
+        Accordion,
+        TextGroup,
+        ButtonGroup,
+        SectionNav,
+        DarkInterstitialFact,
+        SubpageNav,
+        AnimatedBorder,
+        ArticleGrid,
+    },
 });
 
 app.config.globalProperties.emitter = emitter;
+app.use(InstantSearch);
+
 app.mount('#app');

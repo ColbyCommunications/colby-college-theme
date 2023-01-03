@@ -34,8 +34,8 @@
               <p class="font-body font-normal text-16 leading-130 text-indigo-800">{{ department }}</p>
             </div>
             <div class="col-span-4">
-              <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Links</h2>
-              <ul class="grid grid-cols-4 gap-x-10 font-body font-normal text-12 leading-140">
+              <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Information</h2>
+              <ul class="directiory_information grid grid-cols-4 gap-x-10 font-body font-normal text-12 leading-140">
                 {% if phone %}
                   <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="tel:{{ phone }}">
                     {{ icons.icon('phone', 'h-3 fill-indigo-800 mr-1.5') }}{{ phone }}
@@ -51,13 +51,30 @@
                     {{ icons.icon('email', 'h-3 fill-indigo-800 mr-1.5') }}{{ email }}
                   </a></li>
                 {% endif %}
-                {% if location %}
-                  <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="{{ location.url }}">
-                    {{ icons.icon('location', 'h-3 fill-indigo-800 mr-1.5') }}{{ location.title }}
+                {% if fax %}
+                  <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="tel:{{ phone }}">
+                    {{ icons.icon('fax', 'h-4 fill-indigo-800 mr-1.5') }}{{ fax }}
                   </a></li>
+                {% endif %}
+                {% if location %}
+                  <li class="col-span-2 mb-3"><div class="flex items-center text-indigo-800">
+                    {{ icons.icon('location', 'h-3 fill-indigo-800 mr-1.5') }}{{ location }}
+                  </div></li>
                 {% endif %}
               </ul>
             </div>
+            {% if address %}
+              <div class="col-span-4">
+                <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Address</h2>
+                <p class="font-body font-normal text-12 leading-130 text-indigo-800">{{ address }}</p>
+              </div>
+            {% endif %}
+            {% if office_hours %}
+              <div class="col-span-4">
+                <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Office Hours</h2>
+                <p class="font-body font-normal text-12 leading-130 text-indigo-800">{{ office_hours }}</p>
+              </div>
+            {% endif %}
           {% elseif type == 'offices' %}
             <div class="col-span-4">
               <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Address</h2>
@@ -82,9 +99,9 @@
                   </a></li>
                 {% endif %}
                 {% if location %}
-                  <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo">
+                  <li class="col-span-2 mb-3"><div class="flex items-center text-indigo-800">
                     {{ icons.icon('location', 'h-3 fill-indigo-800 mr-1.5') }}{{ location }}
-                  </a></li>
+                  </div></li>
                 {% endif %}
               </ul>
             </div>

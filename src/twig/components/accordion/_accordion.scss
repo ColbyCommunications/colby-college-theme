@@ -3,7 +3,7 @@
 .accordion {
 
   &__panel + &__panel {
-    border-top: 1px solid #dcdcdc;
+    // border-top: 1px solid #dcdcdc;
   }
 
   &__header {
@@ -11,13 +11,15 @@
   }
 
   &__button {
+    z-index: 10;
+    position: relative;
     margin: 0;
     border: 0;
     padding: 20px 14px;
     width: 100%;
-    background-color: #f4f4f4;
     text-align: left;
     appearance: none;
+    cursor: pointer;
   }
 
   &__window {
@@ -34,5 +36,11 @@
 
   p:nth-child(1) {
     margin-top: 0;
+  }
+
+  &__test {
+    font-size: 3rem;
+    line-height: 1.125;
+    font-weight: 700;
   }
 }

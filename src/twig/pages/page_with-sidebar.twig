@@ -6,6 +6,7 @@
   {% set template_subheading = post.date|date("M d, Y") %}
   {% set template_heading = post.title %}
   {% set template_paragraph = fn('has_excerpt') ? fn('get_the_excerpt') : null %}
+  {% set template_date_bool = true %}
 {% else %}
   {% set template_subheading = post.title %}
   {% set template_heading = post.meta('heading') %}
@@ -26,6 +27,7 @@
 {% else %}
   {% include 'hero.twig' with {
     image_orientation: post.meta('image_orientation'),
+    date: template_date_bool,
     subheading: template_subheading,
     heading: template_heading,
     paragraph: template_paragraph,
@@ -36,7 +38,7 @@
 {% endif %}
 
 <section class="sidebar-page">
-  <div class="sidebar-page__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto md:mt-20 mt-16">
+  <div class="sidebar-page__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto md:mt-20 mt-16">
     {% if post.type.name != 'post' %}
       <div class="sidebar-page__secondary md:col-span-3 xl:col-span-2 mb-16 md:mb-0
         [&>div+div]:mt-7"
@@ -44,7 +46,8 @@
         {% include 'subpage-nav.twig' with {
           heading: alpha_parent.title,
           items: alpha_parent.children,
-          menu_obj: alpha_parent.menu
+          menu_obj: alpha_parent.menu,
+          parent_permalink: alpha_parent.permalink
         } %}
         {% for widget in post.meta('widgets') %}
           {% include 'widget.twig' with widget %}
@@ -52,22 +55,11 @@
       </div>
     {% endif %}
     <div class="sidebar-page__main {% if post.type.name != 'post' %}xl:col-start-4 md:col-span-9{% else %}md:col-span-12{% endif %}">
-      <div class="wysiwyg
-        [&>h2]:font-extended [&>h2]:font-normal [&>h2]:text-24 [&>h2]:leading-110 [&>h2]:-tracking-3 [&>h2]:text-indigo [&>h2+p]:mt-2 [&>h2+ul]:mt-8
-        [&>h3]:font-extended [&>h3]:font-bold [&>h3]:text-18 [&>h3]:text-indigo [&>h3+p]:mt-2 [&>h3+table]:mt-5
-        [&>p]:font-body [&>p]:font-normal [&>p]:text-16 [&>p]:leading-130 [&>p]:text-indigo-900
-        [&>p>a]:underline hover:[&>p>a]:no-underline hover:[&>p>a]:text-indigo
-        [&>ul+h2]:mt-20
-        [&>ul>li]:font-body [&>ul>li]:font-normal [&>ul>li]:text-16 [&>ul>li]:leading-130 [&>ul>li]:text-indigo-900 [&>ul>li]:list-disc [&>ul>li]:list-outside [&>ul>li]:ml-3 [&>ul>li+li]:mt-2
-        [&>ul>li>a]:underline hover:[&>ul>li>a]:no-underline hover:[&>ul>li>a]:text-indigo
-        [&>div+div]:mt-20 md:[&>div+div]:mt-[100px] [&>div+figure]:mt-20 md:[&>div+figure]:mt-[100px] [&>div+h2]:mt-16 md:[&>div+h2]:mt-20
-        [&>figure+figure]:mt-20 md:[&>figure+figure]:mt-[100px] [&>figure+div]:mt-20 md:[&>figure+div]:mt-[100px] [&>figure+h2]:mt-16 md:[&>figure+h2]:mt-20
-        [&>p+div]:mt-10 md:[&>p+div]:mt-[50px] [&>p+h2]:mt-20 [&>p+h3]:mt-6 [&>p+p]:mt-6 [&>p+ul]:mt-6 [&>p+table]:mt-10 md:[&>p+table]:mt-[50px]
-        [&>table+div]:mt-20 md:[&>table+div]:mt-[50px] [&>table+h2]:mt-20 [&>table+h3]:mt-6 [&>table+p]:mt-6 [&>table+table]:mt-20 md:[&>table+table]:mt-[50px]
-        [&>.article-section>div]:px-0 md:[&>.article-section>div]:px-0
-      ">
-        {{ post.content }}
-      </div>
+      {% include 'wysiwyg.twig' with {
+            post: {
+              content: post.content,
+            },
+      } %}
     </div>
   </div>
 </section>

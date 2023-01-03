@@ -7,7 +7,7 @@
 {% endif %}
 
 <div class="facts-figures">
-  <div class="facts-figures__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto">
+  <div class="facts-figures__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto">
     <div class="facts-figures__main md:col-start-6 lg:col-start-7 md:col-span-7 lg:col-span-6">
       {% include context with {
         size: 'large',
@@ -33,7 +33,7 @@
       ) }}
     </div>
   </div>
-  <div class="facts-figures__inner relative md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto mt-12 md:mt-0">
+  <div class="facts-figures__inner relative md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto mt-12 md:mt-0">
     <div class="md:absolute md:bottom-0 md:col-start-6 lg:col-start-7 md:col-span-7 lg:col-span-6 pb-6 md:pb-8">
       <div class="grid grid-cols-6 gap-x-3 md:gap-x-10 max-w-screen-xl w-full">
         {% for fact in facts %}
@@ -44,6 +44,6 @@
         {% endfor %}
       </div>
     </div>
-    <span class="block col-span-12 w-full h-px bg-azure"></span>
+    <component is="animated-border" class="block col-span-12 w-0 h-px bg-azure"></component>
   </div>
 </div>

@@ -1,0 +1,46 @@
+{% if in_component_library %}
+  {% set context = '@context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+{% endif %}
+
+{% import "macros.twig" as macros %}
+
+<div class="colby-image-block {{ (align_center[0] == 'yes') ? 'flex justify-center' : ''}}" >
+{% if (image_scale == '100') %}
+  {% set image_width = (image['width']) %}
+  {% if image_path %}
+    {% set image_path_width = (function ('getimagesize', image_path)[0]) %}
+  {% endif %}
+{% elseif (image_scale == '75') %}
+    {% set image_width = (image['width'] * 0.75) %}
+  {% if image_path %}
+    {% set image_path_width = (function ('getimagesize', image_path)[0] * 0.75) %}
+  {% endif %}
+{% elseif (image_scale == '50') %}
+  {% set image_width = (image['width'] * 0.50) %}
+  {% if image_path %}
+    {% set image_path_width = (function ('getimagesize', image_path)[0] * 0.5) %}
+  {% endif %}
+{% elseif (image_scale == '25') %}
+  {% set image_width = (image['width'] * 0.25) %}
+  {% if image_path %}
+    {% set image_path_width = (function ('getimagesize', image_path)[0] * 0.25) %}
+  {% endif %}
+{% endif %}
+
+
+  <figure class="inline-block">
+    {% if image %}
+      <img src="{{ image['url'] }}" alt="{{ image['alt'] }}" style="width: {{image_width}}px;" />
+      {% if media_caption %}
+        <figcaption class="text-center text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
+      {% endif %}
+    {% elseif image_path %}
+      <img src="{{ image_path }}" style="width: {{image_path_width}}px;" />
+      {% if caption %}
+        <figcaption class="text-center text-indigo text-12 pt-2">{{ caption }}</figcaption>
+      {% endif %}
+    {% endif %}
+  </figure>
+</div>

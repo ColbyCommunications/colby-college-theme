@@ -10,7 +10,7 @@
     />
     <div
       v-if="renderApi && api == 'Latest News'"
-      class="carousel__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto"
+      class="carousel__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto"
     >
       <div class="carousel__context md:col-span-4 lg:col-span-3 md:flex items-center">
         <div class="context space-y-5">
@@ -70,7 +70,7 @@
             </div>
           </div>
         </div>
-        <div class="carousel__slides-context relative mt-6 h-40">
+        <div class="carousel__slides-context relative mt-6 h-80 md:h-40">
           <div
             v-for="(item, index) in featuredNews"
             class="carousel__slides-context-wrap absolute top-0 left-0 w-full invisible opacity-0 translate-y-[60px] transition-all duration-300 ease-in-out"
@@ -113,6 +113,7 @@
                 @click="changeSlide('prev')"
                 class="arrow-btn inline-flex items-center justify-center w-12 h-12 bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
               >
+                <span class="sr-only">Previous</span>
                 <svg class="arrow-btn__arrow w-5 h-5" viewBox="0 0 26.9 26.5" style="enable-background:new 0 0 26.9 26.5">
                   <path d="M26.9 12.7h-25L14 .7l-.8-.7L0 13.2l13.2 13.3.8-.7L1.9 13.7h25z" />
                 </svg>
@@ -121,6 +122,7 @@
                 @click="changeSlide('next')"
                 class="arrow-btn inline-flex items-center justify-center w-12 h-12 bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
               >
+                <span class="sr-only">Next</span>
                 <svg class="arrow-btn__arrow w-5 h-5 rotate-180" viewBox="0 0 26.9 26.5" style="enable-background:new 0 0 26.9 26.5">
                   <path d="M26.9 12.7h-25L14 .7l-.8-.7L0 13.2l13.2 13.3.8-.7L1.9 13.7h25z" />
                 </svg>
@@ -132,7 +134,7 @@
     </div>
     <div
       v-if="(renderApi && api == 'Academic News') || (renderApi && api == 'Faculty Accomplishments')"
-      class="article-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto space-y-16 md:space-y-0"
+      class="article-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto space-y-16 md:space-y-0"
     >
       <div class="article-section__intro md:col-span-4 lg:col-span-3 space-y-10">
         <div class="context w-full space-y-5">
@@ -165,6 +167,7 @@
             class="arrow-btn inline-flex items-center justify-center w-12 h-12 bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
             @click="changeSlide('prev')"
           >
+            <span class="sr-only">Previous</span>
             <svg class="arrow-btn__arrow w-5 h-5" viewBox="0 0 26.9 26.5">
               <path d="M26.9 12.7h-25L14 .7l-.8-.7L0 13.2l13.2 13.3.8-.7L1.9 13.7h25z"></path>
             </svg>
@@ -173,6 +176,7 @@
             class="arrow-btn inline-flex items-center justify-center w-12 h-12 bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out"
             @click="changeSlide('next')"
           >
+            <span class="sr-only">Next</span>
             <svg class="arrow-btn__arrow w-5 h-5 rotate-180" viewBox="0 0 26.9 26.5">
               <path d="M26.9 12.7h-25L14 .7l-.8-.7L0 13.2l13.2 13.3.8-.7L1.9 13.7h25z"></path>
             </svg>
@@ -192,9 +196,10 @@
                   class="article-grid__item glide__slide"
                 >
                   <article class="article space-y-4">
-                    <div
+                    <a
                       v-if="item.yoast_head_json.og_image[0].url"
-                      class="article__image relative"
+                      class="article__image relative block overflow-hidden"
+                      :href="item.guid.rendered"
                     >
                       <picture>
                         <source
@@ -202,12 +207,12 @@
                           :srcset="item.yoast_head_json.og_image[0].url"
                         >
                         <img
-                          class="w-full object-cover"
+                          class="w-full object-cover hover:scale-105 transition-all duration-500 ease-in-out"
                           :src="item.yoast_head_json.og_image[0].url"
                           alt=""
                         >
                       </picture>
-                    </div>
+                    </a>
                     <div class="context w-full space-y-5">
                       <div class="text-group">
                         <div
@@ -370,10 +375,14 @@ export default {
       this.glide.go(s);
     },
     pauseCarousel() {
-      this.glide.pause();
+      if (this.glide) {
+        this.glide.pause();
+      }
     },
     playCarousel() {
-      this.glide.play();
+      if (this.glide) {
+        this.glide.play();
+      }
     },
     renderGlide() {
       // JS was apparently initializing faster than
@@ -384,21 +393,21 @@ export default {
       setTimeout(() => {
         this.window = this.$refs.carousel.querySelector('[data-glide-window]');
 
-        console.log(this.window);
+        if (this.window) {
+          this.glide = new Glide(this.window, {
+            type: 'carousel',
+            gap: this.gap,
+            animationDuration: 600,
+            autoplay: 4000,
+            perView: this.perView,
+          });
 
-        this.glide = new Glide(this.window, {
-          type: 'carousel',
-          gap: this.gap,
-          animationDuration: 600,
-          autoplay: 4000,
-          perView: this.perView,
-        });
+          this.glide.on('run', () => {
+            this.activeSlide = this.glide.index;
+          });
 
-        this.glide.on('run', () => {
-          this.activeSlide = this.glide.index;
-        });
-
-        this.glide.mount();
+          this.glide.mount();
+          }
       }, 100);
     },
     decodeHtmlEntities(input) {

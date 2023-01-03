@@ -1,0 +1,9 @@
+{% if in_component_library %}
+  {% set context = '@context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+{% endif %}
+
+<div class="colby-paragraph-block">
+  {{ paragraph_text }}
+</div>

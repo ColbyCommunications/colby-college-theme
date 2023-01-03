@@ -5,7 +5,7 @@
     />
     <div
       v-if="renderApi"
-      class="context-article-grid__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto"
+      class="context-article-grid__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto"
     >
       <div class="md:col-start-3 md:col-span-8">
         <div class="context space-y-5">
@@ -26,7 +26,7 @@
     </div>
     <div
       v-if="renderApi"
-      class="context-article-grid__inner gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto"
+      class="context-article-grid__inner gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto"
     >
       <div class="article-grid grid grid-cols-9 gap-10 max-w-screen-xl w-full">
         <div

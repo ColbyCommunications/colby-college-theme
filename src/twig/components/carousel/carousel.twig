@@ -13,7 +13,7 @@
   :render-api="{{ render_api }}"
   api="{{ api }}"
 >
-  <div class="carousel__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto">
+  <div class="carousel__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto">
     <div class="carousel__context md:col-span-4 lg:col-span-3 md:flex items-center">
       {% include context with {
         size: 'large',
@@ -61,7 +61,7 @@
           </div>
         </div>
       </div>
-      <div class="carousel__slides-context relative mt-6 h-40">
+      <div class="carousel__slides-context relative mt-6 h-80 md:h-40">
         {% for item in items %}
           <div
             class="carousel__slides-context-wrap absolute top-0 left-0 w-full invisible opacity-0 translate-y-[60px] transition-all duration-300 ease-in-out"

@@ -7,11 +7,12 @@
 {% endif %}
 
 <div class="hero relative py-20 space-y-16">
-  <div class="hero__inner grid md:items-center md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto space-y-16 md:space-y-0">
+  <div class="hero__inner grid md:items-center md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto space-y-16 md:space-y-0">
     <div class="hero__main {% if align == 'center' %}md:col-start-3{% endif %} md:col-span-8">
       {% include context with {
         size: 'medium',
         hero: true,
+        date: date,
         subheading: subheading,
         heading: heading,
         paragraph: paragraph,
@@ -41,7 +42,7 @@
     {% endif %}
   </div>
   {% if images and align == 'center' %}
-    <div class="hero__inner grid md:items-center md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-9 md:px-5 my-0 mx-auto">
+    <div class="hero__inner grid md:items-center md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto">
       {% for image in images %}
         <div class="{% if columns == 4 %}md:col-span-3{% else %}md:col-span-4{% endif %} [&:nth-child(2)]:hidden md:[&:nth-child(2)]:block [&:nth-child(3)]:hidden md:[&:nth-child(3)]:block [&:nth-child(4)]:hidden md:[&:nth-child(4)]:block">
           <div class="hero__image relative pb-[70.73170731707317%] {% if columns == 4 %} pb-[165.3846153846154%] {% else %} md:pb-[80.55555555555556%] {% endif %}">
