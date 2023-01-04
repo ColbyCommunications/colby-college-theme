@@ -351,7 +351,7 @@
                                     type: `${item.Type}s`,
                                     link: {
                                         title: item.Text,
-                                        url: null,
+                                        url: `/dept/${item.Dept.toLowerCase()}`,
                                     },
                                     columns: [item.Dept, item.Type],
                                 };
