@@ -1,60 +1,87 @@
 <template>
     <slot v-if="renderApi == false && !externalItems" />
-    <div v-if="renderApi || externalItems" class="md:flex justify-between mb-10">
+    <div v-if="renderApi || externalItems" class="md:flex justify-between !mb-10">
         <h2
             class="font-extended font-normal text-24 leading-110 -tracking-3 text-indigo"
             v-text="heading"
         />
-        <div
-            class="flex flex-wrap md:flex-nowrap justify-between md:justify-start md:space-x-12 mt-6 md:mt-0"
-        >
-            <label class="relative flex shrink-0 md:shrink mb-6 md:mb-0 text-[0] w-full max-w-sm">
-                Search
-                <svg class="absolute top-3 left-3 fill-indigo-800 w-2.5" viewBox="0 0 9.6 9.6">
-                    <path
-                        d="M3.6 1.2c-1.3 0-2.4 1.1-2.4 2.4C1.2 4.9 2.3 6 3.6 6 4.9 6 6 4.9 6 3.6c0-1.3-1.1-2.4-2.4-2.4zM0 3.6C0 1.6 1.6 0 3.6 0s3.6 1.6 3.6 3.6c0 .8-.2 1.5-.7 2.1l2.9 2.9c.2.2.2.6 0 .8-.2.2-.6.2-.8 0L5.7 6.5c-.6.5-1.3.7-2.1.7-2 0-3.6-1.6-3.6-3.6z"
-                        style="fill-rule: evenodd; clip-rule: evenodd"
-                    />
-                </svg>
-                <input
-                    class="w-full h-[34px] max-w-sm p-2.5 pl-7 border border-indigo-400 border-solid rounded-md font-body font-normal text-10 leading-130 text-indigo-800 placeholder-indigo-800 bg-white"
-                    type="text"
-                    name="search-input"
-                    placeholder="Search"
-                    v-model="searchTerm"
+    </div>
+    <div
+        v-if="renderApi || externalItems"
+        class="flex flex-wrap md:flex-nowrap justify-between md:justify-end md:space-x-12 mt-6 md:mt-0 !mb-8"
+    >
+        <label class="relative flex shrink-0 md:shrink mb-6 md:mb-0 text-[0] w-full max-w-sm">
+            Search
+            <svg class="absolute top-3 left-3 fill-indigo-800 w-2.5" viewBox="0 0 9.6 9.6">
+                <path
+                    d="M3.6 1.2c-1.3 0-2.4 1.1-2.4 2.4C1.2 4.9 2.3 6 3.6 6 4.9 6 6 4.9 6 3.6c0-1.3-1.1-2.4-2.4-2.4zM0 3.6C0 1.6 1.6 0 3.6 0s3.6 1.6 3.6 3.6c0 .8-.2 1.5-.7 2.1l2.9 2.9c.2.2.2.6 0 .8-.2.2-.6.2-.8 0L5.7 6.5c-.6.5-1.3.7-2.1.7-2 0-3.6-1.6-3.6-3.6z"
+                    style="fill-rule: evenodd; clip-rule: evenodd"
                 />
-            </label>
-            <select
-                v-if="this.api == 'Course Catalogue'"
-                v-model="selectedDepartment"
-                @change="toggleTerm('SELECT', $event)"
-                class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer"
+            </svg>
+            <input
+                class="w-full h-[34px] max-w-sm p-2.5 pl-7 border border-indigo-400 border-solid rounded-md font-body font-normal text-10 leading-130 text-indigo-800 placeholder-indigo-800 bg-white"
+                type="text"
+                name="search-input"
+                placeholder="Search"
+                v-model="searchTerm"
+                @input="(event) => (this.currentPage = 1)"
+            />
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="12"
+                width="12"
+                class="absolute top-3 right-3 fill-indigo-800 cursor-pointer"
+                :class="{ block: searchTerm.length > 0, hidden: searchTerm.length === 0 }"
+                viewBox="0 0 48 48"
+                @click="(event) => (this.searchTerm = '')"
             >
-                <option v-text="'All Departments'" :value="'All Departments'" />
-                <option
-                    v-for="(item, index) in filterDepartments"
-                    v-text="item.Text"
-                    :value="item.Dept"
+                <path
+                    d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z"
                 />
-            </select>
-            <div v-if="filterOptions.length > 0" class="flex">
-                <button
-                    class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
-                    :class="{
-                        '!text-indigo font-bold':
-                            this.filterTerm.some((t) => this.filterOptions.includes(t)) == false,
-                    }"
-                    v-text="'All'"
-                    @click="toggleTerm('All', $event)"
-                />
-                <button
-                    v-for="(term, index) in filterOptions"
-                    class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
-                    :class="{ '!text-indigo font-bold': this.filterTerm.includes(term) }"
-                    v-text="term"
-                    @click="toggleTerm(term, $event)"
-                />
-            </div>
+            </svg>
+        </label>
+        <select
+            v-if="this.api == 'Course Catalogue'"
+            v-model="selectedDepartment"
+            @change="toggleTerm('SELECT', $event)"
+            class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer"
+        >
+            <option v-text="'All Departments'" :value="'All Departments'" />
+            <option
+                v-for="(item, index) in filterDepartments"
+                v-text="item.Text"
+                :value="item.Dept"
+            />
+        </select>
+        <select
+            v-if="this.api != 'Department Courses'"
+            v-model="selectedDivision"
+            @change="toggleTermDivision('SELECT', $event)"
+            class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer"
+        >
+            <option v-text="'All Divisions'" :value="'All Divisions'" />
+            <option v-text="'Humanities'" :value="'Humanities'" />
+            <option v-text="'Interdisciplinary Studies'" :value="'Interdisciplinary Studies'" />
+            <option v-text="'Natural Sciences'" :value="'Natural Sciences'" />
+            <option v-text="'Social Sciences'" :value="'Social Sciences'" />
+        </select>
+        <div v-if="filterOptions.length > 0" class="flex">
+            <button
+                class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
+                :class="{
+                    '!text-indigo font-bold':
+                        this.filterTerm.some((t) => this.filterOptions.includes(t)) == false,
+                }"
+                v-text="'All'"
+                @click="toggleTermType('All', $event)"
+            />
+            <button
+                v-for="(term, index) in filterOptions"
+                class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
+                :class="{ '!text-indigo font-bold': this.filterTerm.includes(term) }"
+                v-text="term"
+                @click="toggleTermType(term, $event)"
+            />
         </div>
     </div>
     <table v-if="renderApi || externalItems" class="table w-full colby-table-block">
@@ -207,13 +234,17 @@
                 filterOptions: [],
                 filterDepartments: [],
                 selectedDepartment: 'All Departments',
+                selectedDivision: 'All Divisions',
             };
         },
         computed: {
             filteredItems() {
-                const f = this.items.filter((item) =>
-                    this.filterTerm.some((r) => item.type.includes(r))
-                );
+                let f = [];
+                if (this.api !== 'Departments') {
+                    f = this.items.filter((item) => {
+                        return this.filterTerm.some((r) => item.type.includes(r));
+                    });
+                }
                 let g;
                 if (f.length == 0) {
                     g = this.items;
@@ -223,6 +254,9 @@
                     );
                 }
                 if (this.selectedDepartment !== 'All Departments') {
+                    g = g.filter((item) => this.filterTerm.includes(item.department));
+                }
+                if (this.selectedDivision !== 'All Divisions') {
                     g = g.filter((item) => this.filterTerm.includes(item.department));
                 }
                 if (this.fuse) {
@@ -354,6 +388,7 @@
                                         url: `/dept/${item.Dept.toLowerCase()}`,
                                     },
                                     columns: [item.Dept, item.Type],
+                                    department: item.Dept,
                                 };
                             });
                             this.filterOptions = ['Majors', 'Minors'];
@@ -406,6 +441,7 @@
                                     url: `/academics/departments-and-programs/${item.post_name}`,
                                 },
                                 columns: [item.custom.heading],
+                                department: item.department_code,
                             };
                         });
                         this.headings = ['Name', 'Description'];
@@ -451,6 +487,9 @@
                 }
             },
             toggleTerm(term, event) {
+                if (this.selectedDivision != 'All Divisions') {
+                    this.selectedDivision = 'All Divisions';
+                }
                 this.currentPage = 1;
                 let select;
                 if (term == 'SELECT') {
@@ -472,6 +511,82 @@
                     }
                     this.filterTerm.push(term);
                 }
+            },
+            toggleTermType(term, event) {
+                this.currentPage = 1;
+                let select;
+                if (term == 'SELECT') {
+                    term = event.target.value;
+                    select = true;
+                }
+                if (this.filterTerm.includes(term)) {
+                    this.filterTerm.splice(this.filterTerm.indexOf(term));
+                } else {
+                    if (select) {
+                        this.filterTerm = [];
+                    }
+                    if (this.filterTerm.some((t) => this.filterOptions.includes(t))) {
+                        this.filterTerm.forEach((t) => {
+                            if (this.filterOptions.includes(t)) {
+                                this.filterTerm.splice(this.filterTerm.indexOf(t));
+                            }
+                        });
+                    }
+                    this.filterTerm.push(term);
+                }
+            },
+            toggleTermDivision(term, event) {
+                if (this.selectedDepartment != 'All Departments') {
+                    this.selectedDepartment = 'All Departments';
+                }
+                this.currentPage = 1;
+                let select;
+                if (term == 'SELECT') {
+                    term = event.target.value;
+                    select = true;
+                }
+
+                switch (term) {
+                    case 'Humanities':
+                        this.filterTerm = [
+                            'ART',
+                            'CLAS',
+                            'EAST',
+                            'ENGL',
+                            'FRIT',
+                            'GMRU',
+                            'MUSI',
+                            'THEA',
+                            'PHIL',
+                            'RELG',
+                            'SPAN',
+                        ];
+                        break;
+                    case 'Interdisciplinary Studies':
+                        this.filterTerm = [
+                            'AFAM',
+                            'AMER',
+                            'INTD',
+                            'EDUC',
+                            'ENVS',
+                            'GLST',
+                            'LTAM',
+                            'SCIT',
+                            'WGST',
+                        ];
+                        break;
+                    case 'Natural Sciences':
+                        this.filterTerm = ['PHYS', 'BIOL', 'CHEM', 'COMP', 'GEOL', 'MATH', 'STAT'];
+                        break;
+                    case 'Social Sciences':
+                        this.filterTerm = ['ANTH', 'ECON', 'GOVT', 'HIST', 'PSYC', 'SOCY'];
+                        break;
+                    default:
+                    // code block
+                }
+            },
+            onSearchChange() {
+                this.currentPage = 1;
             },
             initFuse() {
                 if (this.filteredItems) {
