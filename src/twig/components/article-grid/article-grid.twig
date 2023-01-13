@@ -119,7 +119,7 @@
           buttons: [
             {
               button: {
-                url: item.post.guid,
+                url: function('get_permalink', item.post.ID),
                 title: cta_title,
               }
             }

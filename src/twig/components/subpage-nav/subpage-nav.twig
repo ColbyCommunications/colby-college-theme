@@ -15,7 +15,7 @@
     {% if menu_obj != true %}
       {% set newItem = [{
         title: item.post_title,
-        url: item.guid,
+        url: function('get_page_link', item.ID),
         active: a,
       }] %}
     {% else %}

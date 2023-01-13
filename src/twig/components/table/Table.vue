@@ -216,6 +216,8 @@
 <script>
     import axios from 'axios';
     import Fuse from 'fuse.js';
+    import _map from 'lodash/map';
+    import _uniq from 'lodash/uniq';
     import Modal from '/src/twig/components/modal/Modal.vue';
     export default {
         components: {
@@ -267,8 +269,9 @@
             inputFilteredItems() {
                 let u = [];
                 if (this.fuse) {
-                    if (this.fuse.search(this.searchTerm).length > 0) {
-                        u = this.fuse.search(this.searchTerm).map((item) => item.item);
+                    if (this.searchTerm.length > 0) {
+                        let f = this.fuse.search(this.searchTerm);
+                        u = f.map((item) => item.item);
                     } else {
                         u = this.filteredItems;
                     }
@@ -373,6 +376,7 @@
                                         url: null,
                                     },
                                     columns: [item.crsno, item.dept],
+                                    faculty: this._faculty(item.sections),
                                 };
                             });
                             this.headings = ['Name', 'Course Number', 'Department'];
@@ -592,11 +596,11 @@
                 if (this.filteredItems) {
                     this.fuse = new Fuse(this.filteredItems, {
                         shouldSort: true,
-                        threshold: 0.0,
-                        ignoreLocation: true,
+                        threshold: 0.3,
+                        ignoreLocation: false,
                         maxPatternLength: 32,
                         minMatchCharLength: 1,
-                        keys: ['title'],
+                        keys: ['title', 'description', 'faculty'],
                     });
                 }
             },
@@ -701,6 +705,26 @@
                 }
                 return creditHours;
             },
+            _faculty(sections) {
+                let faculty = [];
+                sections.forEach((section) => {
+                    faculty = faculty.concat(
+                        _map(section.faculty, (obj) => {
+                            return obj.faculty_name.split(',')[0];
+                        })
+                    );
+                });
+                let facultyStr = '';
+                const uniqueFaculty = _uniq(faculty);
+                uniqueFaculty.forEach((item, i) => {
+                    facultyStr += item;
+                    if (i !== uniqueFaculty.length - 1) {
+                        facultyStr += ', ';
+                    }
+                });
+
+                return facultyStr;
+            },
             renderDesc(item) {
                 const creditHours = this._creditHours(item.crsno, item.minhrs, item.maxhrs);
                 let reqs = '';
@@ -716,7 +740,9 @@
                     reqs = this._reqs(item.area, item.labsci, item.writing, item.diversity);
                 }
 
-                return `${item.abstr}<br/>${prereq} ${creditHours} ${reqs}`;
+                const faculty = this._faculty(item.sections);
+
+                return `${item.abstr}<br/>${prereq} ${creditHours} ${reqs} <i style="text-transform: uppercase">${faculty}<i>`;
             },
         },
     };
