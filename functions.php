@@ -1291,7 +1291,7 @@ function update_directory_profile( $entry, $form ) {
 		$remove_image_changed = false;
 	}
 
-	if ( $remove_image === 'Yes' ) {
+	if ( $remove_image === 'Yes' && ! $image ) {
 		$remove_image_changed = true;
 		$image_changed        = false;
 	}
@@ -1334,9 +1334,12 @@ function update_directory_profile( $entry, $form ) {
 	$desc     = $employee_id;
 	$thumb_id = get_post_thumbnail_id( $ID );
 
-	wp_delete_attachment( $thumb_id, true );
+	if ( $remove_image_changed ) {
+		wp_delete_attachment( $thumb_id, true );
+	}
 
 	if ( $image_changed ) {
+		wp_delete_attachment( $thumb_id, true );
 		$image = media_sideload_image( $image, $ID, $desc, 'id' );
 		set_post_thumbnail( $ID, $image );
 	}
