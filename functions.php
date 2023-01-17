@@ -1211,17 +1211,18 @@ function update_directory_profile( $entry, $form ) {
 	*/
 
 	$employee_id      = str_pad( $entry[10], 7, '0', STR_PAD_LEFT );
+	$confirm_email    = $entry[16];
 	$preferred_name   = $entry[12];
 	$pronouns         = $entry[11];
 	$phone_number     = $entry[6];
 	$location         = $entry[7];
 	$department       = $entry[5];
-	$image            = $entry[2];
-	$remove_image     = $entry[13];
+	$image            = $entry[17];
 	$curriculum_vitae = $entry[9];
 	$fax              = $entry[14];
 	$office_hours     = $entry[15];
 	$bio              = $entry[1];
+	$image_url        = $entry[2];
 
 	// get person post by employee ID
 	$args = array(
@@ -1237,6 +1238,8 @@ function update_directory_profile( $entry, $form ) {
 
 	$person_post     = get_posts( $args );
 	$person_metadata = get_post_meta( $person_post[0]->ID );
+
+	die( var_dump( $person_metadata ) );
 
 	$preferred_name_changed   = false;
 	$pronouns_changed         = false;
@@ -1286,12 +1289,10 @@ function update_directory_profile( $entry, $form ) {
 		$office_hours = true;
 	}
 
-	if ( $image ) {
+	if ( $image === 'Upload a New Photo' ) {
 		$image_changed        = true;
 		$remove_image_changed = false;
-	}
-
-	if ( $remove_image === 'Yes' && ! $image ) {
+	} elseif ( $image === 'Delete Current Photo' ) {
 		$remove_image_changed = true;
 		$image_changed        = false;
 	}
@@ -1340,8 +1341,8 @@ function update_directory_profile( $entry, $form ) {
 
 	if ( $image_changed ) {
 		wp_delete_attachment( $thumb_id, true );
-		$image = media_sideload_image( $image, $ID, $desc, 'id' );
-		set_post_thumbnail( $ID, $image );
+		$new_image = media_sideload_image( $image_url, $ID, $desc, 'id' );
+		set_post_thumbnail( $ID, $new_image );
 	}
 }
 
