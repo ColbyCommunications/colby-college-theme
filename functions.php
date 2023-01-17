@@ -1239,8 +1239,6 @@ function update_directory_profile( $entry, $form ) {
 	$person_post     = get_posts( $args );
 	$person_metadata = get_post_meta( $person_post[0]->ID );
 
-	die( var_dump( $person_metadata ) );
-
 	$preferred_name_changed   = false;
 	$pronouns_changed         = false;
 	$phone_number_changed     = false;
