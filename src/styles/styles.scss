@@ -215,37 +215,42 @@
 }
 
 /* Directory Gravity Form */
-#gform_wrapper_2 {
-  input:not([type="file"]):not([type="submit"]) {
-    border: 1px solid #b7c2d5;
-    border-radius: 3px;
-  }
-  input[type="submit"] {
-    background-color: #002878;
-    border: 2px solid #002878;
-    color: #fff;
-    padding: 5px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  input[type="submit"]:hover {
-    background-color: #fff;
-    border: 2px solid #002878;
-    color: #003878;
-    padding: 5px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-    text-decoration: underline;
-  }
-  input[type="submit"]:focus {
-    background-color: #fff;
-    border: 2px solid #002878;
-    color: #003878;
-    padding: 5px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-    text-decoration: underline;
-  }
+#gform_wrapper_2,
+#gform_wrapper_3 {
+    input:not([type='file']):not([type='submit']) {
+        border: 1px solid #b7c2d5;
+        border-radius: 3px;
+    }
+    textarea:not([type='file']):not([type='submit']) {
+        border: 1px solid #b7c2d5;
+        border-radius: 3px;
+    }
+    input[type='submit'] {
+        background-color: #002878;
+        border: 2px solid #002878;
+        color: #fff;
+        padding: 5px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    input[type='submit']:hover {
+        background-color: #fff;
+        border: 2px solid #002878;
+        color: #003878;
+        padding: 5px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+        text-decoration: underline;
+    }
+    input[type='submit']:focus {
+        background-color: #fff;
+        border: 2px solid #002878;
+        color: #003878;
+        padding: 5px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+        text-decoration: underline;
+    }
 }
 
 @media (max-width: 768px) {
