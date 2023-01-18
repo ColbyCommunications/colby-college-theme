@@ -1191,8 +1191,56 @@ function getNewPeople( $directory_data ) {
 	}
 }
 
-add_action( 'gform_after_submission', 'update_directory_profile', 10, 2 );
+add_action(
+	'gform_validation',
+	function( $validation_result ) {
 
+		$employee_id = str_pad( rgpost( 'input_10' ), 7, '0', STR_PAD_LEFT );
+
+		$args = array(
+			'post_type'  => 'people',
+			'meta_query' => array(
+				array(
+					'key'     => 'employee_id',
+					'value'   => $employee_id,
+					'compare' => '=',
+				),
+			),
+		);
+
+		$person_post     = get_posts( $args );
+		$person_metadata = get_post_meta( $person_post[0]->ID );
+
+		GFCommon::log_debug( __METHOD__ . '(): running Total validation.' );
+		$form = $validation_result['form'];
+
+		// Return without changes if form id is not 10.
+		if ( 2 != $form['id'] ) {
+			return $validation_result;
+		}
+
+		// Change 3 to the id number of your Total field.
+		if ( strtolower( $person_metadata['email'][0] ) !== strtolower( rgpost( 'input_16' ) ) ) {
+			// Set the form validation to false.
+			$validation_result['is_valid'] = false;
+		}
+			// Find Total field, set failed validation and message.
+		foreach ( $form['fields'] as &$field ) {
+			if ( $field->type == 'email' ) {
+				$field->failed_validation  = true;
+				$field->validation_message = 'The employee ID and email address provided are not associated in Workday! See below for help.';
+				break;
+			}
+		}
+
+		// Assign modified $form object back to the validation result.
+		$validation_result['form'] = $form;
+		return $validation_result;
+	}
+);
+
+
+add_action( 'gform_after_submission', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 
 	/*
