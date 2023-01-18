@@ -2,8 +2,10 @@
 
 {% if in_component_library %}
   {% set logo = '@logo' %}
+  {% set button = '@button' %}
 {% else %}
   {% set logo = 'logo.twig' %}
+  {% set button = 'button.twig' %}
 {% endif %}
 
 <footer class="footer bg-indigo py-14 space-y-14">
@@ -39,8 +41,14 @@
           </li>
         {% endfor %}
       </ul>
-      <div class="footer__connect flex space-between">
-        <ul class="footer__socials flex space-x-4">
+      <div class="footer__connect flex space-between items-center">
+        {% include button with {
+          size: 'small',
+          type: 'dark',
+          url: 'https://news.colby.edu/newsletter/',
+          title: 'Subscribe',
+        }  %}
+        <ul class="footer__socials flex space-x-4 ml-8">
           {% for item in social %}
             <li class="text-[0]">
               <a class="flex text-indigo-100" href="{{ item.platform.url }}">
