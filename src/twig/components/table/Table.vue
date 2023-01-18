@@ -54,7 +54,11 @@
             />
         </select>
         <select
-            v-if="this.api != 'Department Courses'"
+            v-if="
+                this.api != 'Department Courses' &&
+                this.api != 'Departments' &&
+                this.api != 'Offices'
+            "
             v-model="selectedDivision"
             @change="toggleTermDivision('SELECT', $event)"
             class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer"
