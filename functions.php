@@ -1215,7 +1215,7 @@ add_action(
 		$form = $validation_result['form'];
 
 		// Return without changes if form id is not 10.
-		if ( 2 != $form['id'] ) {
+		if ( 4 != $form['id'] ) {
 			return $validation_result;
 		}
 
