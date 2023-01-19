@@ -1243,34 +1243,27 @@ add_action(
 add_action( 'gform_after_submission', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 
-	/*
-	1 - bio
-	2- image
-	5 - dept
-	6 - phone #
-	7 - location
-	9 - CV
-	10 - employee ID
-	11 - pronouns
-	12 - pref name
-	13 - Remove image
-	14 - fax
-	15 - office hours
-	*/
-
-	$employee_id      = str_pad( $entry[10], 7, '0', STR_PAD_LEFT );
-	$confirm_email    = $entry[16];
-	$preferred_name   = $entry[12];
-	$pronouns         = $entry[11];
-	$phone_number     = $entry[6];
-	$location         = $entry[7];
-	$department       = $entry[5];
-	$image            = $entry[17];
-	$curriculum_vitae = $entry[9];
-	$fax              = $entry[14];
-	$office_hours     = $entry[15];
-	$bio              = $entry[1];
-	$image_url        = $entry[2];
+	$employee_id         = str_pad( $entry[10], 7, '0', STR_PAD_LEFT );
+	$confirm_email       = $entry[16];
+	$preferred_name      = $entry[12];
+	$pronouns            = $entry[11];
+	$phone_number        = $entry[6];
+	$location            = $entry[7];
+	$department          = $entry[5];
+	$image               = $entry[17];
+	$curriculum_vitae    = $entry[9];
+	$fax                 = $entry[14];
+	$office_hours        = $entry[15];
+	$bio                 = $entry[1];
+	$image_url           = $entry[2];
+	$remove_pronouns     = $entry[22];
+	$remove_phone        = $entry[24];
+	$remove_fax          = $entry[25];
+	$remove_location     = $entry[26];
+	$remove_department   = $entry[27];
+	$remove_cv           = $entry[28];
+	$remove_office_hours = $entry[29];
+	$remove_bio          = $entry[33];
 
 	// get person post by employee ID
 	$args = array(
@@ -1298,6 +1291,14 @@ function update_directory_profile( $entry, $form ) {
 	$remove_image_changed     = false;
 	$fax_changed              = false;
 	$office_hours_changed     = false;
+	// $remove_pronouns_changed     = false;
+	// $remove_phone_changed        = false;
+	// $remove_fax_changed          = false;
+	// $remove_location_changed     = false;
+	// $remove_department_changed   = false;
+	// $remove_cv_changed           = false;
+	// $remove_office_hours_changed = false;
+	// $remove_bio_changed          = false;
 
 	if ( $preferred_name ) {
 		$preferred_name_changed = true;
@@ -1305,34 +1306,74 @@ function update_directory_profile( $entry, $form ) {
 
 	if ( $pronouns ) {
 		$pronouns_changed = true;
+	} elseif ( ! $pronouns && $remove_pronouns ) {
+		if ( $person_metadata['pronouns_changed'][0] ) {
+			// $remove_pronouns_changed = true;
+			$pronouns = '';
+		}
 	}
 
-	if ( $phone_number ) {
-		$phone_number_changed = true;
-	}
-
-	if ( $location ) {
-		$location_changed = true;
-	}
-
-	if ( $department ) {
-		$department_changed = true;
-	}
-
-	if ( $curriculum_vitae ) {
-		$curriculum_vitae_changed = true;
-	}
-
-	if ( $bio ) {
-		$bio_changed = true;
+	if ( $phone ) {
+		$phone_changed = true;
+	} elseif ( ! $phone && $remove_phone ) {
+		if ( $person_metadata['phone_changed'][0] ) {
+			// $remove_phone_changed = true;
+			$phone = '';
+		}
 	}
 
 	if ( $fax ) {
 		$fax_changed = true;
+	} elseif ( ! $fax && $remove_fax ) {
+		if ( $person_metadata['fax_changed'][0] ) {
+			// $remove_fax_changed = true;
+			$fax = '';
+		}
+	}
+
+	if ( $location ) {
+		$location_changed = true;
+	} elseif ( ! $location && $remove_location ) {
+		if ( $person_metadata['location_changed'][0] ) {
+			// $remove_location_changed = true;
+			$location = '';
+		}
+	}
+
+	if ( $department ) {
+		$department_changed = true;
+	} elseif ( ! $department && $remove_department ) {
+		if ( $person_metadata['department_changed'][0] ) {
+			// $remove_department_changed = true;
+			$department = '';
+		}
+	}
+
+	if ( $curriculum_vitae ) {
+		$curriculum_vitae_changed = true;
+	} elseif ( ! $curriculum_vitae && $remove_curriculum_vitae ) {
+		if ( $person_metadata['curriculum_vitae_changed'][0] ) {
+			// $remove_cv_changed = true;
+			$curriculum_vitae = '';
+		}
 	}
 
 	if ( $office_hours ) {
-		$office_hours = true;
+		$office_hours_changed = true;
+	} elseif ( ! $office_hours && $remove_office_hours ) {
+		if ( $person_metadata['office_hours_changed'][0] ) {
+			// $remove_office_hours_changed = true;
+			$office_hours = '';
+		}
+	}
+
+	if ( $bio ) {
+		$bio = true;
+	} elseif ( ! $bio && $remove_bio ) {
+		if ( $person_metadata['bio_changed'][0] ) {
+			// $remove_bio_changed = true;
+			$bio = '';
+		}
 	}
 
 	if ( $image === 'Upload a New Photo' ) {

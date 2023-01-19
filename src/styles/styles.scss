@@ -246,6 +246,13 @@
     border-radius: 4px;
     text-decoration: underline;
   }
+
+  .remove-field {
+    margin-bottom: 2rem;
+    label {
+      margin-left: 0.5rem;
+    }
+  }
 }
 
 @media (max-width: 768px) {
