@@ -608,6 +608,23 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
+
+			// register embed
+			acf_register_block(
+				array(
+					'name'            => 'embed',
+					'title'           => __( 'Embed' ),
+					'description'     => __( 'A custom block that supports embed code.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'layout', 'context', 'embed' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
 		}
 	}
 

@@ -25,6 +25,16 @@ import AnimatedBorder from './twig/components/featured-post/AnimatedBorder.vue';
 
 import './styles/styles.scss';
 
+const embeds = document.getElementsByClassName('embed');
+const mains = [];
+
+// Array that sweeps the document for all embed components and removes them
+Array.from(embeds).forEach((e) => {
+    const embedMain = e.getElementsByClassName('embed__main')[0];
+    mains.push(embedMain);
+    e.removeChild(embedMain);
+});
+
 const emitter = mitt();
 const app = createApp({
     components: {
@@ -54,3 +64,8 @@ app.config.globalProperties.emitter = emitter;
 app.use(InstantSearch);
 
 app.mount('#app');
+
+// Replace all embeds following Vue mounting
+for (let i = 0; i < embeds.length; i += 1) {
+    embeds[i].append(mains[i]);
+}
