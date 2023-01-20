@@ -1291,14 +1291,6 @@ function update_directory_profile( $entry, $form ) {
 	$remove_image_changed     = false;
 	$fax_changed              = false;
 	$office_hours_changed     = false;
-	// $remove_pronouns_changed     = false;
-	// $remove_phone_changed        = false;
-	// $remove_fax_changed          = false;
-	// $remove_location_changed     = false;
-	// $remove_department_changed   = false;
-	// $remove_cv_changed           = false;
-	// $remove_office_hours_changed = false;
-	// $remove_bio_changed          = false;
 
 	if ( $preferred_name ) {
 		$preferred_name_changed = true;
@@ -1307,8 +1299,7 @@ function update_directory_profile( $entry, $form ) {
 	if ( $pronouns ) {
 		$pronouns_changed = true;
 	} elseif ( ! $pronouns && $remove_pronouns ) {
-		if ( $person_metadata['pronouns_changed'][0] ) {
-			// $remove_pronouns_changed = true;
+		if ( $person_metadata['pronouns_changed'] && $person_metadata['pronouns_changed'][0] ) {
 			$pronouns = '';
 		}
 	}
@@ -1316,8 +1307,7 @@ function update_directory_profile( $entry, $form ) {
 	if ( $phone_number ) {
 		$phone_number_changed = true;
 	} elseif ( ! $phone_number && $remove_phone_number ) {
-		if ( $person_metadata['phone_number_changed'][0] ) {
-			// $remove_phone_number_changed = true;
+		if ( $person_metadata['phone_number_changed'] && $person_metadata['phone_number_changed'][0] ) {
 			$phone_number = '';
 		}
 	}
@@ -1325,8 +1315,7 @@ function update_directory_profile( $entry, $form ) {
 	if ( $fax ) {
 		$fax_changed = true;
 	} elseif ( ! $fax && $remove_fax ) {
-		if ( $person_metadata['fax_changed'][0] ) {
-			// $remove_fax_changed = true;
+		if ( $person_metadata['fax_changed'] && $person_metadata['fax_changed'][0] ) {
 			$fax = '';
 		}
 	}
@@ -1334,8 +1323,7 @@ function update_directory_profile( $entry, $form ) {
 	if ( $location ) {
 		$location_changed = true;
 	} elseif ( ! $location && $remove_location ) {
-		if ( $person_metadata['location_changed'][0] ) {
-			// $remove_location_changed = true;
+		if ( $person_metadata['location_changed'] && $person_metadata['location_changed'][0] ) {
 			$location = '';
 		}
 	}
@@ -1343,8 +1331,7 @@ function update_directory_profile( $entry, $form ) {
 	if ( $department ) {
 		$department_changed = true;
 	} elseif ( ! $department && $remove_department ) {
-		if ( $person_metadata['department_changed'][0] ) {
-			// $remove_department_changed = true;
+		if ( $person_metadata['department_changed'] && $person_metadata['department_changed'][0] ) {
 			$department = '';
 		}
 	}
@@ -1352,8 +1339,7 @@ function update_directory_profile( $entry, $form ) {
 	if ( $curriculum_vitae ) {
 		$curriculum_vitae_changed = true;
 	} elseif ( ! $curriculum_vitae && $remove_cv ) {
-		if ( $person_metadata['curriculum_vitae_changed'][0] ) {
-			// $remove_cv_changed = true;
+		if ( $person_metadata['curriculum_vitae_changed'] && $person_metadata['curriculum_vitae_changed'][0] ) {
 			$curriculum_vitae = '';
 		}
 	}
@@ -1361,8 +1347,7 @@ function update_directory_profile( $entry, $form ) {
 	if ( $office_hours ) {
 		$office_hours_changed = true;
 	} elseif ( ! $office_hours && $remove_office_hours ) {
-		if ( $person_metadata['office_hours_changed'][0] ) {
-			// $remove_office_hours_changed = true;
+		if ( $person_metadata['office_hours_changed'] && $person_metadata['office_hours_changed'][0] ) {
 			$office_hours = '';
 		}
 	}
@@ -1370,8 +1355,7 @@ function update_directory_profile( $entry, $form ) {
 	if ( $bio ) {
 		$bio = true;
 	} elseif ( ! $bio && $remove_bio ) {
-		if ( $person_metadata['bio_changed'][0] ) {
-			// $remove_bio_changed = true;
+		if ( $person_metadata['bio_changed'] && $person_metadata['bio_changed'][0] ) {
 			$bio = '';
 		}
 	}
@@ -1385,7 +1369,7 @@ function update_directory_profile( $entry, $form ) {
 	}
 
 	// update post
-	$metaValues = array(
+	$meta_values = array(
 		'first_name'               => $preferred_name_changed ? $preferred_name : $person_metadata['first_name'][0],
 		'pronouns'                 => ( $pronouns_changed || ( ! $pronouns_changed && $remove_pronouns ) ) ? $pronouns : $person_metadata['pronouns'][0],
 		'phone'                    => ( $phone_number_changed || ( ! $phone_number_changed && $remove_phone_number ) ) ? $phone_number : $person_metadata['phone'][0],
@@ -1414,7 +1398,7 @@ function update_directory_profile( $entry, $form ) {
 		array(
 			'ID'         => $person_post[0]->ID,
 			'post_title' => $preferred_name_changed ? $preferred_name . ' ' . $person_metadata['last_name'][0] : $person_metadata['first_name'][0] . ' ' . $person_metadata['last_name'][0],
-			'meta_input' => $metaValues,
+			'meta_input' => $meta_values,
 		)
 	);
 
