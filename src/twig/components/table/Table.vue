@@ -120,7 +120,7 @@
                                 />
                             </picture>
                             <span
-                                class="text-indigo hover:underline inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140"
+                                class="text-indigo hover:underline inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
                                 >{{ item.link.title }}</span
                             >
                         </a>
@@ -138,7 +138,7 @@
                         </template>
                         <template v-slot:button>
                             <span
-                                class="text-indigo hover:underline inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140"
+                                class="text-indigo hover:underline inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
                                 v-html="item.link.title"
                             />
                         </template>
