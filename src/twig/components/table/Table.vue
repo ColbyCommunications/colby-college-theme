@@ -84,7 +84,10 @@
             />
         </div>
     </div>
-    <table v-if="renderApi || externalItems" class="block md:table overflow-scroll md:overflow-auto w-full colby-table-block">
+    <table
+        v-if="renderApi || externalItems"
+        class="block md:table overflow-scroll md:overflow-auto w-full colby-table-block"
+    >
         <tbody>
             <tr v-if="headings">
                 <th
@@ -433,7 +436,7 @@
                                 columns: [item.custom.address, item.custom.phone],
                             };
                         });
-                        this.headings = ['Name', 'Address', 'Phone'];
+                        this.headings = ['Name'];
                         break;
                     case 'Departments':
                         this.heading = 'Departments & Programs';
@@ -448,7 +451,7 @@
                                 department: item.department_code,
                             };
                         });
-                        this.headings = ['Name', 'Description'];
+                        this.headings = ['Name'];
                         break;
                 }
                 this.initFuse();
