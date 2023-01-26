@@ -433,7 +433,7 @@
                                     title: item.post_title,
                                     url: `/people/offices-directory/${item.post_name}`,
                                 },
-                                columns: [item.custom.address, item.custom.phone],
+                                columns: [],
                             };
                         });
                         this.headings = ['Name'];
@@ -447,7 +447,7 @@
                                     title: item.post_title,
                                     url: `/academics/departments-and-programs/${item.post_name}`,
                                 },
-                                columns: [item.custom.heading],
+                                columns: [],
                                 department: item.department_code,
                             };
                         });
