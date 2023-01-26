@@ -84,17 +84,17 @@
             />
         </div>
     </div>
-    <table v-if="renderApi || externalItems" class="table w-full colby-table-block">
+    <table v-if="renderApi || externalItems" class="block md:table overflow-scroll md:overflow-auto w-full colby-table-block">
         <tbody>
             <tr v-if="headings">
                 <th
                     v-for="(heading, index) in headings"
                     v-text="heading"
-                    class="hidden md:table-cell h-12 md:h-11 px-6 font-body text-20 md:text-14 font-semibold leading-120 text-indigo text-left bg-indigo-200"
+                    class="h-12 md:h-11 px-6 font-body text-18 md:text-14 font-semibold leading-120 text-indigo text-left bg-indigo-200 whitespace-nowrap"
                 />
             </tr>
             <tr v-for="(item, index) in paginatedItems" class="w-full h-12 md:h-10 odd:bg-gray-100">
-                <td class="px-6 py-2">
+                <td class="whitespace-nowrap md:whitespace-normal px-6 py-2">
                     <a
                         v-if="item.link.url && !item.image"
                         class="text-indigo hover:underline inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
@@ -152,7 +152,7 @@
                 </td>
                 <td
                     v-for="(column, index) in item.columns"
-                    class="hidden md:table-cell px-6 font-body text-20 md:text-12 font-normal leading-140 text-indigo-800 py-2"
+                    class="px-6 font-body text-16 md:text-12 font-normal leading-140 text-indigo-800 py-2"
                     v-text="column"
                 />
             </tr>
