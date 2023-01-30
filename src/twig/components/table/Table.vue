@@ -322,7 +322,7 @@
                     switch (this.api) {
                         case 'Department Courses':
                             const deptItems = outputa.data.courses.filter(
-                                (item) => item.dept == this.departmentCode
+                                (item) => item.dept == this.departmentCode && item.longTitle
                             );
                             this.items = deptItems.map((item) => {
                                 let itemTypes = item.sessOffered.split(',');
@@ -353,7 +353,9 @@
                             this.filterOptions = ['Fall', 'Spring', 'January'];
                             break;
                         case 'Course Catalogue':
-                            const filteredItems = outputa.data.courses;
+                            const filteredItems = outputa.data.courses.filter(
+                                (item) => item.longTitle
+                            );
                             this.items = filteredItems.map((item) => {
                                 let itemTypes = item.sessOffered.split(',');
                                 itemTypes.forEach((type, index) => {
