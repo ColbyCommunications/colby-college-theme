@@ -16,7 +16,7 @@
                 <div class="context space-y-5">
                     <div class="text-group">
                         <h2
-                            class="text-group__heading font-extended font-normal text-36 md:text-36 leading-100 -tracking-3 text-left text-indigo mt-2"
+                            class="text-group__heading font-extended font-normal text-28 md:text-36 leading-100 -tracking-3 text-left text-indigo mt-2"
                             v-text="heading"
                         />
                         <p
@@ -93,7 +93,7 @@
                                     v-text="item['post-meta-fields'].primary_category"
                                 />
                                 <h2
-                                    class="text-group__heading font-extended font-normal text-36 md:text-20 leading-100 -tracking-3 text-left text-indigo mt-2"
+                                    class="text-group__heading font-extended font-normal text-28 md:text-20 leading-100 -tracking-3 text-left text-indigo mt-2"
                                     v-text="decodeHtmlEntities(item.title.rendered)"
                                 />
                                 <p
