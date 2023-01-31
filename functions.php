@@ -1710,3 +1710,22 @@ if ( class_exists( 'acf_revisions' ) ) {
 	// This hook is added the ACF file: includes/revisions.php:36 (in ACF PRO v5.11)
 	remove_filter( 'acf/validate_post_id', array( $acf_revs_cls, 'acf_validate_post_id', 10 ) );
 }
+
+add_filter( 'ajax_query_attachments_args', 'hide_directory_attachments' );
+
+function hide_directory_attachments( $query = array() ) {
+	$user = wp_get_current_user();
+	if ( in_array( 'editor', $user->roles ) ) {
+		$posts = get_posts(
+			array(
+				'post_type'   => 'people',
+				'post_status' => 'publish',
+				'numberposts' => -1,
+			)
+		);
+
+		$query['post_parent__not_in'] = array_column( $posts, 'ID' );
+	}
+
+	return $query;
+}
