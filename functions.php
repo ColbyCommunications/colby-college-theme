@@ -1370,7 +1370,7 @@ function update_directory_profile( $entry, $form ) {
 	}
 
 	if ( $bio ) {
-		$bio = true;
+		$bio_changed = true;
 	} elseif ( ! $bio && $remove_bio ) {
 		if ( $person_metadata['bio_changed'] && $person_metadata['bio_changed'][0] ) {
 			$bio = '';
