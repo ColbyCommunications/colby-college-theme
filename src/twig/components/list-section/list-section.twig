@@ -7,7 +7,7 @@
             <h2 class="list-section__heading font-extended text-20 font-normal leading-110 -tracking-3 text-indigo">
               {{ list.heading }}
             </h2>
-            <ul class="space-y-2.5 list-disc ml-[13px]">
+            <ul class="space-y-2.5 ml-[14px]">
               {% for item in list.items %}
                 {% if not in_component_library %}
                   {% set item = item.link %}
