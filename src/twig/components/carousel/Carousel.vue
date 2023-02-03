@@ -278,7 +278,11 @@
                       />
                       <p
                         class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
-                        v-text="item['post-meta-fields'].summary[0]"
+                        v-text="
+                          decodeHtmlEntities(
+                            item['post-meta-fields'].summary[0]
+                          )
+                        "
                       />
                     </div>
                     <div class="button-group flex flex-wrap gap-4">
