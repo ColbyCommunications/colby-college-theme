@@ -69,7 +69,6 @@
                 <a
                   class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 font-body font-normal text-10 leading-130 text-indigo bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1 px-3 transition-all duration-200 ease-in-out"
                   :href="item.guid.rendered"
-                  target="_blank"
                 >
                   <span class="btn__text">
                     {{ cta }}
