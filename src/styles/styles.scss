@@ -214,6 +214,21 @@
     }
 }
 
+.list-section__list {
+    li {
+        list-style-type: none;
+        position: relative; /* It's needed for setting position to absolute in the next rule. */
+    }
+
+    li::before {
+        content: '•';
+        position: absolute;
+        left: -0.7em; /* Adjust this value so that it appears where you want. */
+        font-size: 1.5em; /* Adjust this value so that it appears what size you want. */
+        @apply text-indigo-600;
+    }
+}
+
 /* Directory Gravity Form */
 .gform_wrapper {
     input:not([type='file']):not([type='submit']) {

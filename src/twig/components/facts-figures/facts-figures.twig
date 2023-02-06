@@ -7,7 +7,7 @@
 {% endif %}
 
 <div class="facts-figures">
-  <div class="facts-figures__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto">
+  <div class="facts-figures__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
     <div class="facts-figures__main md:col-start-6 lg:col-start-7 md:col-span-7 lg:col-span-6">
       {% include context with {
         size: 'large',
@@ -33,9 +33,9 @@
       ) }}
     </div>
   </div>
-  <div class="facts-figures__inner relative md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto mt-12 md:mt-0">
+  <div class="facts-figures__inner relative md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto mt-12 md:mt-0">
     <div class="md:absolute md:bottom-0 md:col-start-6 lg:col-start-7 md:col-span-7 lg:col-span-6 pb-6 md:pb-8">
-      <div class="grid grid-cols-6 gap-x-3 md:gap-x-10 max-w-screen-xl w-full">
+      <div class="grid grid-cols-6 gap-x-3 md:gap-x-10 max-w-screen-2xl w-full">
         {% for fact in facts %}
           <div class="facts-figures__figure col-span-2">
             <h3 class="font-extended font-normal text-24 text-indigo leading-115">{{ fact.figure }}</h3>

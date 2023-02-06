@@ -7,7 +7,7 @@
 {% endif %}
 
 <div class="hero relative py-20 space-y-16">
-  <div class="hero__inner grid md:items-center md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto space-y-16 md:space-y-0">
+  <div class="hero__inner grid md:items-center md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto space-y-16 md:space-y-0">
     <div class="hero__main {% if align == 'center' %}md:col-start-3{% endif %} md:col-span-8">
       {% include context with {
         size: 'medium',
@@ -42,7 +42,7 @@
     {% endif %}
   </div>
   {% if images and align == 'center' %}
-    <div class="hero__inner grid md:items-center md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto">
+    <div class="hero__inner grid md:items-center md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
      
       {% for image in images %}
         <div class="{% if columns == 4 %}md:col-span-3{% else %}md:col-span-4{% endif %} mb-10">

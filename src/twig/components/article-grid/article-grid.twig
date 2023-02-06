@@ -146,7 +146,7 @@
 {% endif %}
 
 {% if carousel %}
-  <div class="article-grid max-w-screen-xl my-0 mx-auto" data-glide-window ref="window">
+  <div class="article-grid max-w-screen-2xl my-0 mx-auto" data-glide-window ref="window">
     <div class="glide__track" data-glide-el="track">
       <div class="glide__slides">
         {% for item in items %}
@@ -166,7 +166,7 @@
     border="{{ border }}"
     :columns="{{ columns }}"
   >
-    <div class="article-grid grid {% if columns == 3 %}grid-cols-9{% else %}grid-cols-8{% endif %} gap-10 max-w-screen-xl w-full my-0 mx-auto">
+    <div class="article-grid grid {% if columns == 3 %}grid-cols-9{% else %}grid-cols-8{% endif %} gap-10 max-w-screen-2xl w-full my-0 mx-auto">
       {% for item in items %}
         {% if item.heading %}
           <div class="article-grid__item {% if columns == 4 %}md:col-span-2 col-span-4{% elseif columns == 3 %}md:col-span-3 col-span-9{% else %}col-span-4{% endif %}">

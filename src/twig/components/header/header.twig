@@ -14,7 +14,7 @@
   class="header z-50 relative flex justify-center h-[145px] md:h-auto pt-7 md:pt-0"
 >
   <div
-    class="header__inner flex justify-between max-w-screen-xl w-full gap-y-10 px-5"
+    class="header__inner flex justify-between max-w-screen-2xl w-full gap-y-10 px-5"
   >
     <div class="header__left flex items-center justify-between w-full md:w-auto">
       <a href="/">
@@ -92,7 +92,7 @@
         {% for item in main %}
           <li class="font-extended font-normal text-24 md:text-14 leading-110 !ml-6 lg:!ml-12 md:[&:first-child]:!ml-0">
             <a
-              class="block md:py-7 text-indigo-800 hover:text-indigo-1000 border-b-2 border-solid border-transparent md:hover:border-azure md:focus:border-canary md:outline-0 transition-all duration-200 ease-in-out"
+              class="block md:py-7 text-indigo-800 hover:text-indigo-1000 border-b-2 border-solid border-transparent md:hover:border-canary md:focus:border-azure md:outline-0 transition-all duration-200 ease-in-out"
               :class="{ '!text-indigo md:border-azure': header.checkUrl('{{item.title}}') }"
               href="{{ item.url }}"
             >{{ item.title }}</a>
