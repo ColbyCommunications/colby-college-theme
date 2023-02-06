@@ -4,7 +4,7 @@
   {% set article = 'article.twig' %}
 {% endif %}
 
-<div class="bordered-article-row md:grid grid-cols-9 gap-10 max-w-screen-xl w-full space-y-16 md:space-y-0">
+<div class="bordered-article-row md:grid grid-cols-9 gap-10 max-w-screen-2xl w-full space-y-16 md:space-y-0">
   {% for item in items %}
     <div class="article-grid__item md:col-span-3 pt-3 border-t-2 border-solid border-indigo-600">
       {% set item = item|merge({align:'column'}) %}

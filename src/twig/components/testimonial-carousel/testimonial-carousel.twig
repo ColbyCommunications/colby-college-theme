@@ -13,7 +13,7 @@
   v-slot="carousel"
   class="testimonial-carousel space-y-11"
 >
-  <div class="testimonial-carousel__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto">
+  <div class="testimonial-carousel__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
     <div class="testimonial-carousel__context md:col-span-5">
       {% include context with {
         size: 'large',
@@ -29,7 +29,7 @@
     </div>
   </div>
   <div
-    class="testimonial-carousel__inner relative md:grid md:grid-cols-12 gap-x-10 max-w-screen-xl w-full px-5 my-0 mx-auto"
+    class="testimonial-carousel__inner relative md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto"
     @mouseEnter="carousel.pauseCarousel()"
     @mouseOut="carousel.playCarousel()"
   >
