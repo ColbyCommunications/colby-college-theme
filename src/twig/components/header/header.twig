@@ -92,7 +92,7 @@
         {% for item in main %}
           <li class="font-extended font-normal text-24 md:text-14 leading-110 !ml-6 lg:!ml-12 md:[&:first-child]:!ml-0">
             <a
-              class="block md:py-7 text-indigo-800 hover:text-indigo-1000 border-b-2 border-solid border-transparent md:hover:border-azure md:focus:border-canary md:outline-0 transition-all duration-200 ease-in-out"
+              class="block md:py-7 text-indigo-800 hover:text-indigo-1000 border-b-2 border-solid border-transparent md:hover:border-canary md:focus:border-azure md:outline-0 transition-all duration-200 ease-in-out"
               :class="{ '!text-indigo md:border-azure': header.checkUrl('{{item.title}}') }"
               href="{{ item.url }}"
             >{{ item.title }}</a>
