@@ -95,7 +95,7 @@
         async mounted() {
             if (this.renderApi) {
                 await axios
-                    .get('https://news.colby.edu/wp-json/wp/v2/posts?per_page=5&tags=569&_embed=1')
+                    .get('https://news.colby.edu/wp-json/wp/v2/posts?per_page=6&tags=569&_embed=1')
                     .then((outputa) => {
                         this.featuredNews = outputa.data.slice(0, 6);
                     });
