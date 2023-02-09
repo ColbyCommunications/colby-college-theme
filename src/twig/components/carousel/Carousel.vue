@@ -176,7 +176,7 @@
               v-text="subheading"
             />
             <h2
-              class="text-group__heading font-extended font-normal text-36 md:text-20 leading-110 -tracking-3 text-left text-indigo mt-2"
+              class="text-group__heading font-extended font-normal text-28 md:text-20 leading-110 -tracking-3 text-left text-indigo mt-2"
               v-text="heading"
             />
             <p
@@ -319,7 +319,7 @@
               v-text="subheading"
             />
             <h2
-              class="text-group__heading font-extended font-normal text-36 md:text-20 leading-110 -tracking-3 text-left text-indigo mt-2"
+              class="text-group__heading font-extended font-normal text-28 md:text-20 leading-110 -tracking-3 text-left text-indigo mt-2"
               v-text="heading"
             />
             <p
