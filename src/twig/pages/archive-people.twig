@@ -31,6 +31,17 @@
         items: people_menu.items,
         menu_obj: true,
       } %}
+      {% include 'widget.twig' with {
+        heading: 'Resources',
+        buttons: [
+          {
+            button: {
+              url: "/directory-profile-update-form/",
+              title: "Update Your Directory Profile"
+            }
+          }
+        ]
+      } %}
     </div>
     <div class="sidebar-page__main xl:col-start-4 md:col-span-9">
       <component
