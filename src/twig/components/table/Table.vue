@@ -170,7 +170,7 @@
         <div class="inline-flex items-center h-8 px-5 py-0.5 bg-gray-100 rounded-md space-x-1">
             <button
                 v-if="currentPage !== 1"
-                class="block p-2 font-body font-normal text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
+                class="block p-2 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
                 @click="navigatePages('prev')"
             >
                 <svg
@@ -188,7 +188,7 @@
             <ul class="pagination__container inline-flex space-x-1">
                 <li v-for="index in totalPages" class="pagination__item">
                     <button
-                        class="block p-2 py-1 font-body font-normal text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
+                        class="block p-2 py-1 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
                         :class="{ 'bg-indigo-200': currentPage == index }"
                         v-text="index"
                         @click="currentPage = index"
@@ -197,7 +197,7 @@
             </ul>
             <button
                 v-if="currentPage !== totalPages"
-                class="block p-2 font-body font-normal text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
+                class="block p-2 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
                 @click="navigatePages('next')"
             >
                 <svg
