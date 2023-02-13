@@ -20,14 +20,14 @@
       <a href="/">
         <span class="sr-only">Link to Homepage</span>
         {% include logo with {
-          class: 'fill-indigo w-[130px] md:w-[100px]',
+          class: 'fill-indigo w-[120px] md:w-[100px]',
         } %}
       </a>
       {% include actionMenu with {
         breakpoints: 'flex md:hidden'
       } %}
       <div class="header__hamburger-group flex md:hidden items-center space-x-4">
-        <label class="header__hamburger-label font-body font-normal text-24 text-indigo-800">Menu</label>
+        <label class="header__hamburger-label font-body font-normal text-20 text-indigo-800">Menu</label>
         <button
           class="header__hamburger flex items-center justify-center w-[56px] h-[52px] text-[0] bg-indigo-100 rounded-sm border border-indigo-300 border-solid"
           @click="header.toggleActive()"
