@@ -1053,7 +1053,7 @@ function getNewPeople( $directory_data ) {
 		}
 
 		$CXMailing = '';
-		if ( null !== ( $CXPerson['box'] && count( $CXPerson['box'] ) > 0 ) ) {
+		if ( isset( $CXPerson['box'] ) && count( $CXPerson['box'] ) > 0 ) {
 			$CXMailing = $CXPerson['box'] . " Mayflower Hill \nWaterville, Maine 04901-8853";
 		}
 
