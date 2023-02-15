@@ -961,7 +961,7 @@ function getNewPeople( $directory_data ) {
 			continue;
 		}
 
-		$WDEmail = $WDPerson['primaryWorkEmail'];
+		$WDEmail = strtolower( $WDPerson['primaryWorkEmail'] );
 		$WDTitle = $WDPerson['businessTitle'];
 		$WDPhone = '';
 
