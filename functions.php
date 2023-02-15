@@ -1053,17 +1053,17 @@ function getNewPeople( $directory_data ) {
 		}
 
 		$CXMailing = '';
-		if ( isset( $CXPerson['box'] ) && count( $CXPerson['box'] ) > 0 ) {
+		if ( isset( $CXPerson['box'] ) && $CXPerson['box'] ) {
 			$CXMailing = $CXPerson['box'] . " Mayflower Hill \nWaterville, Maine 04901-8853";
 		}
 
 		$CXOfficeHours = '';
-		if ( isset( $CXPerson['officehours'] ) ) {
+		if ( isset( $CXPerson['officehours'] ) && $CXPerson['officehours'] ) {
 			$CXOfficeHours = $CXPerson['officehours'];
 		}
 
 		$CXFax = '';
-		if ( isset( $CXPerson['deptfax'] ) ) {
+		if ( isset( $CXPerson['deptfax'] ) && $CXPerson['deptfax'] ) {
 			$CXFax = '207-' . $CXPerson['deptfax'];
 		}
 
