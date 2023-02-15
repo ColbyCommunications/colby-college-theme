@@ -1171,6 +1171,9 @@ function getNewPeople( $directory_data ) {
 				update_post_meta( $ID, 'fax', $CXFax );
 			}
 
+			// update mailing address
+			update_post_meta( $ID, 'mailing_address', $CXMailing );
+
 			if ( empty( $person_metadata['office_hours_changed'][0] ) ) {
 				update_post_meta( $ID, 'office_hours', $CXOfficeHours );
 			}
