@@ -1155,12 +1155,21 @@ function getNewPeople( $directory_data ) {
 			update_post_meta( $ID, 'last_name', $WDLastName );
 
 			if ( $post->post_title !== $WDPrefFirstName . ' ' . $WDLastName ) {
-				wp_update_post(
-					array(
-						'ID'         => $ID,
-						'post_title' => $WDPrefFirstName . ' ' . $WDLastName,
-					)
-				);
+				if ( empty( $person_metadata['preferred_name_changed'] ) ) {
+					wp_update_post(
+						array(
+							'ID'         => $ID,
+							'post_title' => $person_metadata['first_name'] . ' ' . $WDLastName,
+						)
+					);
+				} else {
+					wp_update_post(
+						array(
+							'ID'         => $ID,
+							'post_title' => $WDPrefFirstName . ' ' . $WDLastName,
+						)
+					);
+				}
 			}
 
 			update_post_meta( $ID, 'email', $WDEmail );
