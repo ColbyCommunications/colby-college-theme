@@ -1166,7 +1166,7 @@ function getNewPeople( $directory_data ) {
 					wp_update_post(
 						array(
 							'ID'         => $ID,
-							'post_title' => $person_metadata['first_name'] . ' ' . $WDLastName,
+							'post_title' => $person_metadata['first_name'][0] . ' ' . $WDLastName,
 						)
 					);
 				}
