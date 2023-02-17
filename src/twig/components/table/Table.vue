@@ -307,7 +307,7 @@
                 switch (this.api) {
                     case 'Department Courses':
                         this.endpoint = 'https://www.colby.edu/endpoints/v1/courses/';
-                        this.heading = `$Department Courses`;
+                        this.heading = `Department Courses`;
                         break;
                     case 'Course Catalogue':
                         this.endpoint = 'https://www.colby.edu/endpoints/v1/courses/';
