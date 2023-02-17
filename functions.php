@@ -1163,6 +1163,8 @@ function getNewPeople( $directory_data ) {
 				);
 			}
 
+			update_post_meta( $ID, 'email', $WDEmail );
+
 			if ( empty( $person_metadata['phone_number_changed'][0] ) ) {
 				update_post_meta( $ID, 'phone', $WDPhone );
 			}
