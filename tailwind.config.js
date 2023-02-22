@@ -74,6 +74,7 @@ module.exports = {
         backgroundImage: {
             hero__pattern: 'url("~/src/images/hero__pattern.jpg")',
             notfound__pattern: 'url("~/src/images/miller3.jpeg")',
+            darkinterstitial__pattern: 'url("~/src/images/Background-3.jpg")'
         },
         listStyleType: {
             none: 'none',
