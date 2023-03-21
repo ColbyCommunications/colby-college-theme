@@ -1752,6 +1752,6 @@ function hide_directory_attachments( $query = array() ) {
 
 		$query['post_parent__not_in'] = array_column( $posts, 'ID' );
 	}
-
+	// comment
 	return $query;
 }
