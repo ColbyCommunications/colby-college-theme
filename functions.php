@@ -969,6 +969,11 @@ function getNewPeople( $directory_data ) {
 			$WDPhone = $WDPerson['primaryWorkPhone'];
 		}
 
+		$wd_pronouns = '';
+		if ( isset( $WDPerson['pronouns'] ) ) {
+			$wd_pronouns = stripcslashes( $WDPerson['pronouns'] );
+		}
+
 		$WDBuilding = '';
 
 		if ( isset( $WDPerson['workSpaceSuperiorLocation'] ) ) {
@@ -1093,7 +1098,7 @@ function getNewPeople( $directory_data ) {
 				'employee_id'      => $WDEmployeeID,
 				'first_name'       => $WDPrefFirstName,
 				'last_name'        => $WDLastName,
-				'pronouns'         => '',
+				'pronouns'         => $wd_pronouns,
 				'title'            => $WDTitle,
 				'department'       => $WDDepartment,
 				'phone'            => $WDPhone,
@@ -1196,6 +1201,7 @@ function getNewPeople( $directory_data ) {
 
 			// update mailing address
 			update_post_meta( $ID, 'mailing_address', $CXMailing );
+			update_post_meta( $ID, 'pronouns', $wd_pronouns );
 
 			if ( empty( $person_metadata['office_hours_changed'][0] ) ) {
 				update_post_meta( $ID, 'office_hours', $CXOfficeHours );
