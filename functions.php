@@ -1292,27 +1292,14 @@ add_action(
 add_action( 'gform_after_submission', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 
-	$employee_id         = str_pad( $entry[10], 7, '0', STR_PAD_LEFT );
-	$confirm_email       = $entry[16];
-	$preferred_name      = $entry[12];
-	$pronouns            = $entry[11];
-	$phone_number        = $entry[6];
-	$location            = $entry[7];
-	$department          = $entry[5];
-	$image               = $entry[17];
-	$curriculum_vitae    = $entry[9];
-	$fax                 = $entry[14];
-	$office_hours        = $entry[15];
-	$bio                 = $entry[1];
-	$image_url           = $entry[2];
-	$remove_pronouns     = $entry['22.1'];
-	$remove_phone_number = $entry['24.1'];
-	$remove_fax          = $entry['25.1'];
-	$remove_location     = $entry['26.1'];
-	$remove_department   = $entry['27.1'];
-	$remove_cv           = $entry['28.1'];
-	$remove_office_hours = $entry['29.1'];
-	$remove_bio          = $entry['33.1'];
+	$department        = $entry[5];
+	$curriculum_vitae  = $entry[9];
+	$office_hours      = $entry[15];
+	$bio               = $entry[1];
+	$hide_pronouns     = $entry[34];
+	$hide_phone_number = $entry[35];
+	$hide_fax          = $entry[36];
+	$hide_location     = $entry[37];
 
 	// get person post by employee ID
 	$args = array(
@@ -1327,55 +1314,13 @@ function update_directory_profile( $entry, $form ) {
 	);
 
 	$person_post     = get_posts( $args );
-	$person_metadata = get_post_meta( $person_post[0]->ID );
+	$id              = $person_post[0]->ID;
+	$person_metadata = get_post_meta( $id );
 
-	$preferred_name_changed   = false;
-	$pronouns_changed         = false;
-	$phone_number_changed     = false;
-	$location_changed         = false;
 	$department_changed       = false;
 	$curriculum_vitae_changed = false;
 	$bio_changed              = false;
-	$image_changed            = false;
 	$remove_image_changed     = false;
-	$fax_changed              = false;
-	$office_hours_changed     = false;
-
-	if ( $preferred_name ) {
-		$preferred_name_changed = true;
-	}
-
-	if ( $pronouns ) {
-		$pronouns_changed = true;
-	} elseif ( ! $pronouns && $remove_pronouns ) {
-		if ( $person_metadata['pronouns_changed'] && $person_metadata['pronouns_changed'][0] ) {
-			$pronouns = '';
-		}
-	}
-
-	if ( $phone_number ) {
-		$phone_number_changed = true;
-	} elseif ( ! $phone_number && $remove_phone_number ) {
-		if ( $person_metadata['phone_number_changed'] && $person_metadata['phone_number_changed'][0] ) {
-			$phone_number = '';
-		}
-	}
-
-	if ( $fax ) {
-		$fax_changed = true;
-	} elseif ( ! $fax && $remove_fax ) {
-		if ( $person_metadata['fax_changed'] && $person_metadata['fax_changed'][0] ) {
-			$fax = '';
-		}
-	}
-
-	if ( $location ) {
-		$location_changed = true;
-	} elseif ( ! $location && $remove_location ) {
-		if ( $person_metadata['location_changed'] && $person_metadata['location_changed'][0] ) {
-			$location = '';
-		}
-	}
 
 	if ( $department ) {
 		$department_changed = true;
@@ -1409,38 +1354,26 @@ function update_directory_profile( $entry, $form ) {
 		}
 	}
 
-	if ( $image === 'Upload a New Photo' ) {
-		$image_changed        = true;
-		$remove_image_changed = false;
-	} elseif ( $image === 'Delete Current Photo' ) {
-		$remove_image_changed = true;
-		$image_changed        = false;
-	}
-
 	// update post
 	$meta_values = array(
-		'first_name'               => $preferred_name_changed ? $preferred_name : $person_metadata['first_name'][0],
-		'pronouns'                 => ( $pronouns_changed || ( ! $pronouns_changed && $remove_pronouns ) ) ? $pronouns : $person_metadata['pronouns'][0],
-		'phone'                    => ( $phone_number_changed || ( ! $phone_number_changed && $remove_phone_number ) ) ? $phone_number : $person_metadata['phone'][0],
-		'building'                 => ( $location_changed || ( ! $location_changed && $remove_location ) ) ? $location : $person_metadata['building'][0],
 		'department'               => ( $department_changed || ( ! $department_changed && $remove_department ) ) ? $department : $person_metadata['department'][0],
 		'curriculum_vitae'         => ( $curriculum_vitae_changed || ( ! $curriculum_vitae_changed && $remove_cv ) ) ? $curriculum_vitae : $person_metadata['curriculum_vitae'][0],
-		'fax'                      => ( $fax_changed || ( ! $fax_changed && $remove_fax ) ) ? $fax : $person_metadata['fax'][0],
 		'office_hours'             => ( $office_hours_changed || ( ! $office_hours_changed && $remove_office_hours ) ) ? $office_hours : $person_metadata['office_hours'][0],
 		'bio'                      => ( $bio_changed || ( ! $bio_changed && $remove_bio ) ) ? $bio : $person_metadata['bio'][0],
 
 		// save override fields
-		'preferred_name_changed'   => $preferred_name_changed,
-		'pronouns_changed'         => $pronouns_changed,
-		'phone_number_changed'     => $phone_number_changed,
-		'location_changed'         => $location_changed,
 		'department_changed'       => $department_changed,
 		'curriculum_vitae_changed' => $curriculum_vitae_changed,
 		'bio_changed'              => $bio_changed,
-		'image_changed'            => $image_changed,
-		'remove_image_changed'     => $remove_image_changed,
-		'fax_changed'              => $fax_changed,
 		'office_hours_changed'     => $office_hours_changed,
+
+		// remove fields
+		'remove_image_changed'     => $image === 'Delete Current Photo' ? 1 : 0,
+		'hide_pronouns'            => $hide_pronouns === 'yes' ? 1 : 0,
+		'hide_phone_number'        => $hide_phone_number === 'yes' ? 1 : 0,
+		'hide_fax'                 => $hide_fax === 'yes' ? 1 : 0,
+		'hide_location'            => $hide_location === 'yes' ? 1 : 0,
+
 	);
 
 	wp_update_post(
@@ -1451,19 +1384,12 @@ function update_directory_profile( $entry, $form ) {
 		)
 	);
 
-	$ID       = $person_post[0]->ID;
-	$desc     = $employee_id;
-	$thumb_id = get_post_thumbnail_id( $ID );
+	$thumb_id = get_post_thumbnail_id( $id );
 
 	if ( $remove_image_changed ) {
 		wp_delete_attachment( $thumb_id, true );
 	}
 
-	if ( $image_changed ) {
-		wp_delete_attachment( $thumb_id, true );
-		$new_image = media_sideload_image( $image_url, $ID, $desc, 'id' );
-		set_post_thumbnail( $ID, $new_image );
-	}
 }
 
 function gravity_forms_buttons() {
