@@ -58,21 +58,13 @@
         @apply uppercase;
     }
 
-    .wp-block-paragraph {
-        @apply mb-0;
-        > p {
-            @apply text-indigo-900;
-            @apply mb-4;
-            @apply font-body;
-        }
-    }
-
     a {
         @apply underline;
         @apply hover:no-underline;
         @apply hover:text-indigo;
     }
 
+    // lists
     ul:not(.pagination__container):not(.directiory_information) {
         @apply list-disc;
         @apply pl-10;
@@ -113,6 +105,7 @@
         }
     }
 
+    // general divs for blocks, etc
     > div {
         @apply clear-both;
         @apply mb-20;
@@ -126,6 +119,16 @@
         margin-bottom: 0.8rem;
     }
 
+    .wp-block-paragraph {
+        @apply mb-0;
+        > p {
+            @apply text-indigo-900;
+            @apply mb-4;
+            @apply font-body;
+        }
+    }
+
+    // table block
     .colby-table-block {
         td {
             a {
@@ -137,8 +140,8 @@
         }
     }
 
+    // paragraph block
     .colby-paragraph-block {
-        @apply mb-20;
         @apply font-body;
 
         > p {
@@ -168,6 +171,7 @@
         }
     }
 
+    // image with text block
     .colby-image-text-block {
         p {
             @apply mb-4;
@@ -176,6 +180,7 @@
         }
     }
 
+    // accordion block
     .colby-accordion-block {
         p {
             @apply mb-4;
@@ -192,17 +197,26 @@
         }
     }
 
+    // heading block
     .wp-block-heading {
         > h2 {
             @apply text-indigo;
         }
     }
 
+    // embed block
     .wp-block-embed {
         .wp-element-caption {
             @apply font-body;
             @apply text-indigo-900;
             @apply font-normal;
+        }
+    }
+
+    // group block
+    .wp-block-group__inner-container {
+        > div {
+            @apply mb-4;
         }
     }
 }
