@@ -945,7 +945,7 @@ require_once ABSPATH . 'wp-admin/includes/file.php';
 require_once ABSPATH . 'wp-admin/includes/image.php';
 
 function getNewPeople( $directory_data ) {
-	// $key  = PLATFORM_VARIABLES['sftp_pw'];
+
 	$sftp = new SFTP( 'colby0.colby.edu' );
 	$sftp->login( PLATFORM_VARIABLES['sftp_username'], PLATFORM_VARIABLES['sftp_pw'] );
 
@@ -976,8 +976,8 @@ function getNewPeople( $directory_data ) {
 
 		$WDBuilding = '';
 
-		if ( isset( $WDPerson['workSpaceSuperiorLocation'] ) ) {
-			$WDBuilding = $WDPerson['workSpaceSuperiorLocation'];
+		if ( isset( $WDPerson['workSpaceLocation'] ) ) {
+			$WDBuilding = $WDPerson['workSpaceLocation'];
 		}
 
 		$emailSlug = strtolower( substr( $WDEmail, 0, strpos( $WDEmail, '@' ) ) );
@@ -1015,46 +1015,10 @@ function getNewPeople( $directory_data ) {
 		curl_setopt( $ch, CURLOPT_URL, $url );
 		$CXPerson = json_decode( curl_exec( $ch ), true );
 
-		// Extract and assign desired fields from CX
-		$CXEducation = '';
-		if ( isset( $CXPerson['profedu'] ) && $CXPerson['profedu']['text'] ) {
-			$CXEducation = '<h2>Education</h2>' . $CXPerson['profedu']['text'];
-		}
-
-		$CXExpertise      = '';
-		$CXExpertiseArray = array();
-
-		if ( ! empty( $CXPerson['expertise1'] ) ) {
-			for ( $i = 1; $i <= 20; $i++ ) {
-				if ( ( $CXPerson[ 'expertise' . strval( $i ) ] ) ) {
-					$CXAOEValue = $CXPerson[ 'expertise' . strval( $i ) ];
-					array_push( $CXExpertiseArray, '<li>' . '<p>' . $CXAOEValue . '</p>' . '</li>' );
-				}
-			}
-
-			$CXExpertiseLI = implode( ' ', $CXExpertiseArray );
-			$CXExpertise   = '<h2>Areas of Expertise</h2>' . '<ul>' . $CXExpertiseLI . '</ul>';
-		}
-
 		$CXCourses = '';
 
 		if ( isset( $CXPerson['courses'] ) ) {
 			$CXCourses = $CXPerson['courses'];
-		}
-
-		$CXPersonalInfo = '';
-		if ( isset( $CXPerson['profbio'] ) && $CXPerson['profbio']['text'] ) {
-			$CXPersonalInfo = '<h2>Personal Information</h2>' . $CXPerson['profbio']['text'];
-		}
-
-		$CXCurrentResearch = '';
-		if ( isset( $CXPerson['research'] ) && $CXPerson['research']['text'] ) {
-			$CXCurrentResearch = '<h2>Current Research</h2>' . $CXPerson['research']['text'];
-		}
-
-		$CXPubs = '';
-		if ( isset( $CXPerson['publicat'] ) && $CXPerson['publicat']['text'] ) {
-			$CXPubs = '<h2>Publications</h2>' . $CXPerson['publicat']['text'];
 		}
 
 		$CXMailing = '';
@@ -1062,18 +1026,10 @@ function getNewPeople( $directory_data ) {
 			$CXMailing = $CXPerson['box'] . " Mayflower Hill \nWaterville, Maine 04901-8853";
 		}
 
-		$CXOfficeHours = '';
-		if ( isset( $CXPerson['officehours'] ) && $CXPerson['officehours'] ) {
-			$CXOfficeHours = $CXPerson['officehours'];
-		}
-
 		$CXFax = '';
 		if ( isset( $CXPerson['deptfax'] ) && $CXPerson['deptfax'] ) {
 			$CXFax = '207-' . $CXPerson['deptfax'];
 		}
-
-		// Concatenate all CX fields for bio
-		$CXBio = $CXEducation . '<br><br>' . $CXExpertise . '<br><br>' . $CXPersonalInfo . '<br><br>' . $CXCurrentResearch . '<br><br>' . $CXPubs;
 
 		$args = array(
 			'numberposts' => -1,
@@ -1105,18 +1061,16 @@ function getNewPeople( $directory_data ) {
 				'email'            => $WDEmail,
 				'building'         => $WDBuilding,
 				'curriculum_vitae' => '',
-				'bio'              => $CXBio,
 				'current_courses'  => json_encode( $CXCourses ),
 				'fax'              => $CXFax,
 				'mailing_address'  => $CXMailing,
-				'office_hours'     => $CXOfficeHours,
 			),
 		);
 
 		$DBMatchingPost = get_posts( $args );
 
 		$photosWithDates = array_filter(
-			$sftp->nlist( '/web/staticweb/college/WorkdayPhotos/v2' ),
+			$sftp->nlist( '/web/staticweb/college/WorkdayPhotos/v2/MD5' ),
 			function ( $item ) {
 				return strpos( $item, '.jpg' ) !== false;
 			}
@@ -1127,14 +1081,14 @@ function getNewPeople( $directory_data ) {
 			$ID = wp_insert_post( $post );
 
 			foreach ( $photosWithDates as $photo ) {
-				if ( strpos( $photo, $WDEmployeeID ) !== false ) {
+				if ( strpos( $photo, md5( $WDEmployeeID ) ) !== false ) {
 					$matchingPhoto = $photo;
 					break;
 				}
 			}
 
 			if ( $matchingPhoto ) {
-				$imageURL = 'https://colby.edu/college/WorkdayPhotos/v2/' . $matchingPhoto;
+				$imageURL = 'https://colby.edu/college/WorkdayPhotos/v2/MD5/' . $matchingPhoto;
 				$desc     = $WDPrefFirstName . ' ' . $WDLastName;
 				$image    = media_sideload_image( $imageURL, $ID, $desc, 'id' );
 				set_post_thumbnail( $ID, $image );
@@ -1153,39 +1107,23 @@ function getNewPeople( $directory_data ) {
 			}
 
 			// Update metadata for fields not changed in Gravity Forms with latest WD data
-			if ( empty( $person_metadata['preferred_name_changed'] ) ) {
-				update_post_meta( $ID, 'first_name', $WDPrefFirstName );
-			}
 
+			update_post_meta( $ID, 'first_name', $WDPrefFirstName );
 			update_post_meta( $ID, 'last_name', $WDLastName );
 
 			if ( $post->post_title !== $WDPrefFirstName . ' ' . $WDLastName ) {
-				if ( empty( $person_metadata['preferred_name_changed'] ) ) {
-					wp_update_post(
-						array(
-							'ID'         => $ID,
-							'post_title' => $WDPrefFirstName . ' ' . $WDLastName,
-						)
-					);
-				} else {
-					wp_update_post(
-						array(
-							'ID'         => $ID,
-							'post_title' => $person_metadata['first_name'][0] . ' ' . $WDLastName,
-						)
-					);
-				}
+				wp_update_post(
+					array(
+						'ID'         => $ID,
+						'post_title' => $WDPrefFirstName . ' ' . $WDLastName,
+					)
+				);
 			}
 
 			update_post_meta( $ID, 'email', $WDEmail );
-
-			if ( empty( $person_metadata['phone_number_changed'][0] ) ) {
-				update_post_meta( $ID, 'phone', $WDPhone );
-			}
-
-			if ( empty( $person_metadata['location_changed'][0] ) ) {
-				update_post_meta( $ID, 'building', $WDBuilding );
-			}
+			update_post_meta( $ID, 'phone', $WDPhone );
+			update_post_meta( $ID, 'building', $WDBuilding );
+			update_post_meta( $ID, 'fax', $CXFax );
 
 			if ( empty( $person_metadata['department_changed'][0] ) ) {
 				update_post_meta( $ID, 'department', $WDDepartment );
@@ -1195,25 +1133,17 @@ function getNewPeople( $directory_data ) {
 				update_post_meta( $ID, 'curriculum_vitae', '' );
 			}
 
-			if ( empty( $person_metadata['fax_changed'][0] ) ) {
-				update_post_meta( $ID, 'fax', $CXFax );
-			}
-
 			// update mailing address
 			update_post_meta( $ID, 'mailing_address', $CXMailing );
 			update_post_meta( $ID, 'pronouns', $wd_pronouns );
-
-			if ( empty( $person_metadata['office_hours_changed'][0] ) ) {
-				update_post_meta( $ID, 'office_hours', $CXOfficeHours );
-			}
 
 			if ( empty( $person_metadata['bio_changed'][0] ) ) {
 				update_post_meta( $ID, 'bio', $CXBio );
 			}
 
-			if ( empty( $person_metadata['image_changed'][0] ) && empty( $person_metadata['remove_image_changed'][0] ) ) {
+			if ( empty( $person_metadata['remove_image_changed'][0] ) ) {
 				foreach ( $photosWithDates as $photo ) {
-					if ( strpos( $photo, $WDEmployeeID ) !== false ) {
+					if ( strpos( $photo, md5( $WDEmployeeID ) ) !== false ) {
 						$matchingPhoto = $photo;
 						break;
 					}
@@ -1239,6 +1169,7 @@ function getNewPeople( $directory_data ) {
 		}
 	}
 }
+
 
 add_action(
 	'gform_validation',
@@ -1300,6 +1231,10 @@ function update_directory_profile( $entry, $form ) {
 	$hide_phone_number = $entry[35];
 	$hide_fax          = $entry[36];
 	$hide_location     = $entry[37];
+	$hide_department   = $entry[38];
+	$hide_cv           = $entry[39];
+	$hide_office_hours = $entry[40];
+	$hide_bio          = $entry[41];
 
 	// get person post by employee ID
 	$args = array(
@@ -1373,6 +1308,10 @@ function update_directory_profile( $entry, $form ) {
 		'hide_phone_number'        => $hide_phone_number === 'yes' ? 1 : 0,
 		'hide_fax'                 => $hide_fax === 'yes' ? 1 : 0,
 		'hide_location'            => $hide_location === 'yes' ? 1 : 0,
+		'hide_department'          => $hide_department === 'yes' ? 1 : 0,
+		'hide_cv'                  => $hide_cv === 'yes' ? 1 : 0,
+		'hide_office_hours'        => $hide_office_hours === 'yes' ? 1 : 0,
+		'hide_bio'                 => $hide_bio === 'yes' ? 1 : 0,
 
 	);
 
