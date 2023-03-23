@@ -980,6 +980,11 @@ function getNewPeople( $directory_data ) {
 			$WDBuilding = $WDPerson['workSpaceLocation'];
 		}
 
+		$WDFax = '';
+		if ( isset( $WDPerson['faxPhoneNumber'] ) && $WDPerson['faxPhoneNumber'] ) {
+			$WDFax = $WDPerson['faxPhoneNumber'];
+		}
+
 		$emailSlug = strtolower( substr( $WDEmail, 0, strpos( $WDEmail, '@' ) ) );
 
 		/* Academic unit for faculty, Superior org for staff (department metadata) */
@@ -1026,11 +1031,6 @@ function getNewPeople( $directory_data ) {
 			$CXMailing = $CXPerson['box'] . " Mayflower Hill \nWaterville, Maine 04901-8853";
 		}
 
-		$CXFax = '';
-		if ( isset( $CXPerson['deptfax'] ) && $CXPerson['deptfax'] ) {
-			$CXFax = '207-' . $CXPerson['deptfax'];
-		}
-
 		$args = array(
 			'numberposts' => -1,
 			'post_type'   => 'people',
@@ -1062,7 +1062,7 @@ function getNewPeople( $directory_data ) {
 				'building'         => $WDBuilding,
 				'curriculum_vitae' => '',
 				'current_courses'  => json_encode( $CXCourses ),
-				'fax'              => $CXFax,
+				'fax'              => $WDFax,
 				'mailing_address'  => $CXMailing,
 			),
 		);
@@ -1257,61 +1257,23 @@ function update_directory_profile( $entry, $form ) {
 	$bio_changed              = false;
 	$remove_image_changed     = false;
 
-	if ( $department ) {
-		$department_changed = true;
-	} elseif ( ! $department && $remove_department ) {
-		if ( $person_metadata['department_changed'] && $person_metadata['department_changed'][0] ) {
-			$department = '';
-		}
-	}
-
-	if ( $curriculum_vitae ) {
-		$curriculum_vitae_changed = true;
-	} elseif ( ! $curriculum_vitae && $remove_cv ) {
-		if ( $person_metadata['curriculum_vitae_changed'] && $person_metadata['curriculum_vitae_changed'][0] ) {
-			$curriculum_vitae = '';
-		}
-	}
-
-	if ( $office_hours ) {
-		$office_hours_changed = true;
-	} elseif ( ! $office_hours && $remove_office_hours ) {
-		if ( $person_metadata['office_hours_changed'] && $person_metadata['office_hours_changed'][0] ) {
-			$office_hours = '';
-		}
-	}
-
-	if ( $bio ) {
-		$bio_changed = true;
-	} elseif ( ! $bio && $remove_bio ) {
-		if ( $person_metadata['bio_changed'] && $person_metadata['bio_changed'][0] ) {
-			$bio = '';
-		}
-	}
-
 	// update post
 	$meta_values = array(
-		'department'               => ( $department_changed || ( ! $department_changed && $remove_department ) ) ? $department : $person_metadata['department'][0],
-		'curriculum_vitae'         => ( $curriculum_vitae_changed || ( ! $curriculum_vitae_changed && $remove_cv ) ) ? $curriculum_vitae : $person_metadata['curriculum_vitae'][0],
-		'office_hours'             => ( $office_hours_changed || ( ! $office_hours_changed && $remove_office_hours ) ) ? $office_hours : $person_metadata['office_hours'][0],
-		'bio'                      => ( $bio_changed || ( ! $bio_changed && $remove_bio ) ) ? $bio : $person_metadata['bio'][0],
+		'department'           => $department,
+		'curriculum_vitae'     => $curriculum_vitae,
+		'office_hours'         => $office_hours,
+		'bio'                  => $bio,
 
-		// save override fields
-		'department_changed'       => $department_changed,
-		'curriculum_vitae_changed' => $curriculum_vitae_changed,
-		'bio_changed'              => $bio_changed,
-		'office_hours_changed'     => $office_hours_changed,
-
-		// remove fields
-		'remove_image_changed'     => $image === 'Delete Current Photo' ? 1 : 0,
-		'hide_pronouns'            => $hide_pronouns === 'yes' ? 1 : 0,
-		'hide_phone_number'        => $hide_phone_number === 'yes' ? 1 : 0,
-		'hide_fax'                 => $hide_fax === 'yes' ? 1 : 0,
-		'hide_location'            => $hide_location === 'yes' ? 1 : 0,
-		'hide_department'          => $hide_department === 'yes' ? 1 : 0,
-		'hide_cv'                  => $hide_cv === 'yes' ? 1 : 0,
-		'hide_office_hours'        => $hide_office_hours === 'yes' ? 1 : 0,
-		'hide_bio'                 => $hide_bio === 'yes' ? 1 : 0,
+		// remove/hide fields
+		'remove_image_changed' => $image === 'Delete Current Photo' ? 1 : 0,
+		'hide_pronouns'        => $hide_pronouns === 'yes' ? 1 : 0,
+		'hide_phone_number'    => $hide_phone_number === 'yes' ? 1 : 0,
+		'hide_fax'             => $hide_fax === 'yes' ? 1 : 0,
+		'hide_location'        => $hide_location === 'yes' ? 1 : 0,
+		'hide_department'      => $hide_department === 'yes' ? 1 : 0,
+		'hide_cv'              => $hide_cv === 'yes' ? 1 : 0,
+		'hide_office_hours'    => $hide_office_hours === 'yes' ? 1 : 0,
+		'hide_bio'             => $hide_bio === 'yes' ? 1 : 0,
 
 	);
 
