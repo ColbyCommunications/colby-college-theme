@@ -32,6 +32,14 @@
         office_hours: post.meta('office_hours'),
         address: post.meta('mailing_address'),
         fax: post.meta('fax'),
+        hide_pronouns: post.meta('hide_pronouns'),
+        hide_phone_number: post.meta('hide_phone_number'),
+        hide_fax: post.meta('hide_fax'),
+        hide_department: post.meta('hide_department'),
+        hide_cv: post.meta('hide_cv'),
+        hide_bio: post.meta('hide_bio'),
+        hide_office_hours: post.meta('hide_office_hours'),
+        hide_location: post.meta('hide_location'),
       } %}
       {% if person_decoded_courses %}
         {% set current_courses = person_decoded_courses|map(i => {

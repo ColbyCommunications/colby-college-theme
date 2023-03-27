@@ -963,8 +963,8 @@ function getNewPeople( $directory_data ) {
 
 		$WDEmail = strtolower( $WDPerson['primaryWorkEmail'] );
 		$WDTitle = $WDPerson['businessTitle'];
-		$WDPhone = '';
 
+		$WDPhone = '';
 		if ( isset( $WDPerson['primaryWorkPhone'] ) ) {
 			$WDPhone = $WDPerson['primaryWorkPhone'];
 		}
@@ -975,7 +975,6 @@ function getNewPeople( $directory_data ) {
 		}
 
 		$WDBuilding = '';
-
 		if ( isset( $WDPerson['workSpaceLocation'] ) ) {
 			$WDBuilding = $WDPerson['workSpaceLocation'];
 		}
@@ -1123,22 +1122,12 @@ function getNewPeople( $directory_data ) {
 			update_post_meta( $ID, 'email', $WDEmail );
 			update_post_meta( $ID, 'phone', $WDPhone );
 			update_post_meta( $ID, 'building', $WDBuilding );
-			update_post_meta( $ID, 'fax', $CXFax );
-
-			if ( empty( $person_metadata['department_changed'][0] ) ) {
-				update_post_meta( $ID, 'department', $WDDepartment );
-			}
-
-			if ( empty( $person_metadata['curriculum_vitae_changed'][0] ) ) {
-				update_post_meta( $ID, 'curriculum_vitae', '' );
-			}
-
-			// update mailing address
+			update_post_meta( $ID, 'fax', $WDFax );
 			update_post_meta( $ID, 'mailing_address', $CXMailing );
 			update_post_meta( $ID, 'pronouns', $wd_pronouns );
 
-			if ( empty( $person_metadata['bio_changed'][0] ) ) {
-				update_post_meta( $ID, 'bio', $CXBio );
+			if ( empty( $person_metadata['unsync_department'][0] ) ) {
+				update_post_meta( $ID, 'department', $WDDepartment );
 			}
 
 			if ( empty( $person_metadata['remove_image_changed'][0] ) ) {
@@ -1152,7 +1141,7 @@ function getNewPeople( $directory_data ) {
 				if ( $matchingPhoto ) {
 					$img_parts    = explode( '_', $matchingPhoto );
 					$date         = substr( $img_parts[1], 0, 8 );
-					$imageURL     = 'https://colby.edu/college/WorkdayPhotos/v2/' . $matchingPhoto;
+					$imageURL     = 'https://colby.edu/college/WorkdayPhotos/v2/MD5/' . $matchingPhoto;
 					$desc         = $WDPrefFirstName . ' ' . $WDLastName;
 					$DBImageName  = get_the_post_thumbnail_url( $ID );
 					$DB_img_parts = explode( '_', $DBImageName );
@@ -1223,10 +1212,12 @@ add_action(
 add_action( 'gform_after_submission', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 
+	$employee_id       = str_pad( $entry[10], 7, '0', STR_PAD_LEFT );
 	$department        = $entry[5];
 	$curriculum_vitae  = $entry[9];
 	$office_hours      = $entry[15];
 	$bio               = $entry[1];
+	$image             = $entry[17];
 	$hide_pronouns     = $entry[34];
 	$hide_phone_number = $entry[35];
 	$hide_fax          = $entry[36];
@@ -1235,6 +1226,7 @@ function update_directory_profile( $entry, $form ) {
 	$hide_cv           = $entry[39];
 	$hide_office_hours = $entry[40];
 	$hide_bio          = $entry[41];
+	$unsync_department = $entry[ 43.1 ];
 
 	// get person post by employee ID
 	$args = array(
@@ -1252,10 +1244,11 @@ function update_directory_profile( $entry, $form ) {
 	$id              = $person_post[0]->ID;
 	$person_metadata = get_post_meta( $id );
 
-	$department_changed       = false;
-	$curriculum_vitae_changed = false;
-	$bio_changed              = false;
-	$remove_image_changed     = false;
+	$remove_image_changed = false;
+
+	if ( $image === 'Delete Current Photo' ) {
+		$remove_image_changed = true;
+	}
 
 	// update post
 	$meta_values = array(
@@ -1265,7 +1258,7 @@ function update_directory_profile( $entry, $form ) {
 		'bio'                  => $bio,
 
 		// remove/hide fields
-		'remove_image_changed' => $image === 'Delete Current Photo' ? 1 : 0,
+		'remove_image_changed' => $remove_image_changed ? 1 : 0,
 		'hide_pronouns'        => $hide_pronouns === 'yes' ? 1 : 0,
 		'hide_phone_number'    => $hide_phone_number === 'yes' ? 1 : 0,
 		'hide_fax'             => $hide_fax === 'yes' ? 1 : 0,
@@ -1274,13 +1267,13 @@ function update_directory_profile( $entry, $form ) {
 		'hide_cv'              => $hide_cv === 'yes' ? 1 : 0,
 		'hide_office_hours'    => $hide_office_hours === 'yes' ? 1 : 0,
 		'hide_bio'             => $hide_bio === 'yes' ? 1 : 0,
-
+		'unsync_department'    => $unsync_department === 'yes' ? 1 : 0,
 	);
 
 	wp_update_post(
 		array(
 			'ID'         => $person_post[0]->ID,
-			'post_title' => $preferred_name_changed ? $preferred_name . ' ' . $person_metadata['last_name'][0] : $person_metadata['first_name'][0] . ' ' . $person_metadata['last_name'][0],
+			'post_title' => $person_metadata['first_name'][0] . ' ' . $person_metadata['last_name'][0],
 			'meta_input' => $meta_values,
 		)
 	);
@@ -1455,11 +1448,11 @@ function wpse248405_custom_column( $col, $post_id ) {
 
 			// _post_states( $post );
 			if ( isset( $parent_name ) ) {
-				if ( html_entity_decode( $parent_name ) === html_entity_decode( '_FINISHED_ Departments & Programs' ) ) {
+				if ( html_entity_decode( $parent_name ) === html_entity_decode( 'Departments & Programs' ) ) {
 					echo ' - Department Homepage';
 				}
 
-				if ( $parent_name === '_FINISHED_ Offices Directory' ) {
+				if ( $parent_name === 'Offices Directory' ) {
 					echo ' - Office Homepage';
 				}
 			}
