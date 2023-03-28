@@ -40,6 +40,7 @@
         hide_bio: post.meta('hide_bio'),
         hide_office_hours: post.meta('hide_office_hours'),
         hide_location: post.meta('hide_location'),
+        hide_photo: post.meta('hide_photo'),
       } %}
       {% if person_decoded_courses %}
         {% set current_courses = person_decoded_courses|map(i => {

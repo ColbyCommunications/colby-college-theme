@@ -1210,7 +1210,7 @@ add_action(
 );
 
 
-add_action( 'gform_after_submission', 'update_directory_profile', 10, 2 );
+add_action( 'gform_after_submission_12', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 
 	$employee_id       = str_pad( $entry[10], 7, '0', STR_PAD_LEFT );
@@ -1218,7 +1218,6 @@ function update_directory_profile( $entry, $form ) {
 	$curriculum_vitae  = $entry[9];
 	$office_hours      = $entry[15];
 	$bio               = $entry[1];
-	$image             = $entry[17];
 	$hide_pronouns     = $entry[34];
 	$hide_phone_number = $entry[35];
 	$hide_fax          = $entry[36];
@@ -1228,6 +1227,7 @@ function update_directory_profile( $entry, $form ) {
 	$hide_office_hours = $entry[40];
 	$hide_bio          = $entry[41];
 	$unsync_department = $entry[ 43.1 ];
+	$hide_photo        = $entry[44];
 
 	// get person post by employee ID
 	$args = array(
@@ -1244,12 +1244,6 @@ function update_directory_profile( $entry, $form ) {
 	$person_post     = get_posts( $args );
 	$id              = $person_post[0]->ID;
 	$person_metadata = get_post_meta( $id );
-
-	$remove_image_changed = false;
-
-	if ( $image === 'Delete Current Photo' ) {
-		$remove_image_changed = true;
-	}
 
 	// update post
 	$meta_values = array(
@@ -1268,6 +1262,7 @@ function update_directory_profile( $entry, $form ) {
 		'hide_cv'              => $hide_cv === 'yes' ? 1 : 0,
 		'hide_office_hours'    => $hide_office_hours === 'yes' ? 1 : 0,
 		'hide_bio'             => $hide_bio === 'yes' ? 1 : 0,
+		'hide_photo'           => $hide_photo === 'yes' ? 1 : 0,
 		'unsync_department'    => $unsync_department === 'yes' ? 1 : 0,
 	);
 
@@ -1278,12 +1273,6 @@ function update_directory_profile( $entry, $form ) {
 			'meta_input' => $meta_values,
 		)
 	);
-
-	$thumb_id = get_post_thumbnail_id( $id );
-
-	if ( $remove_image_changed ) {
-		wp_delete_attachment( $thumb_id, true );
-	}
 
 }
 
