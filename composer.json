@@ -1,17 +1,21 @@
 {
-    "name": "colbycommunications/colby-college-theme",
-    "description": "Colby College redesign theme",
-    "type": "wordpress-theme",
-    "authors": [
-        {
-            "name": "Brandon Waltz",
-            "email": "brandon.waltz@colby.edu"
-        }
-    ],
-    "require": {
-        "php": ">=7.1"
-    },
-    "keywords": [
-        "wordpress"
-    ]
+  "name": "colbycommunications/colby-college-theme",
+  "description": "Colby College redesign theme",
+  "type": "wordpress-theme",
+  "authors": [
+    {
+      "name": "Brandon Waltz",
+      "email": "brandon.waltz@colby.edu"
+    }
+  ],
+  "require": {
+    "php": ">=7.1",
+    "simplesamlphp/simplesamlphp": "^2.0"
+  },
+  "keywords": [
+    "wordpress"
+  ],
+  "config": {
+    "allow-plugins": true
+  }
 }

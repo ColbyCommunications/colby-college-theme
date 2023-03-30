@@ -1209,6 +1209,14 @@ add_action(
 	}
 );
 
+function test_function() {
+	if ( is_page( 'directory-profile-update-form' ) ) {
+		echo 'test';
+	}
+};
+
+add_action( 'template_redirect', 'test_function' );
+
 
 add_action( 'gform_after_submission', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
