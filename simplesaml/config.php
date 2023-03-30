@@ -135,6 +135,7 @@ $config = array(
 	 *   'session.check_function' => array('sspmod_example_Util', 'checkSession'),
 	 */
 
-
+	 'logging.level'                => SimpleSAML\Logger::DEBUG,
+	'logging.handler'               => 'errorlog',
 
 );
