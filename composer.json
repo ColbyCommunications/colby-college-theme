@@ -10,7 +10,7 @@
     ],
     "require": {
         "php": ">=7.1",
-        "simplesamlphp/simplesamlphp": "1.16.*"
+        "simplesamlphp/simplesamlphp": "1.19.*"
     },
     "keywords": [
         "wordpress"
