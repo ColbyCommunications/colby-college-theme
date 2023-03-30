@@ -900,7 +900,7 @@ function updateStaffDirectory() {
 		getNewPeople( $directory_data );
 	}
 }
-
+// herexyz
 function deletePeople( $directory_data ) {
 	$args = array(
 		'numberposts' => -1,
@@ -1209,13 +1209,6 @@ add_action(
 	}
 );
 
-function test_function() {
-	if ( is_page( 'directory-profile-update-form' ) ) {
-		echo 'test';
-	}
-};
-
-add_action( 'template_redirect', 'test_function' );
 
 
 add_action( 'gform_after_submission_12', 'update_directory_profile', 10, 2 );
@@ -1578,4 +1571,40 @@ function hide_directory_attachments( $query = array() ) {
 	}
 	// comment
 	return $query;
+}
+
+add_action( 'template_redirect', 'directory_function' );
+
+function directory_function() {
+	// Get returned id from Okta
+	$test_id      = 0000000;
+	$cookie_name  = 'colby_directory_id';
+	$cookie_value = $test_id;
+
+	// Check if cookie is set
+	if ( ! isset( $_COOKIE['colby_directory_id'] ) ) {
+		// Store the id in cookie
+		setcookie( $cookie_name, $cookie_value, time() + ( 86400 * 30 ), '/' ); // 86400 = 1 day
+	};
+
+	// get person post by employee ID
+	$args              = array(
+		'post_type'  => 'people',
+		'meta_query' => array(
+			array(
+				'key'     => 'employee_id',
+				'value'   => $_COOKIE['colby_directory_id'],
+				'compare' => '=',
+			),
+		),
+	);
+	$person_post       = get_posts( $args );
+	$id                = $person_post[0]->ID;
+	$person_metadata   = get_post_meta( $id );
+	$GLOBALS['person'] = $person_metadata;
+	die( var_dump( $person_metadata ) );
+}
+add_filter( 'gform_field_value_directory_bio', 'my_custom_population_function' );
+function my_custom_population_function( $value ) {
+	return $GLOBALS['person']['bio'][0];
 }
