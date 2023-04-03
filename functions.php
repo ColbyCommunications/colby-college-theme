@@ -1573,22 +1573,30 @@ function hide_directory_attachments( $query = array() ) {
 	return $query;
 }
 
-add_action( 'template_redirect', 'directory_function' );
+require_once( 'lib/simplesamlphp/src/_autoload.php' );
+add_action( 'template_redirect', 'directory_auth_check' );
+function directory_auth_check() {
 
-function directory_function() {
+	$as = new \SimpleSAML\Auth\Simple( 'default-sp' );
+
+	if ( ! isset( $_COOKIE['SimpleSAML'] ) ) {
+		$as->requireAuth();
+	};
+
+	$attributes = $as->getAttributes();
+
 	// Get returned id from Okta
-	$test_id      = 0000000;
-	$cookie_name  = 'colby_directory_id';
-	$cookie_value = $test_id;
+	$e_id        = 0000000;
+	$cookie_name = 'colby_directory_id';
 
 	// Check if cookie is set
 	if ( ! isset( $_COOKIE['colby_directory_id'] ) ) {
 		// Store the id in cookie
-		setcookie( $cookie_name, $cookie_value, time() + ( 86400 * 30 ), '/' ); // 86400 = 1 day
+		setcookie( $cookie_name, $e_id, time() + ( 86400 * 30 ), '/' ); // 86400 = 1 day
 	};
 
 	// get person post by employee ID
-	$args              = array(
+	$args            = array(
 		'post_type'  => 'people',
 		'meta_query' => array(
 			array(
@@ -1598,13 +1606,16 @@ function directory_function() {
 			),
 		),
 	);
-	$person_post       = get_posts( $args );
-	$id                = $person_post[0]->ID;
-	$person_metadata   = get_post_meta( $id );
-	$GLOBALS['person'] = $person_metadata;
-	die( var_dump( $person_metadata ) );
+	$person_post     = get_posts( $args );
+	$id              = $person_post[0]->ID;
+	$person_metadata = get_post_meta( $id );
+
+	session_start();
+	$_SESSION['person'] = $person_metadata;
 }
-add_filter( 'gform_field_value_directory_bio', 'my_custom_population_function' );
-function my_custom_population_function( $value ) {
-	return $GLOBALS['person']['bio'][0];
+
+/* Gravity Forms Prepopulation Functions */
+add_filter( 'gform_field_value_directory_bio', 'bio_prepopulation' );
+function bio_prepopulation( $value ) {
+	return $_SESSION['person']['bio'][0];
 }
