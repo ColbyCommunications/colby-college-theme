@@ -1579,20 +1579,16 @@ function directory_auth_check() {
 	if ( is_page( 'directory-profile-update-form' ) ) {
 		$as = new \SimpleSAML\Auth\Simple( 'default-sp' );
 
-		if ( ! isset( $_COOKIE['SimpleSAML'] ) ) {
-			$as->requireAuth();
-		};
-
-		$attributes = $as->getAttributes();
-
-		// Get returned id from Okta
-		$e_id        = 0000000;
 		$cookie_name = 'colby_directory_id';
 
-		// Check if cookie is set
 		if ( ! isset( $_COOKIE['colby_directory_id'] ) ) {
-			// Store the id in cookie
-			setcookie( $cookie_name, $e_id, time() + ( 86400 * 30 ), '/' ); // 86400 = 1 day
+			session_destroy();
+			$as->requireAuth();
+			$attributes = $as->getAttributes();
+			$e_id       = $attributes['workdayID'];
+			setcookie( $cookie_name, $e_id, time() + ( 3600 * 4 ), '/' );
+		} else {
+			$e_id = $_COOKIE['colby_directory_id'];
 		};
 
 		// get person post by employee ID
@@ -1601,7 +1597,7 @@ function directory_auth_check() {
 			'meta_query' => array(
 				array(
 					'key'     => 'employee_id',
-					'value'   => $_COOKIE['colby_directory_id'],
+					'value'   => $e_id,
 					'compare' => '=',
 				),
 			),
