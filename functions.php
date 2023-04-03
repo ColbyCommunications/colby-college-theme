@@ -1579,18 +1579,11 @@ function directory_auth_check() {
 	if ( is_page( 'directory-profile-update-form' ) ) {
 		$as = new \SimpleSAML\Auth\Simple( 'default-sp' );
 
-		$cookie_name = 'colby_directory_id';
-
-		if ( $_GET['authenticated'] ) {
-			setcookie( $cookie_name, $e_id, time() + ( 3600 * 4 ), '/' );
-		}
-
-		if ( ! isset( $_COOKIE['colby_directory_id'] ) ) {
-			session_destroy();
+		if ( ! isset( $_COOKIE['ColbyDirectorySAMLSessionID'] ) ) {
 			$as->requireAuth();
 			$attributes = $as->getAttributes();
 			$e_id       = $attributes['workdayID'];
-
+			setcookie( 'colby_directory_id', $e_id, time() + ( 3600 * 4 ), '/' );
 		} else {
 			$e_id = $_COOKIE['colby_directory_id'];
 		};
