@@ -1581,12 +1581,16 @@ function directory_auth_check() {
 
 		$cookie_name = 'colby_directory_id';
 
+		if ( $_GET['authenticated'] ) {
+			setcookie( $cookie_name, $e_id, time() + ( 3600 * 4 ), '/' );
+		}
+
 		if ( ! isset( $_COOKIE['colby_directory_id'] ) ) {
 			session_destroy();
 			$as->requireAuth();
 			$attributes = $as->getAttributes();
 			$e_id       = $attributes['workdayID'];
-			setcookie( $cookie_name, $e_id, time() + ( 3600 * 4 ), '/' );
+
 		} else {
 			$e_id = $_COOKIE['colby_directory_id'];
 		};
