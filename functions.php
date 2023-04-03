@@ -1576,42 +1576,43 @@ function hide_directory_attachments( $query = array() ) {
 require_once( 'lib/simplesamlphp/src/_autoload.php' );
 add_action( 'template_redirect', 'directory_auth_check' );
 function directory_auth_check() {
+	if ( is_page( 'directory-profile-update-form' ) ) {
+		$as = new \SimpleSAML\Auth\Simple( 'default-sp' );
 
-	$as = new \SimpleSAML\Auth\Simple( 'default-sp' );
+		if ( ! isset( $_COOKIE['SimpleSAML'] ) ) {
+			$as->requireAuth();
+		};
 
-	if ( ! isset( $_COOKIE['SimpleSAML'] ) ) {
-		$as->requireAuth();
-	};
+		$attributes = $as->getAttributes();
 
-	$attributes = $as->getAttributes();
+		// Get returned id from Okta
+		$e_id        = 0000000;
+		$cookie_name = 'colby_directory_id';
 
-	// Get returned id from Okta
-	$e_id        = 0000000;
-	$cookie_name = 'colby_directory_id';
+		// Check if cookie is set
+		if ( ! isset( $_COOKIE['colby_directory_id'] ) ) {
+			// Store the id in cookie
+			setcookie( $cookie_name, $e_id, time() + ( 86400 * 30 ), '/' ); // 86400 = 1 day
+		};
 
-	// Check if cookie is set
-	if ( ! isset( $_COOKIE['colby_directory_id'] ) ) {
-		// Store the id in cookie
-		setcookie( $cookie_name, $e_id, time() + ( 86400 * 30 ), '/' ); // 86400 = 1 day
-	};
-
-	// get person post by employee ID
-	$args            = array(
-		'post_type'  => 'people',
-		'meta_query' => array(
-			array(
-				'key'     => 'employee_id',
-				'value'   => $_COOKIE['colby_directory_id'],
-				'compare' => '=',
+		// get person post by employee ID
+		$args            = array(
+			'post_type'  => 'people',
+			'meta_query' => array(
+				array(
+					'key'     => 'employee_id',
+					'value'   => $_COOKIE['colby_directory_id'],
+					'compare' => '=',
+				),
 			),
-		),
-	);
-	$person_post     = get_posts( $args );
-	$id              = $person_post[0]->ID;
-	$person_metadata = get_post_meta( $id );
+		);
+		$person_post     = get_posts( $args );
+		$id              = $person_post[0]->ID;
+		$person_metadata = get_post_meta( $id );
 
-	session_start();
-	$_SESSION['person'] = $person_metadata;
+		session_start();
+		$_SESSION['person'] = $person_metadata;
+	}
 }
 
 /* Gravity Forms Prepopulation Functions */
