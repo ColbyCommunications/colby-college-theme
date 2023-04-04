@@ -1579,7 +1579,7 @@ function directory_auth_check() {
 	if ( is_page( 'directory-profile-update-form' ) ) {
 		$as = new \SimpleSAML\Auth\Simple( 'default-sp' );
 
-		if ( ! isset( $_COOKIE['ColbyDirectorySAMLSession'] ) ) {
+		if ( ! isset( $_COOKIE['SimpleSAML'] ) ) {
 			$as->requireAuth();
 			$attributes = $as->getAttributes();
 			$e_id       = $attributes['workdayID'];
