@@ -1578,12 +1578,12 @@ add_action( 'template_redirect', 'directory_auth_check' );
 function directory_auth_check() {
 	if ( is_page( 'directory-profile-update-form' ) ) {
 		$as = new \SimpleSAML\Auth\Simple( 'default-sp' );
-		// die( var_dump( isset( $_COOKIE['SimpleSAML'] ) ) );
+
 		if ( ! $as->isAuthenticated() ) {
 			$as->requireAuth();
 			$attributes = $as->getAttributes();
 			$e_id       = $attributes['workdayID'];
-			setcookie( 'colby_directory_id', $e_id, time() + ( 3600 * 4 ), '/' );
+			setcookie( 'colby_directory_id', $e_id, time() + ( 3600 * 4 ), '/', '.www.feature-directory-tozs5zi-ouiqvb5juucvu.us-4.platformsh.site' );
 		} else {
 			$e_id = $_COOKIE['colby_directory_id'];
 		};
