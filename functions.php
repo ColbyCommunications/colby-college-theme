@@ -1602,7 +1602,6 @@ function directory_function() {
 	$id                = $person_post[0]->ID;
 	$person_metadata   = get_post_meta( $id );
 	$GLOBALS['person'] = $person_metadata;
-	die( var_dump( $person_metadata ) );
 }
 add_filter( 'gform_field_value_directory_bio', 'my_custom_population_function' );
 function my_custom_population_function( $value ) {
