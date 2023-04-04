@@ -569,6 +569,7 @@ export default {
       ],
     },
     renderApi: {
+      type: [Boolean, Number],
       required: false,
       default: false,
     },

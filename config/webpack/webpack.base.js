@@ -107,7 +107,7 @@ module.exports = {
     new SassLintPlugin(),
     new Webpack.DefinePlugin({
       __VUE_OPTIONS_API__: true,
-      __VUE_PROD_DEVTOOLS__: true,
+      __VUE_PROD_DEVTOOLS__: false,
     }), // to remove warn in browser console: runtime-core.esm-bundler.js:3607 Feature flags __VUE_OPTIONS_API__, __VUE_PROD_DEVTOOLS__ are not explicitly defined...
   ],
 };
