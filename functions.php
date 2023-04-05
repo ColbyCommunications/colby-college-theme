@@ -1160,61 +1160,9 @@ function getNewPeople( $directory_data ) {
 	}
 }
 
-
-add_action(
-	'gform_validation',
-	function( $validation_result ) {
-
-		$employee_id = str_pad( rgpost( 'input_10' ), 7, '0', STR_PAD_LEFT );
-
-		$args = array(
-			'post_type'  => 'people',
-			'meta_query' => array(
-				array(
-					'key'     => 'employee_id',
-					'value'   => $employee_id,
-					'compare' => '=',
-				),
-			),
-		);
-
-		$person_post     = get_posts( $args );
-		$person_metadata = get_post_meta( $person_post[0]->ID );
-
-		GFCommon::log_debug( __METHOD__ . '(): running Total validation.' );
-		$form = $validation_result['form'];
-
-		// Return without changes if form id is not 10.
-		if ( 4 != $form['id'] ) {
-			return $validation_result;
-		}
-
-		// Change 3 to the id number of your Total field.
-		if ( strtolower( $person_metadata['email'][0] ) !== strtolower( rgpost( 'input_16' ) ) ) {
-			// Set the form validation to false.
-			$validation_result['is_valid'] = false;
-		}
-			// Find Total field, set failed validation and message.
-		foreach ( $form['fields'] as &$field ) {
-			if ( $field->type == 'email' ) {
-				$field->failed_validation  = true;
-				$field->validation_message = 'The employee ID and email address provided are not associated in Workday! See below for help.';
-				break;
-			}
-		}
-
-		// Assign modified $form object back to the validation result.
-		$validation_result['form'] = $form;
-		return $validation_result;
-	}
-);
-
-
-
-add_action( 'gform_after_submission_12', 'update_directory_profile', 10, 2 );
+add_action( 'gform_after_submission_4', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 
-	$employee_id       = str_pad( $entry[10], 7, '0', STR_PAD_LEFT );
 	$department        = $entry[5];
 	$curriculum_vitae  = $entry[9];
 	$office_hours      = $entry[15];
@@ -1236,7 +1184,7 @@ function update_directory_profile( $entry, $form ) {
 		'meta_query' => array(
 			array(
 				'key'     => 'employee_id',
-				'value'   => $employee_id,
+				'value'   => $_COOKIE['colby_directory_id'],
 				'compare' => '=',
 			),
 		),
@@ -1607,8 +1555,156 @@ function directory_auth_check() {
 	}
 }
 
+add_filter( 'the_content', 'greeting' );
+function greeting( $content ) {
+	if ( is_page( 'directory-profile-update-form' ) && isset( $_COOKIE['colby_directory_id'] ) ) {
+			return "<div class='mb-8'><h2 class='mb-2 font-bold' style='font-size:30px'>Hello {$_SESSION['person']['first_name'][0]} {$_SESSION['person']['last_name'][0]} </h2 ><p class='mb-6 font-bold' style='font-size:20px'>Edit your profile with the fields below:</p></div>" . $content;
+	}
+	return $content;
+}
+
+
 /* Gravity Forms Prepopulation Functions */
+
+// Hide Pronouns
+add_filter( 'gform_field_value_directory_hide_pronouns', 'hide_pronouns_prepopulation' );
+function hide_pronouns_prepopulation( $value ) {
+	if ( empty( $_SESSION['person']['hide_pronouns'][0] ) || $_SESSION['person']['hide_pronouns'][0] == 0 ) {
+		return 'no';
+	}
+	return 'yes';
+}
+
+// Hide Office Phone Number
+add_filter( 'gform_field_value_directory_hide_phone', 'hide_phone_prepopulation' );
+function hide_phone_prepopulation( $value ) {
+	if ( empty( $_SESSION['person']['hide_phone_number'][0] ) || $_SESSION['person']['hide_phone_number'][0] == 0 ) {
+		return 'no';
+	}
+	return 'yes';
+}
+
+// Hide Fax Number
+add_filter( 'gform_field_value_directory_hide_fax', 'hide_fax_prepopulation' );
+function hide_fax_prepopulation( $value ) {
+	if ( empty( $_SESSION['person']['hide_fax'][0] ) || $_SESSION['person']['hide_fax'][0] == 0 ) {
+		return 'no';
+	}
+	return 'yes';
+}
+
+// Hide Location
+add_filter( 'gform_field_value_directory_hide_location', 'hide_location_prepopulation' );
+function hide_location_prepopulation( $value ) {
+	if ( empty( $_SESSION['person']['hide_location'][0] ) || $_SESSION['person']['hide_location'][0] == 0 ) {
+		return 'no';
+	}
+	return 'yes';
+}
+
+// Unsync Department Selection
+add_filter( 'gform_field_value_directory_unsyc_department', 'unsync_department_prepopulation' );
+function unsync_department_prepopulation( $value ) {
+	if ( ! empty( $_SESSION['person']['department_changed'][0] ) ) {
+		return 'yes';
+	}
+	return null;
+}
+
+
+// Department
+add_filter( 'gform_field_value_directory_department', 'department_prepopulation' );
+function department_prepopulation( $value ) {
+	if ( ! empty( $_SESSION['person']['department'][0] ) ) {
+		return $_SESSION['person']['department'][0];
+	}
+}
+
+// Hide Department
+add_filter( 'gform_field_value_directory_hide_department', 'hide_department_prepopulation' );
+function hide_department_prepopulation( $value ) {
+	if ( empty( $_SESSION['person']['hide_department'][0] ) || $_SESSION['person']['hide_department'][0] == 0 ) {
+		return 'no';
+	}
+	return 'yes';
+}
+
+// Curriculum Vitae
+add_filter( 'gform_field_value_directory_cv', 'cv_prepopulation' );
+function cv_prepopulation( $value ) {
+	var_dump( $_SESSION['person'] );
+	if ( ! empty( $_SESSION['person']['curriculum_vitae'][0] ) ) {
+		return $_SESSION['person']['curriculum_vitae'][0];
+	}
+}
+
+// Hide Curriculum Vitae
+add_filter( 'gform_field_value_directory_hide_cv', 'hide_cv_prepopulation' );
+function hide_cv_prepopulation( $value ) {
+	if ( empty( $_SESSION['person']['hide_cv'][0] ) || $_SESSION['person']['hide_cv'][0] == 0 ) {
+		return 'no';
+	}
+	return 'yes';
+}
+
+// Office Hours
+add_filter( 'gform_field_value_directory_office_hours', 'office_hours_prepopulation' );
+function office_hours_prepopulation( $value ) {
+	if ( ! empty( $_SESSION['person']['office_hours'][0] ) ) {
+		return $_SESSION['person']['office_hours'][0];
+	}
+}
+
+// Hide Office Hours
+add_filter( 'gform_field_value_directory_hide_office_hours', 'hide_office_hours_prepopulation' );
+function hide_office_hours_prepopulation( $value ) {
+	if ( empty( $_SESSION['person']['hide_office_hours'][0] ) || $_SESSION['person']['hide_office_hours'][0] == 0 ) {
+		return 'no';
+	}
+	return 'yes';
+}
+
+// Hide Profile Photo
+add_filter( 'gform_field_value_directory_hide_photo', 'hide_photo_prepopulation' );
+function hide_photo_prepopulation( $value ) {
+	if ( empty( $_SESSION['person']['hide_photo'][0] ) || $_SESSION['person']['hide_photo'][0] == 0 ) {
+		return 'no';
+	}
+	return 'yes';
+}
+
+// Bio
 add_filter( 'gform_field_value_directory_bio', 'bio_prepopulation' );
 function bio_prepopulation( $value ) {
-	return $_SESSION['person']['bio'][0];
+	if ( ! empty( $_SESSION['person']['bio'][0] ) ) {
+		return $_SESSION['person']['bio'][0];
+	}
 }
+
+// Hide Bio
+add_filter( 'gform_field_value_directory_hide_bio', 'hide_bio_prepopulation' );
+function hide_bio_prepopulation( $value ) {
+	if ( empty( $_SESSION['person']['hide_bio'][0] ) || $_SESSION['person']['hide_bio'][0] == 0 ) {
+		return 'no';
+	}
+	return 'yes';
+}
+
+// First Name
+add_filter( 'gform_field_value_directory_first_name', 'first_name_prepopulation' );
+function first_name_prepopulation( $value ) {
+	if ( ! empty( $_SESSION['person']['first_name'][0] ) ) {
+		return $_SESSION['person']['first_name'][0];
+	}
+}
+
+// Last Name
+add_filter( 'gform_field_value_directory_last_name', 'last_name_prepopulation' );
+function last_name_prepopulation( $value ) {
+	if ( ! empty( $_SESSION['person']['last_name'][0] ) ) {
+		return $_SESSION['person']['last_name'][0];
+	}
+}
+
+
+
