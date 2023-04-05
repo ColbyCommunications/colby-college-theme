@@ -1300,7 +1300,6 @@ function wpse248405_columns( $cols ) {
 	$user = wp_get_current_user();
 	if ( ! in_array( 'administrator', $user->roles ) && in_array( 'editor', $user->roles ) ) {
 		// remove title column
-		//    die(var_dump($cols));
 		unset( $cols['title'] );
 		unset( $cols['taxonomy-page-categories'] );
 		// add custom column in second place
@@ -1308,7 +1307,6 @@ function wpse248405_columns( $cols ) {
 			'foo'    => __( 'Title', 'textdomain' ),
 			'parent' => __( 'Parent Page', 'textdomain' ),
 		) + $cols;
-		//    die(var_dump($cols));
 		// return columns
 
 	}
@@ -1321,7 +1319,6 @@ function wpse248405_custom_column( $col, $post_id ) {
 	if ( ! in_array( 'administrator', $user->roles ) && in_array( 'editor', $user->roles ) ) {
 
 		global $mode;
-		// var_dump($col);
 		if ( $col === 'foo' ) {
 
 			$current_level = 0;
@@ -1632,7 +1629,6 @@ function hide_department_prepopulation( $value ) {
 // Curriculum Vitae
 add_filter( 'gform_field_value_directory_cv', 'cv_prepopulation' );
 function cv_prepopulation( $value ) {
-	var_dump( $_SESSION['person'] );
 	if ( ! empty( $_SESSION['person']['curriculum_vitae'][0] ) ) {
 		return $_SESSION['person']['curriculum_vitae'][0];
 	}
