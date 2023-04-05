@@ -1160,7 +1160,7 @@ function getNewPeople( $directory_data ) {
 	}
 }
 
-add_action( 'gform_after_submission_4', 'update_directory_profile', 10, 2 );
+add_action( 'gform_after_submission_12', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 
 	$department        = $entry[5];
