@@ -1525,36 +1525,46 @@ function directory_auth_check() {
 		$as = new \SimpleSAML\Auth\Simple( 'default-sp' );
 
 		if ( ! $as->isAuthenticated() ) {
+
+			// unset the person data just to be safe
+			if ( array_key_exists( 'person', $_SESSION ) ) {
+				unset( $_SESSION['person'] );
+			}
+
+			// send to Okta
 			$as->requireAuth();
+
 		} else {
+
 			$attributes = $as->getAttributes();
 			$e_id       = $attributes['WorkdayID'][0];
-			setcookie( 'colby_directory_id', $e_id, time() + ( 3600 * 4 ), '/' );
+
+			// get person post by employee ID
+			$args            = array(
+				'post_type'  => 'people',
+				'meta_query' => array(
+					array(
+						'key'     => 'employee_id',
+						'value'   => $e_id,
+						'compare' => '=',
+					),
+				),
+			);
+			$person_post     = get_posts( $args );
+			$id              = $person_post[0]->ID;
+			$person_metadata = get_post_meta( $id );
+
+			// assign metadata to session
+			$_SESSION['colby_directory_id'] = $e_id;
+			$_SESSION['person']             = $person_metadata;
 		};
 
-		// get person post by employee ID
-		$args            = array(
-			'post_type'  => 'people',
-			'meta_query' => array(
-				array(
-					'key'     => 'employee_id',
-					'value'   => $e_id,
-					'compare' => '=',
-				),
-			),
-		);
-		$person_post     = get_posts( $args );
-		$id              = $person_post[0]->ID;
-		$person_metadata = get_post_meta( $id );
-
-		session_start();
-		$_SESSION['person'] = $person_metadata;
 	}
 }
 
 add_filter( 'the_content', 'greeting' );
 function greeting( $content ) {
-	if ( is_page( 'directory-profile-update-form' ) && isset( $_COOKIE['colby_directory_id'] ) ) {
+	if ( is_page( 'directory-profile-update-form' ) && isset( $_SESSION['colby_directory_id'] ) ) {
 			return "<div class='mb-8'><h2 class='mb-2 font-bold' style='font-size:30px'>Hello {$_SESSION['person']['first_name'][0]} {$_SESSION['person']['last_name'][0]} </h2 ><p class='mb-6 font-bold' style='font-size:20px'>Edit your profile with the fields below:</p></div>" . $content;
 	}
 	return $content;
