@@ -1163,6 +1163,11 @@ function getNewPeople( $directory_data ) {
 add_action( 'gform_after_submission_12', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 
+	// get attributes from SimpleSAML session
+	$as         = new \SimpleSAML\Auth\Simple( 'default-sp' );
+	$attributes = $as->getAttributes();
+	$e_id       = $attributes['WorkdayID'][0];
+
 	$department        = $entry[5];
 	$curriculum_vitae  = $entry[9];
 	$office_hours      = $entry[15];
@@ -1184,7 +1189,7 @@ function update_directory_profile( $entry, $form ) {
 		'meta_query' => array(
 			array(
 				'key'     => 'employee_id',
-				'value'   => $_COOKIE['colby_directory_id'],
+				'value'   => $e_id,
 				'compare' => '=',
 			),
 		),
