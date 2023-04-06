@@ -1160,7 +1160,7 @@ function getNewPeople( $directory_data ) {
 	}
 }
 
-add_action( 'gform_after_submission_12', 'update_directory_profile', 10, 2 );
+add_action( 'gform_after_submission_13', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 
 	$department        = $entry[5];
@@ -1184,7 +1184,7 @@ function update_directory_profile( $entry, $form ) {
 		'meta_query' => array(
 			array(
 				'key'     => 'employee_id',
-				'value'   => $_COOKIE['colby_directory_id'],
+				'value'   => $_SESSION['colby_directory_id'],
 				'compare' => '=',
 			),
 		),
@@ -1521,15 +1521,17 @@ function hide_directory_attachments( $query = array() ) {
 require_once( 'lib/simplesamlphp/src/_autoload.php' );
 add_action( 'template_redirect', 'directory_auth_check' );
 function directory_auth_check() {
+	var_dump( $_SESSION );
 	if ( is_page( 'directory-profile-update-form' ) ) {
 		$as = new \SimpleSAML\Auth\Simple( 'default-sp' );
 
 		if ( ! $as->isAuthenticated() ) {
+			// session_unset();
+			// session_destroy();
 			$as->requireAuth();
 		} else {
 			$attributes = $as->getAttributes();
 			$e_id       = $attributes['WorkdayID'][0];
-			setcookie( 'colby_directory_id', $e_id, time() + ( 3600 * 4 ), '/' );
 		};
 
 		// get person post by employee ID
@@ -1548,18 +1550,19 @@ function directory_auth_check() {
 		$person_metadata = get_post_meta( $id );
 
 		session_start();
-		$_SESSION['person'] = $person_metadata;
+		// var_dump( $_SESSION );
+		$_SESSION['person']             = $person_metadata;
+		$_SESSION['colby_directory_id'] = $e_id;
 	}
 }
 
-add_filter( 'the_content', 'greeting' );
 function greeting( $content ) {
-	if ( is_page( 'directory-profile-update-form' ) && isset( $_COOKIE['colby_directory_id'] ) ) {
+	if ( is_page( 'directory-profile-update-form' ) && isset( $_SESSION['colby_directory_id'] ) ) {
 			return "<div class='mb-8'><h2 class='mb-2 font-bold' style='font-size:30px'>Hello {$_SESSION['person']['first_name'][0]} {$_SESSION['person']['last_name'][0]} </h2 ><p class='mb-6 font-bold' style='font-size:20px'>Edit your profile with the fields below:</p></div>" . $content;
 	}
 	return $content;
 }
-
+add_filter( 'the_content', 'greeting' );
 
 /* Gravity Forms Prepopulation Functions */
 
