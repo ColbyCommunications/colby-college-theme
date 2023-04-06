@@ -1163,6 +1163,11 @@ function getNewPeople( $directory_data ) {
 add_action( 'gform_after_submission_13', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 
+	// get attributes from SimpleSAML session
+	$as         = new \SimpleSAML\Auth\Simple( 'default-sp' );
+	$attributes = $as->getAttributes();
+	$e_id       = $attributes['WorkdayID'][0];
+
 	$department        = $entry[5];
 	$curriculum_vitae  = $entry[9];
 	$office_hours      = $entry[15];
@@ -1184,7 +1189,7 @@ function update_directory_profile( $entry, $form ) {
 		'meta_query' => array(
 			array(
 				'key'     => 'employee_id',
-				'value'   => $_SESSION['colby_directory_id'],
+				'value'   => $e_id,
 				'compare' => '=',
 			),
 		),
@@ -1526,33 +1531,40 @@ function directory_auth_check() {
 		$as = new \SimpleSAML\Auth\Simple( 'default-sp' );
 
 		if ( ! $as->isAuthenticated() ) {
-			// session_unset();
-			// session_destroy();
+
+			// unset the person data just to be safe
+			if ( array_key_exists( 'person', $_SESSION ) ) {
+				unset( $_SESSION['person'] );
+			}
+
+			// send to Okta
 			$as->requireAuth();
+
 		} else {
+
 			$attributes = $as->getAttributes();
 			$e_id       = $attributes['WorkdayID'][0];
+
+			// get person post by employee ID
+			$args            = array(
+				'post_type'  => 'people',
+				'meta_query' => array(
+					array(
+						'key'     => 'employee_id',
+						'value'   => $e_id,
+						'compare' => '=',
+					),
+				),
+			);
+			$person_post     = get_posts( $args );
+			$id              = $person_post[0]->ID;
+			$person_metadata = get_post_meta( $id );
+
+			// assign metadata to session
+			$_SESSION['colby_directory_id'] = $e_id;
+			$_SESSION['person']             = $person_metadata;
 		};
 
-		// get person post by employee ID
-		$args            = array(
-			'post_type'  => 'people',
-			'meta_query' => array(
-				array(
-					'key'     => 'employee_id',
-					'value'   => $e_id,
-					'compare' => '=',
-				),
-			),
-		);
-		$person_post     = get_posts( $args );
-		$id              = $person_post[0]->ID;
-		$person_metadata = get_post_meta( $id );
-
-		session_start();
-		// var_dump( $_SESSION );
-		$_SESSION['person']             = $person_metadata;
-		$_SESSION['colby_directory_id'] = $e_id;
 	}
 }
 
