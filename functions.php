@@ -1130,32 +1130,6 @@ function getNewPeople( $directory_data ) {
 			if ( empty( $person_metadata['unsync_department'][0] ) ) {
 				update_post_meta( $ID, 'department', $WDDepartment );
 			}
-
-			if ( empty( $person_metadata['remove_image_changed'][0] ) ) {
-				foreach ( $photosWithDates as $photo ) {
-					if ( strpos( $photo, md5( $WDEmployeeID ) ) !== false ) {
-						$matchingPhoto = $photo;
-						break;
-					}
-				}
-
-				if ( $matchingPhoto ) {
-					$img_parts    = explode( '_', $matchingPhoto );
-					$date         = substr( $img_parts[1], 0, 8 );
-					$imageURL     = 'https://colby.edu/college/WorkdayPhotos/v2/MD5/' . $matchingPhoto;
-					$desc         = $WDPrefFirstName . ' ' . $WDLastName;
-					$DBImageName  = get_the_post_thumbnail_url( $ID );
-					$DB_img_parts = explode( '_', $DBImageName );
-					$DB_date      = substr( $DB_img_parts[1], 0, 8 );
-
-					if ( $date !== $DB_date ) {
-						$thumb_id = get_post_thumbnail_id( $ID );
-						wp_delete_attachment( $thumb_id, true );
-						$image = media_sideload_image( $imageURL, $ID, $desc, 'id' );
-						set_post_thumbnail( $ID, $image );
-					}
-				}
-			}
 		}
 	}
 }
@@ -1201,23 +1175,22 @@ function update_directory_profile( $entry, $form ) {
 
 	// update post
 	$meta_values = array(
-		'department'           => $department,
-		'curriculum_vitae'     => $curriculum_vitae,
-		'office_hours'         => $office_hours,
-		'bio'                  => $bio,
+		'department'        => $department,
+		'curriculum_vitae'  => $curriculum_vitae,
+		'office_hours'      => $office_hours,
+		'bio'               => $bio,
 
 		// remove/hide fields
-		'remove_image_changed' => $remove_image_changed ? 1 : 0,
-		'hide_pronouns'        => $hide_pronouns === 'yes' ? 1 : 0,
-		'hide_phone_number'    => $hide_phone_number === 'yes' ? 1 : 0,
-		'hide_fax'             => $hide_fax === 'yes' ? 1 : 0,
-		'hide_location'        => $hide_location === 'yes' ? 1 : 0,
-		'hide_department'      => $hide_department === 'yes' ? 1 : 0,
-		'hide_cv'              => $hide_cv === 'yes' ? 1 : 0,
-		'hide_office_hours'    => $hide_office_hours === 'yes' ? 1 : 0,
-		'hide_bio'             => $hide_bio === 'yes' ? 1 : 0,
-		'hide_photo'           => $hide_photo === 'yes' ? 1 : 0,
-		'unsync_department'    => $unsync_department === 'yes' ? 1 : 0,
+		'hide_pronouns'     => $hide_pronouns === 'yes' ? 1 : 0,
+		'hide_phone_number' => $hide_phone_number === 'yes' ? 1 : 0,
+		'hide_fax'          => $hide_fax === 'yes' ? 1 : 0,
+		'hide_location'     => $hide_location === 'yes' ? 1 : 0,
+		'hide_department'   => $hide_department === 'yes' ? 1 : 0,
+		'hide_cv'           => $hide_cv === 'yes' ? 1 : 0,
+		'hide_office_hours' => $hide_office_hours === 'yes' ? 1 : 0,
+		'hide_bio'          => $hide_bio === 'yes' ? 1 : 0,
+		'hide_photo'        => $hide_photo === 'yes' ? 1 : 0,
+		'unsync_department' => $unsync_department === 'yes' ? 1 : 0,
 	);
 
 	wp_update_post(
@@ -1526,7 +1499,6 @@ function hide_directory_attachments( $query = array() ) {
 require_once( 'lib/simplesamlphp/src/_autoload.php' );
 add_action( 'template_redirect', 'directory_auth_check' );
 function directory_auth_check() {
-	var_dump( $_SESSION );
 	if ( is_page( 'directory-profile-update-form' ) ) {
 		$as = new \SimpleSAML\Auth\Simple( 'default-sp' );
 
@@ -1617,16 +1589,16 @@ function hide_location_prepopulation( $value ) {
 // Unsync Department Selection
 add_filter( 'gform_field_value_directory_unsyc_department', 'unsync_department_prepopulation' );
 function unsync_department_prepopulation( $value ) {
-	if ( ! empty( $_SESSION['person']['department_changed'][0] ) ) {
+	if ( ! empty( $_SESSION['person']['unsync_department'][0] || $_SESSION['person']['unsync_department'][0] == 0 ) ) {
 		return 'yes';
 	}
-	return null;
+	return '';
 }
-
 
 // Department
 add_filter( 'gform_field_value_directory_department', 'department_prepopulation' );
 function department_prepopulation( $value ) {
+	var_dump( $_SESSION );
 	if ( ! empty( $_SESSION['person']['department'][0] ) ) {
 		return $_SESSION['person']['department'][0];
 	}
