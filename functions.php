@@ -1154,7 +1154,7 @@ function update_directory_profile( $entry, $form ) {
 	$hide_cv           = $entry[39];
 	$hide_office_hours = $entry[40];
 	$hide_bio          = $entry[41];
-	$unsync_department = $entry[ 43.1 ];
+	$unsync_department = $entry['43.1'];
 	$hide_photo        = $entry[44];
 
 	// get person post by employee ID
@@ -1175,7 +1175,7 @@ function update_directory_profile( $entry, $form ) {
 
 	// update post
 	$meta_values = array(
-		'department'        => $department,
+		'department'        => $unsync_department === 'yes' ? $department : $person_metadata['department'][0],
 		'curriculum_vitae'  => $curriculum_vitae,
 		'office_hours'      => $office_hours,
 		'bio'               => $bio,
@@ -1542,7 +1542,7 @@ function directory_auth_check() {
 
 function greeting( $content ) {
 	if ( is_page( 'directory-profile-update-form' ) && isset( $_SESSION['colby_directory_id'] ) ) {
-			return "<div class='mb-8'><h2 class='mb-2 font-bold' style='font-size:30px'>Hello {$_SESSION['person']['first_name'][0]} {$_SESSION['person']['last_name'][0]} </h2 ><p class='mb-6 font-bold' style='font-size:20px'>Edit your profile with the fields below:</p></div>" . $content;
+			return "<div class='mb-8'><h2 class='mb-2 font-bold' style='font-size:30px'>Hello, {$_SESSION['person']['first_name'][0]} {$_SESSION['person']['last_name'][0]} </h2 ><p class='mb-6 font-bold' style='font-size:20px'>Edit your profile with the fields below:</p></div>" . $content;
 	}
 	return $content;
 }
@@ -1589,7 +1589,7 @@ function hide_location_prepopulation( $value ) {
 // Unsync Department Selection
 add_filter( 'gform_field_value_directory_unsyc_department', 'unsync_department_prepopulation' );
 function unsync_department_prepopulation( $value ) {
-	if ( ! empty( $_SESSION['person']['unsync_department'][0] || $_SESSION['person']['unsync_department'][0] == 0 ) ) {
+	if ( ! empty( $_SESSION['person']['unsync_department'][0] || $_SESSION['person']['unsync_department'][0] == 1 ) ) {
 		return 'yes';
 	}
 	return '';
@@ -1598,7 +1598,6 @@ function unsync_department_prepopulation( $value ) {
 // Department
 add_filter( 'gform_field_value_directory_department', 'department_prepopulation' );
 function department_prepopulation( $value ) {
-	var_dump( $_SESSION );
 	if ( ! empty( $_SESSION['person']['department'][0] ) ) {
 		return $_SESSION['person']['department'][0];
 	}
@@ -1673,21 +1672,6 @@ function hide_bio_prepopulation( $value ) {
 	return 'yes';
 }
 
-// First Name
-add_filter( 'gform_field_value_directory_first_name', 'first_name_prepopulation' );
-function first_name_prepopulation( $value ) {
-	if ( ! empty( $_SESSION['person']['first_name'][0] ) ) {
-		return $_SESSION['person']['first_name'][0];
-	}
-}
-
-// Last Name
-add_filter( 'gform_field_value_directory_last_name', 'last_name_prepopulation' );
-function last_name_prepopulation( $value ) {
-	if ( ! empty( $_SESSION['person']['last_name'][0] ) ) {
-		return $_SESSION['person']['last_name'][0];
-	}
-}
 
 
 
