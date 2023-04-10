@@ -1523,7 +1523,7 @@ function directory_auth_check() {
 				'meta_query' => array(
 					array(
 						'key'     => 'employee_id',
-						'value'   => 0081649,
+						'value'   => '0081649',
 						'compare' => '=',
 					),
 				),
