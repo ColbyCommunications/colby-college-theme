@@ -1134,7 +1134,7 @@ function getNewPeople( $directory_data ) {
 	}
 }
 
-add_action( 'gform_after_submission_13', 'update_directory_profile', 10, 2 );
+add_action( 'gform_after_submission_12', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 	// die( var_dump( $entry ) );
 	// get attributes from SimpleSAML session
@@ -1523,7 +1523,7 @@ function directory_auth_check() {
 				'meta_query' => array(
 					array(
 						'key'     => 'employee_id',
-						'value'   => '0081649',
+						'value'   => $e_id,
 						'compare' => '=',
 					),
 				),
@@ -1589,7 +1589,7 @@ function hide_location_prepopulation( $value ) {
 // Unsync Department Selection
 add_filter( 'gform_field_value_directory_unsyc_department', 'unsync_department_prepopulation' );
 function unsync_department_prepopulation( $value ) {
-	if ( ! empty( $_SESSION['person']['unsync_department'][0] || $_SESSION['person']['unsync_department'][0] == 1 ) ) {
+	if ( ! empty( $_SESSION['person']['unsync_department'] && $_SESSION['person']['unsync_department'][0] == 1 ) ) {
 		return 'yes';
 	}
 	return '';
