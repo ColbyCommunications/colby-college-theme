@@ -1134,7 +1134,7 @@ function getNewPeople( $directory_data ) {
 	}
 }
 
-add_action( 'gform_after_submission_13', 'update_directory_profile', 10, 2 );
+add_action( 'gform_after_submission_12', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 
 	// get attributes from SimpleSAML session
