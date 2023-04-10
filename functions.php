@@ -1157,9 +1157,6 @@ function update_directory_profile( $entry, $form ) {
 	$unsync_department = $entry['43.1'];
 	$hide_photo        = $entry[44];
 
-	var_dump( $unsync_department );
-	die( var_dump( $unsync_department === 'yes' ) );
-
 	// get person post by employee ID
 	$args = array(
 		'post_type'  => 'people',
@@ -1175,6 +1172,8 @@ function update_directory_profile( $entry, $form ) {
 	$person_post     = get_posts( $args );
 	$id              = $person_post[0]->ID;
 	$person_metadata = get_post_meta( $id );
+
+	die( $person_post );
 
 	// update post
 	$meta_values = array(
