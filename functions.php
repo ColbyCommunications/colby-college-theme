@@ -1136,7 +1136,7 @@ function getNewPeople( $directory_data ) {
 
 add_action( 'gform_after_submission_13', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
-	die( var_dump( $entry ) );
+	// die( var_dump( $entry ) );
 	// get attributes from SimpleSAML session
 	$as         = new \SimpleSAML\Auth\Simple( 'default-sp' );
 	$attributes = $as->getAttributes();
@@ -1156,6 +1156,9 @@ function update_directory_profile( $entry, $form ) {
 	$hide_bio          = $entry[41];
 	$unsync_department = $entry['43.1'];
 	$hide_photo        = $entry[44];
+
+	var_dump( $unsync_department );
+	die( var_dump( $unsync_department === 'yes' ) );
 
 	// get person post by employee ID
 	$args = array(
