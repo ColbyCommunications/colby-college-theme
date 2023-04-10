@@ -1173,8 +1173,6 @@ function update_directory_profile( $entry, $form ) {
 	$id              = $person_post[0]->ID;
 	$person_metadata = get_post_meta( $id );
 
-	die( var_dump( $person_post ) );
-
 	// update post
 	$meta_values = array(
 		'department'        => $unsync_department === 'yes' ? $department : $person_metadata['department'][0],
