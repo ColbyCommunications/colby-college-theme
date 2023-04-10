@@ -1140,7 +1140,7 @@ function update_directory_profile( $entry, $form ) {
 	// get attributes from SimpleSAML session
 	$as         = new \SimpleSAML\Auth\Simple( 'default-sp' );
 	$attributes = $as->getAttributes();
-	$e_id       = $attributes['WorkdayID'][0];
+	$e_id       = '0081649';
 
 	$department        = $entry[5];
 	$curriculum_vitae  = $entry[9];
