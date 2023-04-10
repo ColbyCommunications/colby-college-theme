@@ -1542,7 +1542,7 @@ function directory_auth_check() {
 
 function greeting( $content ) {
 	if ( is_page( 'directory-profile-update-form' ) && isset( $_SESSION['colby_directory_id'] ) ) {
-			return "<div class='mb-8'><h2 class='mb-2 font-bold' style='font-size:30px'>Hello, {$_SESSION['person']['first_name'][0]} {$_SESSION['person']['last_name'][0]} </h2 ><p class='mb-6 font-bold' style='font-size:20px'>Edit your profile with the fields below:</p></div>" . $content;
+			return "<div class='mb-8'><h2 class='mb-2 font-bold' style='font-size:30px'>Hello, {$_SESSION['person']['first_name'][0]} {$_SESSION['person']['last_name'][0]} </h2 ></div>" . $content;
 	}
 	return $content;
 }
