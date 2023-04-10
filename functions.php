@@ -1134,13 +1134,13 @@ function getNewPeople( $directory_data ) {
 	}
 }
 
-add_action( 'gform_after_submission_12', 'update_directory_profile', 10, 2 );
+add_action( 'gform_after_submission_13', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 	// die( var_dump( $entry ) );
 	// get attributes from SimpleSAML session
 	$as         = new \SimpleSAML\Auth\Simple( 'default-sp' );
 	$attributes = $as->getAttributes();
-	$e_id       = $attributes['WorkdayID'][0];
+	$e_id       = '0081649';
 
 	$department        = $entry[5];
 	$curriculum_vitae  = $entry[9];
@@ -1523,7 +1523,7 @@ function directory_auth_check() {
 				'meta_query' => array(
 					array(
 						'key'     => 'employee_id',
-						'value'   => $e_id,
+						'value'   => 0081649,
 						'compare' => '=',
 					),
 				),
