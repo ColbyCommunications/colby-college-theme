@@ -1136,6 +1136,7 @@ function getNewPeople( $directory_data ) {
 
 add_action( 'gform_after_submission_15', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
+
 	// die( var_dump( $entry ) );
 	// get attributes from SimpleSAML session
 	$as         = new \SimpleSAML\Auth\Simple( 'default-sp' );
@@ -1156,6 +1157,7 @@ function update_directory_profile( $entry, $form ) {
 	$hide_bio          = $entry[41];
 	$unsync_department = $entry['43.1'];
 	$hide_photo        = $entry[44];
+	$hide_email        = $entry[51];
 
 	// get person post by employee ID
 	$args = array(
@@ -1190,6 +1192,7 @@ function update_directory_profile( $entry, $form ) {
 		'hide_office_hours' => $hide_office_hours === 'yes' ? 1 : 0,
 		'hide_bio'          => $hide_bio === 'yes' ? 1 : 0,
 		'hide_photo'        => $hide_photo === 'yes' ? 1 : 0,
+		'hide_email'        => $hide_email === 'yes' ? 1 : 0,
 		'unsync_department' => $unsync_department === 'yes' ? 1 : 0,
 	);
 
@@ -1685,6 +1688,15 @@ function bio_prepopulation( $value ) {
 add_filter( 'gform_field_value_directory_hide_bio', 'hide_bio_prepopulation' );
 function hide_bio_prepopulation( $value ) {
 	if ( empty( $_SESSION['person']['hide_bio'][0] ) || $_SESSION['person']['hide_bio'][0] == 0 ) {
+		return 'no';
+	}
+	return 'yes';
+}
+
+// Hide Email
+add_filter( 'gform_field_value_directory_hide_email', 'hide_email_prepopulation' );
+function hide_email_prepopulation( $value ) {
+	if ( empty( $_SESSION['person']['hide_email'][0] ) || $_SESSION['person']['hide_email'][0] == 0 ) {
 		return 'no';
 	}
 	return 'yes';

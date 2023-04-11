@@ -48,7 +48,7 @@
                     {{ icons.icon('clipboard', 'h-3 fill-indigo-800 mr-1.5') }}Curriculum Vitae
                   </a></li>
                 {% endif %}
-                {% if email %}
+                {% if email and not hide_email %}
                   <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="mailto:{{ email }}">
                     {{ icons.icon('email', 'h-3 fill-indigo-800 mr-1.5') }}{{ email }}
                   </a></li>
