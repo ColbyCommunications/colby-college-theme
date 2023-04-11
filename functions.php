@@ -1550,9 +1550,22 @@ add_filter( 'the_content', 'greeting' );
 
 /* Gravity Forms Prepopulation Functions */
 
+// Workday Email
 add_filter( 'gform_field_value_directory_email', 'email_prepopulation' );
 function email_prepopulation( $value ) {
 	return $_SESSION['person']['email'][0];
+}
+
+// First Name
+add_filter( 'gform_field_value_directory_first_name', 'first_name_prepopulation' );
+function first_name_prepopulation( $value ) {
+	return $_SESSION['person']['first_name'][0];
+}
+
+// Last Name
+add_filter( 'gform_field_value_directory_last_name', 'last_name_prepopulation' );
+function last_name_prepopulation( $value ) {
+	return $_SESSION['person']['last_name'][0];
 }
 
 // Hide Pronouns
