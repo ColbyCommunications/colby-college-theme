@@ -1140,7 +1140,7 @@ function update_directory_profile( $entry, $form ) {
 	// get attributes from SimpleSAML session
 	$as         = new \SimpleSAML\Auth\Simple( 'default-sp' );
 	$attributes = $as->getAttributes();
-	$e_id       = '0081649';
+	$e_id       = $attributes['WorkdayID'][0];
 
 	$department        = $entry[5];
 	$curriculum_vitae  = $entry[9];
@@ -1523,7 +1523,7 @@ function directory_auth_check() {
 				'meta_query' => array(
 					array(
 						'key'     => 'employee_id',
-						'value'   => 0081649,
+						'value'   => $e_id,
 						'compare' => '=',
 					),
 				),
@@ -1549,6 +1549,11 @@ function greeting( $content ) {
 add_filter( 'the_content', 'greeting' );
 
 /* Gravity Forms Prepopulation Functions */
+
+add_filter( 'gform_field_value_directory_email', 'email_prepopulation' );
+function email_prepopulation( $value ) {
+	return $_SESSION['person']['email'][0];
+}
 
 // Hide Pronouns
 add_filter( 'gform_field_value_directory_hide_pronouns', 'hide_pronouns_prepopulation' );
