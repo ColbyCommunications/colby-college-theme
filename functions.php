@@ -1610,7 +1610,7 @@ function hide_location_prepopulation( $value ) {
 // Unsync Department Selection
 add_filter( 'gform_field_value_directory_unsyc_department', 'unsync_department_prepopulation' );
 function unsync_department_prepopulation( $value ) {
-	if ( ! empty( $_SESSION['person']['unsync_department'] && $_SESSION['person']['unsync_department'][0] == 1 ) ) {
+	if ( ! empty( $_SESSION['person']['unsync_department'] ) && $_SESSION['person']['unsync_department'][0] == 1 ) {
 		return 'yes';
 	}
 	return '';
