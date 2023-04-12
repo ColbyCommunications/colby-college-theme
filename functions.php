@@ -1154,7 +1154,6 @@ function getNewPeople( $directory_data ) {
 add_action( 'gform_after_submission_12', 'update_directory_profile', 10, 2 );
 function update_directory_profile( $entry, $form ) {
 
-	// die( var_dump( $entry ) );
 	// get attributes from SimpleSAML session
 	$as         = new \SimpleSAML\Auth\Simple( 'default-sp' );
 	$attributes = $as->getAttributes();
