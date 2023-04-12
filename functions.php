@@ -625,6 +625,23 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
+
+			// register block quote
+			acf_register_block(
+				array(
+					'name'            => 'block-quote',
+					'title'           => __( 'Block Quote' ),
+					'description'     => __( 'Large interstitial text to facilitate body copy quotes.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'layout', 'context', 'paragraph', 'quote' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
 		}
 	}
 
