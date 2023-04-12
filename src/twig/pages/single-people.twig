@@ -32,6 +32,17 @@
         office_hours: post.meta('office_hours'),
         address: post.meta('mailing_address'),
         fax: post.meta('fax'),
+        bio: post.meta('bio'),
+        hide_pronouns: post.meta('hide_pronouns'),
+        hide_phone_number: post.meta('hide_phone_number'),
+        hide_fax: post.meta('hide_fax'),
+        hide_department: post.meta('hide_department'),
+        hide_cv: post.meta('hide_cv'),
+        hide_bio: post.meta('hide_bio'),
+        hide_office_hours: post.meta('hide_office_hours'),
+        hide_location: post.meta('hide_location'),
+        hide_photo: post.meta('hide_photo'),
+        hide_email: post.meta('hide_email'),
       } %}
       {% if person_decoded_courses %}
         {% set current_courses = person_decoded_courses|map(i => {
@@ -84,7 +95,9 @@
             [&_p+div]:mt-10 md:[&_p+div]:mt-[50px] [&_p+h2]:mt-20 [&_p+h3]:mt-6 [&_p+p]:mt-6 [&_p+ul]:mt-6 [&_p+table]:mt-10 md:[&_p+table]:mt-[50px]
             [&_hr]:border-t [&_hr]:border-solid [&_hr]:border-indigo-300 [&_hr]:my-16
           ">
-            {{ post.meta('bio') }}
+            {% if post.meta('bio') and not post.meta('hide_bio') %}
+              {{ post.meta('bio') }}
+            {% endif %}
           </div>
         </div>
       </div>

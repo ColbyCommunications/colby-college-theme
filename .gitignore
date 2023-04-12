@@ -61,3 +61,6 @@ node_modules
 dist
 vendor
 fractal
+!lib/simplesamlphp/vendor
+
+simplesaml
