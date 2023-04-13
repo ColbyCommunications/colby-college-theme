@@ -1772,3 +1772,17 @@ function hide_directory_attachments( $query = array() ) {
 
 	return $query;
 }
+
+// Exclude sitemap entries with Last Mod. prior to cutoff date
+function exclude_old_sitemap_entries( $entry ) {
+	$last_mod_date = strtotime( $entry['lastmod'] );
+	$cutoff_date   = strtotime( '2018-01-01' ); // Replace with your desired cutoff date
+
+	if ( $last_mod_date < $cutoff_date ) {
+		$entry['excl'] = '1';
+	}
+
+	return $entry;
+}
+add_filter( 'wpseo_sitemap_entry', 'exclude_old_sitemap_entries' );
+
