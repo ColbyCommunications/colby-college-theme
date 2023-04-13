@@ -62,6 +62,6 @@ dist
 vendor
 fractal
 !lib/simplesamlphp/vendor
-simplesaml-local
+
 
 simplesaml
