@@ -1164,16 +1164,21 @@ function getNewPeople( $directory_data ) {
 				$imageURL    = 'https://colby.edu/college/WorkdayPhotos/v2/MD5/' . $matchingPhoto;
 				$desc        = $WDPrefFirstName . ' ' . $WDLastName;
 				$DBImageName = get_the_post_thumbnail_url( $ID );
-				if ( strpos( $DBImageName, '_' ) !== false ) {
-					$DB_img_parts = explode( '_', $DBImageName );
-					$DB_date      = substr( $DB_img_parts[1], 0, 8 );
+				if ( $DBImageName ) {
+					if ( strpos( $DBImageName, '_' ) !== false ) {
+						$DB_img_parts = explode( '_', $DBImageName );
+						$DB_date      = substr( $DB_img_parts[1], 0, 8 );
 
-					if ( $date !== $DB_date ) {
-						$thumb_id = get_post_thumbnail_id( $ID );
-						wp_delete_attachment( $thumb_id, true );
-						$image = media_sideload_image( $imageURL, $ID, $desc, 'id' );
-						set_post_thumbnail( $ID, $image );
+						if ( $date !== $DB_date ) {
+							$thumb_id = get_post_thumbnail_id( $ID );
+							wp_delete_attachment( $thumb_id, true );
+							$image = media_sideload_image( $imageURL, $ID, $desc, 'id' );
+							set_post_thumbnail( $ID, $image );
+						}
 					}
+				} else {
+					$image = media_sideload_image( $imageURL, $ID, $desc, 'id' );
+					set_post_thumbnail( $ID, $image );
 				}
 			}
 		}
