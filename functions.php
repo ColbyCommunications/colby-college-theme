@@ -1010,10 +1010,13 @@ function getNewPeople( $directory_data ) {
 		$WDSOH          = $WDPerson['supervisoryOrgHierarchy'];
 		$WDOrgsManaged  = $WDPerson['organizationsManaged'];
 		$supOrgRegex    = '/.+?(?=[-|(])/';
-		preg_match( $supOrgRegex, $WDSupOrg, $deptResult );
-		$orgResult = $deptResult[0];
 
-		if ( count( explode( '>', $WDSOH ) ) === 2 || count( explode( '>', $WDSOH ) ) === 3 ) {
+		if ( $WDSupOrg ) {
+			preg_match( $supOrgRegex, $WDSupOrg, $deptResult );
+			$orgResult = $deptResult[0];
+		}
+
+		if ( $WDSOH && ( count( explode( '>', $WDSOH ) ) === 2 || count( explode( '>', $WDSOH ) ) === 3 ) ) {
 			if ( preg_match( $supOrgRegex, $WDOrgsManaged ) ) {
 				preg_match( $supOrgRegex, $WDOrgsManaged, $matches );
 				$orgResult = $matches[0];
@@ -1146,6 +1149,37 @@ function getNewPeople( $directory_data ) {
 
 			if ( empty( $person_metadata['unsync_department'][0] ) ) {
 				update_post_meta( $ID, 'department', $WDDepartment );
+			}
+
+			foreach ( $photosWithDates as $photo ) {
+				if ( strpos( $photo, md5( $WDEmployeeID ) ) !== false ) {
+					$matchingPhoto = $photo;
+					break;
+				}
+			}
+
+			if ( $matchingPhoto ) {
+				$img_parts   = explode( '_', $matchingPhoto );
+				$date        = substr( $img_parts[1], 0, 8 );
+				$imageURL    = 'https://colby.edu/college/WorkdayPhotos/v2/MD5/' . $matchingPhoto;
+				$desc        = $WDPrefFirstName . ' ' . $WDLastName;
+				$DBImageName = get_the_post_thumbnail_url( $ID );
+				if ( $DBImageName ) {
+					if ( strpos( $DBImageName, '_' ) !== false ) {
+						$DB_img_parts = explode( '_', $DBImageName );
+						$DB_date      = substr( $DB_img_parts[1], 0, 8 );
+
+						if ( $date !== $DB_date ) {
+							$thumb_id = get_post_thumbnail_id( $ID );
+							wp_delete_attachment( $thumb_id, true );
+							$image = media_sideload_image( $imageURL, $ID, $desc, 'id' );
+							set_post_thumbnail( $ID, $image );
+						}
+					}
+				} else {
+					$image = media_sideload_image( $imageURL, $ID, $desc, 'id' );
+					set_post_thumbnail( $ID, $image );
+				}
 			}
 		}
 	}
