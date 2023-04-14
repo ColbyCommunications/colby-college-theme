@@ -441,7 +441,7 @@
                         this.headings = ['Name'];
                         break;
                     case 'Departments':
-                        this.heading = 'Departments & Programs';
+                        this.heading = 'Departments and Programs';
                         this.items = this.externalItems.map((item) => {
                             return {
                                 title: item.post_title,
