@@ -1011,6 +1011,8 @@ function getNewPeople( $directory_data ) {
 		$WDOrgsManaged  = $WDPerson['organizationsManaged'];
 		$supOrgRegex    = '/.+?(?=[-|(])/';
 
+		$orgResult = '';
+
 		if ( $WDSupOrg ) {
 			preg_match( $supOrgRegex, $WDSupOrg, $deptResult );
 			$orgResult = $deptResult[0];
