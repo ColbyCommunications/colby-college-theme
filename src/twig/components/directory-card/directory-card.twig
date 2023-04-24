@@ -29,7 +29,7 @@
               <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Title</h2>
               <p class="font-body font-normal text-16 leading-130 text-indigo-800">{{ title }}</p>
             </div>
-            {% if not hide_department %}
+            {% if department and not hide_department %}
             <div class="col-span-2">
               <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Department</h2>
               <p class="font-body font-normal text-16 leading-130 text-indigo-800">{{ department }}</p>
