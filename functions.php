@@ -1137,7 +1137,7 @@ function getNewPeople( $directory_data ) {
 					array(
 						'ID'         => $ID,
 						'post_title' => $WDPrefFirstName . ' ' . $WDLastName,
-						'post_name'  => $WDPrefFirstName . ' ' . $WDLastName,
+						'post_name'  => sanitize_title( $WDPrefFirstName . ' ' . $WDLastName ),
 					)
 				);
 			}
