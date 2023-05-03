@@ -898,7 +898,7 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 	}
 
 	// Render the block.
-	Timber::render( 'src/twig/components/' . $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged );
+	Timber::render( 'src/twig/components/' . $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged, 600, Timber\Loader::CACHE_NONE );
 }
 
 /**
