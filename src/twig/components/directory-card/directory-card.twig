@@ -2,7 +2,7 @@
 {% import "icons.twig" as icons %}
 
 <div class="directory-card grid grid-cols-8 gap-10 max-w-screen-2xl w-full">
-  {% if post.thumbnail or image %}
+  {% if (post.thumbnail or image) and not hide_photo %}
     <div class="directory-card__image col-span-8 md:col-span-4">
       <div class="relative pb-[119.44444444444444%]">
         {{ macros.picture(
@@ -20,7 +20,7 @@
   <div class="directory-card__main grid col-span-8 md:col-span-4 items-center">
     <div class="directory-card__content">
       <h1 class="font-body font-semibold text-24 leading-115 text-indigo">{{ name }}</h1>
-      {% if pronouns %}
+      {% if pronouns and not hide_pronouns %}
         <div class="font-body font-semibold text-12 leading-140 text-indigo-800 mt-2">{{ pronouns }}</div>
       {% endif %}
         <div class="grid grid-cols-4 gap-10 w-full mt-10">
@@ -29,34 +29,36 @@
               <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Title</h2>
               <p class="font-body font-normal text-16 leading-130 text-indigo-800">{{ title }}</p>
             </div>
+            {% if department and not hide_department %}
             <div class="col-span-2">
               <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Department</h2>
               <p class="font-body font-normal text-16 leading-130 text-indigo-800">{{ department }}</p>
             </div>
+            {% endif %}
             <div class="col-span-4">
               <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Information</h2>
               <ul class="directiory_information grid grid-cols-4 gap-x-10 font-body font-normal text-12 leading-140">
-                {% if phone %}
+                {% if phone and not hide_phone_number %}
                   <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="tel:{{ phone }}">
                     {{ icons.icon('phone', 'h-3 fill-indigo-800 mr-1.5') }}{{ phone }}
                   </a></li>
                 {% endif %}
-                {% if curriculum_vitae %}
+                {% if curriculum_vitae and not hide_cv %}
                   <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="{{ curriculum_vitae }}" target="_blank">
-                    {{ icons.icon('clipboard', 'h-3 fill-indigo-800 mr-1.5') }}Curriculum Vitae
+                    {{ icons.icon('clipboard', 'h-3 fill-indigo-800 mr-1.5') }}Curriculum Vitae/Personal Webpage
                   </a></li>
                 {% endif %}
-                {% if email %}
+                {% if email and not hide_email %}
                   <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="mailto:{{ email }}">
                     {{ icons.icon('email', 'h-3 fill-indigo-800 mr-1.5') }}{{ email }}
                   </a></li>
                 {% endif %}
-                {% if fax %}
+                {% if fax and not hide_fax %}
                   <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="tel:{{ fax }}">
                     {{ icons.icon('fax', 'h-4 fill-indigo-800 mr-1.5') }}{{ fax }}
                   </a></li>
                 {% endif %}
-                {% if location %}
+                {% if location and not hide_location %}
                   <li class="col-span-2 mb-3"><div class="flex items-center text-indigo-800">
                     {{ icons.icon('location', 'h-3 fill-indigo-800 mr-1.5') }}{{ location }}
                   </div></li>
@@ -69,7 +71,7 @@
                 <p class="font-body font-normal text-12 leading-130 text-indigo-800">{{ address }}</p>
               </div>
             {% endif %}
-            {% if office_hours %}
+            {% if office_hours and not hide_office_hours %}
               <div class="col-span-4">
                 <h2 class="font-body font-bold text-10 leading-140 tracking-8 text-indigo uppercase mb-3">Office Hours</h2>
                 <p class="font-body font-normal text-12 leading-130 text-indigo-800">{{ office_hours }}</p>
@@ -90,7 +92,7 @@
                 {% endif %}
                 {% if curriculum_vitae %}
                   <li class="col-span-2 mb-3"><a class="flex items-center text-indigo-800 hover:underline hover:text-indigo" href="{{ curriculum_vitae }}" target="_blank">
-                    {{ icons.icon('clipboard', 'h-3 fill-indigo-800 mr-1.5') }}Curriculum Vitae
+                    {{ icons.icon('clipboard', 'h-3 fill-indigo-800 mr-1.5') }}Curriculum Vitae/Personal Webpage
                   </a></li>
                 {% endif %}
                 {% if email %}
