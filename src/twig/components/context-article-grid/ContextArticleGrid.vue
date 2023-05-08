@@ -89,16 +89,24 @@
     export default {
         data() {
             return {
+                endpoint: undefined,
                 featuredNews: undefined,
             };
         },
         async mounted() {
             if (this.renderApi) {
-                await axios
-                    .get('https://news.colby.edu/wp-json/wp/v2/posts?per_page=6&tags=569&_embed=1')
-                    .then((outputa) => {
-                        this.featuredNews = outputa.data.slice(0, 6);
-                    });
+                switch (this.api) {
+                    case "Alumni":
+                        this.endpoint = 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=3&categories=6&_embed=1';
+                        break;
+                    default:
+                        this.endpoint = 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=6&tags=569&_embed=1';
+                        break;
+                }
+
+                await axios.get(this.endpoint).then((outputa) => {
+                    this.featuredNews = outputa.data.slice(0, 6);
+                });
             }
         },
         props: {
@@ -124,6 +132,10 @@
                 type: Boolean,
                 required: false,
                 default: false,
+            },
+            api: {
+                type: String,
+                required: false,
             },
         },
         methods: {

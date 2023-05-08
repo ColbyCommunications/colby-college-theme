@@ -56,4 +56,19 @@ module.exports = {
       },
     ]
   },
+  variants: [
+    {
+      name: 'Render API',
+      context: {
+        render_api: true,
+      }
+    },
+    {
+      name: 'Render API (Alumni)',
+      context: {
+        render_api: true,
+        api: 'Alumni',
+      }
+    },
+  ]
 }

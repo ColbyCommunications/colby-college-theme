@@ -642,6 +642,23 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
+
+			// register a media aside
+			acf_register_block(
+				array(
+					'name'            => 'media-aside',
+					'title'           => __( 'Media Aside' ),
+					'description'     => __( 'Large image with small context. Supports carousel functionality.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'media', 'context', 'aside', 'carousel' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
 		}
 	}
 

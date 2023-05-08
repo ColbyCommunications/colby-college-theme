@@ -1,0 +1,107 @@
+{% import "macros.twig" as macros %}
+{% import "icons.twig" as icons %}
+
+{% if in_component_library %}
+  {% set buttonGroup = '@button-group' %}
+{% else %}
+  {% set buttonGroup = 'button-group.twig' %}
+{% endif %}
+
+<component
+  is="media-aside"
+  v-slot="mediaAside"
+  class="media-aside max-w-screen-2xl w-full my-0 mx-auto"
+  :carousel="{{ carousel }}"
+>
+  <div class="media-aside_inner md:grid md:grid-cols-12 gap-10">
+    <div class="media-aside__main md:col-span-9">
+      {% if carousel %}
+        <div class="media-aside__window" data-glide-window>
+          <div class="glide__track" data-glide-el="track">
+            <div class="glide__slides">
+              {% for item in items %}
+                <div class="media-aside__slide glide__slide">
+                  {{ macros.picture(
+                    'w-full object-cover',
+                    item.image.srcset,
+                    item.image.src,
+                    item.image.sizes.Square,
+                    item.image.sizes.Landscape,
+                    item.image.alt,
+                    in_component_library
+                  ) }}
+                  {% if item.image.caption %}
+                    <p class="media-aside__caption font-body font-normal text-12 text-indigo-800 leading-140 mt-2">{{ item.image.caption }}</p>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="media-aside__image">
+          {{ macros.picture(
+            'w-full object-cover',
+            image.srcset,
+            image.src,
+            image.sizes.Square,
+            image.sizes.Landscape,
+            image.alt,
+            in_component_library
+          ) }}
+        </div>
+        {% if image.caption %}
+          <p class="media-aside__caption font-body font-normal text-12 text-indigo-800 leading-140 mt-2">{{ image.caption }}</p>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="media-aside__aside {% if carousel %}grid{% endif %} md:col-span-3 space-y-2 mt-8 md:mt-0">
+      {% if carousel %}
+        <div class="relative h-44 md:h-auto">
+          {% for item in items %}
+            <div
+              class="media-aside__context-wrap absolute top-0 left-0 w-full invisible opacity-0 translate-y-[60px] grid space-y-2 transition-all duration-300 ease-in-out"
+              :class="{ '!visible !opacity-100 !translate-y-0': mediaAside.activeSlide == {{ loop.index0 }} }"
+            >
+              {% if item.heading %}
+                <h2 class="font-body font-bold text-16 leading-130 text-indigo">{{ item.heading }}</h2>
+              {% endif %}
+              {% if item.paragraph %}
+                <p class="font-body font-normal text-12 leading-140 text-indigo">{{ item.paragraph }}</p>
+              {% endif %}
+              {% if item.buttons %}
+                {% include buttonGroup with {
+                  size: 'large',
+                  items: item.buttons,
+                } %}
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="inline-flex self-end gap-4 md:pb-6">
+          <button @click="mediaAside.changeSlide('prev')" class="inline-flex items-center justify-center w-10 h-8 bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out">
+            <span class="sr-only">Previous</span>
+            {{ icons.icon('chevron', 'fill-azure w-1.5 transition-all duration-200 ease-in-out') }}
+          </button>
+          <button @click="mediaAside.changeSlide('next')" class="inline-flex items-center justify-center w-10 h-8 bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 rounded border border-solid border-indigo-300 transition-all duration-200 ease-in-out">
+            <span class="sr-only">Next</span>
+            {{ icons.icon('chevron', 'rotate-180 fill-azure w-1.5 transition-all duration-200 ease-in-out') }}
+          </button>
+        </div>
+      {% else %}
+        {% if heading %}
+          <h2 class="font-body font-bold text-16 leading-130 text-indigo">{{ heading }}</h2>
+        {% endif %}
+        {% if paragraph %}
+          <p class="font-body font-normal text-12 leading-140 text-indigo">{{ paragraph }}</p>
+        {% endif %}
+        {% if buttons %}
+          {% include buttonGroup with {
+            size: 'large',
+            items: buttons,
+          } %}
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</component>
