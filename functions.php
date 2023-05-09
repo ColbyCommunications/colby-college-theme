@@ -769,8 +769,8 @@ class StarterSite extends Timber\Site {
 		add_image_size( 'Square_mobile', 300, 300, true );
 		add_image_size( 'Rectangle', 760, 430, true );
 		add_image_size( 'Rectangle_mobile', 410, 290, true );
-		add_image_size( 'Landscape', 860, 400, true );
-		add_image_size( 'Landscape_mobile', 430, 200, true );
+		add_image_size( 'Landscape', 1720, 800, true );
+		add_image_size( 'Landscape_mobile', 860, 400, true );
 		add_image_size( 'Portrait', 380, 580, true );
 		add_image_size( 'Portrait_mobile', 190, 290, true );
 		add_image_size( 'Hero', 2400, 1320, true );
