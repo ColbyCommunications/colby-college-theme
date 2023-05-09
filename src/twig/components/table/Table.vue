@@ -32,7 +32,7 @@
         @input="(event) => (this.currentPage = 1)"
       />
       <svg
-        xmlns="http://www.w3.org/2000/svg"
+        xmlns="https://www.w3.org/2000/svg"
         height="12"
         width="12"
         class="absolute top-3 right-3 fill-indigo-800 cursor-pointer"
