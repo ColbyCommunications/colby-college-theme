@@ -659,6 +659,23 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
+
+			// register a context section
+			acf_register_block(
+				array(
+					'name'            => 'context-section',
+					'title'           => __( 'Context Section' ),
+					'description'     => __( 'Dedicated section component for context outside of the confines of a typical component.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'context', 'section', 'heading', 'subheading', 'paragraph' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
 		}
 	}
 
