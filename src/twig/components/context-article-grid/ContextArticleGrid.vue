@@ -18,6 +18,11 @@
                             class="text-group__heading font-extended font-normal text-36 md:text-24 leading-110 -tracking-3 text-center text-indigo mt-2"
                             v-text="heading"
                         />
+                        <p
+                            v-if="paragraph"
+                            class="text-group__p font-body font-normal text-18 md:text-16 leading-130 text-center text-indigo-800 mt-2"
+                            v-text="paragraph"
+                        />
                     </div>
                 </div>
             </div>
