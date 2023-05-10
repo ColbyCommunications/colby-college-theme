@@ -10,7 +10,7 @@
   <div class="overlay-wide-image__inner relative md:pb-[45.45454545454545%]">
     <div class="overlay-wide-image__overlay z-10 relative md:absolute top-0 left-0 flex items-center w-full h-full p-9 md:p-24 bg-gray-1000/40">
       {% include context with {
-        size: 'medium',
+        size: size ? size : 'medium',
         type: 'light',
         subheading: subheading,
         heading: heading,
