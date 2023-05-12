@@ -1332,27 +1332,27 @@ function stop_redirect_guess() {
 
 function wporg_block_wrapper( $block_content, $block ) {
 	if ( $block['blockName'] === 'core/paragraph' ) {
-		$content  = '<div class="wp-block-paragraph">';
+		$content  = '<div class="wp-block-paragraph module">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/heading' ) {
-		$content  = '<div class="wp-block-heading">';
+		$content  = '<div class="wp-block-heading module">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/image' ) {
-		$content  = '<div class="wp-block-image">';
+		$content  = '<div class="wp-block-image module">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/embed' ) {
-		$content  = '<div class="wp-block-embed">';
+		$content  = '<div class="wp-block-embed module">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/table' ) {
-		$content  = '<div class="wp-block-table">';
+		$content  = '<div class="wp-block-table module">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
