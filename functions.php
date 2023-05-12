@@ -782,8 +782,8 @@ class StarterSite extends Timber\Site {
 
 		add_theme_support( 'menus' );
 
-		add_image_size( 'Square', 600, 600, true );
-		add_image_size( 'Square_mobile', 300, 300, true );
+		add_image_size( 'Square', 800, 800, true );
+		add_image_size( 'Square_mobile', 400, 400, true );
 		add_image_size( 'Rectangle', 760, 430, true );
 		add_image_size( 'Rectangle_mobile', 410, 290, true );
 		add_image_size( 'Landscape', 1720, 800, true );
