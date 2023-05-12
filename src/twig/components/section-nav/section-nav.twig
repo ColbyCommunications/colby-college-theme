@@ -1,3 +1,12 @@
+{% if (menu != null) and (menu != 'Manual') %}
+  {% set items = fn('wp_get_nav_menu_items', menu)|map(i => {
+    link: {
+      title: i.title,
+      url: i.url,
+    }
+  }) %}
+{% endif %}
+
 <component is="section-nav" class="section-nav full-bleed py-6 bg-gray-100 overflow-x-auto !mt-0">
   <div class="section-nav__inner flex px-5 space-x-10 lg:justify-center">
     <h2 class="section-nav__heading font-extended font-bold text-14 md:text-12 tracking-8 text-azure uppercase whitespace-nowrap">
