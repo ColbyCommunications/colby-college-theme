@@ -676,6 +676,23 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
+
+			// register table section
+			acf_register_block(
+				array(
+					'name'            => 'table-section',
+					'title'           => __( 'Table Section' ),
+					'description'     => __( 'Dedicated section for full-width inset pages.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'table', 'row', 'column', 'layout', 'section' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
 		}
 	}
 
