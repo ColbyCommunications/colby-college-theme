@@ -30,7 +30,7 @@
                 }
             },
             checkUrl(title) {
-                return window.location.href.indexOf((title || '').toLowerCase()) > -1;
+                return window.location.href.indexOf((title || '').toLowerCase().replace(/-/g, ' ')) > -1;
             },
         },
     };
