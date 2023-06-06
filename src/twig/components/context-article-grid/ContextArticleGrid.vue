@@ -102,7 +102,7 @@
             if (this.renderApi) {
                 switch (this.api) {
                     case "Alumni":
-                        this.endpoint = 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=3&categories=6&_embed=1';
+                        this.endpoint = `https://news.colby.edu/wp-json/wp/v2/posts?per_page=${this.perPage}&categories=6&_embed=1`;
                         break;
                     default:
                         this.endpoint = 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=6&tags=569&_embed=1';
@@ -142,6 +142,11 @@
                 type: String,
                 required: false,
             },
+            perPage: {
+                type: Number,
+                required: false,
+                default: 3,
+            }
         },
         methods: {
             decodeHtmlEntities(input) {
