@@ -1770,7 +1770,6 @@ function custom_meta_description($description) {
 				// Decode Unicode escape sequences in the extracted text
 				$match = isset($matches[1]) ? json_decode('"' . $matches[1] . '"') : null;
 
-        // Set the meta description to the extracted text or "test" if no paragraph block is found
         $description = isset($match) ? wp_trim_words($match, 40, '') : 'Colby College is an intellectual community working to solve the world’s most complex challenges.';
     }
 
