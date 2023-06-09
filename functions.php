@@ -1770,7 +1770,14 @@ function custom_meta_description($description) {
 				// Decode Unicode escape sequences in the extracted text
 				$match = isset($matches[1]) ? json_decode('"' . $matches[1] . '"') : null;
 
-        $description = isset($match) ? wp_trim_words($match, 40, '') : 'Colby College is an intellectual community working to solve the world’s most complex challenges.';
+        // Remove HTML entities from the extracted text
+        $decoded_match = isset($match) ? html_entity_decode($match) : null;
+
+        // Remove unwanted characters from the extracted text except hyphens
+				$clean_match = isset($decoded_match) ? preg_replace('/[\x00-\x1F\x7F-\xFF\xA0]/u', ' ', $decoded_match) : null;
+
+				// Trim the description to 40 words if it exists, else return a default meta description
+        $description = isset($clean_match) ? wp_trim_words($clean_match, 40, '') : 'Colby College is an intellectual community working to solve the world’s most complex challenges.';
     }
 
     return $description;
