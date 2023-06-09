@@ -1755,34 +1755,33 @@ function hide_email_prepopulation( $value ) {
 }
 
 function custom_meta_description($description) {
-    // Check if the meta description is empty or not set
+	// Check if the meta description is empty or not set
     if (empty($description)) {
-        // Get the current post ID
+			// Get the current post ID and its content
         $post_id = get_the_ID();
-
-        // Get the content of the post
         $post_content = get_post_field('post_content', $post_id);
 
-        // Extract the first Gutenberg paragraph block
-        $pattern = '/<!--\s+wp:acf\/paragraph.+?{"paragraph_text":"(.*?)"/s';
-        preg_match($pattern, $post_content, $matches);
+				// Extract the content from the first block (paragraph or image-text)
+        preg_match('/<!--\s+wp:acf\/(paragraph|image-text).+?{"paragraph_text":"(.*?)"/s', $post_content, $matches);
+
+				// Check if a match is found and extract the content from the block
+        $match = isset($matches[2]) ? json_decode('"' . $matches[2] . '"') : null;
 
 				// Decode Unicode escape sequences in the extracted text
-				$match = isset($matches[1]) ? json_decode('"' . $matches[1] . '"') : null;
-
-        // Remove HTML entities from the extracted text
         $decoded_match = isset($match) ? html_entity_decode($match) : null;
 
-        // Remove unwanted characters from the extracted text except hyphens
-				$clean_match = isset($decoded_match) ? preg_replace('/[\x00-\x1F\x7F-\xFF\xA0]/u', ' ', $decoded_match) : null;
+				// Remove unwanted characters from the extracted text except hyphens
+        $clean_match = isset($decoded_match) ? preg_replace('/[\x00-\x1F\x7F-\xFF\xA0]/u', ' ', $decoded_match) : null;
 
-				// Trim the description to 40 words if it exists, else return a default meta description
+				// Trim the description to 40 words if it exists
         $description = isset($clean_match) ? wp_trim_words($clean_match, 40, '') : 'Colby College is an intellectual community working to solve the world’s most complex challenges.';
     }
 
     return $description;
 }
 add_filter('wpseo_metadesc', 'custom_meta_description');
+
+
 
 
 
