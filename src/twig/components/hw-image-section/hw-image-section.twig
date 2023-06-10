@@ -6,21 +6,34 @@
   {% set context = 'context.twig' %}
 {% endif %}
 
-<div class="hw-image-section md:flex bg-indigo-100 [&+.hw-image-section]:mt-0">
+<div class="hw-image-section full-bleed md:flex {% if type == 'light' %}bg-indigo{% else %}bg-indigo-100{% endif %} [&+.hw-image-section]:mt-0">
   <div class="hw-image-section__image relative md:w-1/2">
-    {{ macros.picture(
-      'w-full min-h-full object-cover',
-      image.srcset,
-      image.src,
-      image.sizes.Square,
-      image.sizes.Square,
-      image.alt,
-      in_component_library
-    ) }}
+    {% if image_orientation == 'Rectangle' %}
+      {{ macros.picture(
+        'w-full min-h-full object-cover',
+        image.srcset,
+        image.src,
+        image.sizes.Hero,
+        image.sizes.Square,
+        image.alt,
+        in_component_library
+      ) }}
+    {% else %}
+      {{ macros.picture(
+        'w-full min-h-full object-cover',
+        image.srcset,
+        image.src,
+        image.sizes.Square,
+        image.sizes.Square,
+        image.alt,
+        in_component_library
+      ) }}
+    {% endif %}
   </div>
   <div class="hw-image-section__context flex justify-center items-center {% if reverse %}md:-order-1{% endif %} md:w-1/2 py-9 md:py-12 px-9 md:px-12 lg:px-24">
     {% include context with {
-      size: 'medium',
+      type: type,
+      size: size ? size : 'medium',
       subheading: subheading,
       heading: heading,
       paragraph: paragraph,
