@@ -32,6 +32,7 @@
   </div>
   <div class="hw-image-section__context flex justify-center items-center {% if reverse %}md:-order-1{% endif %} md:w-1/2 py-9 md:py-12 px-9 md:px-12 lg:px-24">
     {% include context with {
+      hero: hero,
       type: type,
       size: size ? size : 'medium',
       subheading: subheading,
