@@ -1,0 +1,39 @@
+{% if in_component_library %}
+  {% set context = '@context' %}
+  {% set mediaContext = '@media-context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+  {% set mediaContext = 'media-context.twig' %}
+{% endif %}
+
+<div class="featured-events py-24 relative bg-bluemarble__pattern bg-cover bg-center space-y-28">
+  <div class="featured-events__inner grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
+    <div class="featured-events__context md:col-span-8 md:col-start-3">
+      {% include context with {
+        size: 'large',
+        type: 'light',
+        subheading: subheading,
+        heading: heading,
+        paragraph: paragraph,
+        buttons: {
+          items: buttons,
+        },
+        align: 'center',
+      } %}
+    </div>
+  </div>
+  <div class="px-5">
+    {% include mediaContext with {
+      inset: true,
+      reverse: true,
+      size: 'large',
+      type: 'light',
+      image: featured.image,
+      subheading: featured.subheading,
+      heading: featured.heading,
+      paragraph: featured.paragraph,
+      buttons: featured.buttons,
+      image: featured.image,
+    } %}
+  </div>
+</div>
