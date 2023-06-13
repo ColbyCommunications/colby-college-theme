@@ -1,0 +1,39 @@
+{% import "macros.twig" as macros %}
+
+{% if in_component_library %}
+  {% set context = '@context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+{% endif %}
+
+<div class="full-bleed-hero py-24 relative {% if type == 'dark' %} bg-bluemarble__pattern {% endif %} bg-cover bg-center">
+  <div class="full-bleed-hero__inner grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
+    <div class="full-bleed-hero__context md:col-span-8 md:col-start-3">
+      {% include context with {
+        size: 'large',
+        type: type == 'dark' ? 'light' : 'dark',
+        subheading: subheading,
+        heading: heading,
+        paragraph: paragraph,
+        buttons: {
+          items: buttons,
+        },
+        align: 'center',
+      } %}
+    </div>
+    <div class="full-bleed-hero__main {% if type == 'light' %} md:col-span-10 md:col-start-2 {% else %} md:col-span-8 md:col-start-3 {% endif %}">
+      <div class="full-bleed-hero__image relative pb-[100%] {% if type == 'dark' %} md:pb-[44.79166666666667%] {% else %} md:pb-[56.578947368421055%] {% endif %} mt-16">
+        {{ macros.picture(
+          'absolute w-full h-full object-cover',
+          image.srcset,
+          image.src,
+          image.sizes.Hero,
+          image.sizes.Rectangle,
+          image.alt,
+          in_component_library
+        ) }}
+      </div>
+      <p class="hero__caption font-body font-normal text-12 {% if type == 'light' %}text-gray-800{% else %}text-white{% endif %} leading-140 mt-2">{{ image.caption }}</p>
+    </div>
+  </div>
+</div>
