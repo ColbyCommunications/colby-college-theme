@@ -10,6 +10,7 @@
   <div class="full-bleed-hero__inner grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
     <div class="full-bleed-hero__context md:col-span-8 md:col-start-3">
       {% include context with {
+        hero: hero,
         size: 'large',
         type: type == 'dark' ? 'light' : 'dark',
         subheading: subheading,
