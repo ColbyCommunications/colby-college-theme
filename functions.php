@@ -727,6 +727,23 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
+
+			// register a inset widget
+			acf_register_block(
+				array(
+					'name'            => 'inset-widget',
+					'title'           => __( 'Inset Widget' ),
+					'description'     => __( 'Decorative interstitial block' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'widget', 'inset', 'context' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
 		}
 	}
 
