@@ -70,5 +70,15 @@ module.exports = {
         api: 'Alumni',
       }
     },
+    {
+      name: 'Render API (Arts)',
+      context: {
+        render_api: true,
+        api: 'Arts',
+        subheading: null,
+        heading: 'Colby Arts News',
+        paragraph: 'Find out what innovative forms of art Colby students are bringing to the stage (or gallery).',
+      }
+    },
   ]
 }
