@@ -2,7 +2,7 @@ module.exports = {
   title: "Context",
   status: "wip",
   context: {
-    size: 'large',
+    size: 'medium',
     subheading: 'Impact Stories',
     heading: 'Tales from our journey into uncharted territory.',
     paragraph: 'Explore how our students, faculty, alumni, and staff are improving the world.',
@@ -15,4 +15,13 @@ module.exports = {
       ],
     },
   },
+  variants: [
+    {
+      name: 'Centered',
+      context: {
+        size: 'large',
+        align: 'center',
+      }
+    }
+  ]
 }
