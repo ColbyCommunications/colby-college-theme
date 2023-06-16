@@ -55,11 +55,43 @@
       class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer mb-6 md:mb-0"
     >
       <option v-text="'All Departments'" :value="'All Departments'" />
-      <option
-        v-for="(item, index) in filterDepartments"
-        v-text="item.Text"
-        :value="item.Dept"
-      />
+      <option v-text="'African American Studies'" :value="'AFAM'" />
+      <option v-text="'American Studies'" :value="'AMER'" />
+      <option v-text="'Anthropology'" :value="'ANTH'" />
+      <option v-text="'Art'" :value="'ART'" />
+      <option v-text="'Biology'" :value="'BIOL'" />
+      <option v-text="'Chemistry'" :value="'CHEM'" />
+      <option v-text="'Cinema Studies'" :value="'CINE'" />
+      <option v-text="'Classics'" :value="'CLAS'" />
+      <option v-text="'Computer Science'" :value="'COMP'" />
+      <option v-text="'Creative Writing'" :value="'WRTG'" />
+      <option v-text="'East Asian Studies'" :value="'EAST'" />
+      <option v-text="'Economics'" :value="'ECON'" />
+      <option v-text="'Education'" :value="'EDUC'" />
+      <option v-text="'English'" :value="'ENGL'" />
+      <option v-text="'Environmental Studies'" :value="'ENVS'" />
+      <option v-text="'French and Italian'" :value="'FRIT'" />
+      <option v-text="'Geology'" :value="'GEOL'" />
+      <option v-text="'German and Russian'" :value="'GMRU'" />
+      <option v-text="'Global Studies'" :value="'GLST'" />
+      <option v-text="'Government'" :value="'GOVT'" />
+      <option v-text="'History'" :value="'History'" />
+      <option v-text="'Independent Major'" :value="'INDP'" />
+      <option v-text="'Integrated Studies'" :value="'ISP'" />
+      <option v-text="'Jewish Studies'" :value="'JWST'" />
+      <option v-text="'Latin American Studies'" :value="'LTAM'" />
+      <option v-text="'Mathematics'" :value="'MATH'" />
+      <option v-text="'Music'" :value="'MUSI'" />
+      <option v-text="'Performance, Theater, and Dance'" :value="'THEA'" />
+      <option v-text="'Philosophy'" :value="'PHIL'" />
+      <option v-text="'Physics and Astronomy'" :value="'PHYS'" />
+      <option v-text="'Psychology'" :value="'PSYC'" />
+      <option v-text="'Religious Studies'" :value="'RELG'" />
+      <option v-text="'Science, Technology, and Society'" :value="'SCIT'" />
+      <option v-text="'Sociology'" :value="'SOCY'" />
+      <option v-text="'Spanish'" :value="'SPAN'" />
+      <option v-text="'Statistics'" :value="'STAT'" />
+      <option v-text="'Women\'s, Gender, and Sexuality Studies'" :value="'WGST'" />
     </select>
     <select
       v-if="
@@ -261,7 +293,6 @@ export default {
       searchTerm: "",
       filterTerm: [],
       filterOptions: [],
-      filterDepartments: [],
       selectedDepartment: "All Departments",
       selectedDivision: "All Divisions",
     };
@@ -322,14 +353,6 @@ export default {
     },
   },
   async mounted() {
-    // Seperate call to the majors and minors api specifically to populate the Course catalog filter
-    if (this.api == "Course Catalogue") {
-      await axios
-        .get("https://www.colby.edu/endpoints/v1/majorsminors/")
-        .then((outputa) => {
-          this.filterDepartments = outputa.data;
-        });
-    }
     if (this.renderApi) {
       switch (this.api) {
         case "Department Courses":
