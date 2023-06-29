@@ -55,6 +55,10 @@ p {
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #366bcf;
+
+    .featured-events & {
+        color: #ffb500;
+    }
 }
 
 .lw-event-time {
@@ -64,6 +68,10 @@ p {
     line-height: (18 / 14);
     color: #365185;
     margin-top: 0.5rem;
+
+    .featured-events & {
+        color: #ffffff;
+    }
 }
 
 .lw-event-name a {
@@ -74,6 +82,10 @@ p {
     letter-spacing: -0.03em;
     color: #012169;
     margin-top: 0.5rem;
+
+    .featured-events & {
+        color: #ffffff;
+    }
 }
 
 // These are animation specific styles for easy access

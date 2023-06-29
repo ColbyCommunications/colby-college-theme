@@ -744,6 +744,23 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
+
+			// register a featured events
+			acf_register_block(
+				array(
+					'name'            => 'featured-events',
+					'title'           => __( 'Featured Events' ),
+					'description'     => __( 'Exclusive featured events component for ColbyArts' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'featured', 'events', 'media', 'context' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
 		}
 	}
 
