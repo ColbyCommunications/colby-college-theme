@@ -33,17 +33,17 @@ p {
 
 // This non tailwind css is required to style event embeds from livewhale
 .lwcw {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 2.5rem;
+    max-width: 1536px;
 }
 
 .lw-colby-event {
-    flex-grow: 1;
-    width: 50%;
+    grid-column: span 6 / span 6;
 
     @include breakpoint(medium) {
-        width: 33%;
+        grid-column: span 4 / span 4;
     }
 }
 
