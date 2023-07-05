@@ -72,11 +72,11 @@ module.exports = {
             '-3': '-0.03em',
         },
         backgroundImage: {
-            hero__pattern: 'url("~/src/images/hero__pattern.jpg")',
-            notfound__pattern: 'url("~/src/images/miller3.jpeg")',
-            darkinterstitial__pattern: 'url("~/src/images/Background-3.jpg")',
-            marble__pattern: 'url("~/src/images/mountain.jpg")',
-            bluemarble__pattern: 'url("~/src/images/Treatment-36.jpg")',
+            hero__pattern: 'url("./src/images/hero__pattern.jpg")',
+            notfound__pattern: 'url("./src/images/miller3.jpeg")',
+            darkinterstitial__pattern: 'url("./src/images/Background-3.jpg")',
+            marble__pattern: 'url("./src/images/mountain.jpg")',
+            bluemarble__pattern: 'url("./src/images/Treatment-36.jpg")',
         },
         listStyleType: {
             none: 'none',
