@@ -971,7 +971,7 @@ function getNewPeople( $directory_data ) {
 		// Assign variables to desired WD fields
 		$WDEmployeeID    = str_pad( $WDPerson['employeeID'], 7, '0', STR_PAD_LEFT );
 		$WDPrefFirstName = $WDPerson['preferredFirstName'];
-		$WDLastName      = $WDPerson['lastName'];
+		$WDPrefLastName      = $WDPerson['preferredLastName'];
 
 		// Skip person if no email associated
 		if ( ! $WDPerson['primaryWorkEmail'] ) {
@@ -1067,14 +1067,14 @@ function getNewPeople( $directory_data ) {
 
 		// Combine fields from WD and CX
 		$post = array(
-			'post_title'   => $WDPrefFirstName . ' ' . $WDLastName,
+			'post_title'   => $WDPrefFirstName . ' ' . $WDPrefLastName,
 			'post_content' => '',
 			'post_type'    => 'people',
 			'post_status'  => 'publish',
 			'meta_input'   => array(
 				'employee_id'      => $WDEmployeeID,
 				'first_name'       => $WDPrefFirstName,
-				'last_name'        => $WDLastName,
+				'last_name'        => $WDPrefLastName,
 				'pronouns'         => $wd_pronouns,
 				'title'            => $WDTitle,
 				'department'       => $WDDepartment,
@@ -1110,7 +1110,7 @@ function getNewPeople( $directory_data ) {
 
 			if ( $matchingPhoto ) {
 				$imageURL = 'https://colby.edu/college/WorkdayPhotos/v2/MD5/' . $matchingPhoto;
-				$desc     = $WDPrefFirstName . ' ' . $WDLastName;
+				$desc     = $WDPrefFirstName . ' ' . $WDPrefLastName;
 				$image    = media_sideload_image( $imageURL, $ID, $desc, 'id' );
 				set_post_thumbnail( $ID, $image );
 			}
@@ -1130,14 +1130,14 @@ function getNewPeople( $directory_data ) {
 			// Update metadata for fields not changed in Gravity Forms with latest WD data
 
 			update_post_meta( $ID, 'first_name', $WDPrefFirstName );
-			update_post_meta( $ID, 'last_name', $WDLastName );
+			update_post_meta( $ID, 'last_name', $WDPrefLastName );
 
-			if ( $post->post_title !== $WDPrefFirstName . ' ' . $WDLastName ) {
+			if ( $post->post_title !== $WDPrefFirstName . ' ' . $WDPrefLastName ) {
 				wp_update_post(
 					array(
 						'ID'         => $ID,
-						'post_title' => $WDPrefFirstName . ' ' . $WDLastName,
-						'post_name'  => sanitize_title( $WDPrefFirstName . ' ' . $WDLastName ),
+						'post_title' => $WDPrefFirstName . ' ' . $WDPrefLastName,
+						'post_name'  => sanitize_title( $WDPrefFirstName . ' ' . $WDPrefLastName ),
 					)
 				);
 			}
@@ -1164,7 +1164,7 @@ function getNewPeople( $directory_data ) {
 				$img_parts   = explode( '_', $matchingPhoto );
 				$date        = substr( $img_parts[1], 0, 8 );
 				$imageURL    = 'https://colby.edu/college/WorkdayPhotos/v2/MD5/' . $matchingPhoto;
-				$desc        = $WDPrefFirstName . ' ' . $WDLastName;
+				$desc        = $WDPrefFirstName . ' ' . $WDPrefLastName;
 				$DBImageName = get_the_post_thumbnail_url( $ID );
 				if ( $DBImageName ) {
 					if ( strpos( $DBImageName, '_' ) !== false ) {
