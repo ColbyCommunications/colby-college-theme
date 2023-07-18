@@ -1303,7 +1303,7 @@ function wporg_block_wrapper( $block_content, $block ) {
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/heading' ) {
-		$content  = '<div class="wp-block-heading">';
+		$content  = '<div class="wp-block-heading mb-3">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;

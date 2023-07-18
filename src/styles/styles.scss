@@ -1,4 +1,92 @@
 @import 'tailwindcss/base';
+
+@layer base {
+    h2 {
+        @apply text-24 leading-110 -tracking-3;
+    }
+    h3 {
+        @apply text-20 leading-110 -tracking-3 text-indigo;
+    }
+
+    h4 {
+        @apply text-16 leading-110 -tracking-3 text-indigo;
+    }
+
+    h5 {
+        @apply text-14 font-bold leading-130 -tracking-8 text-azure uppercase;
+    }
+
+    h6 {
+        @apply text-12 leading-110 -tracking-8 text-azure uppercase;
+    }
+
+    a {
+        @apply underline hover:no-underline hover:text-indigo;
+    }
+
+    ul {
+        @apply list-disc pl-10 text-indigo mb-4;
+
+        li {
+            @apply text-indigo-900 mt-2 font-body;
+        }
+
+        ul {
+            @apply list-circle;
+        }
+
+        ul,
+        ol {
+            ul {
+                @apply list-square;
+            }
+        }
+    }
+
+    ol {
+        @apply list-decimal pl-10 text-indigo mb-4;
+
+        li {
+            @apply text-indigo-900 mt-2 font-body;
+        }
+
+        ul {
+            @apply list-circle;
+        }
+
+        ul,
+        ol {
+            ul {
+                @apply list-square;
+            }
+        }
+    }
+
+    h2,
+    > h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-extended font-normal;
+    }
+
+    p {
+        @apply text-indigo-900;
+        @apply mb-4;
+        @apply font-body;
+    }
+
+    hr {
+        @apply mb-4;
+    }
+
+    table,
+    tr,
+    td {
+        border: 1px solid #ccc;
+    }
+}
+
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import 'global/variables';
@@ -12,99 +100,6 @@
 
 /* Page w/ sidebar content styles */
 .wysiwyg {
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        @apply font-extended;
-        @apply font-normal;
-    }
-
-    h2 {
-        @apply text-24;
-        @apply leading-110;
-        @apply -tracking-3;
-    }
-
-    h3 {
-        @apply text-20;
-        @apply leading-110;
-        @apply -tracking-3;
-        @apply text-indigo;
-    }
-
-    h4 {
-        @apply text-16;
-        @apply leading-110;
-        @apply -tracking-3;
-        @apply text-indigo;
-    }
-
-    h5 {
-        @apply text-14;
-        @apply font-bold;
-        @apply leading-130;
-        @apply -tracking-8;
-        @apply text-azure;
-        @apply uppercase;
-    }
-
-    h6 {
-        @apply text-12;
-        @apply leading-110;
-        @apply -tracking-8;
-        @apply text-azure;
-        @apply uppercase;
-    }
-
-    a {
-        @apply underline;
-        @apply hover:no-underline;
-        @apply hover:text-indigo;
-    }
-
-    // lists
-    ul:not(.pagination__container):not(.directiory_information) {
-        @apply list-disc;
-        @apply pl-10;
-        @apply text-indigo;
-        @apply mb-4;
-
-        li {
-            @apply text-indigo-900;
-            @apply mt-2;
-            @apply font-body;
-        }
-    }
-
-    ol {
-        @apply list-decimal;
-        @apply pl-10;
-        @apply text-indigo;
-        @apply mb-4;
-
-        li {
-            @apply text-indigo-900;
-            @apply mt-2;
-            @apply font-body;
-        }
-    }
-
-    ul:not(.pagination__container):not(.directiory_information),
-    ol {
-        ul {
-            @apply list-circle;
-        }
-
-        ul,
-        ol {
-            ul {
-                @apply list-square;
-            }
-        }
-    }
-
     // general divs for blocks, etc
     > div {
         @apply clear-both;
@@ -115,17 +110,8 @@
         @apply mb-0;
     }
 
-    .wp-block-heading {
-        margin-bottom: 0.8rem;
-    }
-
     .wp-block-paragraph {
         @apply mb-0;
-        > p {
-            @apply text-indigo-900;
-            @apply mb-4;
-            @apply font-body;
-        }
     }
 
     // table block
@@ -144,13 +130,12 @@
     .colby-paragraph-block {
         @apply font-body;
 
-        > p {
-            @apply text-indigo-900;
-        }
+        // > p {
+        //     @apply text-indigo-900;
+        // }
 
         > p,
-        > table,
-        hr {
+        > table {
             @apply mb-4;
         }
 
@@ -162,12 +147,6 @@
         ul:last-child,
         ol:last-child {
             @apply mb-0;
-        }
-
-        table,
-        tr,
-        td {
-            border: 1px solid #ccc;
         }
     }
 
