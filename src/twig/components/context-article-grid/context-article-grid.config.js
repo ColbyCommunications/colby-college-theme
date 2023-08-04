@@ -68,6 +68,7 @@ module.exports = {
       context: {
         render_api: true,
         api: 'Alumni',
+        per_page: 3,
       }
     },
     {
