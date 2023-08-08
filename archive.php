@@ -35,6 +35,17 @@ if ( is_day() ) {
 	array_unshift( $templates, 'archive-' . get_post_type() . '.twig' );
 }
 
-$context['posts'] = new Timber\PostQuery();
+if ( get_post_type() == 'events' ) {
+	$context['posts'] = new Timber\PostQuery(array(
+		'post_type'=> 'events',
+		'meta_key' => 'event_date',
+		'orderby' => 'meta_value',
+		'order' => 'ASC',
+		'meta_type' => 'DATE',
+	));
+} else {
+	$context['posts'] = new Timber\PostQuery();
+}
+
 
 Timber::render( $templates, $context );
