@@ -1,9 +1,11 @@
 {% if in_component_library %}
   {% set context = '@context' %}
   {% set mediaContext = '@media-context' %}
+  {% set endpointFilter = '@endpoint-filter' %}
 {% else %}
   {% set context = 'context.twig' %}
   {% set mediaContext = 'media-context.twig' %}
+  {% set endpointFilter = 'endpoint-filter.twig' %}
 {% endif %}
 
 <div class="featured-events py-24 relative bg-bluemarble__pattern bg-cover bg-center space-y-28">
@@ -35,6 +37,13 @@
       buttons: featured.buttons,
     } %}
   </div>
-  <div class="lwcw px-5 max-w-screen-2xl" data-options="id=6&format=html"></div>
-  <script type="text/javascript" id="lw_lwcw" src="//events.colby.edu/livewhale/theme/core/scripts/lwcw.js"></script>
+  <div class="featured-events__inner grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full my-0 mx-auto">
+    <div class="md:col-span-10 md:col-start-2">
+      {% include endpointFilter with {
+        type: 'dark',
+        limit: 3,
+        filters: false,
+      } %}
+    </div>
+  </div>
 </div>
