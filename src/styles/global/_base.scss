@@ -1,0 +1,67 @@
+@layer base {
+    h2 {
+        @apply text-24 leading-110 -tracking-3 font-extended font-normal;
+    }
+
+    h3 {
+        @apply text-20 leading-110 -tracking-3 text-indigo font-extended font-normal;
+    }
+
+    h4 {
+        @apply text-16 leading-110 -tracking-3 text-indigo font-extended font-normal;
+    }
+
+    h5 {
+        @apply text-14 font-bold leading-130 -tracking-8 text-azure uppercase font-extended font-normal;
+    }
+
+    h6 {
+        @apply text-12 leading-110 -tracking-8 text-azure uppercase font-extended font-normal;
+    }
+
+    a {
+        @apply underline hover:no-underline hover:text-indigo;
+    }
+
+    p {
+        @apply font-normal font-body text-16 leading-140 mb-4 text-indigo-900;
+    }
+
+    // lists
+    ul {
+        @apply list-disc pl-10 text-indigo mb-4;
+
+        li {
+            @apply text-indigo-900 mt-2 font-body;
+        }
+    }
+
+    ol {
+        @apply list-decimal pl-10 text-indigo mb-4;
+
+        li {
+            @apply text-indigo-900 mt-2 font-body;
+        }
+    }
+
+    ul,
+    ol {
+        ul {
+            @apply list-circle;
+        }
+
+        ul,
+        ol {
+            ul {
+                @apply list-square;
+            }
+        }
+    }
+}
+
+@layer utilities {
+    .no-scroll {
+        overflow: hidden;
+        height: 100vh;
+    }
+}

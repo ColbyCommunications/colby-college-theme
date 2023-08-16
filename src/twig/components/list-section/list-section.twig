@@ -12,7 +12,7 @@
                 {% if not in_component_library %}
                   {% set item = item.link %}
                 {% endif %}
-                <li class="font-body text-14 font-normal leading-130 text-indigo-800">
+                <li class="font-body text-14 font-normal leading-130 text-indigo-800 list-none relative">
                   <a class="text-indigo-800 hover:text-indigo hover:underline transition-all duration-200 ease-in-out" href="{{ item.url }}">{{ item.title }}</a>
                 </li>
               {% endfor %}

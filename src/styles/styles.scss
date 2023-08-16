@@ -1,106 +1,13 @@
 @import 'tailwindcss/base';
-
-@layer base {
-    h2 {
-        @apply text-24 leading-110 -tracking-3;
-    }
-    h3 {
-        @apply text-20 leading-110 -tracking-3 text-indigo;
-    }
-
-    h4 {
-        @apply text-16 leading-110 -tracking-3 text-indigo;
-    }
-
-    h5 {
-        @apply text-14 font-bold leading-130 -tracking-8 text-azure uppercase;
-    }
-
-    h6 {
-        @apply text-12 leading-110 -tracking-8 text-azure uppercase;
-    }
-
-    a {
-        @apply underline hover:no-underline hover:text-indigo;
-    }
-
-    ul {
-        @apply list-disc pl-10 text-indigo mb-4;
-
-        li {
-            @apply text-indigo-900 mt-2 font-body;
-        }
-
-        ul {
-            @apply list-circle;
-        }
-
-        ul,
-        ol {
-            ul {
-                @apply list-square;
-            }
-        }
-    }
-
-    ol {
-        @apply list-decimal pl-10 text-indigo mb-4;
-
-        li {
-            @apply text-indigo-900 mt-2 font-body;
-        }
-
-        ul {
-            @apply list-circle;
-        }
-
-        ul,
-        ol {
-            ul {
-                @apply list-square;
-            }
-        }
-    }
-
-    h2,
-    > h3,
-    h4,
-    h5,
-    h6 {
-        @apply font-extended font-normal;
-    }
-
-    p {
-        @apply text-indigo-900;
-        @apply mb-4;
-        @apply font-body;
-    }
-
-    hr {
-        @apply mb-4;
-    }
-
-    table,
-    tr,
-    td {
-        border: 1px solid #ccc;
-    }
-}
-
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import 'global/variables';
 @import 'global/layout';
 
-/* Body No Scroll */
-.no-scroll {
-    overflow: hidden;
-    height: 100vh;
-}
+@import 'global/base';
 
 /* Page w/ sidebar content styles */
 .wysiwyg {
-    // general divs for blocks, etc
     > div {
         @apply clear-both;
         @apply mb-20;
@@ -110,85 +17,89 @@
         @apply mb-0;
     }
 
-    .wp-block-paragraph {
-        @apply mb-0;
-    }
-
-    // table block
-    .colby-table-block {
-        td {
-            a {
-                @apply no-underline;
-            }
-            a:hover {
-                @apply underline;
-            }
-        }
-    }
-
-    // paragraph block
-    .colby-paragraph-block {
-        @apply font-body;
-
-        // > p {
-        //     @apply text-indigo-900;
-        // }
-
-        > p,
-        > table {
-            @apply mb-4;
-        }
-
-        &:last-child {
-            @apply mb-0;
-        }
-
-        p:last-child,
-        ul:last-child,
-        ol:last-child {
-            @apply mb-0;
-        }
-    }
-
-    // image with text block
-    .colby-image-text-block {
-        p {
-            @apply mb-4;
-            @apply text-indigo-900;
-            @apply font-body;
-        }
-    }
-
-    // accordion block
-    .colby-accordion-block {
-        p {
-            @apply mb-4;
-            @apply text-indigo-900;
-        }
-
-        p,
-        ul,
-        ol {
-            @apply font-normal;
-            @apply font-body;
-            @apply text-16;
-            @apply leading-140;
-        }
-    }
-
-    // heading block
     .wp-block-heading {
+        margin-bottom: 0.8rem;
         > h2 {
             @apply text-indigo;
         }
     }
 
+    .wp-block-paragraph {
+        @apply mb-0;
+        > p {
+            @apply text-indigo-900;
+            @apply mb-4;
+            @apply font-body;
+        }
+    }
+
+    // table block
+    // .colby-table-block {
+    //     td {
+    //         a {
+    //             @apply no-underline;
+    //         }
+    //         a:hover {
+    //             @apply underline;
+    //         }
+    //     }
+    // }
+
+    // paragraph block
+    .colby-paragraph-block {
+        // > p {
+        //     @apply text-indigo-900;
+        // }
+
+        // > p,
+        // > table,
+        // hr {
+        //     @apply mb-4;
+        // }
+
+        // &:last-child {
+        //     @apply mb-0;
+        // }
+
+        // p:last-child,
+        // ul:last-child,
+        // ol:last-child {
+        //     @apply mb-0;
+        // }
+
+        table,
+        tr,
+        td {
+            border: 1px solid #ccc;
+        }
+    }
+
+    // image with text block
+    // .colby-image-text-block {
+    //     p {
+    //         @apply mb-4;
+    //         @apply text-indigo-900;
+    //         @apply font-body;
+    //     }
+    // }
+
+    // accordion block
+    .colby-accordion-block {
+        // p {
+        //     @apply mb-4 text-indigo-900;
+        // }
+
+        // p,
+        // ul,
+        // ol {
+        //     @apply font-normal font-body text-16 leading-140;
+        // }
+    }
+
     // embed block
     .wp-block-embed {
         .wp-element-caption {
-            @apply font-body;
-            @apply text-indigo-900;
-            @apply font-normal;
+            @apply font-body text-indigo-900 font-normal;
         }
     }
 
@@ -208,10 +119,10 @@
 }
 
 .list-section__list {
-    li {
-        list-style-type: none;
-        position: relative; /* It's needed for setting position to absolute in the next rule. */
-    }
+    // li {
+    //     list-style-type: none;
+    //     position: relative; /* It's needed for setting position to absolute in the next rule. */
+    // }
 
     li::before {
         content: '•';
