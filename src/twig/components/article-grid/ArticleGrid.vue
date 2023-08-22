@@ -3,18 +3,15 @@
         <slot v-if="!renderApi" />
         <div
             v-if="renderApi"
-            class="article-grid grid gap-10 max-w-screen-2xl w-full my-0 mx-auto"
-            :class="{
-                'grid-cols-9': columns == 3,
-                'grid-cols-8': columns == 4 || columns == 2,
-            }"
+            class="article-grid grid gap-10 max-w-screen-2xl w-full my-0 mx-auto grid-cols-12"
         >
             <div
                 v-for="(item, index) in data"
                 class="article-grid__item glide__slide col-span-4"
                 :class="{
-                    'md:col-span-2 col-span-4': columns == 4,
-                    'md:col-span-3 col-span-9': columns == 3,
+                    'col-span-12 md:col-span-6': columns == 2,
+                    'col-span-12 md:col-span-6 lg:col-span-4': columns == 3,
+                    'col-span-12 md:col-span-6 lg:col-span-3': columns == 4,
                 }"
                 :key="index"
             >
@@ -24,12 +21,17 @@
                 >
                     <div class="context w-full py-4">
                         <component is="text-group" class="text-group flex">
-                            <div class="w-full flex flex-col justify-start">
-                                <img width="96" height="96" :src="item.image" :alt="item.title" />
+                            <div class="mr-6 flex flex-col justify-start shrink-0">
+                                <img
+                                    class="h-[75px] w-[75px] lg:h-[96px] lg:w-[96px]"
+                                    :src="item.image"
+                                    :alt="item.title"
+                                />
                             </div>
                             <div>
                                 <h2
                                     class="text-group__heading font-extended font-normal text-20 leading-110 -tracking-3 text-left text-indigo"
+                                    :class="{ 'lg:text-16': columns == 4 }"
                                     v-text="decodeHtmlEntities(item.title.rendered)"
                                 />
                                 <p
