@@ -2,16 +2,8 @@
     <div>
         <slot v-if="!renderApi" />
         <div
-<<<<<<< HEAD
             v-if="renderApi"
             class="article-grid grid gap-10 max-w-screen-2xl w-full my-0 mx-auto grid-cols-12"
-=======
-            v-if="renderApi && api == 'president'"
-            class="article-grid grid grid-cols-8 gap-10 max-w-screen-2xl w-full my-0 mx-auto"
-            :class="{
-                'grid-cols-9': columns == 3,
-            }"
->>>>>>> 59d8f0b3014bef1da9802148e8314c73bb56dd1b
         >
             <div
                 v-for="(item, index) in data"
@@ -28,7 +20,6 @@
                     :class="{ 'pt-1 border-t-2 border-solid border-indigo-600': border }"
                 >
                     <div class="context w-full py-4">
-<<<<<<< HEAD
                         <component is="text-group" class="text-group flex">
                             <div class="mr-6 flex flex-col justify-start shrink-0">
                                 <img
@@ -48,25 +39,6 @@
                                     v-text="item['post-meta-fields'].summary[0]"
                                 />
                             </div>
-=======
-                        <component is="text-group" class="text-group">
-                            <div
-                                v-if="item.date"
-                                class="text-group__subheading font-extended font-bold text-12 leading-130 tracking-8 text-left text-azure uppercase"
-                                v-text="item.date"
-                            />
-                            <h2
-                                class="text-group__heading font-extended font-normal text-20 leading-110 -tracking-3 text-left text-indigo"
-                                :class="{
-                                    'mt-2': item.date,
-                                }"
-                                v-text="decodeHtmlEntities(item.title.rendered)"
-                            />
-                            <p
-                                class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
-                                v-text="item['post-meta-fields'].summary[0]"
-                            />
->>>>>>> 59d8f0b3014bef1da9802148e8314c73bb56dd1b
                         </component>
                         <div class="button-group flex flex-wrap gap-4 mt-4">
                             <a
