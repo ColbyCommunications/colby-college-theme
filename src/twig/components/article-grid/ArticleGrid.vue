@@ -1,6 +1,18 @@
 <template>
     <div>
         <slot v-if="!renderApi" />
+        <div v-if="renderApi">
+            <h2
+                class="text-group__heading font-extended font-normal text-28 md:text-36 leading-100 -tracking-3 text-left text-indigo mt-2"
+            >
+                In the Media
+            </h2>
+            <p
+                class="mt-2 mb-6 text-group__p font-body font-normal text-18 md:text-18 leading-130 text-left text-indigo-800"
+            >
+                Latest publications featuring Colby College.
+            </p>
+        </div>
         <div
             v-if="renderApi"
             class="article-grid grid gap-10 max-w-screen-2xl w-full my-0 mx-auto grid-cols-12"
@@ -108,6 +120,15 @@
                                             item.content.rendered &&
                                             item.tags &&
                                             item.tags.some((tag) => tag.name === 'president')
+                                        );
+                                    } else if (this.api === 'highlight') {
+                                        return (
+                                            item.story_type &&
+                                            Array.isArray(item.story_type) &&
+                                            item.story_type[0].slug === 'media-coverage' &&
+                                            item.content.rendered &&
+                                            item.tags &&
+                                            item.tags.some((tag) => tag.name === 'editors-pick')
                                         );
                                     }
                                     break;
