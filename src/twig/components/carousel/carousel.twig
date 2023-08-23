@@ -17,7 +17,7 @@
     <div class="carousel__context md:col-span-4 lg:col-span-3 md:flex items-center">
       {% include context with {
         size: 'large',
-        type: 'dark',
+        type: type|default('dark'),
         arrow: true,
         reverse: true,
         heading: heading,
@@ -68,8 +68,8 @@
             :class="{ '!visible opacity-100 !translate-y-0': carousel.activeSlide == {{ loop.index0 }} }"
           >
             {% include context with {
-              size: 'small',
-              type: 'dark',
+              size: size|default('small'),
+              type: type|default('dark'),
               subheading: item.subheading,
               heading: item.heading,
               paragraph: item.paragraph,
