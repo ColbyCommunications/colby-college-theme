@@ -10,7 +10,7 @@
   is="carousel"
   v-slot="carousel"
   class="carousel"
-  :render-api="{{ render_api }}"
+  :render-api="{{ render_api|json_encode }}"
   api="{{ api }}"
 >
   <div class="carousel__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
