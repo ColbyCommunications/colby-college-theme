@@ -1,18 +1,6 @@
 <template>
     <div>
         <slot v-if="!renderApi" />
-        <div v-if="renderApi">
-            <h2
-                class="text-group__heading font-extended font-normal text-28 md:text-36 leading-100 -tracking-3 text-left text-indigo mt-2"
-            >
-                In the Media
-            </h2>
-            <p
-                class="mt-2 mb-6 text-group__p font-body font-normal text-18 md:text-18 leading-130 text-left text-indigo-800"
-            >
-                Latest publications featuring Colby College.
-            </p>
-        </div>
         <div
             v-if="renderApi"
             class="article-grid grid gap-10 max-w-screen-2xl w-full my-0 mx-auto grid-cols-12"
@@ -87,25 +75,14 @@
         },
         async mounted() {
             if (this.renderApi) {
-                this.endpoint =
-                    'https://dev-54ta5gq-4nvswumupeimi.us-4.platformsh.site/wp-json/custom/v1/external-posts';
+                this.endpoint = 'https://news.colby.edu/wp-json/custom/v1/external-posts';
 
                 await axios.get(this.endpoint).then((output) => {
                     this.data = output.data
                         .filter((item) => {
                             switch (this.posts) {
-                                case 'stories':
-                                    //
-                                    break;
                                 case 'media_coverage':
-                                    if (this.api === 'all_media_hp') {
-                                        return (
-                                            item.story_type &&
-                                            Array.isArray(item.story_type) &&
-                                            item.story_type[0].slug === 'media-coverage' &&
-                                            item.content.rendered
-                                        );
-                                    } else if (this.api === 'all_media') {
+                                    if (this.api === 'all_media') {
                                         return (
                                             item.story_type &&
                                             Array.isArray(item.story_type) &&
@@ -131,12 +108,6 @@
                                             item.tags.some((tag) => tag.name === 'editors-pick')
                                         );
                                     }
-                                    break;
-                                case 'faculty_accomplishments':
-                                    ///
-                                    break;
-                                case 'videos':
-                                    ///
                                     break;
                             }
                             return false;
