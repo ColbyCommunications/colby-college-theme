@@ -426,7 +426,18 @@
                             this.filterOptions = ['Fall', 'Spring', 'January'];
                             break;
                         case 'Majors and Minors':
-                            this.items = outputa.data.reverse().map((item) => {
+                            const majors = [];
+                            const minors = [];
+
+                            outputa.data.forEach((item) => {
+                                if (item.Type === 'Major') {
+                                    majors.push(item);
+                                } else {
+                                    minors.push(item);
+                                }
+                            });
+
+                            this.items = majors.concat(minors).map((item) => {
                                 return {
                                     title: item.Text,
                                     type: `${item.Type}s`,
