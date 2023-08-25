@@ -378,7 +378,7 @@
                                                 : item.longTitle,
                                         url: null,
                                     },
-                                    columns: [item.crsno, item.abstr],
+                                    columns: [item.crsno, this.removeTags(item.abstr)],
                                 };
                             });
                             this.headings = ['Name', 'Course Number', 'Description'];
@@ -797,6 +797,13 @@
                 const faculty = this._faculty(item.sections);
 
                 return `${item.abstr}<br/>${prereq} ${creditHours} ${reqs} <i style="text-transform: uppercase">${faculty}<i>`;
+            },
+            removeTags(str) {
+                if (str) {
+                    return str.replace(/(<([^>]+)>)/gi, '');
+                } else {
+                    return '';
+                }
             },
         },
     };
