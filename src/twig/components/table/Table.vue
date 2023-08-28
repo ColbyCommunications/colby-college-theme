@@ -650,7 +650,7 @@
                 if (this.filteredItems) {
                     this.fuse = new Fuse(this.filteredItems, {
                         shouldSort: true,
-                        threshold: 0.3,
+                        threshold: 0.6,
                         ignoreLocation: false,
                         maxPatternLength: 32,
                         minMatchCharLength: 1,
