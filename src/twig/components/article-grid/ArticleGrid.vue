@@ -25,7 +25,7 @@
                                 <img
                                     class="h-[75px] w-[75px] lg:h-[96px] lg:w-[96px]"
                                     :src="item.image"
-                                    :alt="item.title"
+                                    :alt="item.title.rendered"
                                 />
                             </div>
                             <div>
