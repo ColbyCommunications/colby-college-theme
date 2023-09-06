@@ -1781,7 +1781,7 @@ function custom_meta_description($description) {
 }
 add_filter('wpseo_metadesc', 'custom_meta_description');
 
-
+add_filter( 'auto_core_update_send_email', '__return_false' );
 
 
 
