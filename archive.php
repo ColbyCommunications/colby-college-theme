@@ -36,12 +36,19 @@ if ( is_day() ) {
 }
 
 if ( get_post_type() == 'events' ) {
+	global $paged;
+
+	if (!isset($paged) || !$paged){
+		$paged = 1;
+	}
+
 	$context['posts'] = new Timber\PostQuery(array(
 		'post_type'=> 'events',
 		'meta_key' => 'event_date',
 		'orderby' => 'meta_value',
 		'order' => 'ASC',
 		'meta_type' => 'DATE',
+		'paged' => $paged
 	));
 } else {
 	$context['posts'] = new Timber\PostQuery();

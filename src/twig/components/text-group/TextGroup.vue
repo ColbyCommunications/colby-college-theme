@@ -19,14 +19,26 @@
         },
         mounted() {
             const component = this;
-            const subheading = this.$refs.container.querySelector('.text-group__subheading');
             const paragraph = this.$refs.container.querySelector('.text-group__p');
+            let subheading = this.$refs.container.querySelector('.text-group__subheading');
             let heading = this.$refs.container.querySelector('.text-group__heading');
             let headingText;
+            let subheadingText;
 
             if (subheading) {
-                this.subheading = new Letterize({
-                    targets: subheading,
+                // this.subheading = new Letterize({
+                //     targets: subheading,
+                // });
+
+                subheadingText = subheading.innerHTML.split(' ');
+                subheading.innerHTML = '';
+
+                subheadingText.forEach((word) => {
+                    let wordWrap = document.createElement('span');
+                    wordWrap.innerHTML = word;
+
+                    subheading.append(wordWrap);
+                    subheading.append(' ');
                 });
             }
 
@@ -68,7 +80,7 @@
 
                 gsap.to(target, {
                     duration: 0.2,
-                    stagger: 0.04,
+                    stagger: 0.1,
                     opacity: 1,
                     y: 0,
                     ease: 'power3.easeInOut',
