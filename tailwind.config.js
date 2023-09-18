@@ -7,6 +7,7 @@ module.exports = {
             indigo: '#012169',
             canary: '#ffb500',
             azure: '#366bcf',
+            'notification-red': '#dd3c27',
             indigo: {
                 DEFAULT: '#012169',
                 100: '#f9fbff',
