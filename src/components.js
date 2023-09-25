@@ -30,7 +30,6 @@ export default {
     ContextArticleGrid,
     Search,
     Modal,
-    ModalsContainer,
     Accordion,
     TextGroup,
     ButtonGroup,
