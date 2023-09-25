@@ -30,7 +30,6 @@ export default {
     ContextArticleGrid,
     Search,
     Modal,
-    VueFinalModal,
     ModalsContainer,
     Accordion,
     TextGroup,
