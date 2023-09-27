@@ -3,9 +3,9 @@
 <component is="button-group" class="button-group flex flex-wrap {% if align == 'center' %}justify-center{% elseif align == 'column' %}flex-col items-start{% endif %} gap-4">
   {% for item in items %}
     {% if in_component_library %}
-      {{ macros.button(size, type, arrow, transparentBg, item.url, item.title, reverse) }}
+      {{ macros.button(size, type, arrow, transparentBg, item.url, item.title, reverse, item.target) }}
     {% else %}
-      {{ macros.button(size, type, arrow, transparentBg, item.button.url, item.button.title, reverse) }}
+      {{ macros.button(size, type, arrow, transparentBg, item.button.url, item.button.title, reverse, item.button.target) }}
     {% endif %}
   {% endfor %}
 </component>
