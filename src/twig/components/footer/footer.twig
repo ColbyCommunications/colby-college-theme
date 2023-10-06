@@ -49,10 +49,10 @@
             url: 'https://news.colby.edu/newsletter/',
             title: 'Newsletter'
           }  %}
-          <ul class="ml-4 px-4 flex">
+          <ul class="ml-4 px-4 grid grid-cols-5">
             {% for item in social %}
               <li class="text-[0]">
-                <a class="flex text-indigo-100" href="{{ item.platform.url }}">
+                <a class="w-8 flex text-indigo-100" href="{{ item.platform.url }}">
                   {{ icons.icon(item.platform.title|lower, 'fill-indigo-100 hover:fill-indigo-500 max-w-5 md:max-w-4 max-h-4 md:max-h-3.5 w-full transition-all duration-200 ease-in-out') }}
                   <span class="sr-only">{{ item.platform.title }}</span>
                 </a>
