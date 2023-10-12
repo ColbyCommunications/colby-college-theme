@@ -72,10 +72,13 @@
         {% elseif image_orientation == 'portrait' %}
           {% if item.post %}
             {% if item.post.post_type == 'people' %}
+            {#wp_get_attachment_image_src(get_post_thumbnail_id())#}
+            {% set image_id = fn('get_post_thumbnail_id', item.post.ID) %}
+            {% set image_size_array = fn('wp_get_attachment_image_src', fn('get_post_thumbnail_id', item.post.ID), 'Square_mobile') %}
               {% set newImage = {
                 sizes: {
-                  desktop: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait' ) ? fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait' ) : '/wp-content/uploads/2022/11/directory-placeholder_E4E8F0_90_100-380x430.jpg',
-                  mobile: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait_mobile' ) ? fn( 'get_the_post_thumbnail_url', item.post.ID, 'Portrait_mobile' ) : '/wp-content/uploads/2022/11/directory-placeholder_E4E8F0_90_100-380x430.jpg',
+                  desktop: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Square_mobile' ) and (image_size_array[1] >= 300 and image_size_array[2] >= 300)  ? fn( 'get_the_post_thumbnail_url', item.post.ID, 'Square_mobile' ) : '/wp-content/uploads/2022/11/directory-placeholder_E4E8F0_90_100-380x430_square.jpg',
+                  mobile: fn( 'get_the_post_thumbnail_url', item.post.ID, 'Square_mobile' ) and (image_size_array[1] >= 300 and image_size_array[2] >= 300) ? fn( 'get_the_post_thumbnail_url', item.post.ID, 'Square_mobile' ) : '/wp-content/uploads/2022/11/directory-placeholder_E4E8F0_90_100-380x430_square.jpg',
                 },
                 alt: item.image.alt,
               } %}
