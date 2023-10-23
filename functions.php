@@ -644,6 +644,142 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
+
+			// register a media aside
+			acf_register_block(
+				array(
+					'name'            => 'media-aside',
+					'title'           => __( 'Media Aside' ),
+					'description'     => __( 'Large image with small context. Supports carousel functionality.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'media', 'context', 'aside', 'carousel' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a context section
+			acf_register_block(
+				array(
+					'name'            => 'context-section',
+					'title'           => __( 'Context Section' ),
+					'description'     => __( 'Dedicated section component for context outside of the confines of a typical component.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'context', 'section', 'heading', 'subheading', 'paragraph' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register table section
+			acf_register_block(
+				array(
+					'name'            => 'table-section',
+					'title'           => __( 'Table Section' ),
+					'description'     => __( 'Dedicated section for full-width inset pages.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'table', 'row', 'column', 'layout', 'section' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a intro context
+			acf_register_block(
+				array(
+					'name'            => 'intro-context',
+					'title'           => __( 'Intro Context' ),
+					'description'     => __( 'Two column context section component typically deployed as an alternative aesthetic for introductory context' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'introductory', 'context', 'section' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a full bleed hero
+			acf_register_block(
+				array(
+					'name'            => 'full-bleed-hero',
+					'title'           => __( 'Full Bleed Hero' ),
+					'description'     => __( 'Hero with inset image, context, and full width background image' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'hero', 'media', 'image', 'context', 'background' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a inset widget
+			acf_register_block(
+				array(
+					'name'            => 'inset-widget',
+					'title'           => __( 'Inset Widget' ),
+					'description'     => __( 'Decorative interstitial block' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'widget', 'inset', 'context' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a featured events
+			acf_register_block(
+				array(
+					'name'            => 'featured-events',
+					'title'           => __( 'Featured Events' ),
+					'description'     => __( 'Exclusive featured events component for ColbyArts' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'featured', 'events', 'media', 'context' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a endpoint filter
+			acf_register_block(
+				array(
+					'name'            => 'endpoint-filter',
+					'title'           => __( 'Endpoint Filter' ),
+					'description'     => __( 'Exclusive filter component for ColbyArts' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'filter', 'events', 'context' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
 		}
 	}
 
@@ -750,14 +886,14 @@ class StarterSite extends Timber\Site {
 
 		add_theme_support( 'menus' );
 
-		add_image_size( 'Square', 600, 600, true );
-		add_image_size( 'Square_mobile', 300, 300, true );
+		add_image_size( 'Square', 800, 800, true );
+		add_image_size( 'Square_mobile', 400, 400, true );
 		add_image_size( 'Rectangle', 760, 430, true );
 		add_image_size( 'Rectangle_mobile', 410, 290, true );
-		add_image_size( 'Landscape', 860, 400, true );
-		add_image_size( 'Landscape_mobile', 430, 200, true );
-		add_image_size( 'Portrait', 380, 580, true );
-		add_image_size( 'Portrait_mobile', 190, 290, true );
+		add_image_size( 'Landscape', 1720, 800, true );
+		add_image_size( 'Landscape_mobile', 860, 400, true );
+		add_image_size( 'Portrait', 570, 870, true );
+		add_image_size( 'Portrait_mobile', 380, 580, true );
 		add_image_size( 'Hero', 2400, 1320, true );
 
 		if ( function_exists( 'acf_add_options_page' ) ) {
@@ -900,7 +1036,7 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 	}
 
 	// Render the block.
-	Timber::render( 'src/twig/components/' . $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged );
+	Timber::render( 'src/twig/components/' . $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged, 600, Timber\Loader::CACHE_NONE );
 }
 
 /**
@@ -1300,27 +1436,27 @@ function stop_redirect_guess() {
 
 function wporg_block_wrapper( $block_content, $block ) {
 	if ( $block['blockName'] === 'core/paragraph' ) {
-		$content  = '<div class="wp-block-paragraph">';
+		$content  = '<div class="wp-block-paragraph module">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/heading' ) {
-		$content  = '<div class="wp-block-heading">';
+		$content  = '<div class="wp-block-heading module">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/image' ) {
-		$content  = '<div class="wp-block-image">';
+		$content  = '<div class="wp-block-image module">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/embed' ) {
-		$content  = '<div class="wp-block-embed">';
+		$content  = '<div class="wp-block-embed module">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/table' ) {
-		$content  = '<div class="wp-block-table">';
+		$content  = '<div class="wp-block-table module">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;

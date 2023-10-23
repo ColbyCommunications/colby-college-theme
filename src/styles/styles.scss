@@ -105,7 +105,15 @@
         }
     }
 
-    // general divs for blocks, etc
+    > p {
+        @apply font-normal;
+        @apply font-body;
+        @apply text-16;
+        @apply leading-140;
+        @apply mb-4;
+        @apply text-indigo-900;
+    }
+
     > div {
         @apply clear-both;
         @apply mb-20;

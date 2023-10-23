@@ -44,6 +44,7 @@ module.exports = {
     {
       name: 'XSmall',
       context: {
+        type: 'light',
         size: 'xsmall',
       },
     },

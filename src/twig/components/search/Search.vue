@@ -3,7 +3,7 @@
     <ais-instant-search
       id="modal-top"
       ref="aisIS"
-      index-name="prod_colbyedu_aggregated"
+      :index-name="id"
       :search-client="searchClient"
     >
       <ais-configure :hits-per-page.camel="1" />
@@ -13,7 +13,7 @@
       <!-- query suggestions -->
       <div class="qs mb-12" role="region" aria-label="Query Suggestions`">
         <ais-index
-          index-name="prod_colbyedu_aggregated_query_suggestions"
+          :index-name="suggestions"
           index-id="colby-qs"
         >
           <ais-configure :hits-per-page.camel="8" />
@@ -43,7 +43,7 @@
         v-text="'What are you looking for?'"
       />
       <div v-if="query">
-        <ais-index index-name="prod_colbyedu_aggregated" index-id="results">
+        <ais-index :index-name="id" index-id="results">
           <ais-configure :hits-per-page.camel="20" />
           <ais-state-results>
             <template v-slot="{ results: { hits, query } }">
@@ -135,6 +135,18 @@ export default {
       modalOpen: false,
       query: "",
     };
+  },
+  props: {
+    id: {
+      type: String,
+      required: false,
+      default: 'prod_colbyedu_aggregated',
+    },
+    suggestions: {
+      type: String,
+      required: false,
+      default: 'prod_colbyedu_aggregated_query_suggestions',
+    }
   },
   methods: {
     search(query) {

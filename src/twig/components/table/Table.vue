@@ -256,7 +256,7 @@
     import Fuse from 'fuse.js';
     import _map from 'lodash/map';
     import _uniq from 'lodash/uniq';
-    import Modal from '/src/twig/components/modal/Modal.vue';
+    import Modal from '../modal/Modal.vue';
     export default {
         components: {
             Modal,
