@@ -8,6 +8,8 @@
  * @since      Timber 0.1
  */
 
+	add_theme_support( 'responsive-embeds' );
+
 /**
  * If you are installing Timber as a Composer dependency in your theme, you'll need this block
  * to load your dependencies and initialize Timber. If you are using Timber via the WordPress.org
