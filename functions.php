@@ -1785,5 +1785,13 @@ add_filter('wpseo_metadesc', 'custom_meta_description');
 
 add_filter( 'auto_core_update_send_email', '__return_false' );
 
-
+add_filter(
+	'wpseo_title',
+	function ( $title ) {
+		if ( get_query_var( 'post_type' ) === 'people' && is_post_type_archive( 'people' ) ) {
+			$title = 'People Directory | Colby College';
+		}
+		return  $title;
+	}
+);
 
