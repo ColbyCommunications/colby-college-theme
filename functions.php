@@ -8,7 +8,9 @@
  * @since      Timber 0.1
  */
 
-	add_theme_support( 'responsive-embeds' );
+add_theme_support( 'responsive-embeds' );
+
+include __DIR__ . '/acf_fields.php';
 
 /**
  * If you are installing Timber as a Composer dependency in your theme, you'll need this block
@@ -644,142 +646,6 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
-
-			// register a media aside
-			acf_register_block(
-				array(
-					'name'            => 'media-aside',
-					'title'           => __( 'Media Aside' ),
-					'description'     => __( 'Large image with small context. Supports carousel functionality.' ),
-					'render_callback' => 'my_acf_block_render_callback',
-					'category'        => 'layout',
-					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
-					'keywords'        => array( 'media', 'context', 'aside', 'carousel' ),
-					'mode'            => 'edit',
-					'supports'        => array(
-						'align' => false,
-					),
-				)
-			);
-
-			// register a context section
-			acf_register_block(
-				array(
-					'name'            => 'context-section',
-					'title'           => __( 'Context Section' ),
-					'description'     => __( 'Dedicated section component for context outside of the confines of a typical component.' ),
-					'render_callback' => 'my_acf_block_render_callback',
-					'category'        => 'layout',
-					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
-					'keywords'        => array( 'context', 'section', 'heading', 'subheading', 'paragraph' ),
-					'mode'            => 'edit',
-					'supports'        => array(
-						'align' => false,
-					),
-				)
-			);
-
-			// register table section
-			acf_register_block(
-				array(
-					'name'            => 'table-section',
-					'title'           => __( 'Table Section' ),
-					'description'     => __( 'Dedicated section for full-width inset pages.' ),
-					'render_callback' => 'my_acf_block_render_callback',
-					'category'        => 'layout',
-					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
-					'keywords'        => array( 'table', 'row', 'column', 'layout', 'section' ),
-					'mode'            => 'edit',
-					'supports'        => array(
-						'align' => false,
-					),
-				)
-			);
-
-			// register a intro context
-			acf_register_block(
-				array(
-					'name'            => 'intro-context',
-					'title'           => __( 'Intro Context' ),
-					'description'     => __( 'Two column context section component typically deployed as an alternative aesthetic for introductory context' ),
-					'render_callback' => 'my_acf_block_render_callback',
-					'category'        => 'layout',
-					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
-					'keywords'        => array( 'introductory', 'context', 'section' ),
-					'mode'            => 'edit',
-					'supports'        => array(
-						'align' => false,
-					),
-				)
-			);
-
-			// register a full bleed hero
-			acf_register_block(
-				array(
-					'name'            => 'full-bleed-hero',
-					'title'           => __( 'Full Bleed Hero' ),
-					'description'     => __( 'Hero with inset image, context, and full width background image' ),
-					'render_callback' => 'my_acf_block_render_callback',
-					'category'        => 'layout',
-					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
-					'keywords'        => array( 'hero', 'media', 'image', 'context', 'background' ),
-					'mode'            => 'edit',
-					'supports'        => array(
-						'align' => false,
-					),
-				)
-			);
-
-			// register a inset widget
-			acf_register_block(
-				array(
-					'name'            => 'inset-widget',
-					'title'           => __( 'Inset Widget' ),
-					'description'     => __( 'Decorative interstitial block' ),
-					'render_callback' => 'my_acf_block_render_callback',
-					'category'        => 'layout',
-					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
-					'keywords'        => array( 'widget', 'inset', 'context' ),
-					'mode'            => 'edit',
-					'supports'        => array(
-						'align' => false,
-					),
-				)
-			);
-
-			// register a featured events
-			acf_register_block(
-				array(
-					'name'            => 'featured-events',
-					'title'           => __( 'Featured Events' ),
-					'description'     => __( 'Exclusive featured events component for ColbyArts' ),
-					'render_callback' => 'my_acf_block_render_callback',
-					'category'        => 'layout',
-					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
-					'keywords'        => array( 'featured', 'events', 'media', 'context' ),
-					'mode'            => 'edit',
-					'supports'        => array(
-						'align' => false,
-					),
-				)
-			);
-
-			// register a endpoint filter
-			acf_register_block(
-				array(
-					'name'            => 'endpoint-filter',
-					'title'           => __( 'Endpoint Filter' ),
-					'description'     => __( 'Exclusive filter component for ColbyArts' ),
-					'render_callback' => 'my_acf_block_render_callback',
-					'category'        => 'layout',
-					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
-					'keywords'        => array( 'filter', 'events', 'context' ),
-					'mode'            => 'edit',
-					'supports'        => array(
-						'align' => false,
-					),
-				)
-			);
 		}
 	}
 
@@ -886,14 +752,14 @@ class StarterSite extends Timber\Site {
 
 		add_theme_support( 'menus' );
 
-		add_image_size( 'Square', 800, 800, true );
-		add_image_size( 'Square_mobile', 400, 400, true );
+		add_image_size( 'Square', 600, 600, true );
+		add_image_size( 'Square_mobile', 300, 300, true );
 		add_image_size( 'Rectangle', 760, 430, true );
 		add_image_size( 'Rectangle_mobile', 410, 290, true );
-		add_image_size( 'Landscape', 1720, 800, true );
-		add_image_size( 'Landscape_mobile', 860, 400, true );
-		add_image_size( 'Portrait', 570, 870, true );
-		add_image_size( 'Portrait_mobile', 380, 580, true );
+		add_image_size( 'Landscape', 860, 400, true );
+		add_image_size( 'Landscape_mobile', 430, 200, true );
+		add_image_size( 'Portrait', 380, 580, true );
+		add_image_size( 'Portrait_mobile', 190, 290, true );
 		add_image_size( 'Hero', 2400, 1320, true );
 
 		if ( function_exists( 'acf_add_options_page' ) ) {
@@ -1036,7 +902,7 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 	}
 
 	// Render the block.
-	Timber::render( 'src/twig/components/' . $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged, 600, Timber\Loader::CACHE_NONE );
+	Timber::render( 'src/twig/components/' . $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged );
 }
 
 /**
@@ -1109,7 +975,7 @@ function getNewPeople( $directory_data ) {
 		// Assign variables to desired WD fields
 		$WDEmployeeID    = str_pad( $WDPerson['employeeID'], 7, '0', STR_PAD_LEFT );
 		$WDPrefFirstName = $WDPerson['preferredFirstName'];
-		$WDPrefLastName      = $WDPerson['preferredLastName'];
+		$WDPrefLastName  = $WDPerson['preferredLastName'];
 
 		// Skip person if no email associated
 		if ( ! $WDPerson['primaryWorkEmail'] ) {
@@ -1436,27 +1302,27 @@ function stop_redirect_guess() {
 
 function wporg_block_wrapper( $block_content, $block ) {
 	if ( $block['blockName'] === 'core/paragraph' ) {
-		$content  = '<div class="wp-block-paragraph module">';
+		$content  = '<div class="wp-block-paragraph">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/heading' ) {
-		$content  = '<div class="wp-block-heading module">';
+		$content  = '<div class="wp-block-heading">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/image' ) {
-		$content  = '<div class="wp-block-image module">';
+		$content  = '<div class="wp-block-image">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/embed' ) {
-		$content  = '<div class="wp-block-embed module">';
+		$content  = '<div class="wp-block-embed">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/table' ) {
-		$content  = '<div class="wp-block-table module">';
+		$content  = '<div class="wp-block-table">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
@@ -1892,34 +1758,82 @@ function hide_email_prepopulation( $value ) {
 	return 'yes';
 }
 
-function custom_meta_description($description) {
+function custom_meta_description( $description ) {
 	// Check if the meta description is empty or not set
-    if (empty($description)) {
+	if ( empty( $description ) ) {
 			// Get the current post ID and its content
-        $post_id = get_the_ID();
-        $post_content = get_post_field('post_content', $post_id);
+		$post_id      = get_the_ID();
+		$post_content = get_post_field( 'post_content', $post_id );
 
 				// Extract the content from the first block (paragraph or image-text)
-        preg_match('/<!--\s+wp:acf\/(paragraph|image-text).+?{"paragraph_text":"(.*?)"/s', $post_content, $matches);
+		preg_match( '/<!--\s+wp:acf\/(paragraph|image-text).+?{"paragraph_text":"(.*?)"/s', $post_content, $matches );
 
 				// Check if a match is found and extract the content from the block
-        $match = isset($matches[2]) ? json_decode('"' . $matches[2] . '"') : null;
+		$match = isset( $matches[2] ) ? json_decode( '"' . $matches[2] . '"' ) : null;
 
 				// Decode Unicode escape sequences in the extracted text
-        $decoded_match = isset($match) ? html_entity_decode($match) : null;
+		$decoded_match = isset( $match ) ? html_entity_decode( $match ) : null;
 
 				// Remove unwanted characters from the extracted text except hyphens
-        $clean_match = isset($decoded_match) ? preg_replace('/[\x00-\x1F\x7F-\xFF\xA0]/u', ' ', $decoded_match) : null;
+		$clean_match = isset( $decoded_match ) ? preg_replace( '/[\x00-\x1F\x7F-\xFF\xA0]/u', ' ', $decoded_match ) : null;
 
 				// Trim the description to 40 words if it exists
-        $description = isset($clean_match) ? wp_trim_words($clean_match, 40, '') : 'Colby College is an intellectual community working to solve the world’s most complex challenges.';
-    }
+		$description = isset( $clean_match ) ? wp_trim_words( $clean_match, 40, '' ) : 'Colby College is an intellectual community working to solve the world’s most complex challenges.';
+	}
 
-    return $description;
+	return $description;
 }
-add_filter('wpseo_metadesc', 'custom_meta_description');
+add_filter( 'wpseo_metadesc', 'custom_meta_description' );
 
 add_filter( 'auto_core_update_send_email', '__return_false' );
 
+add_filter(
+	'wpseo_title',
+	function ( $title ) {
+		if ( get_query_var( 'post_type' ) === 'people' && is_post_type_archive( 'people' ) ) {
+			$title = 'People Directory | Colby College';
+		}
+		return  $title;
+	}
+);
 
+add_action( 'acf/options_page/save', 'general_settings_onsave', 10, 2 );
+function general_settings_onsave( $post_id, $menu_slug ) {
+	if ( 'global-settings' === $menu_slug ) {
+		$cf_api_email = get_option( 'cloudflare_api_email' );
+		$cf_api_key   = get_option( 'cloudflare_api_key' );
+		$data         = array(
+			'hosts' => array( 'www.colby.edu' ),
+		);
 
+		$json = json_encode( $data );
+
+		$ch = curl_init();
+
+		curl_setopt( $ch, CURLOPT_URL, 'https://api.cloudflare.com/client/v4/zones/bcccb3fcba241fabbe73cd335f7507bc/purge_cache' );
+		curl_setopt( $ch, CURLOPT_POST, 1 );
+		curl_setopt(
+			$ch,
+			CURLOPT_HTTPHEADER,
+			array(
+				'Content-Type: application/json',
+				'X-Auth-Email: ' . $cf_api_email,
+				'X-Auth-Key:' . $cf_api_key,
+			)
+		);
+		curl_setopt(
+			$ch,
+			CURLOPT_POSTFIELDS,
+			$json
+		);
+
+		// Receive server response ...
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+
+		$server_output = curl_exec( $ch );
+
+		curl_close( $ch );
+		return;
+	}
+
+}
