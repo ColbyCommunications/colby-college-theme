@@ -1,0 +1,13 @@
+{% if in_component_library %}
+  {% set listBlock = '@list-block' %}
+{% else %}
+  {% set listBlock = fn('get_theme_file_path', '/src/twig/components/list-block/list-block.twig') %}
+{% endif %}
+
+<div class="list-block-grid grid grid-cols-12 gap-10 max-w-screen-2xl w-full my-0 mx-auto">
+  {% for item in items %}
+    <div class="list-block-grid__item col-span-12 {% if columns == 4 %}md:col-span-3{% elseif columns == 3 %}md:col-span-4{% else %}md:col-span-6{% endif %}">
+      {% include listBlock with item %}
+    </div>
+  {% endfor %}
+</div>

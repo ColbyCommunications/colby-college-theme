@@ -1,0 +1,40 @@
+{% import "macros.twig" as macros %}
+
+{% if in_component_library %}
+  {% set context = '@context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+{% endif %}
+
+<div class="icon-section py-24 relative bg-blueslate__pattern bg-cover bg-center space-y-16">
+  <div class="icon-section__inner grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
+    <div class="icon-section__context md:col-span-8 md:col-start-3">
+      {% include context with {
+        size: 'large',
+        type: 'light',
+        subheading: subheading,
+        heading: heading,
+        paragraph: paragraph,
+        buttons: {
+          items: buttons,
+        },
+        align: 'center',
+      } %}
+    </div>
+  </div>
+  <div class="icon-section__inner grid grid-cols-12 gap-x-10 gap-y-16 max-w-screen-2xl w-full px-5 my-0 mx-auto">
+    {% for item in items %}
+      <div class="icon-section__item flex flex-col items-center col-span-6 md:col-span-3">
+        <img class="icon-section__image w-40 mb-4" src="{{ item.image.sizes.Square }}" alt="{{ item.image.alt }}" />
+        {% include context with {
+          size: 'medium',
+          type: 'light',
+          subheading: null,
+          heading: item.heading,
+          paragraph: item.paragraph,
+          align: 'center',
+        } %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
