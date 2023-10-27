@@ -782,6 +782,125 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
+
+			// register a media context section
+			acf_register_block(
+				array(
+					'name'            => 'media-context-section',
+					'title'           => __( 'Media Context Section' ),
+					'description'     => __( 'Section component dedicated to grouping media context with a decorative background' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'media', 'context', 'section' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a collage section
+			acf_register_block(
+				array(
+					'name'            => 'collage-section',
+					'title'           => __( 'Collage Section' ),
+					'description'     => __( 'Decorative section with curated image group and context' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'collage', 'context', 'media', 'section', 'image' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a related section
+			acf_register_block(
+				array(
+					'name'            => 'related-section',
+					'title'           => __( 'Related Section' ),
+					'description'     => __( 'Component typically found at the bottom of post style pages.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'media', 'context', 'section', 'related' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a icon section
+			acf_register_block(
+				array(
+					'name'            => 'icon-section',
+					'title'           => __( 'Icon Section' ),
+					'description'     => __( 'Section dedicated to grouping svg assets or transparent pngs.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'icon', 'context', 'section' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a list block grid
+			acf_register_block(
+				array(
+					'name'            => 'list-block-grid',
+					'title'           => __( 'List Block Grid' ),
+					'description'     => __( 'Dedicated grid for list blocks' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'list', 'block', 'grid' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a bg inset media context
+			acf_register_block(
+				array(
+					'name'            => 'bg-inset-media-context',
+					'title'           => __( 'Background Inset Media Context' ),
+					'description'     => __( 'Container component for the media context supporting background textures.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'media', 'context', 'background', 'inset' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a home section
+			acf_register_block(
+				array(
+					'name'            => 'home-section',
+					'title'           => __( 'Home Section' ),
+					'description'     => __( 'Advancement site exclusive block for rendering latest events and alumni news from the Colby News site' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'home', 'context', 'section', 'news', 'events' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
 		}
 	}
 
