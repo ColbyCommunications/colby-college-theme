@@ -6,8 +6,8 @@
   </head>
 {% endblock %}
 
-  <body {{function("body_class")}}>
-    <div id="app" >
+  <body>
+    <div id="app">
       {% if global_alert and global_alert.active == true %}
         {% include 'alert.twig' with global_alert %}
       {% endif %}
