@@ -306,6 +306,18 @@
     }
 }
 
+/* Password Protection Styles */
+.post-password-form input[type='password'] {
+    border: 1px solid #ccc;
+}
+
+.post-password-form input[type='submit'] {
+    border: 1px solid #002878;
+    background-color: #002878;
+    color: #fff;
+    padding: 1px 10px;
+}
+
 @media (max-width: 768px) {
     .colby-image-text-block {
         > div > div {
