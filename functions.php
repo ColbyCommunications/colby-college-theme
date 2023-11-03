@@ -901,6 +901,23 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
+
+			// test new block
+			acf_register_block(
+				array(
+					'name'            => 'test-new-block',
+					'title'           => __( 'Test New Block' ),
+					'description'     => __( 'Test' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'home', 'context', 'section', 'news', 'events' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
 		}
 	}
 
