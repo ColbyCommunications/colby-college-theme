@@ -766,7 +766,7 @@ class StarterSite extends Timber\Site {
 					'page_title' => 'Global Settings',
 					'menu_title' => 'Global Settings',
 					'menu_slug'  => 'global-settings',
-					'capability' => 'edit_posts',
+					'capability' => 'edit_colbyedu_global_settings',
 					'redirect'   => false,
 				)
 			);
@@ -1794,4 +1794,65 @@ add_filter(
 		return  $title;
 	}
 );
+
+function _purgeCF() {
+	$cf_api_email = get_option( 'cloudflare_api_email' );
+	$cf_api_key   = get_option( 'cloudflare_api_key' );
+	$data         = array(
+		// get host from database
+		'hosts' => array( wp_parse_url(home_url())['host'] ),
+	);
+
+	$json = json_encode( $data );
+
+	$ch = curl_init();
+
+	// Set options
+	curl_setopt( $ch, CURLOPT_URL, 'https://api.cloudflare.com/client/v4/zones/bcccb3fcba241fabbe73cd335f7507bc/purge_cache' );
+	curl_setopt( $ch, CURLOPT_POST, 1 );
+	curl_setopt(
+		$ch,
+		CURLOPT_HTTPHEADER,
+		array(
+			'Content-Type: application/json',
+			'X-Auth-Email: ' . $cf_api_email,
+			'X-Auth-Key:' . $cf_api_key,
+		)
+	);
+	curl_setopt(
+		$ch,
+		CURLOPT_POSTFIELDS,
+		$json
+	);
+
+	// Receive server response ...
+	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+
+	// execute cURL
+	$server_output = curl_exec( $ch );
+
+	curl_close( $ch );
+}
+
+add_action( 'acf/options_page/save', 'general_settings_onsave', 10, 2 );
+function general_settings_onsave( $post_id, $menu_slug ) {
+	if ( 'global-settings' === $menu_slug ) {
+		_purgeCF();
+		return;
+	}
+}
+
+function on_save_post( $post_id ) {
+	// Find parent post_id.
+	if ( $post_parent_id = wp_get_post_parent_id( $post_id ) ) {
+		$post_id = $post_parent_id;
+	}
+
+	$post = get_post($post_id);
+
+	if ($post->post_title === "Emergency Updates") {
+		_purgeCF();
+	}
+}
+add_action( 'save_post', 'on_save_post' );
 
