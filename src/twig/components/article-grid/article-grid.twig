@@ -108,7 +108,7 @@
           {% set paragraph_text = item.post.title %}
         {% else %}
           {% set cta_title = 'Read More' %}
-          {% set paragraph_text = item.post.preview.length(10).read_more('') %}
+          {% set paragraph_text = item.post.preview ? item.post.preview.length(10).read_more('') : item.post.post_excerpt %}
         {% endif %}
 
         {% set newItem = [{
