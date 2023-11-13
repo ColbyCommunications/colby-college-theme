@@ -25,11 +25,17 @@
                 const panelSiblings = this.getSiblings(panel);
                 const window = panel.querySelector('[data-accordion-window]');
                 const content = panel.querySelector('[data-accordion-content]');
+                const iconOpen = panel.querySelector('[data-accordion-icon-open]');
+                const iconClosed = panel.querySelector('[data-accordion-icon-closed]');
 
                 if (this.active.includes(b)) {
                     this.active = this.active.filter((item) => item !== b);
+                    iconClosed.setAttribute('style', 'display: inline');
+                    iconOpen.setAttribute('style', 'display: none');
                 } else {
                     this.active.push(b);
+                    iconClosed.setAttribute('style', 'display: none');
+                    iconOpen.setAttribute('style', 'display: inline');
                 }
 
                 this.active.includes(b)
@@ -45,6 +51,14 @@
                         .filter((item) => item.localName !== 'code')
                         .forEach((sibling) => {
                             const siblingWindow = sibling.querySelector('[data-accordion-window]');
+                            const siblingIconClosed = sibling.querySelector(
+                                '[data-accordion-icon-closed]'
+                            );
+                            const siblingIconOpen = sibling.querySelector(
+                                '[data-accordion-icon-open]'
+                            );
+                            siblingIconClosed.setAttribute('style', 'display: inline');
+                            siblingIconOpen.setAttribute('style', 'display: none');
                             siblingWindow.setAttribute('style', 'height: 0; visibility: hidden;');
                         });
                 }

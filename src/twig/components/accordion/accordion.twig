@@ -1,5 +1,3 @@
-{% import "icons.twig" as icons %}
-
 {% if in_component_library %}
   {% set wysiwyg = '@wysiwyg' %}
 {% else %}
@@ -7,7 +5,7 @@
 {% endif %}
 
 <component
-  class="accordion max-w-screen-2xl w-full mx-auto"
+  class="accordion"
   is="accordion"
   v-slot="accordion"
   {% if single %}
@@ -32,24 +30,31 @@
             </svg>
             <svg data-accordion-icon-open xmlns="https://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 48 48" style="display:none"><path d="M10 25.5v-3h28v3Z"/></svg>
         </div>
-        <div
-          class="accordion__window"
-          data-accordion-window
-        >
-          <div
-            class="accordion__content"
-            data-accordion-content
-          >
-            <code v-pre>
-            {% include wysiwyg with {
-              post: {
-                content: item.content
-              }
-            } %}
-            </code>
+        <div>
+          <h3 class=" font-extended font-normal !text-16 leading-110 -tracking-3 text-indigo">
+            {{ item.heading }}
+          </h3>
           </div>
+        </button>
+      </div>
+      <div
+        class="accordion__window"
+        data-accordion-window
+      >
+        <div
+          class="accordion__content"
+          data-accordion-content
+        >
+          <code v-pre>
+          {% include wysiwyg with {
+            post: {
+              content: item.content
+            }
+          } %}
+          </code>
         </div>
-      </article>
-    {% endfor %}
+      </div>
+    </article>
+  {% endfor %}
   </div>
 </component>

@@ -15,17 +15,6 @@
 
 {% if post.meta('hero_type') == 'none' %}
 
-{% elseif post.meta('hero_type') == 'half_width' %}
-  {% include 'hw-image-section.twig' with {
-    hero: true,
-    reverse: true,
-    size: 'large',
-    subheading: template_subheading,
-    heading: template_heading,
-    paragraph: template_paragraph,
-    image: post.meta('image'),
-    buttons: post.meta('buttons')
-  } %}
 {% elseif post.meta('hero_type') == 'overlay' %}
   {% include 'overlay-hero.twig' with {
     size: 'medium',

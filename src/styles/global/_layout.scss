@@ -33,18 +33,17 @@ p {
 
 // This non tailwind css is required to style event embeds from livewhale
 .lwcw {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 2.5rem;
-    max-width: 1536px;
-    margin: 0 auto;
 }
 
 .lw-colby-event {
-    grid-column: span 6 / span 6;
+    flex-grow: 1;
+    width: 50%;
 
     @include breakpoint(medium) {
-        grid-column: span 4 / span 4;
+        width: 33%;
     }
 }
 
@@ -56,10 +55,6 @@ p {
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: #366bcf;
-
-    .featured-events & {
-        color: #ffb500;
-    }
 }
 
 .lw-event-time {
@@ -69,10 +64,6 @@ p {
     line-height: (18 / 14);
     color: #365185;
     margin-top: 0.5rem;
-
-    .featured-events & {
-        color: #ffffff;
-    }
 }
 
 .lw-event-name a {
@@ -83,10 +74,6 @@ p {
     letter-spacing: -0.03em;
     color: #012169;
     margin-top: 0.5rem;
-
-    .featured-events & {
-        color: #ffffff;
-    }
 }
 
 // These are animation specific styles for easy access

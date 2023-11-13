@@ -1,26 +1,12 @@
-{% if (menu != null) and (menu != 'Manual') %}
-  {% set items = fn('wp_get_nav_menu_items', menu)|map(i => {
-    link: {
-      title: i.title,
-      url: i.url,
-    }
-  }) %}
-{% endif %}
-
-<component is="section-nav" class="section-nav full-bleed py-6 bg-gray-100 overflow-x-auto !mt-0">
+<component is="section-nav" class="section-nav py-6 bg-gray-100 overflow-x-auto !mt-0">
   <div class="section-nav__inner flex px-5 space-x-10 lg:justify-center">
     <h2 class="section-nav__heading font-extended font-bold text-14 md:text-12 tracking-8 text-azure uppercase whitespace-nowrap">
-      {{ title }}
+      In this section:
     </h2>
     <ul class="flex items-center space-x-7 pr-9 md:pr-0">
       {% for item in items %}
         <li class="font-body font-medium text-14 md:text-10 text-indigo-800 leading-130 whitespace-nowrap">
-          <a class="text-indigo-800 hover:text-indigo hover:underline transition-all duration-200 ease-in-out" href="{{ item.link.url }}">
-            {% if item.icon_class %}
-              <span class="material-icons-sharp text-14 align-middle mr-1">{{item.icon_class}}</span>
-            {% endif %}
-            {{ item.link.title }}
-          </a>
+          <a class="text-indigo-800 hover:text-indigo hover:underline transition-all duration-200 ease-in-out" href="{{ item.link.url }}">{{ item.link.title }}</a>
         </li>
       {% endfor %}
     </ul>

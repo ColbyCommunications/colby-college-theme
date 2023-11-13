@@ -17,7 +17,7 @@
     h4,
     h5,
     h6 {
-        // @apply font-extended;
+        @apply font-extended;
         @apply font-normal;
     }
 
@@ -105,15 +105,7 @@
         }
     }
 
-    > p {
-        @apply font-normal;
-        @apply font-body;
-        @apply text-16;
-        @apply leading-140;
-        @apply mb-4;
-        @apply text-indigo-900;
-    }
-
+    // general divs for blocks, etc
     > div {
         @apply clear-both;
         @apply mb-20;

@@ -1,8 +1,0 @@
-<component
-  is="endpoint-filter"
-  type="{{ type|default('light') }}"
-  {% if initialEndpoint is defined %}:initial-endpoint="{{ initial_endpoint }}"{% endif %}
-  {% if limit is defined %}:limit="{{ limit }}"{% endif %}
-  {% if filters is defined %}:filters="{{ filters }}"{% endif %}
->
-</component>
