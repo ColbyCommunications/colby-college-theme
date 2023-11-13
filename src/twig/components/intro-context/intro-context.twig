@@ -1,0 +1,30 @@
+{% if in_component_library %}
+  {% set context = '@context' %}
+  {% set buttonGroup = '@button-group' %}
+{% else %}
+  {% set context = 'context.twig' %}
+  {% set buttonGroup = 'button-group.twig' %}
+{% endif %}
+
+<div class="intro-context">
+  <div class="intro-context__inner md:grid md:grid-cols-12 gap-10 max-w-screen-2xl w-full px-5 mx-auto">
+    <div class="intro-context__main {% if inset %} md:col-start-2 md:col-span-5 {% else %} md:col-span-6{% endif %} pt-5 border-t border-azure">
+      {% include context with {
+        size: size,
+        subheading: subheading,
+        heading: heading,
+      } %}
+    </div>
+    <div class="intro-context__secondary {% if inset %} md:col-span-5 {% else %} md:col-span-6 {% endif %} mt-2 md:mt-0 grid gap-4">
+      <div class="font-body font-normal text-18 leading-130 text-indigo-800">
+        {{ text|raw }}
+      </div>
+      {% if buttons %}
+        {% include buttonGroup with {
+          size: 'large',
+          items: buttons,
+        } %}
+      {% endif %}
+    </div>
+  </div>
+</div>

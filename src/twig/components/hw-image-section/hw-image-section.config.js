@@ -23,5 +23,28 @@ module.exports = {
         reverse: true,
       },
     },
+    {
+      name: 'Large',
+      context: {
+        size: 'large',
+      }
+    },
+    {
+      name: 'Dark',
+      context: {
+        size: 'medium',
+        type: 'light',
+        reverse: true,
+        subheading: 'Reunion',
+        heading: 'Make new memories with old friends.',
+        paragraph: 'Find out exactly when your reunion is happening.',
+        buttons: [
+          {
+            url: 'https://welcometruth.com/',
+            title: 'Find Your Class Reunion',
+          }
+        ],
+      }
+    }
   ]
 }

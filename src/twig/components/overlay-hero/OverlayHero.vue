@@ -20,8 +20,5 @@ export default {
       this.$refs.overlayHero.getElementsByClassName('video')[0].click();
     },
   },
-  mounted() {
-    console.log('wae');
-  }
 }
 </script>

@@ -12,7 +12,7 @@
 <component
   is="overlay-hero"
   v-slot="overlayHero"
-  class="overlay-hero relative {% if not video %} h-[calc(100vh_-_100px)] {% if size == 'medium' %} md:h-[400px] {% endif %}{% else %}h-[calc(100vh_-_100px)] md:h-auto{% endif %} overflow-hidden"
+  class="overlay-hero relative {% if not video.id %} h-[calc(100vh_-_100px)] {% if size == 'medium' %} md:h-[400px] {% endif %}{% else %}h-[calc(100vh_-_100px)] md:h-auto{% endif %} overflow-hidden"
 >
   <div
     :class="{'invisible opacity-0': overlayHero.active == true}"
@@ -22,6 +22,7 @@
     <div class="overlay-hero__inner grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
       <div class="overlay-hero__main md:col-span-5">
         {% include context with {
+          align: align,
           hero: true,
           size: size ? size : 'large',
           type: 'light',
@@ -47,7 +48,7 @@
       </div>
     </div>
   </div>
-  {% if video %}
+  {% if video.id %}
     <div
       class="overlay-hero__screen absolute top-0 left-0 w-full h-full"
       :class="{'invisible opacity-0': overlayHero.active == true}"

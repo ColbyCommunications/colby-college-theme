@@ -1,0 +1,23 @@
+{% if in_component_library %}
+  {% set context = '@context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+{% endif %}
+
+<div class="context-section">
+  <div class="context-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto {% if hero %} my-24 {% endif %}">
+    <div class="{% if align == 'center' %} md:col-start-3 {% endif %} md:col-span-8">
+      {% include context with {
+        hero: hero,
+        align: align,
+        size: size,
+        subheading: subheading,
+        heading: heading,
+        paragraph: paragraph,
+        buttons: {
+          items: buttons,
+        }
+      } %}
+    </div>
+  </div>
+</div>

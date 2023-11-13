@@ -1,6 +1,6 @@
 {% import "macros.twig" as macros %}
 
-<component is="button-group" class="button-group flex flex-wrap {% if align == 'center' %}justify-center{% elseif align == 'column' %}flex-col items-start{% endif %} gap-4">
+<component is="button-group" class="button-group flex flex-wrap {% if align == 'center' %}justify-center{% elseif align == 'column' %}flex-col items-start{% endif %} gap-4 shrink-0">
   {% for item in items %}
     {% if in_component_library %}
       {{ macros.button(size, type, arrow, transparentBg, item.url, item.title, reverse, item.target) }}
