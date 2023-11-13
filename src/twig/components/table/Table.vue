@@ -47,7 +47,7 @@
             v-if="this.api == 'Course Catalogue'"
             v-model="selectedDepartment"
             @change="toggleTerm('SELECT', $event)"
-            class="appearance-none w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer mb-6 md:mb-0"
+            class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer mb-6 md:mb-0"
         >
             <option v-text="'All Departments'" :value="'All Departments'" />
             <option v-text="'African American Studies'" :value="'AFAM'" />
@@ -92,7 +92,7 @@
             v-if="this.api != 'Department Courses' && this.api != 'Offices' && this.api != 'People'"
             v-model="selectedDivision"
             @change="toggleTermDivision('SELECT', $event)"
-            class="appearance-none w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer mb-6 md:mb-0"
+            class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer mb-6 md:mb-0"
         >
             <option v-text="'All Divisions'" :value="'All Divisions'" />
             <option v-text="'Humanities'" :value="'Humanities'" />
