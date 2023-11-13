@@ -3,7 +3,7 @@
         <div v-if="filters" class="section-nav full-bleed py-6 bg-gray-100 overflow-x-auto !mt-0">
             <div class="section-nav__inner flex px-5 space-x-10 lg:justify-center">
                 <h2
-                    class="section-nav__heading font-extended font-bold text-14 md:text-12 tracking-8 text-azure uppercase whitespace-nowrap"
+                    class="section-nav__heading font-bold text-14 md:text-12 tracking-8 text-azure uppercase whitespace-nowrap"
                 >
                     Event types:
                 </h2>
@@ -31,12 +31,12 @@
                     <div class="context w-full space-y-5">
                         <div class="text-group--animated text-group text-group--animated">
                             <div
-                                class="text-group__subheading font-extended font-bold text-12 leading-130 tracking-8 text-left uppercase"
+                                class="text-group__subheading font-bold text-12 leading-130 tracking-8 text-left uppercase"
                                 :class="[type == 'dark' ? 'text-canary' : 'text-azure']"
                                 v-text="stripHTML(item.date)"
                             />
                             <h2
-                                class="text-group__heading font-extended font-bold text-24 md:text-18 leading-110 -tracking-3 text-left mt-2"
+                                class="text-group__heading font-bold text-24 md:text-18 leading-110 -tracking-3 text-left mt-2"
                                 :class="[type == 'dark' ? 'text-white' : 'text-indigo']"
                                 v-html="stripHTML(item.title)"
                             />

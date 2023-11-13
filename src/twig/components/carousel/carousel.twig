@@ -6,6 +6,13 @@
   {% set arrowControls = 'arrow-controls.twig' %}
 {% endif %}
 
+{# type checking for ACF #}
+{% if render_api == true %}
+  {% set render_api = 1 %}
+{% else %}
+  {% set render_api = 0 %}
+{% endif %}
+
 <component
   is="carousel"
   v-slot="carousel"

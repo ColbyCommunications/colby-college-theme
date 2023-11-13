@@ -143,7 +143,6 @@
   {% set borderColor = 'border-transparent' %}
 {% endif  %}
 
-
 <a class="btn group inline-flex flex-row items-center {{ space }} rounded border border-solid {{ borderColor }} {{ hoverBorderColor }} font-body font-normal {{ textSize }} leading-130 !no-underline {{ textColor }} {% if not transparentBg %}{{ backgroundColor }} {{ hoverBackgroundColor }} {{ focusBackgroundColor }}{% endif %} focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] {{ paddingY }} {{ paddingX }} transition-all duration-200 ease-in-out" href="{{ url }}" {% if target %}target="{{ target }}"{% endif %}>
   {% if arrow and not reverse %}
     <svg class="btn__arrow {{ arrowWidth }} {{ arrowHeight }} {{ arrowColor }}" viewBox="0 0 12 12" style="enable-background:new 0 0 12 12" xml:space="preserve">

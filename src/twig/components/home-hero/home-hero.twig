@@ -4,6 +4,11 @@
   {% set context = '@context' %}
 {% else %}
   {% set context = 'context.twig' %}
+  {% set poster = '' %}
+  {% if image %}
+    {% set poster = image.sizes.Hero %}
+  {% endif %}
+
   {% set image = {
     srcset: image.sizes.Hero,
     src: image.sizes.Hero,
@@ -40,7 +45,7 @@
     {% endif %}
   </div>
   {% if video %}
-    <video class="z-[-10] absolute min-w-full min-h-full w-auto h-auto bg-repeat bg-cover top-0 right-0 bottom-0 left-0 object-cover" autoplay muted loop>
+    <video class="z-[-10] absolute min-w-full min-h-full w-auto h-auto bg-repeat bg-cover top-0 right-0 bottom-0 left-0 object-cover" playsinline autoplay muted loop poster="{{poster}}">
       <source src="{{ video }}" type="video/mp4">
     </video>
   {% else %}

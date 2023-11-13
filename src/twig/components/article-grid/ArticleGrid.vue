@@ -2,18 +2,16 @@
     <div>
         <slot v-if="!renderApi" />
         <div
-            v-if="renderApi && api == 'president'"
-            class="article-grid grid grid-cols-8 gap-10 max-w-screen-2xl w-full my-0 mx-auto"
-            :class="{
-                'grid-cols-9': columns == 3,
-            }"
+            v-if="renderApi"
+            class="article-grid grid gap-10 max-w-screen-2xl w-full my-0 mx-auto grid-cols-12"
         >
             <div
                 v-for="(item, index) in data"
                 class="article-grid__item glide__slide col-span-4"
                 :class="{
-                    'md:col-span-2 col-span-4': columns == 4,
-                    'md:col-span-3 col-span-9': columns == 3,
+                    'col-span-12 md:col-span-6': columns == 2,
+                    'col-span-12 md:col-span-6 lg:col-span-4': columns == 3,
+                    'col-span-12 md:col-span-6 lg:col-span-3': columns == 4,
                 }"
                 :key="index"
             >
@@ -22,23 +20,25 @@
                     :class="{ 'pt-1 border-t-2 border-solid border-indigo-600': border }"
                 >
                     <div class="context w-full py-4">
-                        <component is="text-group" class="text-group">
-                            <div
-                                v-if="item.date"
-                                class="text-group__subheading font-extended font-bold text-12 leading-130 tracking-8 text-left text-azure uppercase"
-                                v-text="item.date"
-                            />
-                            <h2
-                                class="text-group__heading font-extended font-normal text-20 leading-110 -tracking-3 text-left text-indigo"
-                                :class="{
-                                    'mt-2': item.date,
-                                }"
-                                v-text="decodeHtmlEntities(item.title.rendered)"
-                            />
-                            <p
-                                class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
-                                v-text="item['post-meta-fields'].summary[0]"
-                            />
+                        <component is="text-group" class="text-group flex">
+                            <div class="mr-6 flex flex-col justify-start shrink-0">
+                                <img
+                                    class="h-[75px] w-[75px] lg:h-[96px] lg:w-[96px]"
+                                    :src="item.image"
+                                    :alt="item.title.rendered"
+                                />
+                            </div>
+                            <div>
+                                <h2
+                                    class="text-group__heading font-extended font-normal text-20 leading-110 -tracking-3 text-left text-indigo"
+                                    :class="{ 'lg:text-16': columns == 4 }"
+                                    v-text="decodeHtmlEntities(item.title.rendered)"
+                                />
+                                <p
+                                    class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
+                                    v-text="item['post-meta-fields'].summary[0]"
+                                />
+                            </div>
                         </component>
                         <div class="button-group flex flex-wrap gap-4 mt-4">
                             <a
@@ -62,7 +62,7 @@
 <script>
     import axios from 'axios';
     import moment from 'moment';
-    import TextGroup from '../text-group/TextGroup.vue';
+    import TextGroup from '/src/twig/components/text-group/TextGroup.vue';
 
     export default {
         components: {
@@ -75,30 +75,61 @@
         },
         async mounted() {
             if (this.renderApi) {
-                switch (this.api) {
-                    case 'president':
-                        this.endpoint =
-                            'https://news.colby.edu/wp-json/wp/v2/external_post?&tags=577&_embed=1';
-                        break;
-                }
+                this.endpoint = 'https://news.colby.edu/wp-json/custom/v1/external-posts';
 
                 await axios.get(this.endpoint).then((output) => {
-                    this.data = output.data.map((item) => {
-                        return {
-                            title: {
-                                rendered: item.title.rendered.replace(/<\/?[^>]+(>|$)/g, ''),
-                            },
-                            'post-meta-fields': {
-                                summary: [
-                                    `${item.content.rendered
-                                        .replace(/<\/?[^>]+(>|$)/g, '')
-                                        .substring(0, 120)}...`,
-                                ],
-                            },
-                            url: item.external_url,
-                            date: moment(item.date).format('MMM DD, YYYY'),
-                        };
-                    });
+                    this.data = output.data
+                        .filter((item) => {
+                            switch (this.posts) {
+                                case 'media_coverage':
+                                    if (this.api === 'all_media') {
+                                        return (
+                                            item.story_type &&
+                                            Array.isArray(item.story_type) &&
+                                            item.story_type[0].slug === 'media-coverage' &&
+                                            item.content.rendered
+                                        );
+                                    } else if (this.api === 'president') {
+                                        return (
+                                            item.story_type &&
+                                            Array.isArray(item.story_type) &&
+                                            item.story_type[0].slug === 'media-coverage' &&
+                                            item.content.rendered &&
+                                            item.tags &&
+                                            item.tags.some((tag) => tag.name === 'president')
+                                        );
+                                    } else if (this.api === 'highlight') {
+                                        return (
+                                            item.story_type &&
+                                            Array.isArray(item.story_type) &&
+                                            item.story_type[0].slug === 'media-coverage' &&
+                                            item.content.rendered &&
+                                            item.tags &&
+                                            item.tags.some((tag) => tag.name === 'editors-pick')
+                                        );
+                                    }
+                                    break;
+                            }
+                            return false;
+                        })
+                        .map((item) => {
+                            return {
+                                title: {
+                                    rendered: item.title.rendered.replace(/<\/?[^>]+(>|$)/g, ''),
+                                },
+                                'post-meta-fields': {
+                                    summary: [
+                                        `${item.content.rendered
+                                            .replace(/<\/?[^>]+(>|$)/g, '')
+                                            .substring(0, 120)}...`,
+                                    ],
+                                },
+                                url: item.external_url,
+                                image: item.image,
+                                date: moment(item.date).format('MMM DD, YYYY'),
+                            };
+                        })
+                        .slice(0, this.range);
                 });
             }
         },
@@ -106,8 +137,16 @@
             renderApi: {
                 required: true,
             },
+            posts: {
+                type: String,
+                required: false,
+            },
             api: {
                 type: String,
+                required: false,
+            },
+            range: {
+                type: Number,
                 required: false,
             },
             border: {

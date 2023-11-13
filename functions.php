@@ -8,6 +8,8 @@
  * @since      Timber 0.1
  */
 
+	add_theme_support( 'responsive-embeds' );
+
 /**
  * If you are installing Timber as a Composer dependency in your theme, you'll need this block
  * to load your dependencies and initialize Timber. If you are using Timber via the WordPress.org
@@ -900,7 +902,7 @@ class StarterSite extends Timber\Site {
 					'page_title' => 'Global Settings',
 					'menu_title' => 'Global Settings',
 					'menu_slug'  => 'global-settings',
-					'capability' => 'edit_posts',
+					'capability' => 'edit_colbyedu_global_settings',
 					'redirect'   => false,
 				)
 			);
@@ -1107,7 +1109,7 @@ function getNewPeople( $directory_data ) {
 		// Assign variables to desired WD fields
 		$WDEmployeeID    = str_pad( $WDPerson['employeeID'], 7, '0', STR_PAD_LEFT );
 		$WDPrefFirstName = $WDPerson['preferredFirstName'];
-		$WDLastName      = $WDPerson['lastName'];
+		$WDPrefLastName      = $WDPerson['preferredLastName'];
 
 		// Skip person if no email associated
 		if ( ! $WDPerson['primaryWorkEmail'] ) {
@@ -1203,14 +1205,14 @@ function getNewPeople( $directory_data ) {
 
 		// Combine fields from WD and CX
 		$post = array(
-			'post_title'   => $WDPrefFirstName . ' ' . $WDLastName,
+			'post_title'   => $WDPrefFirstName . ' ' . $WDPrefLastName,
 			'post_content' => '',
 			'post_type'    => 'people',
 			'post_status'  => 'publish',
 			'meta_input'   => array(
 				'employee_id'      => $WDEmployeeID,
 				'first_name'       => $WDPrefFirstName,
-				'last_name'        => $WDLastName,
+				'last_name'        => $WDPrefLastName,
 				'pronouns'         => $wd_pronouns,
 				'title'            => $WDTitle,
 				'department'       => $WDDepartment,
@@ -1246,7 +1248,7 @@ function getNewPeople( $directory_data ) {
 
 			if ( $matchingPhoto ) {
 				$imageURL = 'https://colby.edu/college/WorkdayPhotos/v2/MD5/' . $matchingPhoto;
-				$desc     = $WDPrefFirstName . ' ' . $WDLastName;
+				$desc     = $WDPrefFirstName . ' ' . $WDPrefLastName;
 				$image    = media_sideload_image( $imageURL, $ID, $desc, 'id' );
 				set_post_thumbnail( $ID, $image );
 			}
@@ -1266,14 +1268,14 @@ function getNewPeople( $directory_data ) {
 			// Update metadata for fields not changed in Gravity Forms with latest WD data
 
 			update_post_meta( $ID, 'first_name', $WDPrefFirstName );
-			update_post_meta( $ID, 'last_name', $WDLastName );
+			update_post_meta( $ID, 'last_name', $WDPrefLastName );
 
-			if ( $post->post_title !== $WDPrefFirstName . ' ' . $WDLastName ) {
+			if ( $post->post_title !== $WDPrefFirstName . ' ' . $WDPrefLastName ) {
 				wp_update_post(
 					array(
 						'ID'         => $ID,
-						'post_title' => $WDPrefFirstName . ' ' . $WDLastName,
-						'post_name'  => sanitize_title( $WDPrefFirstName . ' ' . $WDLastName ),
+						'post_title' => $WDPrefFirstName . ' ' . $WDPrefLastName,
+						'post_name'  => sanitize_title( $WDPrefFirstName . ' ' . $WDPrefLastName ),
 					)
 				);
 			}
@@ -1300,7 +1302,7 @@ function getNewPeople( $directory_data ) {
 				$img_parts   = explode( '_', $matchingPhoto );
 				$date        = substr( $img_parts[1], 0, 8 );
 				$imageURL    = 'https://colby.edu/college/WorkdayPhotos/v2/MD5/' . $matchingPhoto;
-				$desc        = $WDPrefFirstName . ' ' . $WDLastName;
+				$desc        = $WDPrefFirstName . ' ' . $WDPrefLastName;
 				$DBImageName = get_the_post_thumbnail_url( $ID );
 				if ( $DBImageName ) {
 					if ( strpos( $DBImageName, '_' ) !== false ) {
@@ -1890,6 +1892,103 @@ function hide_email_prepopulation( $value ) {
 	return 'yes';
 }
 
+function custom_meta_description($description) {
+	// Check if the meta description is empty or not set
+    if (empty($description)) {
+			// Get the current post ID and its content
+        $post_id = get_the_ID();
+        $post_content = get_post_field('post_content', $post_id);
 
+				// Extract the content from the first block (paragraph or image-text)
+        preg_match('/<!--\s+wp:acf\/(paragraph|image-text).+?{"paragraph_text":"(.*?)"/s', $post_content, $matches);
 
+				// Check if a match is found and extract the content from the block
+        $match = isset($matches[2]) ? json_decode('"' . $matches[2] . '"') : null;
+
+				// Decode Unicode escape sequences in the extracted text
+        $decoded_match = isset($match) ? html_entity_decode($match) : null;
+
+				// Remove unwanted characters from the extracted text except hyphens
+        $clean_match = isset($decoded_match) ? preg_replace('/[\x00-\x1F\x7F-\xFF\xA0]/u', ' ', $decoded_match) : null;
+
+				// Trim the description to 40 words if it exists
+        $description = isset($clean_match) ? wp_trim_words($clean_match, 40, '') : 'Colby College is an intellectual community working to solve the world’s most complex challenges.';
+    }
+
+    return $description;
+}
+add_filter('wpseo_metadesc', 'custom_meta_description');
+
+add_filter( 'auto_core_update_send_email', '__return_false' );
+
+add_filter(
+	'wpseo_title',
+	function ( $title ) {
+		if ( get_query_var( 'post_type' ) === 'people' && is_post_type_archive( 'people' ) ) {
+			$title = 'People Directory | Colby College';
+		}
+		return  $title;
+	}
+);
+
+function _purgeCF() {
+	$cf_api_email = get_option( 'cloudflare_api_email' );
+	$cf_api_key   = get_option( 'cloudflare_api_key' );
+	$data         = array(
+		// get host from database
+		'hosts' => array( wp_parse_url(home_url())['host'] ),
+	);
+
+	$json = json_encode( $data );
+
+	$ch = curl_init();
+
+	// Set options
+	curl_setopt( $ch, CURLOPT_URL, 'https://api.cloudflare.com/client/v4/zones/bcccb3fcba241fabbe73cd335f7507bc/purge_cache' );
+	curl_setopt( $ch, CURLOPT_POST, 1 );
+	curl_setopt(
+		$ch,
+		CURLOPT_HTTPHEADER,
+		array(
+			'Content-Type: application/json',
+			'X-Auth-Email: ' . $cf_api_email,
+			'X-Auth-Key:' . $cf_api_key,
+		)
+	);
+	curl_setopt(
+		$ch,
+		CURLOPT_POSTFIELDS,
+		$json
+	);
+
+	// Receive server response ...
+	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+
+	// execute cURL
+	$server_output = curl_exec( $ch );
+
+	curl_close( $ch );
+}
+
+add_action( 'acf/options_page/save', 'general_settings_onsave', 10, 2 );
+function general_settings_onsave( $post_id, $menu_slug ) {
+	if ( 'global-settings' === $menu_slug ) {
+		_purgeCF();
+		return;
+	}
+}
+
+function on_save_post( $post_id ) {
+	// Find parent post_id.
+	if ( $post_parent_id = wp_get_post_parent_id( $post_id ) ) {
+		$post_id = $post_parent_id;
+	}
+
+	$post = get_post($post_id);
+
+	if ($post->post_title === "Emergency Updates") {
+		_purgeCF();
+	}
+}
+add_action( 'save_post', 'on_save_post' );
 

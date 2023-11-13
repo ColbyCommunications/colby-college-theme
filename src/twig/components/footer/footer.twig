@@ -29,35 +29,37 @@
       </ul>
     </div>
   </div>
-  <div class="footer__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
-    <div class="footer__bottom md:flex justify-between md:col-span-12 space-y-10 md:space-y-0">
-      <ul class="footer__utility flex space-x-10">
+  <div class="max-w-screen-2xl w-full my-0 mx-auto space-y-8 md:space-y-0">
+    <div class="px-5 md:px-0 flex flex-col justify-start md:grid md:grid-cols-12 items-center">
+      <ul class="mb-12 md:mb-0 w-full md:w-64 flex justify-start md:col-span-4 md:grid md:grid-cols-2">
         {% for item in utility %}
-          <li class="font-body font-bold text-18 md:text-10 text-indigo-200 leading-140">
-            <a class="flex items-center text-indigo-200 hover:text-white hover:underline transition-all duration-200 ease-in-out" href="{{ item.url }}">
+          <li class="md:px-4 md:col-span-1 w-48 font-body font-bold text-18 md:text-10 text-indigo-200 leading-140">
+            <a class="mr-10 flex md:items-center text-indigo-200 hover:text-white hover:underline transition-all duration-200 ease-in-out" href="{{ item.url }}">
               {{ icons.icon(item.title|lower, 'fill-canary w-4 md:w-3 h-4 md:h-3 mr-2 md:mr-1') }}
               {{ item.title }}
             </a>
           </li>
         {% endfor %}
       </ul>
-      <div class="footer__connect flex space-between items-center">
-        {% include button with {
-          size: 'small',
-          type: 'dark',
-          url: 'https://news.colby.edu/newsletter/',
-          title: 'Newsletter',
-        }  %}
-        <ul class="footer__socials flex space-x-4 ml-8">
-          {% for item in social %}
-            <li class="text-[0]">
-              <a class="flex text-indigo-100" href="{{ item.platform.url }}">
-                {{ icons.icon(item.platform.title|lower, 'fill-indigo-100 hover:fill-indigo-500 max-w-5 md:max-w-4 max-h-4 md:max-h-3.5 w-full transition-all duration-200 ease-in-out') }}
-                <span class="sr-only">{{ item.platform.title }}</span>
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
+      <div class="w-full col-span-8 flex justify-start md:justify-end items-center">
+      <div class="flex items-center w-72">
+          {% include button with {
+            size: 'small',
+            type: 'dark',
+            url: 'https://news.colby.edu/newsletter/',
+            title: 'Newsletter'
+          }  %}
+          <ul class="ml-4 px-4 grid grid-cols-5">
+            {% for item in social %}
+              <li class="text-[0]">
+                <a class="w-8 flex text-indigo-100" href="{{ item.platform.url }}">
+                  {{ icons.icon(item.platform.title|lower, 'fill-indigo-100 hover:fill-indigo-500 max-w-5 md:max-w-4 max-h-4 md:max-h-3.5 w-full transition-all duration-200 ease-in-out') }}
+                  <span class="sr-only">{{ item.platform.title }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
     </div>
   </div>
