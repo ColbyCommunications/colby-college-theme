@@ -132,7 +132,7 @@
                 />
             </tr>
             <tr v-for="(item, index) in paginatedItems" class="w-full h-12 md:h-10 odd:bg-gray-100">
-                <td class="whitespace-nowrap md:whitespace-normal px-6 py-2">
+                <td class="whitespace-normal px-6 py-2">
                     <a
                         v-if="item.link.url && !item.image"
                         class="text-indigo hover:underline inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
