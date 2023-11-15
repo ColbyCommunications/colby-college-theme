@@ -1,0 +1,15 @@
+{% if in_component_library %}
+  {% set mediaContext = '@media-context' %}
+{% else %}
+  {% set mediaContext = 'media-context.twig' %}
+{% endif %}
+
+<div class="bg-inset-media-context">
+  <div class="bg-inset-media-context__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
+    <div class="bg-inset-media-context__main md:col-span-12">
+      <div class="bg-inset-media-context__bg py-14 px-8 md:px-14 bg-hero__pattern bg-cover bg-no-repeat">
+       {% include mediaContext %}
+      </div>
+    </div>
+  </div>
+</div>

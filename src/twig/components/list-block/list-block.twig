@@ -1,0 +1,18 @@
+{% if in_component_library %}
+  {% set context = '@context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+{% endif %}
+
+<div class="list-block h-full py-6 px-8 {% if type == 'dark' %} bg-gray-100 {% else %} bg-white {% endif %} border border-solid border-azure rounded-md">
+  {% include context with {
+    type: 'dark',
+    size: 'xsmall',
+    subheading: subheading,
+    heading: heading,
+    paragraph: paragraph,
+    buttons: {
+      items: buttons,
+    },
+  } %}
+</div>
