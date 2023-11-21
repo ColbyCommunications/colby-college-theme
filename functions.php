@@ -2117,7 +2117,7 @@ add_action( 'save_post', 'on_save_post' );
 function disable_algolia_indexing() {
     $site_url = $_SERVER['HTTP_HOST'];
 
-		die(var_dump($site_url));
+		echo $site_url;
 
     // // Check if the site URL is local
     // if (strpos($site_url, 'colby.edu') === false) {
@@ -2126,6 +2126,6 @@ function disable_algolia_indexing() {
     // }
 }
 
-disable_algolia_indexing();
+add_action('init', 'disable_algolia_indexing');
 
 // add_filter('algolia_should_index_searchable_post', 'disable_algolia_indexing');
