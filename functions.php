@@ -2115,17 +2115,13 @@ function on_save_post( $post_id ) {
 add_action( 'save_post', 'on_save_post' );
 
 function disable_algolia_indexing() {
-    $site_url = $_SERVER['HTTP_HOST'] . $_SERVER['SERVER_NAME'] . " " . wp_parse_url(home_url())['host'];
+    $site_url = $_SERVER['HTTP_HOST'];
 
-		echo $site_url;
-
-    // // Check if the site URL is local
-    // if (strpos($site_url, 'colby.edu') === false) {
-    //     // Disable Algolia indexing
-		// 		return false;
-    // }
+    // Check if the site URL is local
+    if (strpos($site_url, 'colby.edu') === false) {
+        // Disable Algolia indexing
+				return false;
+    }
 }
 
-add_action('init', 'disable_algolia_indexing');
-
-// add_filter('algolia_should_index_searchable_post', 'disable_algolia_indexing');
+add_filter('algolia_should_index_searchable_post', 'disable_algolia_indexing');
