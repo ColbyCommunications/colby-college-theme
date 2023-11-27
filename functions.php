@@ -2115,7 +2115,7 @@ function on_save_post( $post_id ) {
 add_action( 'save_post', 'on_save_post' );
 
 function disable_algolia_indexing() {
-    $site_url = $_SERVER['HTTP_HOST'] . " " . " " . wp_parse_url(home_url())['host'];
+    $site_url = $_SERVER['HTTP_HOST'] . $_SERVER['SERVER_NAME'] . " " . wp_parse_url(home_url())['host'];
 
 		echo $site_url;
 
