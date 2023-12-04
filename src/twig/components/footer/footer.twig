@@ -11,14 +11,18 @@
 <footer class="footer bg-indigo py-14 space-y-14">
   <div class="footer__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto space-y-8 md:space-y-0">
     <div class="footer__left md:col-span-5 flex justify-between md:justify-start items-start md:space-x-8 lg:space-x-12 md:border-r border-indigo-900 border-solid">
-      <a class="block hover:text-white hover:underline transition-all duration-200 ease-in-out" href="{{ address.url }}">{% include logo with {
+      <div><a class="block hover:text-white hover:underline transition-all duration-200 ease-in-out mb-4" href="{{ address.url }}">{% include logo with {
         class: 'fill-white w-[125px] md:w-[100px]',
       } %}</a>
+      <a class="block lg:hidden hover:text-white hover:underline transition-all duration-200 ease-in-out" href="https://colbyathletics.com">
+        <img class="w-[125px] md:w-[100px]" src="https://www.colby.edu/wp-content/uploads/2023/12/ColbyAth_MuleNEW3.png"/>
+      </a>
+      </div>
       <address class="footer__address font-body font-normal text-16 md:text-12 text-indigo-500 not-italic leading-140 space-y-2">
         {{ address.text }}
         <a class="block hover:text-white hover:underline transition-all duration-200 ease-in-out" href="tel:{{ phone }}">{{ phone }}</a>
       </address>
-      <a class="block hover:text-white hover:underline transition-all duration-200 ease-in-out" href="https://colbyathletics.com">
+      <a class="hidden lg:block hover:text-white hover:underline transition-all duration-200 ease-in-out" href="https://colbyathletics.com">
         <img class="w-[125px] md:w-[100px]" src="https://www.colby.edu/wp-content/uploads/2023/12/ColbyAth_MuleNEW3.png"/>
       </a>
     </div>
