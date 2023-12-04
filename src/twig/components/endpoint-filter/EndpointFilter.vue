@@ -131,7 +131,7 @@
                     },
                     {
                         title: 'Performance, Theater, and Dance',
-                        url: 'https://events.colby.edu/live/json/events/group/Performance%2C%20Theater%2C%20%26%20Dance',
+                        url: 'https://events.colby.edu/live/json/events/group/Performance%2C%20Theater%2C%20and%20Dance',
                     },
                     {
                         title: 'Center for the Arts and Humanities',
