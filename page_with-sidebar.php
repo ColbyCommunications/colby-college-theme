@@ -52,7 +52,7 @@ if ( has_term( array( 'department', 'office', 'site' ), 'page-categories' ) ) {
 	}
 }
 
-if ( has_term( 'office', 'page-categories' ) ) {
+if ( has_term( 'office', 'page-categories' ) && !has_term( 'site', 'page-categories' )) {
 	$template = 'single-office.twig';
 } else {
 	$template = 'page_with-sidebar.twig';
