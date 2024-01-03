@@ -2108,7 +2108,7 @@ function on_save_post( $post_id ) {
 
 	$post = get_post($post_id);
 
-	if ($post->post_title === "Emergency Updates") {
+	if ($post->post_title === "Colby College Updates") {
 		_purgeCF();
 	}
 }
