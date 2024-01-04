@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
     content: ['./src/**/*.{twig,vue}'],
     theme: {
@@ -73,9 +75,13 @@ module.exports = {
             '-3': '-0.03em',
         },
         backgroundImage: {
-            hero__pattern: 'url("~/src/images/hero__pattern.jpg")',
-            notfound__pattern: 'url("~/src/images/miller3.jpeg")',
-            darkinterstitial__pattern: 'url("~/src/images/Background-3.jpg")'
+            hero__pattern: `url("${path.dirname(__filename)}/src/images/hero__pattern.jpg")`,
+            notfound__pattern: `url("${path.dirname(__filename)}/src/images/miller3.jpeg")`,
+            darkinterstitial__pattern: `url("${path.dirname(
+                __filename
+            )}/src/images/Background-3.jpg")`,
+            marble__pattern: `url("${path.dirname(__filename)}/src/images/mountain.jpg")`,
+            bluemarble__pattern: `url("${path.dirname(__filename)}/src/images/Treatment-36.jpg")`,
         },
         listStyleType: {
             none: 'none',
