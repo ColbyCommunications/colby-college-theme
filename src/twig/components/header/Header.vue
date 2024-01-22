@@ -5,8 +5,8 @@
 </template>
 
 <script>
-    import Modal from '/src/twig/components/modal/Modal.vue';
-    import Search from '/src/twig/components/search/Search.vue';
+    import Modal from '../modal/Modal.vue';
+    import Search from '../search/Search.vue';
 
     export default {
         components: {
