@@ -10,7 +10,7 @@ import Modal from './twig/components/modal/Modal.vue';
 import Accordion from './twig/components/accordion/Accordion.vue';
 import ArticleGrid from './twig/components/article-grid/ArticleGrid.vue';
 import MediaAside from './twig/components/media-aside/MediaAside.vue';
-import EndpointFilter from './twig/components/endpoint-filter/Endpoint-Filter.vue';
+import EndpointFilter from './twig/components/endpoint-filter/EndpointFilter.vue';
 
 // Animated
 import TextGroup from './twig/components/text-group/TextGroup.vue';
