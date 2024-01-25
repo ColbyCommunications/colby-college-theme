@@ -18,6 +18,11 @@
                             class="text-group__heading font-extended font-normal text-36 md:text-24 leading-110 -tracking-3 text-center text-indigo mt-2"
                             v-text="heading"
                         />
+                        <p
+                            v-if="paragraph"
+                            class="text-group__p font-body font-normal text-18 md:text-16 leading-130 text-center text-indigo-800 mt-2"
+                            v-text="paragraph"
+                        />
                     </div>
                 </div>
             </div>
@@ -33,7 +38,11 @@
                 >
                     <article class="article space-y-4">
                         <div class="article__image relative">
-                            <a class="relative block overflow-hidden" :href="item.guid.rendered">
+                            <a
+                                class="relative block overflow-hidden"
+                                :href="item.guid.rendered"
+                                target="_blank"
+                            >
                                 <picture>
                                     <source
                                         media="(min-width:768px)"
@@ -65,6 +74,7 @@
                             <div class="button-group flex flex-wrap gap-4">
                                 <a
                                     class="btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 font-body font-normal text-10 leading-130 text-indigo bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1 px-3 transition-all duration-200 ease-in-out"
+                                    target="_blank"
                                     :href="item.guid.rendered"
                                 >
                                     <span class="btn__text">
@@ -89,16 +99,28 @@
     export default {
         data() {
             return {
+                endpoint: undefined,
                 featuredNews: undefined,
             };
         },
         async mounted() {
             if (this.renderApi) {
-                await axios
-                    .get('https://news.colby.edu/wp-json/wp/v2/posts?per_page=6&tags=569&_embed=1')
-                    .then((outputa) => {
-                        this.featuredNews = outputa.data.slice(0, 6);
-                    });
+                switch (this.api) {
+                    case 'Arts':
+                        this.endpoint = `https://news.colby.edu/wp-json/wp/v2/posts?per_page=${this.perPage}&categories=8&_embed=1`;
+                        break;
+                    case 'Alumni':
+                        this.endpoint = `https://news.colby.edu/wp-json/wp/v2/posts?per_page=${this.perPage}&categories=6&_embed=1`;
+                        break;
+                    default:
+                        this.endpoint =
+                            'https://news.colby.edu/wp-json/wp/v2/posts?per_page=6&tags=569&_embed=1';
+                        break;
+                }
+
+                await axios.get(this.endpoint).then((outputa) => {
+                    this.featuredNews = outputa.data.slice(0, 6);
+                });
             }
         },
         props: {
@@ -124,6 +146,15 @@
                 type: Boolean,
                 required: false,
                 default: false,
+            },
+            api: {
+                type: String,
+                required: false,
+            },
+            perPage: {
+                type: Number,
+                required: false,
+                default: 3,
             },
         },
         methods: {
