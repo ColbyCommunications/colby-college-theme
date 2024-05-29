@@ -1,0 +1,46 @@
+{% import "macros.twig" as macros %}
+
+{% if in_component_library %}
+  {% set context = '@context' %}
+{% else %}
+  {% set context = 'context.twig' %}
+{% endif %}
+
+<div class="related-section">
+  <div class="related-section__inner grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
+    <div class="related-section__context col-span-12 md:col-span-4 mb-8 md:mb-0">
+      {% include context with {
+        size: 'medium',
+        subheading: subheading,
+        heading: heading,
+        paragraph: paragraph,
+        buttons: {
+          items: buttons,
+        }
+      } %}
+    </div>
+    {% for item in items %}
+      <div class="related-section__secondary col-span-6 md:col-span-4">
+        <a class="related-section__thumbnail group relative block overflow-hidden" href="{{ item.link.url }}">
+          <div
+            class="z-10 absolute flex items-end top-0 left-0 w-full h-full p-6"
+            style="background: linear-gradient(180deg, rgba(9, 21, 46, 0) 0%, rgba(9, 21, 46, 0.3) 25%)"
+          >
+            <h3 class="font-body font-bold text-18 leading-120 text-white">{{ item.link.title }}</h3>
+          </div>
+          <div class="media-aside___image pb-[100%] md:pb-[54.54545454545455%]">
+            {{ macros.picture(
+              'absolute w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ease-in-out',
+              item.image.srcset,
+              item.image.src,
+              item.image.sizes.Rectangle,
+              item.image.sizes.Rectangle,
+              item.image.alt,
+              in_component_library
+            ) }}
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>

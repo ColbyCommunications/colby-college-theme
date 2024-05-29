@@ -31,7 +31,7 @@
             },
             checkUrl(title) {
                 return (
-                    window.location.href.indexOf((title || '').toLowerCase().replace(/\s+/g, '-')) >
+                    window.location.href.indexOf((title.replace(/\s+/g, '-') || '').toLowerCase()) >
                     -1
                 );
             },

@@ -17,27 +17,15 @@
           image: image,
         } %}
       {% else %}
-        {% if image_orientation == 'Rectangle' %}
-          {{ macros.picture(
-            'w-full object-cover',
-            image.srcset,
-            image.src,
-            image.sizes.Rectangle,
-            image.sizes.Square,
-            image.alt,
-            in_component_library
-          ) }}
-        {% else %}
-          {{ macros.picture(
+        {{ macros.picture(
           'w-full object-cover',
-            image.srcset,
-            image.src,
-            image.sizes.Square,
-            image.sizes.Square,
-            image.alt,
-            in_component_library
-          ) }}
-        {% endif %}
+          image.srcset,
+          image.src,
+          image.sizes.Square,
+          image.sizes.Square,
+          image.alt,
+          in_component_library
+        ) }}
       {% endif %}
     </div>
     <div class="media-context__context md:flex md:items-center {% if reverse %}md:-order-1{% endif %} {% if inset %}{% if reverse %}md:col-start-2{% endif %} col-span-12 md:col-span-5{% else %}col-span-8 md:col-span-4{% endif %}">

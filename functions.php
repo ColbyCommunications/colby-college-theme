@@ -8,7 +8,9 @@
  * @since      Timber 0.1
  */
 
-	add_theme_support( 'responsive-embeds' );
+add_theme_support( 'responsive-embeds' );
+
+include __DIR__ . '/acf_fields.php';
 
 /**
  * If you are installing Timber as a Composer dependency in your theme, you'll need this block
@@ -780,6 +782,125 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
+
+			// register a media context section
+			acf_register_block(
+				array(
+					'name'            => 'media-context-section',
+					'title'           => __( 'Media Context Section' ),
+					'description'     => __( 'Section component dedicated to grouping media context with a decorative background' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'media', 'context', 'section' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a collage section
+			acf_register_block(
+				array(
+					'name'            => 'collage-section',
+					'title'           => __( 'Collage Section' ),
+					'description'     => __( 'Decorative section with curated image group and context' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'collage', 'context', 'media', 'section', 'image' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a related section
+			acf_register_block(
+				array(
+					'name'            => 'related-section',
+					'title'           => __( 'Related Section' ),
+					'description'     => __( 'Component typically found at the bottom of post style pages.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'media', 'context', 'section', 'related' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a icon section
+			acf_register_block(
+				array(
+					'name'            => 'icon-section',
+					'title'           => __( 'Icon Section' ),
+					'description'     => __( 'Section dedicated to grouping svg assets or transparent pngs.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'icon', 'context', 'section' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a list block grid
+			acf_register_block(
+				array(
+					'name'            => 'list-block-grid',
+					'title'           => __( 'List Block Grid' ),
+					'description'     => __( 'Dedicated grid for list blocks' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'list', 'block', 'grid' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a bg inset media context
+			acf_register_block(
+				array(
+					'name'            => 'bg-inset-media-context',
+					'title'           => __( 'Background Inset Media Context' ),
+					'description'     => __( 'Container component for the media context supporting background textures.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'media', 'context', 'background', 'inset' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register a home section
+			acf_register_block(
+				array(
+					'name'            => 'home-section',
+					'title'           => __( 'Home Section' ),
+					'description'     => __( 'Advancement site exclusive block for rendering latest events and alumni news from the Colby News site' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'home', 'context', 'section', 'news', 'events' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
 		}
 	}
 
@@ -887,13 +1008,13 @@ class StarterSite extends Timber\Site {
 		add_theme_support( 'menus' );
 
 		add_image_size( 'Square', 800, 800, true );
-		add_image_size( 'Square_mobile', 400, 400, true );
+		add_image_size( 'Square_mobile', 300, 300, true );
 		add_image_size( 'Rectangle', 760, 430, true );
 		add_image_size( 'Rectangle_mobile', 410, 290, true );
-		add_image_size( 'Landscape', 1720, 800, true );
-		add_image_size( 'Landscape_mobile', 860, 400, true );
-		add_image_size( 'Portrait', 570, 870, true );
-		add_image_size( 'Portrait_mobile', 380, 580, true );
+		add_image_size( 'Landscape', 860, 400, true );
+		add_image_size( 'Landscape_mobile', 430, 200, true );
+		add_image_size( 'Portrait', 380, 580, true );
+		add_image_size( 'Portrait_mobile', 190, 290, true );
 		add_image_size( 'Hero', 2400, 1320, true );
 
 		if ( function_exists( 'acf_add_options_page' ) ) {
@@ -1036,7 +1157,7 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 	}
 
 	// Render the block.
-	Timber::render( 'src/twig/components/' . $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged, 600, Timber\Loader::CACHE_NONE );
+	Timber::render( 'src/twig/components/' . $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged );
 }
 
 /**
@@ -1109,7 +1230,7 @@ function getNewPeople( $directory_data ) {
 		// Assign variables to desired WD fields
 		$WDEmployeeID    = str_pad( $WDPerson['employeeID'], 7, '0', STR_PAD_LEFT );
 		$WDPrefFirstName = $WDPerson['preferredFirstName'];
-		$WDPrefLastName      = $WDPerson['preferredLastName'];
+		$WDPrefLastName  = $WDPerson['preferredLastName'];
 
 		// Skip person if no email associated
 		if ( ! $WDPerson['primaryWorkEmail'] ) {
@@ -1436,27 +1557,27 @@ function stop_redirect_guess() {
 
 function wporg_block_wrapper( $block_content, $block ) {
 	if ( $block['blockName'] === 'core/paragraph' ) {
-		$content  = '<div class="wp-block-paragraph module">';
+		$content  = '<div class="wp-block-paragraph">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/heading' ) {
-		$content  = '<div class="wp-block-heading module">';
+		$content  = '<div class="wp-block-heading">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/image' ) {
-		$content  = '<div class="wp-block-image module">';
+		$content  = '<div class="wp-block-image">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/embed' ) {
-		$content  = '<div class="wp-block-embed module">';
+		$content  = '<div class="wp-block-embed">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
 	} elseif ( $block['blockName'] === 'core/table' ) {
-		$content  = '<div class="wp-block-table module">';
+		$content  = '<div class="wp-block-table">';
 		$content .= $block_content;
 		$content .= '</div>';
 		return $content;
@@ -1892,32 +2013,32 @@ function hide_email_prepopulation( $value ) {
 	return 'yes';
 }
 
-function custom_meta_description($description) {
+function custom_meta_description( $description ) {
 	// Check if the meta description is empty or not set
-    if (empty($description)) {
+	if ( empty( $description ) ) {
 			// Get the current post ID and its content
-        $post_id = get_the_ID();
-        $post_content = get_post_field('post_content', $post_id);
+		$post_id      = get_the_ID();
+		$post_content = get_post_field( 'post_content', $post_id );
 
 				// Extract the content from the first block (paragraph or image-text)
-        preg_match('/<!--\s+wp:acf\/(paragraph|image-text).+?{"paragraph_text":"(.*?)"/s', $post_content, $matches);
+		preg_match( '/<!--\s+wp:acf\/(paragraph|image-text).+?{"paragraph_text":"(.*?)"/s', $post_content, $matches );
 
 				// Check if a match is found and extract the content from the block
-        $match = isset($matches[2]) ? json_decode('"' . $matches[2] . '"') : null;
+		$match = isset( $matches[2] ) ? json_decode( '"' . $matches[2] . '"' ) : null;
 
 				// Decode Unicode escape sequences in the extracted text
-        $decoded_match = isset($match) ? html_entity_decode($match) : null;
+		$decoded_match = isset( $match ) ? html_entity_decode( $match ) : null;
 
 				// Remove unwanted characters from the extracted text except hyphens
-        $clean_match = isset($decoded_match) ? preg_replace('/[\x00-\x1F\x7F-\xFF\xA0]/u', ' ', $decoded_match) : null;
+		$clean_match = isset( $decoded_match ) ? preg_replace( '/[\x00-\x1F\x7F-\xFF\xA0]/u', ' ', $decoded_match ) : null;
 
 				// Trim the description to 40 words if it exists
-        $description = isset($clean_match) ? wp_trim_words($clean_match, 40, '') : 'Colby College is an intellectual community working to solve the world’s most complex challenges.';
-    }
+		$description = isset( $clean_match ) ? wp_trim_words( $clean_match, 40, '' ) : 'Colby College is an intellectual community working to solve the world’s most complex challenges.';
+	}
 
-    return $description;
+	return $description;
 }
-add_filter('wpseo_metadesc', 'custom_meta_description');
+add_filter( 'wpseo_metadesc', 'custom_meta_description' );
 
 add_filter( 'auto_core_update_send_email', '__return_false' );
 
@@ -1979,6 +2100,7 @@ function general_settings_onsave( $post_id, $menu_slug ) {
 }
 
 function on_save_post( $post_id ) {
+
 	// Find parent post_id.
 	if ( $post_parent_id = wp_get_post_parent_id( $post_id ) ) {
 		$post_id = $post_parent_id;
@@ -1986,9 +2108,8 @@ function on_save_post( $post_id ) {
 
 	$post = get_post($post_id);
 
-	if ($post->post_title === "Emergency Updates") {
+	if ($post->post_title === "Colby College Updates") {
 		_purgeCF();
 	}
 }
 add_action( 'save_post', 'on_save_post' );
-

@@ -1,0 +1,16 @@
+{% if in_component_library %}
+  {% set mediaContext = '@media-context' %}
+{% else %}
+  {% set mediaContext = 'media-context.twig' %}
+{% endif %}
+
+<div class="media-context-section relative py-24">
+  <div class="media-context-section__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
+    <div class="media-context-section__main {% if type == 'narrow' %}md:col-span-10 md:col-start-2{% else %}md:col-span-12{% endif %} space-y-16">
+      {% for item in items %}
+        {% include mediaContext with item %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="media-context-section__bg absolute -z-10 top-0 right-0 bg-mediacontextsection___pattern bg-cover {% if type == 'narrow' %}w-[100%] h-[100%]{% else %}w-[60%] md:w-[75%] h-[60%]{% endif %}"></div>
+</div>

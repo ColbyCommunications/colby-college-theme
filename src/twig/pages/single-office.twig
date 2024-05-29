@@ -33,7 +33,8 @@
         location: post.meta('location'),
       } %}
       <div class="grid md:grid-cols-9 w-full">
-        <div class="md:col-span-9">
+      {# Brandon 11/14/23: min-w-0 was added to fix a glide conflict with css grid #}
+        <div class="md:col-span-9 min-w-0">
           {% include 'wysiwyg.twig' %}
         </div>
       </div>

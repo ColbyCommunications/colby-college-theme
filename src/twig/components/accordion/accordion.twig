@@ -14,23 +14,30 @@
     :single="{{ single }}"
   {% endif %}
 >
-<div class="colby-accordion-block">
-  {% for item in panels %}
-    <code v-pre>
-    <article class="accordion__panel [&:nth-of-type(odd)>div>button]:bg-gray-100 " data-accordion-panel>
-    </code>
-    <div class="accordion__header">
-      <button
-          class="accordion__button flex items-center"
-          data-accordion-button
-          :aria-expanded="accordion.active.includes({{ loop.index0 }}) ? true : false"
-          @click="accordion.toggleActive({{ loop.index0 }}, $event)"
-      >
-        <div class="mr-4">
-            <svg data-accordion-icon-closed xmlns="https://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 48 48" style="display:inline">
-              <path d="M22.5 38V25.5H10v-3h12.5V10h3v12.5H38v3H25.5V38Z"/>
-            </svg>
-            <svg data-accordion-icon-open xmlns="https://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 48 48" style="display:none"><path d="M10 25.5v-3h28v3Z"/></svg>
+  <div class="colby-accordion-block border-b border-gray-300">
+    {% for item in panels %}
+      <code v-pre><article class="accordion__panel border-t border-gray-300" data-accordion-panel></code>
+        <div class="accordion__header">
+          <button
+            class="accordion__button flex items-center justify-between !py-6 !px-0 gap-x-3"
+            data-accordion-button
+            :aria-expanded="accordion.active.includes({{ loop.index0 }}) ? true : false"
+            @click="accordion.toggleActive({{ loop.index0 }}, $event)"
+          >
+            <h3 class="font-body font-bold !text-18 leading-120 text-indigo">
+              {{ item.heading }}
+            </h3>
+            <div
+              class="flex shrink-0 items-center justify-center w-11 h-9 bg-gray-100 border border-gray-300 rounded-sm"
+            >
+              <div
+                class="-rotate-90 transition-all duration-200 ease-in-out"
+                :class="accordion.active.includes({{ loop.index0 }}) ? ' rotate-90 ' : ''"
+              >
+                {{ icons.icon('chevron', 'fill-azure w-1.5') }}
+              </div>
+            </div>
+          </button>
         </div>
         <div
           class="accordion__window"

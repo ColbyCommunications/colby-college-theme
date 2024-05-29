@@ -1,0 +1,65 @@
+{% if in_component_library %}
+  {% set contextArticleGrid = '@context-article-grid' %}
+  {% set contextSection = '@context-section' %}
+  {% set articleGrid = '@article-grid' %}
+  {% set overlayWideImage = '@overlay-wide-image' %}
+{% else %}
+  {% set contextArticleGrid = 'context-article-grid.twig' %}
+  {% set contextSection = 'context-section.twig' %}
+  {% set articleGrid = 'article-grid.twig' %}
+  {% set overlayWideImage = 'overlay-wide-image.twig' %}
+{% endif %}
+
+{% if type == 'Recent Events' %}
+  {% set mappedPosts = fn('Timber::get_posts', {
+    post_type: 'events',
+    posts_per_page: 3,
+  })|map(p => {
+    post: p,
+  }) %}
+{% else %}
+  {% set mappedPosts = events.items %}
+{% endif %}
+
+<div class="background-section relative py-24 bg-marble__pattern bg-cover full-bleed">
+  <div class="background-section___decor absolute top-[200px] left-0 bg-white w-1/2 lg:w-[700px] h-[700px]"></div>
+  <div class="background-section___inner relative z-10 space-y-24">
+    {% include contextArticleGrid with {
+      render_api: true,
+      api: 'Alumni',
+      per_page: 3,
+      subheading: news.subheading,
+      heading: news.heading,
+      paragraph: news.paragraph,
+      buttons: news.buttons,
+    } %}
+    {% include contextSection with {
+      size: 'medium',
+      align: 'center',
+      subheading: events.subheading,
+      heading: events.heading,
+      paragraph: events.paragraph,
+      buttons: events.buttons,
+    } %}
+    <div class="max-w-screen-2xl w-full px-5 mx-auto">
+      {% include articleGrid with {
+        render_posts: false,
+        render_api: false,
+        columns: 3,
+        image_orientation: 'rectangle',
+        items: mappedPosts,
+      }  %}
+    </div>
+    <div class="max-w-screen-2xl w-full px-5 mx-auto">
+      {% include overlayWideImage with {
+        size: 'large',
+        align: 'center',
+        image: cta.image,
+        subheading: cta.subheading,
+        heading: cta.heading,
+        paragraph: cta.paragraph,
+        buttons: cta.buttons,
+      } %}
+    </div>
+  </div>
+</div>

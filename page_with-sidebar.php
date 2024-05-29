@@ -52,7 +52,7 @@ if ( has_term( array( 'department', 'office', 'site' ), 'page-categories' ) ) {
 	}
 }
 
-if ( has_term( 'office', 'page-categories' ) ) {
+if ( has_term( 'office', 'page-categories' ) && !has_term( 'site', 'page-categories' )) {
 	$template = 'single-office.twig';
 } else {
 	$template = 'page_with-sidebar.twig';
@@ -84,4 +84,8 @@ if ( get_post( $post->post_parent )->post_name == 'people' ) {
 
 $context['alpha_parent'] = $parent_map;
 
-Timber::render( $template, $context );
+if ( post_password_required( $timber_post->ID ) ) {
+	Timber::render( 'single-password.twig', $context );
+} else {
+	Timber::render( $template, $context );
+}

@@ -38,7 +38,11 @@
                 >
                     <article class="article space-y-4">
                         <div class="article__image relative">
-                            <a class="relative block overflow-hidden" :href="item.guid.rendered" target="_blank">
+                            <a
+                                class="relative block overflow-hidden"
+                                :href="item.guid.rendered"
+                                target="_blank"
+                            >
                                 <picture>
                                     <source
                                         media="(min-width:768px)"
@@ -64,7 +68,7 @@
                                 />
                                 <p
                                     class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
-                                    v-text="item['post-meta-fields'].summary[0]"
+                                    v-text="decodeHtmlEntities(item['post-meta-fields'].summary[0])"
                                 />
                             </div>
                             <div class="button-group flex flex-wrap gap-4">
@@ -105,11 +109,12 @@
                     case 'Arts':
                         this.endpoint = `https://news.colby.edu/wp-json/wp/v2/posts?per_page=${this.perPage}&categories=8&_embed=1`;
                         break;
-                    case "Alumni":
+                    case 'Alumni':
                         this.endpoint = `https://news.colby.edu/wp-json/wp/v2/posts?per_page=${this.perPage}&categories=6&_embed=1`;
                         break;
                     default:
-                        this.endpoint = 'https://news.colby.edu/wp-json/wp/v2/posts?per_page=6&tags=569&_embed=1';
+                        this.endpoint =
+                            'https://news.colby.edu/wp-json/wp/v2/posts?per_page=6&tags=569&_embed=1';
                         break;
                 }
 
@@ -150,7 +155,7 @@
                 type: Number,
                 required: false,
                 default: 3,
-            }
+            },
         },
         methods: {
             decodeHtmlEntities(input) {

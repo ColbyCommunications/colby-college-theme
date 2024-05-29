@@ -2,7 +2,6 @@ module.exports = {
   title: 'Overlay Hero',
   status: 'wip',
   context: {
-    size: 'large',
     subheading: 'Person Title',
     heading: 'Person Name',
     paragraph: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam congue pulvinar lectus.',
