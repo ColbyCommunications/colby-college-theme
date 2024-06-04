@@ -25,7 +25,7 @@
   <div class="icon-section__inner grid grid-cols-12 gap-x-10 gap-y-16 max-w-screen-2xl w-full px-5 my-0 mx-auto">
     {% for item in items %}
       <div class="icon-section__item flex flex-col items-center col-span-6 md:col-span-3">
-        <img class="icon-section__image w-40 mb-4" src="{{ item.image.sizes.Square }}" alt="{{ item.image.alt }}" />
+        <img class="icon-section__image w-40 mb-4" src="{{ item.image.sizes.Square }}" alt="{{ item.image.alt|escape }}" />
         {% include context with {
           size: 'medium',
           type: 'light',

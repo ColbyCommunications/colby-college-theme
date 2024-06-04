@@ -31,7 +31,7 @@
             <img
               class="w-full h-full object-cover"
               src="{{ post.image.src }}"
-              alt="{{ post.image.alt }}"
+              alt="{{ post.image.alt|escape }}"
             />
           </picture>
         {% else %}
@@ -40,7 +40,7 @@
             <img
               class="w-full h-full object-cover"
               src="{{ post.image.sizes.Rectangle }}"
-              alt="{{ post.image.alt }}"
+              alt="{{ post.image.alt|escape }}"
             />
           </picture>
         {% endif %}
