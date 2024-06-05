@@ -2113,3 +2113,9 @@ function on_save_post( $post_id ) {
 	}
 }
 add_action( 'save_post', 'on_save_post' );
+
+add_filter( 'ppp_nonce_life', 'public_post_preview_time_window' );
+function public_post_preview_time_window() {
+	// one month
+	return 2628288;
+}
