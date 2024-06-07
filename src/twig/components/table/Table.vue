@@ -871,7 +871,7 @@
                         return 'statistics';
                     case 'thea':
                         return 'performance-theater-and-dance';
-                    case 'wast':
+                    case 'wgst':
                         return 'womens-gender-and-sexuality-studies';
                     case 'intd':
                         switch (item.Text.toLowerCase()) {
@@ -880,7 +880,7 @@
                             case 'cinema studies':
                                 return 'cinema-studies';
                             default:
-                                return 'cinema-studies';
+                                return '';
                         }
                     default:
                         return '';
