@@ -443,7 +443,9 @@
                                     type: `${item.Type}s`,
                                     link: {
                                         title: item.Text,
-                                        url: `/dept/${item.Dept.toLowerCase()}`,
+                                        url: `/academics/departments-and-programs/${this.transformDept(
+                                            item
+                                        )}`,
                                     },
                                     columns: [item.Dept, item.Type],
                                     department: item.Dept,
@@ -803,6 +805,85 @@
                     return str.replace(/(<([^>]+)>)/gi, '');
                 } else {
                     return '';
+                }
+            },
+            transformDept(item) {
+                switch (item.Dept.toLowerCase()) {
+                    case 'afam':
+                        return 'african-american-studies';
+                    case 'amer':
+                        return 'american-studies';
+                    case 'anth':
+                        return 'anthropology';
+                    case 'art':
+                        return 'art';
+                    case 'biol':
+                        return 'biology';
+                    case 'chem':
+                        return 'chemistry';
+                    case 'clas':
+                        return 'classics';
+                    case 'comp':
+                        return 'computer-science';
+                    case 'east':
+                        return 'east-asian-studies';
+                    case 'econ':
+                        return 'economics';
+                    case 'educ':
+                        return 'education';
+                    case 'engl':
+                        return 'english';
+                    case 'envs':
+                        return 'environmental-studies';
+                    case 'frit':
+                        return 'french-and-italian';
+                    case 'geol':
+                        return 'geology';
+                    case 'glst':
+                        return 'global-studies';
+                    case 'gmru':
+                        return 'german-and-russian';
+                    case 'govt':
+                        return 'government';
+                    case 'hist':
+                        return 'history';
+                    case 'ltam':
+                        return 'latin-american-studies';
+                    case 'math':
+                        return 'mathematics';
+                    case 'musi':
+                        return 'music';
+                    case 'phil':
+                        return 'philosophy';
+                    case 'phys':
+                        return 'physics-and-astronomy';
+                    case 'psyc':
+                        return 'psychology';
+                    case 'relg':
+                        return 'religious-studies';
+                    case 'scit':
+                        return 'science-technology-and-society';
+                    case 'socy':
+                        return 'sociology';
+                    case 'span':
+                        return 'spanish';
+                    case 'stat':
+                        return 'statistics';
+                    case 'thea':
+                        return 'performance-theater-and-dance';
+                    case 'wgst':
+                        return 'womens-gender-and-sexuality-studies';
+                    case 'intd':
+                        switch (item.Text.toLowerCase()) {
+                            case 'jewish studies':
+                                return 'jewish-studies';
+                            case 'cinema studies':
+                                return 'cinema-studies';
+                            default:
+                                return '';
+                        }
+                    default:
+                        return '';
                 }
             },
         },

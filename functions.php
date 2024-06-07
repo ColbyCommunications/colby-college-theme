@@ -2114,11 +2114,8 @@ function on_save_post( $post_id ) {
 }
 add_action( 'save_post', 'on_save_post' );
 
-
-function custom_media_library_script() {
-    // Enqueue the script only on the media library page
-    if (is_admin() && isset($_GET['page']) && $_GET['page'] === 'upload.php') {
-        wp_enqueue_script('custom-media-library-script', '/js/custom-media-library-script.js');
-    }
+add_filter( 'ppp_nonce_life', 'public_post_preview_time_window' );
+function public_post_preview_time_window() {
+	// one month
+	return 2628288;
 }
-add_action('admin_enqueue_scripts', 'custom_media_library_script');
