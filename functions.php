@@ -12,6 +12,7 @@ add_theme_support( 'responsive-embeds' );
 
 include __DIR__ . '/acf_fields.php';
 
+
 /**
  * If you are installing Timber as a Composer dependency in your theme, you'll need this block
  * to load your dependencies and initialize Timber. If you are using Timber via the WordPress.org
@@ -150,6 +151,20 @@ class StarterSite extends Timber\Site {
 				),
 			)
 		);
+	}
+
+	function get_current_url() {
+    global $wp;
+    return home_url(add_query_arg(array(), $wp->request));
+	}
+
+	function my_acf_block_render_callback($block) {
+    // Get the current URL
+    $context = Timber::context();
+    $context['current_url'] = get_current_url();
+
+    // Render the Twig template
+    Timber::render('blocks/people-grid.twig', $context);
 	}
 
 	public function my_acf_init() {
@@ -371,6 +386,23 @@ class StarterSite extends Timber\Site {
 					'category'        => 'layout',
 					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
 					'keywords'        => array( 'layout', 'article', 'grid', 'image' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register article grid
+			acf_register_block(
+				array(
+					'name'            => 'people-grid',
+					'title'           => __( 'People Grid' ),
+					'description'     => __( 'Layout dedicated to displaying people posts for academic department and office pages.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'people', 'layout', 'article', 'grid', 'image' ),
 					'mode'            => 'edit',
 					'supports'        => array(
 						'align' => false,
@@ -1075,6 +1107,79 @@ function theme_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'theme_scripts' );
 
+function get_current_url_path() {
+    return $_SERVER['REQUEST_URI'];
+}
+
+function get_people_posts_by_department($segment3) {
+    // Define query arguments
+    $args = array(
+        'post_type' => 'people', // Specify the post type
+        'posts_per_page' => -1, // Retrieve all posts
+        'post_status' => 'publish', // Retrieve only published posts
+        'meta_query' => array(
+            array(
+                'key' => 'department', // Custom field key
+                'value' => $segment3, // Value to match
+                'compare' => '=', // Match exactly
+            ),
+        ),
+    );
+
+    // Instantiate WP_Query
+    $query = new WP_Query($args);
+
+    // Initialize an array to hold the posts
+    $posts = [];
+
+    // Check if there are posts
+    if ($query->have_posts()) {
+        // Start the loop
+        while ($query->have_posts()) {
+            $query->the_post();
+            // Add the post object to the array
+            $post = [
+                'post' => get_post(), // Get the current post object
+            ];
+            $posts[] = $post;
+        }
+        // Restore original post data
+        wp_reset_postdata();
+    }
+
+    // Return the array of posts (or an empty array if no posts found)
+    return $posts;
+}
+
+function get_people($segment1, $segment2, $segment3) {
+    switch ($segment1) {
+        case 'academics':
+            switch ($segment2) {
+                case 'departments-and-programs':
+                    if ($segment3 !== '') {
+                        return get_people_posts_by_department($segment3);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case 'people':
+            switch ($segment2) {
+                case 'offices-directory':
+                    if ($segment3 !== '') {
+                        return get_people_posts_by_department($segment3);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
 /**
  *  This is the callback that displays the block.
  *
@@ -1095,6 +1200,9 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 	$context['is_preview'] = $is_preview;
 
 	$context['block_name'] = substr( $block['name'], 4 );
+
+	// Store the current URL.
+  $context['current_url_path'] = get_current_url_path();
 
 	$context['recent_people'] = Timber::get_posts(
 		array(
@@ -1154,6 +1262,59 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 		);
 	} else {
 		$context_merged = $context['fields'];
+	}
+
+	if ($context['block_name'] == 'people-grid') {
+			// Split the URL path into segments
+			$url_segments = explode('/', trim($context['current_url_path'], '/'));
+
+			// Retrieve segments 1, 2, and 3 from the URL (if they exist)
+			$segment1 = $url_segments[0] ?? '';
+			$segment2 = $url_segments[1] ?? '';
+			$segment3 = $url_segments[2] ?? '';
+
+			// Replace dashes in third url segment with spaces
+			$segment3 = strtolower(str_replace('-', ' ', trim($segment3)));
+
+			// Handle auto populate if enabled
+			$is_enabled_auto_populate = get_field('auto_populate');
+
+			if ($is_enabled_auto_populate) {
+				// Retrieve people posts based on URL segments
+				$people_posts = get_people($segment1, $segment2, $segment3);
+			} else {
+				$people_posts = [];
+			}
+
+			// Get ACF field data
+			if (get_field('items') ) {
+				$acf_items = get_field('items');
+			} else {
+				$acf_items = [];
+			}
+	
+			// Merge ACF items and people posts
+			$merged_items = array_merge($acf_items, $people_posts);
+
+			// Add the last_name meta value to the merged_items array
+			foreach ($merged_items as &$item) {
+				if (isset($item['post'])) {
+						$post_id = $item['post']->ID;
+						$item['last_name'] = get_post_meta($post_id, 'last_name', true);
+				}
+			}
+
+			unset($item);
+
+			// Sort the merged_items array by last_name
+			usort($merged_items, function($a, $b) {
+    return strcmp(strtolower($a['last_name']), strtolower($b['last_name']));
+});
+
+			// Update context with merged items
+			$context_merged['acf_items'] = $acf_items;
+			$context_merged['people_posts'] = $people_posts;
+			$context_merged['people'] = $merged_items;
 	}
 
 	// Render the block.
