@@ -1308,8 +1308,8 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 
 			// Sort the merged_items array by last_name
 			usort($merged_items, function($a, $b) {
-    return strcmp(strtolower($a['last_name']), strtolower($b['last_name']));
-});
+    		return strcmp(strtolower($a['last_name']), strtolower($b['last_name']));
+			});
 
 			// Update context with merged items
 			$context_merged['acf_items'] = $acf_items;
