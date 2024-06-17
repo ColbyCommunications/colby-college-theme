@@ -1112,6 +1112,19 @@ function get_current_url_path() {
 }
 
 function get_people_posts_by_department($segment3) {
+
+	// Handle cases where departments have commas in their name
+	switch ($segment3) {
+		case 'performance theater and dance':
+			$segment3 = "performance, theater, and dance";
+			break;
+		case 'science technology and society':
+			$segment3 = "science, technology, and society";
+			break;
+		case 'womens gender and sexuality studies':
+			$segment3 = "women's, gender, and sexuality studies";
+			break;
+	}
     // Define query arguments
     $args = array(
         'post_type' => 'people', // Specify the post type
@@ -1151,17 +1164,6 @@ function get_people($segment1, $segment2, $segment3) {
         case 'academics':
             switch ($segment2) {
                 case 'departments-and-programs':
-                    if ($segment3 !== '') {
-                        return get_people_posts_by_department($segment3);
-                    }
-                    break;
-                default:
-                    break;
-            }
-            break;
-        case 'people':
-            switch ($segment2) {
-                case 'offices-directory':
                     if ($segment3 !== '') {
                         return get_people_posts_by_department($segment3);
                     }
