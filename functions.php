@@ -1132,22 +1132,17 @@ function get_people_posts_by_department($segment3) {
     // Initialize an array to hold the posts
     $posts = [];
 
-    // Check if there are posts
     if ($query->have_posts()) {
-        // Start the loop
         while ($query->have_posts()) {
             $query->the_post();
-            // Add the post object to the array
-            $post = [
-                'post' => get_post(), // Get the current post object
-            ];
-            $posts[] = $post;
+            $post = get_post();
+            if ($post) { // Check if get_post() returns a valid post object
+                $posts[] = ['post' => $post];
+            }
         }
-        // Restore original post data
         wp_reset_postdata();
     }
 
-    // Return the array of posts (or an empty array if no posts found)
     return $posts;
 }
 
@@ -1279,32 +1274,22 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 			// Handle auto populate if enabled
 			$is_enabled_auto_populate = get_field('auto_populate');
 
-			if ($is_enabled_auto_populate) {
-				// Retrieve people posts based on URL segments
-				$people_posts = get_people($segment1, $segment2, $segment3);
-			} else {
-				$people_posts = [];
-			}
-
-			// Get ACF field data
-			if (get_field('items') ) {
-				$acf_items = get_field('items');
-			} else {
-				$acf_items = [];
-			}
+			$is_enabled_auto_populate = get_field('auto_populate');
+      $people_posts = $is_enabled_auto_populate ? get_people($segment1, $segment2, $segment3) : [];
+      $acf_items = get_field('items') ?: [];
 	
 			// Merge ACF items and people posts
-			$merged_items = array_merge($acf_items, $people_posts);
+			$merged_items = array_merge(is_array($acf_items) ? $acf_items : [], is_array($people_posts) ? $people_posts : []);
 
-			// Add the last_name meta value to the merged_items array
 			foreach ($merged_items as &$item) {
-				if (isset($item['post'])) {
-						$post_id = $item['post']->ID;
-						$item['last_name'] = get_post_meta($post_id, 'last_name', true);
-				}
-			}
-
-			unset($item);
+            if (isset($item['post'])) {
+                $post_id = $item['post']->ID;
+                if ($post_id) { // Ensure $post_id is valid
+                    $item['last_name'] = strtolower(get_post_meta($post_id, 'last_name', true));
+                }
+            }
+        }
+        unset($item);
 
 			// Sort the merged_items array by last_name
 			usort($merged_items, function($a, $b) {
