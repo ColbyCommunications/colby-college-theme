@@ -946,27 +946,46 @@ class StarterSite extends Timber\Site {
 
 		global $wp;
 		if ( ! is_404() ) {
-			$crumbs = get_post_ancestors( $context['post']->ID );
+    // Get the current URL
+    $current_url = $_SERVER['REQUEST_URI'];
+    
+    // Parse the URL and get segments
+    $url_segments = explode('/', trim($current_url, '/'));
+    
+    // Initialize breadcrumbs menu array
+    $breadcrumbs_menu = array();
 
-			if ( $crumbs ) {
-				$breadcrumbs_menu = array();
+    // Loop through the first four segments to build dynamic breadcrumbs
+    $current_path = '';
+    for ($i = 0; $i < min(4, count($url_segments)); $i++) {
+        $segment = $url_segments[$i];
+        $current_path .= '/' . $segment;
 
-				foreach ( $crumbs as $ancestor ) {
-					array_push(
-						$breadcrumbs_menu,
-						array(
-							'id'    => $ancestor,
-							'title' => get_the_title( $ancestor ),
-							'url'   => get_permalink( $ancestor ),
-						)
-					);
-				}
-			}
+        $breadcrumbs_menu[] = array(
+            'title' => ucfirst(str_replace('-', ' ', $segment)),
+            'url'   => $current_path,
+        );
+    }
 
-			if ( isset( $breadcrumbs_menu ) ) {
-				$context['breadcrumbs_menu'] = array_reverse( $breadcrumbs_menu );
-			}
-		}
+    // Handle the fifth segment as a post
+    if (isset($url_segments[4])) {
+        $post_slug = $url_segments[4];
+        $post = get_page_by_path($post_slug, OBJECT, 'post');
+
+        if ($post) {
+            $breadcrumbs_menu[] = array(
+                'id'    => $post->ID,
+                'title' => get_the_title($post->ID),
+                'url'   => get_permalink($post->ID),
+            );
+        }
+    }
+
+    // If we have breadcrumbs, add them to the context
+    if (!empty($breadcrumbs_menu)) {
+        $context['breadcrumbs_menu'] = $breadcrumbs_menu;
+    }
+}
 
 		$context['current_url']    = home_url( $wp->request );
 		$context['foo']            = 'bar';
