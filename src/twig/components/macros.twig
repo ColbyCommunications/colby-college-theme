@@ -81,7 +81,7 @@
     <{{ subheadingTag }} class="text-group__subheading font-extended font-bold {{ subheadingSize }} leading-130 tracking-8 {{ textAlign }} {{ subheadingColor }} uppercase">{{ subheading }}</{{ subheadingTag }}>
   {% endif %}
   {% if heading %}
-    <{{ headingTag }} class="text-group__heading font-extended {{ headingWeight }} {{ headingSizeMobile }} {{ headingSize }} leading-110 -tracking-3 {{ textAlign }} {{ headingColor }} mt-2">{{ heading }}</{{ headingTag }}>
+    <{{ headingTag }} class="text-group__heading font-extended {{ headingWeight }} {{ headingSizeMobile }} {{ headingSize }} leading-110 -tracking-3 {{ textAlign }} {{ headingColor }} mt-2">{{ heading|striptags }}</{{ headingTag }}>
   {% endif %}
   {% if paragraph %}
     <p class="text-group__p font-body font-normal {{ paragraphSizeMobile }} {{ paragraphSize }} leading-130 {{ textAlign }} {{ paragraphColor }} mt-2">{{ paragraph }}</p>
