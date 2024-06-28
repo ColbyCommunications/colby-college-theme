@@ -2286,3 +2286,16 @@ function public_post_preview_time_window() {
 	// one month
 	return 2628288;
 }
+
+// Handles 404 for trying to visit category pages in the url, such as colby.edu/academics/news
+function return_404_for_category_archives() {
+    if (is_category()) {
+        global $wp_query;
+        $wp_query->set_404();
+        status_header(404);
+        nocache_headers();
+        include(get_query_template('404'));
+        exit();
+    }
+}
+add_action('template_redirect', 'return_404_for_category_archives');
