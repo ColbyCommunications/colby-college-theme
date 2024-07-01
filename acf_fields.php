@@ -570,6 +570,36 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 			'bidirectional_target' => array(
 			),
 		),
+		array(
+			'key' => 'field_6682ca3641df8',
+			'label' => 'Post Limit',
+			'name' => 'post_limit',
+			'aria-label' => '',
+			'type' => 'number',
+			'instructions' => '-1 indicates no limit',
+			'required' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_63571d765ae3d',
+						'operator' => '==',
+						'value' => '1',
+					),
+				),
+			),
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => -1,
+			'min' => -1,
+			'max' => 99999,
+			'placeholder' => '',
+			'step' => '',
+			'prepend' => '',
+			'append' => '',
+		),
 	),
 	'location' => array(
 		array(

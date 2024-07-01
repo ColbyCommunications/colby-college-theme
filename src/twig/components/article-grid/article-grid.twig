@@ -7,9 +7,9 @@
   {% set newImage = {} %}
 
   {% if render_posts %}
-    {% set items = fn('Timber::get_posts', {
+     {% set items = fn('Timber::get_posts', {
       post_type: 'post',
-      post_per_page: 6,
+      posts_per_page: post_limit,
       tax_query: [
         {
           taxonomy: 'category',
