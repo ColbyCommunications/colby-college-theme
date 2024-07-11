@@ -11,6 +11,7 @@
 add_theme_support( 'responsive-embeds' );
 
 include __DIR__ . '/acf_fields.php';
+// include __DIR__ . '/src/twig/components/accordion-test/accordion-test.php';
 
 
 /**
@@ -188,6 +189,9 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
+
+			// register a accordion-test block (parent)
+			register_block_type( __DIR__ . '/src/twig/components/accordion-test');
 
 			// register a home hero
 			acf_register_block(

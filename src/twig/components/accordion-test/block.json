@@ -1,0 +1,16 @@
+{
+    "name": "acf/accordion-test",
+    "title": "Accordion Test",
+    "description": "A custom accordion block.",
+    "category": "layout",
+    "keywords": ["accordion", "panels"],
+    "acf": {
+        "mode": "preview",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "align": false,
+        "anchor": true,
+        "mode": false
+    }
+}
