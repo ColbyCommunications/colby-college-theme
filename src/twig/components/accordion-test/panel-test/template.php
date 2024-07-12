@@ -18,7 +18,7 @@ if ( ! empty( $block['anchor'] ) ) {
 }
 
 // Create class attribute allowing for custom "className".
-$class_name = 'acf/accordion-test';
+$class_name = 'acf/panel-test';
 if ( ! empty( $block['className'] ) ) {
     $class_name .= ' ' . $block['className'];
 }
@@ -36,7 +36,7 @@ $inner_blocks_template = array(
     ),
 );
 
-$allowed_blocks = ['acf/panel-test'];
+$allowed_blocks = ["acf/paragraph", "acf/image", "core/heading"];
 ?>
 
 <?php if ( ! $is_preview ) { ?>
@@ -52,14 +52,13 @@ $allowed_blocks = ['acf/panel-test'];
         );
         ?>
     >
-<?php } 
+<?php } ?>
 
-if (is_admin()){
-    ?>
-
-    <div style="border: solid 1px black; padding: 10px;">
-        <h2>Accordion Test</h2>
-            <div>
+<div style="border: solid 1px black;">
+        <div style="background-color: #002878;padding: 10px;">
+            <h2 style="color: #fff;">Panel</h2>
+        </div>
+        <div style="border: dotted 1px #ccc; padding: 10px;">
             <InnerBlocks
                 class="demo-author-block-acf__innerblocks"
                 template=""
@@ -67,14 +66,6 @@ if (is_admin()){
             />
         </div>
     </div>
-
-    <?php
-    } else {
-        // Render the block.
-        Timber::render( 'src/twig/components/accordion/accordion.twig');
-    }
-
-    ?>
 
 <?php if ( ! $is_preview ) { ?>
     </div>
