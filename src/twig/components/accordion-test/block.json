@@ -13,5 +13,6 @@
         "anchor": true,
         "mode": false
     },
-    "allowedBlocks": ["acf/panel-test"]
+    "allowedBlocks": ["acf/panel-test"],
+    "providesContext": { "acf/fields": "data" }
 }

@@ -72,15 +72,12 @@ $allowed_blocks = ["acf/paragraph", "acf/image", "core/heading"];
     </div>
 <?php else : ?>
     <?php
-    $context = Timber::context();
-    $context['heading'] = get_field('heading');
-
-    $data = [
-        'heading' => $context['heading'],
-    ];
+    $context2 = Timber::context();
+    $context2['heading'] = get_field('heading');
+    $context2['single'] = $context['acf/fields'];
 
     // Render the block.
-    Timber::render( 'src/twig/components/panel-test/panel-test.twig', $data );
+    Timber::render( 'src/twig/components/panel-test/panel-test.twig', $context2 );
     ?>
 <?php endif; ?>
 
