@@ -1,45 +1,24 @@
 <?php
-/**
- * Author Info block (parent).
- *
- * @param array  $block The block settings and attributes.
- * @param string $content The block inner HTML (empty).
- * @param bool   $is_preview True during backend preview render.
- * @param int    $post_id The post ID the block is rendering content against.
- *                     This is either the post ID currently being displayed inside a query loop,
- *                     or the post ID of the post hosting this block.
- * @param array $context The context provided to the block by the post or its parent block.
- */
 
-// Support custom id values.
 $block_id = '';
 if ( ! empty( $block['anchor'] ) ) {
     $block_id = esc_attr( $block['anchor'] );
 }
 
-// Create class attribute allowing for custom "className".
 $class_name = 'acf/accordion-test';
 if ( ! empty( $block['className'] ) ) {
     $class_name .= ' ' . $block['className'];
 }
 
-/**
- * A template string of blocks.
- * Need help converting block HTML markup to an array?
- * 👉 https://happyprime.github.io/wphtml-converter/
- *
- * @link https://developer.wordpress.org/block-editor/reference-guides/block-api/block-templates/
- */
+$allowed_blocks = ['acf/panel-test'];
 $inner_blocks_template = array(
     array(
         'core/column',
     ),
 );
-
-$allowed_blocks = ['acf/panel-test'];
 ?>
 
-<?php if ( ! $is_preview ) { ?>
+<?php if ( ! $is_preview ) : ?>
     <div
         <?php
         echo wp_kses_data(
@@ -52,30 +31,39 @@ $allowed_blocks = ['acf/panel-test'];
         );
         ?>
     >
-<?php } 
+<?php endif; ?>
 
-if (is_admin()){
-    ?>
-
-    <div style="border: solid 1px black; padding: 10px;">
-        <h2>Accordion Test</h2>
+<?php if ( is_admin() ) : ?>
+<!-- Editor view -->
+    <div class="acf-block-fields acf-fields">
+        <div class="acf-field">
+            <div class="acf-label">
+                <label>Advanced Accordion</label>
+            </div>
             <div>
-            <InnerBlocks
-                class="demo-author-block-acf__innerblocks"
-                template=""
-                allowedBlocks="<?php echo esc_attr( wp_json_encode( $allowed_blocks ) ); ?>"
-            />
+                <InnerBlocks
+                    template=""
+                    allowedBlocks="<?php echo esc_attr( wp_json_encode( $allowed_blocks ) ); ?>"
+                />
+            </div>
         </div>
     </div>
 
+<?php else : ?>
+    <!-- Front end view -->
     <?php
-    } else {
-        // Render the block.
-        Timber::render( 'src/twig/components/accordion/accordion.twig');
-    }
+    $context = Timber::context();
+    $context['single'] = get_field('single');
 
+    $data = [
+        'single' => $context['single']
+    ];
+
+    // Render the block.
+    Timber::render( 'src/twig/components/accordion-test/accordion-test.twig', $data );
     ?>
+<?php endif; ?>
 
-<?php if ( ! $is_preview ) { ?>
+<?php if ( ! $is_preview ) : ?>
     </div>
-<?php } ?>
+<?php endif; ?>

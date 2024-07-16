@@ -1,0 +1,65 @@
+{% import "icons.twig" as icons %}
+<article class="accordion__panel border-t border-gray-300" data-accordion-panel>
+  <div class="accordion__header">
+    <button class="accordion__button flex items-center justify-between !py-6 !px-0 gap-x-3" onclick="toggleAccordion(event)">
+      <h3 class="font-body font-bold !text-18 leading-120 text-indigo">
+        {{ heading }}
+      </h3>
+      <div class="flex shrink-0 items-center justify-center w-11 h-9 bg-gray-100 border border-gray-300 rounded-sm">
+        <div class="-rotate-90 transition-all duration-200 ease-in-out">
+          {{ icons.icon('chevron', 'fill-azure w-1.5') }}
+        </div>
+      </div>
+    </button>
+  </div>
+  <div class="accordion__window" data-accordion-window style="height: 0; visibility: hidden;">
+    <div class="accordion__content" data-accordion-content>
+      <InnerBlocks/>
+    </div>
+  </div>
+</article>
+
+{# JavaScript function to handle accordion toggle #}
+<script>
+  function toggleAccordion(event) {
+    const button = event.currentTarget;
+    const panel = button.closest('[data-accordion-panel]');
+    const window = panel.querySelector('[data-accordion-window]');
+    const content = panel.querySelector('[data-accordion-content]');
+    const siblings = getSiblings(panel);
+
+    if (window.style.visibility === 'hidden' || window.offsetHeight === 0) {
+      // Expand accordion
+      window.style.height = content.offsetHeight + 'px';
+      window.style.visibility = 'visible';
+      // Optionally, add classes or styles to indicate expanded state
+    } else {
+      // Collapse accordion
+      window.style.height = '0';
+      window.style.visibility = 'hidden';
+      // Optionally, remove classes or styles for collapsed state
+    }
+
+    // Collapse other panels if required
+    siblings.forEach((sibling) => {
+      const siblingWindow = sibling.querySelector('[data-accordion-window]');
+      siblingWindow.style.height = '0';
+      siblingWindow.style.visibility = 'hidden';
+      // Optionally, adjust styles for other panels
+    });
+  }
+
+  function getSiblings(element) {
+    let siblings = [];
+    let sibling = element.parentNode.firstChild;
+
+    while (sibling) {
+      if (sibling.nodeType === 1 && sibling !== element) {
+        siblings.push(sibling);
+      }
+      sibling = sibling.nextSibling;
+    }
+
+    return siblings;
+  }
+</script>

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Author Info block (parent).
  *
@@ -39,7 +40,7 @@ $inner_blocks_template = array(
 $allowed_blocks = ["acf/paragraph", "acf/image", "core/heading"];
 ?>
 
-<?php if ( ! $is_preview ) { ?>
+<?php if ( ! $is_preview ) : ?>
     <div
         <?php
         echo wp_kses_data(
@@ -52,21 +53,37 @@ $allowed_blocks = ["acf/paragraph", "acf/image", "core/heading"];
         );
         ?>
     >
-<?php } ?>
+<?php endif; ?>
 
-<div style="border: solid 1px black;">
-        <div style="background-color: #002878;padding: 10px;">
-            <h2 style="color: #fff;">Panel</h2>
-        </div>
-        <div style="border: dotted 1px #ccc; padding: 10px;">
-            <InnerBlocks
-                class="demo-author-block-acf__innerblocks"
-                template=""
-                allowedBlocks="<?php echo esc_attr( wp_json_encode( $allowed_blocks ) ); ?>"
-            />
+<?php if ( is_admin() ) : ?>
+    <div class="acf-block-fields acf-fields">
+        <div class="acf-field">
+            <div class="acf-label">
+                <label>Accordion Panel</label>
+            </div>
+            <div style="border: dotted 1px #ccc; padding: 10px;">
+                <InnerBlocks
+                    class="demo-author-block-acf__innerblocks"
+                    template=""
+                    allowedBlocks="<?php echo esc_attr( wp_json_encode( $allowed_blocks ) ); ?>"
+                />
+            </div>
         </div>
     </div>
+<?php else : ?>
+    <?php
+    $context = Timber::context();
+    $context['heading'] = get_field('heading');
 
-<?php if ( ! $is_preview ) { ?>
+    $data = [
+        'heading' => $context['heading'],
+    ];
+
+    // Render the block.
+    Timber::render( 'src/twig/components/panel-test/panel-test.twig', $data );
+    ?>
+<?php endif; ?>
+
+<?php if ( ! $is_preview ) : ?>
     </div>
-<?php } ?>
+<?php endif; ?>

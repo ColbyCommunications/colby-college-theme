@@ -14,5 +14,6 @@
         "mode": false
     },
     "allowedBlocks": ["acf/paragraph", "acf/image", "acf/heading"],
-    "parent": ["acf/accordion-test"]
+    "parent": ["acf/accordion-test"],
+    "usesContext": ["acf/accordion-test"]
 }

@@ -1,0 +1,10 @@
+{% set panel_template = 'panel-test.twig' %}
+
+<div class="accordion max-w-screen-2xl w-full mx-auto">
+    <h1>Single selected: {{ dump(single) }}</h1>
+    <div class="colby-accordion-block border-b border-gray-300">
+        <InnerBlocks
+        template={{ panel_template }}
+        />
+    </div>
+</div>

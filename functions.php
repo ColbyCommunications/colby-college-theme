@@ -192,7 +192,7 @@ class StarterSite extends Timber\Site {
 
 			// register a accordion-test block (parent)
 			register_block_type( __DIR__ . '/src/twig/components/accordion-test');
-			register_block_type( __DIR__ . '/src/twig/components/accordion-test/panel-test');
+			register_block_type( __DIR__ . '/src/twig/components/panel-test');
 
 			// register a home hero
 			acf_register_block(
