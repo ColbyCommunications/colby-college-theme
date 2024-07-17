@@ -1,5 +1,5 @@
 {% import "icons.twig" as icons %}
-<article class="accordion__panel border-t border-gray-300" data-accordion-panel data-single="{{ single ? true : false }}">
+<article class="accordion__panel border-t border-gray-300" data-accordion-panel data-single="{{ single.single ? true : false }}">
   <div class="accordion__header">
     <button class="accordion__button flex items-center justify-between !py-6 !px-0 gap-x-3" onclick="toggleAccordion(event)">
       <h3 class="font-body font-bold !text-18 leading-120 text-indigo">
@@ -23,7 +23,7 @@
 <script>
   function toggleAccordion(event) {
     const button = event.currentTarget;
-    const panel = button.closest('[data-accordion-panel]');
+    const panel = button.closest('[data-accordion-panel]'); 
     const window = panel.querySelector('[data-accordion-window]');
     const content = panel.querySelector('[data-accordion-content]');
     const siblings = getSiblings(panel);
