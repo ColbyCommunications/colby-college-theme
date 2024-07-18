@@ -1,15 +1,79 @@
 {% set panel_template = 'panel-test.twig' %}
 
-<component
-  class="max-w-screen-2xl w-full mx-auto"
-  is="accordion-test"
-  v-slot="accordion-test"
->
-    <div class="accordion max-w-screen-2xl w-full mx-auto">
-        <div class="colby-accordion-block border-b border-gray-300">
-            <InnerBlocks
-            template={{ panel_template }}
-            />
-        </div>
+<div class="accordion-test max-w-screen-2xl w-full mx-auto">
+    <div class="colby-accordion-block border-b border-gray-300">
+        <InnerBlocks
+        template={{ panel_template }}
+        />
     </div>
-</component>
+</div>
+
+
+ {# JavaScript function to handle accordion toggle #}
+<!--<script>
+  function toggleAccordion(event) {
+    const button = event.currentTarget;
+    const panel = button.closest('[data-accordion-panel]'); 
+    const window = panel.querySelector('[data-accordion-window]');
+    const content = panel.querySelector('[data-accordion-content]');
+    const siblings = getSiblings(panel);
+    const isSingle = panel.getAttribute('data-single');
+    console.log(isSingle);
+
+    if (window.style.visibility === 'hidden' || window.offsetHeight === 0) {
+      // Expand accordion
+      window.style.height = content.offsetHeight + 'px';
+      window.style.visibility = 'visible';
+      // Optionally, add classes or styles to indicate expanded state
+    } else {
+      // Collapse accordion
+      window.style.height = '0';
+      window.style.visibility = 'hidden';
+      // Optionally, remove classes or styles for collapsed state
+    }
+
+    // Collapse other panels if required
+    siblings.forEach((sibling) => {
+      const siblingWindow = sibling.querySelector('[data-accordion-window]');
+      siblingWindow.style.height = '0';
+      siblingWindow.style.visibility = 'hidden';
+      // Optionally, adjust styles for other panels
+    });
+  }
+
+  function getSiblings(element) {
+    let siblings = [];
+    let sibling = element.parentNode.firstChild;
+
+    while (sibling) {
+      if (sibling.nodeType === 1 && sibling !== element) {
+        siblings.push(sibling);
+      }
+      sibling = sibling.nextSibling;
+    }
+
+    return siblings;
+  }
+</script>-->
+<script>
+// we need to wait for jQuery to load
+setTimeout(() => {
+  jQuery.fn.accordion = function(speed){
+    this.on('click', '.accordion__button', function(e){
+      e.preventDefault();
+      var window = jQuery(this).closest('.accordion__panel').children('.accordion__window');
+      var content = window.children('.accordion__content');
+      if (window.css('visibility') === 'hidden' || window.outerHeight(true) === 0) {
+        console.log(content.outerHeight(true) + 'px');
+        window.css({'height': content.outerHeight(true) + 'px', 'visibility': 'visible'});
+      } else {
+         window.css({'height': '0px', 'visibility': 'hidden'});
+      }
+
+    });
+    return this;
+  }
+  jQuery('.accordion-test').accordion(250).fadeIn();
+}, 1500);
+
+</script>

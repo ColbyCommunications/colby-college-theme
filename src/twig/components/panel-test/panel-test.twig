@@ -1,7 +1,7 @@
 {% import "icons.twig" as icons %}
 <article class="accordion__panel border-t border-gray-300" data-accordion-panel data-single="{{ single.single ? true : false }}">
   <div class="accordion__header">
-    <button class="accordion__button flex items-center justify-between !py-6 !px-0 gap-x-3" onclick="toggleAccordion(event)">
+    <button class="accordion__button flex items-center justify-between !py-6 !px-0 gap-x-3">
       <h3 class="font-body font-bold !text-18 leading-120 text-indigo">
         {{ heading }}
       </h3>
@@ -19,49 +19,4 @@
   </div>
 </article>
 
-{# JavaScript function to handle accordion toggle #}
-<script>
-  function toggleAccordion(event) {
-    const button = event.currentTarget;
-    const panel = button.closest('[data-accordion-panel]'); 
-    const window = panel.querySelector('[data-accordion-window]');
-    const content = panel.querySelector('[data-accordion-content]');
-    const siblings = getSiblings(panel);
-    const isSingle = panel.getAttribute('data-single');
-    console.log(isSingle);
 
-    if (window.style.visibility === 'hidden' || window.offsetHeight === 0) {
-      // Expand accordion
-      window.style.height = content.offsetHeight + 'px';
-      window.style.visibility = 'visible';
-      // Optionally, add classes or styles to indicate expanded state
-    } else {
-      // Collapse accordion
-      window.style.height = '0';
-      window.style.visibility = 'hidden';
-      // Optionally, remove classes or styles for collapsed state
-    }
-
-    // Collapse other panels if required
-    siblings.forEach((sibling) => {
-      const siblingWindow = sibling.querySelector('[data-accordion-window]');
-      siblingWindow.style.height = '0';
-      siblingWindow.style.visibility = 'hidden';
-      // Optionally, adjust styles for other panels
-    });
-  }
-
-  function getSiblings(element) {
-    let siblings = [];
-    let sibling = element.parentNode.firstChild;
-
-    while (sibling) {
-      if (sibling.nodeType === 1 && sibling !== element) {
-        siblings.push(sibling);
-      }
-      sibling = sibling.nextSibling;
-    }
-
-    return siblings;
-  }
-</script>
