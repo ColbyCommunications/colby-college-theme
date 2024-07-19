@@ -1,7 +1,7 @@
 {% import "icons.twig" as icons %}
 <article class="accordion__panel border-t border-gray-300" data-accordion-panel data-single="{{ single.single ? true : false }}">
   <div class="accordion__header">
-    <button class="accordion__button flex items-center justify-between !py-6 !px-0 gap-x-3" onclick="toggleAccordion(event)">
+    <button class="accordion__button flex items-center justify-between !py-6 !px-0 gap-x-3">
       <h3 class="font-body font-bold !text-18 leading-120 text-indigo">
         {{ heading }}
       </h3>
@@ -18,3 +18,5 @@
     </div>
   </div>
 </article>
+
+
