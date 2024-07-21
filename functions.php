@@ -2304,3 +2304,9 @@ function return_404_for_category_archives() {
     }
 }
 add_action('template_redirect', 'return_404_for_category_archives');
+
+
+
+
+
+
