@@ -1688,7 +1688,7 @@ function wpse248405_custom_column( $col, $post_id ) {
 			echo "</strong>\n";
 
 			if ( 'excerpt' === $mode
-				&& ! is_post_type_hierarchical( $this->screen->post_type )
+				&& ! is_post_type_hierarchical( $post->post_type )
 				&& current_user_can( 'read_post', $post->ID )
 			) {
 				if ( post_password_required( $post ) ) {
