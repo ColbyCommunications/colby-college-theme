@@ -11,7 +11,6 @@
 add_theme_support( 'responsive-embeds' );
 
 include __DIR__ . '/acf_fields.php';
-// include __DIR__ . '/src/twig/components/accordion-test/accordion-test.php';
 
 
 /**
@@ -190,9 +189,9 @@ class StarterSite extends Timber\Site {
 				)
 			);
 
-			// register a accordion-test block (parent)
-			register_block_type( __DIR__ . '/src/twig/components/accordion-test');
-			register_block_type( __DIR__ . '/src/twig/components/panel-test');
+			// register an advanced accordion block (parent)
+			register_block_type( __DIR__ . '/src/twig/components/advanced-accordion');
+			register_block_type( __DIR__ . '/src/twig/components/advanced-accordion-panel');
 
 			// register a home hero
 			acf_register_block(
@@ -986,6 +985,8 @@ class StarterSite extends Timber\Site {
         }
     }
 
+
+
     // If we have breadcrumbs, add them to the context
     if (!empty($breadcrumbs_menu)) {
         $context['breadcrumbs_menu'] = $breadcrumbs_menu;
@@ -1331,6 +1332,24 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 	// Render the block.
 	Timber::render( 'src/twig/components/' . $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged );
 }
+
+function get_custom_category_parents($category_id, $link = false, $separator = '/', ) {
+    $parents = get_category_parents($category_id, $link, $separator,);
+
+    if (is_wp_error($parents)) {
+        return 'Error retrieving category parents';
+    }
+
+    $parents = strtolower($parents);
+    $parents = str_replace(' ', '-', strtolower($parents));
+
+    return $parents;
+}
+
+add_filter('timber/context', function($context) {
+    $context['get_custom_category_parents'] = 'get_custom_category_parents';
+    return $context;
+});
 
 /**
  * ===================================================
@@ -2305,8 +2324,16 @@ function return_404_for_category_archives() {
 }
 add_action('template_redirect', 'return_404_for_category_archives');
 
+// function exclude_specific_posts_from_algolia_index( $should_index, $post ) {
+//     // Array of post IDs to exclude
+//     $excluded_post_ids = array(7443, 7441); // Replace these IDs with the IDs of the posts you want to exclude
 
+//     if ( in_array( $post->ID, $excluded_post_ids ) ) {
+//         return false;
+//     }
 
-
+//     return $should_index;
+// }
+// add_filter( 'algolia_should_index_searchable_post', 'exclude_specific_posts_from_algolia_index', 10, 2 );
 
 

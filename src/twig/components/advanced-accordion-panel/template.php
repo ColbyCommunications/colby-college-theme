@@ -19,7 +19,7 @@ if ( ! empty( $block['anchor'] ) ) {
 }
 
 // Create class attribute allowing for custom "className".
-$class_name = 'acf/panel-test';
+$class_name = 'acf/advanced-accordion-panel';
 if ( ! empty( $block['className'] ) ) {
     $class_name .= ' ' . $block['className'];
 }
@@ -37,7 +37,7 @@ $inner_blocks_template = array(
     ),
 );
 
-$allowed_blocks = ["acf/paragraph", "acf/image", "core/heading"];
+$allowed_blocks = ["acf/paragraph", "acf/image", "acf/image-text", "core/heading", "acf/table", "acf/embed", "core/embed" ];
 ?>
 
 <?php if ( ! $is_preview ) : ?>
@@ -77,7 +77,7 @@ $allowed_blocks = ["acf/paragraph", "acf/image", "core/heading"];
     $context2['single'] = $context['acf/fields'];
 
     // Render the block.
-    Timber::render( 'src/twig/components/panel-test/panel-test.twig', $context2 );
+    Timber::render( 'src/twig/components/advanced-accordion-panel/advanced-accordion-panel.twig', $context2 );
     ?>
 <?php endif; ?>
 

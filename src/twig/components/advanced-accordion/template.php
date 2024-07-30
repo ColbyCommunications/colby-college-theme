@@ -5,12 +5,12 @@ if ( ! empty( $block['anchor'] ) ) {
     $block_id = esc_attr( $block['anchor'] );
 }
 
-$class_name = 'acf/accordion-test';
+$class_name = 'acf/advanced-accordion';
 if ( ! empty( $block['className'] ) ) {
     $class_name .= ' ' . $block['className'];
 }
 
-$allowed_blocks = ['acf/panel-test'];
+$allowed_blocks = ['acf/advanced-accordion-panel'];
 $inner_blocks_template = array(
     array(
         'core/column',
@@ -60,7 +60,7 @@ $inner_blocks_template = array(
     ];
 
     // Render the block.
-    Timber::render( 'src/twig/components/accordion-test/accordion-test.twig', $data );
+    Timber::render( 'src/twig/components/advanced-accordion/advanced-accordion.twig', $data );
     ?>
 <?php endif; ?>
 

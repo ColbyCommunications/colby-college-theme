@@ -1,7 +1,7 @@
 {
-    "name": "acf/panel-test",
-    "title": "Panel Test",
-    "description": "A custom accordion panel block.",
+    "name": "acf/advanced-accordion",
+    "title": "Advanced Accordion",
+    "description": "A custom accordion block.",
     "category": "layout",
     "keywords": ["accordion", "panels"],
     "acf": {
@@ -13,7 +13,6 @@
         "anchor": true,
         "mode": false
     },
-    "allowedBlocks": ["acf/paragraph", "acf/image", "acf/heading"],
-    "parent": ["acf/accordion-test"],
-    "usesContext": ["acf/fields"]
+    "allowedBlocks": ["acf/advanced-accordion-panel"],
+    "providesContext": { "acf/fields": "data" }
 }
