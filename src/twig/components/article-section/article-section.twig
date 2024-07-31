@@ -10,8 +10,6 @@
   {% set image_orientation = 'rectangle' %}
 {% endif %}
 
-{% set url = function('get_custom_category_parents', render_posts_category, false, '/') %}
-
 <component
   is="carousel"
   v-slot="carousel"
@@ -31,7 +29,7 @@
         heading: heading,
         paragraph: paragraph,
         buttons: {
-          items: render_posts ? [{button: { title: 'See More', url: '/' ~ url }}] : buttons,
+          items: buttons,
         },
       } %}
       {% if carousel %}

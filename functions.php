@@ -1333,24 +1333,6 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 	Timber::render( 'src/twig/components/' . $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged );
 }
 
-function get_custom_category_parents($category_id, $link = false, $separator = '/', ) {
-    $parents = get_category_parents($category_id, $link, $separator,);
-
-    if (is_wp_error($parents)) {
-        return 'Error retrieving category parents';
-    }
-
-    $parents = strtolower($parents);
-    $parents = str_replace(' ', '-', strtolower($parents));
-
-    return $parents;
-}
-
-add_filter('timber/context', function($context) {
-    $context['get_custom_category_parents'] = 'get_custom_category_parents';
-    return $context;
-});
-
 /**
  * ===================================================
  *
