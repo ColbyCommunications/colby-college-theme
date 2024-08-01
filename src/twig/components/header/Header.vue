@@ -30,10 +30,14 @@
                 }
             },
             checkUrl(title) {
-                return (
-                    window.location.href.indexOf((title.replace(/\s+/g, '-') || '').toLowerCase()) >
-                    -1
-                );
+                const pathSegments = window.location.pathname.split('/');
+                if (pathSegments.length > 1) {
+                    // Get the first segment after the initial slash
+                    const firstSegment = pathSegments[1].toLowerCase();
+                    const formattedTitle = (title.replace(/\s+/g, '-') || '').toLowerCase();
+                    return firstSegment.indexOf(formattedTitle) > -1;
+                }
+                return false;
             },
         },
     };

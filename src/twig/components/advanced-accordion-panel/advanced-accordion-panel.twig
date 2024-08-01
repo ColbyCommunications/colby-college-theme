@@ -1,0 +1,22 @@
+{% import "icons.twig" as icons %}
+<article class="accordion__panel border-t border-gray-300" data-accordion-panel>
+  <div class="accordion__header">
+    <button class="accordion__button flex items-center justify-between !py-6 !px-0 gap-x-3">
+      <h3 class="font-body font-bold !text-18 leading-120 text-indigo">
+        {{ heading }}
+      </h3>
+      <div class="flex shrink-0 items-center justify-center w-11 h-9 bg-gray-100 border border-gray-300 rounded-sm">
+        <div class="-rotate-90 transition-all duration-200 ease-in-out">
+          {{ icons.icon('chevron', 'fill-azure w-1.5') }}
+        </div>
+      </div>
+    </button>
+  </div>
+  <div class="accordion__window" data-accordion-window style="height: 0; visibility: hidden;">
+    <div class="p-0 accordion__content" data-accordion-content>
+      <InnerBlocks />
+    </div>
+  </div>
+</article>
+
+

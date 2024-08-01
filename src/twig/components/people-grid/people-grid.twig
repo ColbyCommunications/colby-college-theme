@@ -1,0 +1,16 @@
+{% set articleGrid = 'article-grid.twig' %}
+
+{# Merge people prop from functions.php with items prop from ACF #}
+
+{# <p>{{ dump(people_posts) }}</p> #}
+{# <p>{{ dump(items) }}</p> #}
+{# <p>{{ dump(acf_items) }}</p> #}
+{# <p>{{ dump(people) }}</p> #}
+
+<div class="people-grid">
+  {% include articleGrid with {
+    columns: 4,
+    items: people,
+    image_orientation: "portrait"
+  } %}
+</div>

@@ -32,7 +32,7 @@
 
   <figure class="inline-block">
     {% if image %}
-      <img src="{{ image['url'] }}" alt="{{ image['alt'] }}" style="width: {{image_width}}px;" />
+      <img src="{{ image['url'] }}" alt="{{ image['alt']|escape }}" style="width: {{image_width}}px;" />
       {% if media_caption %}
         <figcaption class="text-center text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
       {% endif %}

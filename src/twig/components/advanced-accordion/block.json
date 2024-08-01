@@ -1,0 +1,18 @@
+{
+    "name": "acf/advanced-accordion",
+    "title": "Advanced Accordion",
+    "description": "A custom accordion block.",
+    "category": "layout",
+    "keywords": ["accordion", "panels"],
+    "acf": {
+        "mode": "preview",
+        "renderTemplate": "template.php"
+    },
+    "supports": {
+        "align": false,
+        "anchor": true,
+        "mode": false
+    },
+    "allowedBlocks": ["acf/advanced-accordion-panel"],
+    "providesContext": { "acf/fields": "data" }
+}

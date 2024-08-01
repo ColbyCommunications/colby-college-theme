@@ -1,0 +1,44 @@
+{% extends "base.twig" %}
+
+{% block content %}
+
+  {% set template_subheading = post.date|date("M d, Y") %}
+  {% set template_heading = post.title %}
+  {% set template_paragraph = fn('has_excerpt') ? fn('get_the_excerpt') : null %}
+
+  <div class="post">
+    {% set image = null %}
+    {% if fn('has_post_thumbnail', post.ID) %}
+      {% set image = {
+        sizes: {
+          Hero: fn('get_the_post_thumbnail_url', post.ID, 'Hero'),
+          Rectangle: fn('get_the_post_thumbnail_url', post.ID, 'Rectangle')
+        },
+        alt: post.thumbnail.alt,
+        caption: post.thumbnail.caption
+      } %}
+    {% endif %}
+
+    {% include fn('get_theme_file_path', '/src/twig/components/full-bleed-hero/full-bleed-hero.twig') with {
+      type: 'light',
+      subheading: template_subheading,
+      heading: template_heading,
+      paragraph: template_paragraph,
+      image: image
+    } %}
+
+    <div
+      class="post__inner mb-20 [&>.wysiwyg]:mt-16 [&>.wysiwyg]:grid md:[&>.wysiwyg]:grid-cols-12 [&>.wysiwyg]:gap-x-10 [&>.wysiwyg]:max-w-screen-2xl [&>.wysiwyg]:w-full [&>.wysiwyg]:px-5 [&>.wysiwyg]:my-0 [&>.wysiwyg]:mx-auto
+      md:[&>.wysiwyg>.colby-paragraph-block]:col-span-8 md:[&>.wysiwyg>.colby-paragraph-block]:col-start-3
+      md:[&>.wysiwyg>.wp-block-heading]:col-span-8 md:[&>.wysiwyg>.wp-block-heading]:col-start-3
+      md:[&>.wysiwyg>.embed]:col-span-8 md:[&>.wysiwyg>.embed]:col-start-3
+      md:[&>.wysiwyg>.colby-table-block]:col-span-8 md:[&>.wysiwyg>.colby-table-block]:col-start-3
+      md:[&>.wysiwyg>.image-grid]:col-span-10 md:[&>.wysiwyg>.image-grid]:col-start-2
+      md:[&>.wysiwyg>.block-quote]:col-span-10 md:[&>.wysiwyg>.block-quote]:col-start-2"
+    >
+      {% include 'wysiwyg.twig' with {
+        post: { content: post.content },
+      } %}
+    </div>
+  </div>
+{% endblock %}
