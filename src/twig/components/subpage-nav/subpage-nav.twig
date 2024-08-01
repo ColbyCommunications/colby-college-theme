@@ -4,7 +4,6 @@
 
 {% else %}
   {% set newItems = [] %}
-
   {% for item in items %}
     {% if post.id == item.ID or item.guid == (current_url ~ '\/') or item.url == (current_url ~ '\/') %}
       {% set a = true %}
@@ -35,5 +34,6 @@
 <component 
 is="subpage-nav" 
 :items="{{items|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE')) | e}}" 
-heading="{{heading}}">
+heading="{{heading}}"
+>
 </component>
