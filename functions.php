@@ -2306,16 +2306,16 @@ function return_404_for_category_archives() {
 }
 add_action('template_redirect', 'return_404_for_category_archives');
 
-// function exclude_specific_posts_from_algolia_index( $should_index, $post ) {
-//     // Array of post IDs to exclude
-//     $excluded_post_ids = array(7443, 7441); // Replace these IDs with the IDs of the posts you want to exclude
+function exclude_specific_posts_from_algolia_index( $should_index, $post ) {
+    // Array of post IDs to exclude
+    $excluded_post_ids = array(7443, 7441); // Replace these IDs with the IDs of the posts you want to exclude
 
-//     if ( in_array( $post->ID, $excluded_post_ids ) ) {
-//         return false;
-//     }
+    if ( in_array( $post->ID, $excluded_post_ids ) ) {
+        return false;
+    }
 
-//     return $should_index;
-// }
-// add_filter( 'algolia_should_index_searchable_post', 'exclude_specific_posts_from_algolia_index', 10, 2 );
+    return $should_index;
+}
+add_filter( 'algolia_should_index_searchable_post', 'exclude_specific_posts_from_algolia_index', 10, 2 );
 
 
