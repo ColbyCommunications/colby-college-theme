@@ -4048,7 +4048,7 @@ acf_add_local_field_group( array(
 				'api' => 'External API',
 				'manual' => 'Add Posts Manually',
 			),
-			'default_value' => 'manual',
+			'default_value' => false,
 			'return_format' => 'value',
 			'multiple' => 0,
 			'allow_null' => 0,
