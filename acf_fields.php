@@ -748,6 +748,32 @@ acf_add_local_field_group( array(
 	'title' => 'Carousel',
 	'fields' => array(
 		array(
+			'key' => 'field_66bd08a336412',
+			'label' => 'Display Posts Method',
+			'name' => 'display_posts_method',
+			'aria-label' => '',
+			'type' => 'select',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'choices' => array(
+				'api' => 'External API',
+				'manual' => 'Add Posts Manually',
+			),
+			'default_value' => false,
+			'return_format' => 'value',
+			'multiple' => 0,
+			'allow_null' => 0,
+			'ui' => 0,
+			'ajax' => 0,
+			'placeholder' => '',
+		),
+		array(
 			'key' => 'field_632a4f5be07f2',
 			'label' => 'Render API',
 			'name' => 'render_api',
@@ -755,7 +781,15 @@ acf_add_local_field_group( array(
 			'type' => 'true_false',
 			'instructions' => '',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_66bd08a336412',
+						'operator' => '==',
+						'value' => 'api',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
@@ -840,28 +874,6 @@ acf_add_local_field_group( array(
 			'maxlength' => '',
 		),
 		array(
-			'key' => 'field_62f01742bde25',
-			'label' => 'Buttons (copy)',
-			'name' => 'buttons_copy',
-			'aria-label' => '',
-			'type' => 'clone',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'clone' => array(
-				0 => 'group_62efae3375c73',
-			),
-			'display' => 'seamless',
-			'layout' => 'block',
-			'prefix_label' => 0,
-			'prefix_name' => 0,
-		),
-		array(
 			'key' => 'field_62effcd636d00',
 			'label' => 'Items',
 			'name' => 'items',
@@ -872,9 +884,9 @@ acf_add_local_field_group( array(
 			'conditional_logic' => array(
 				array(
 					array(
-						'field' => 'field_632a4f5be07f2',
-						'operator' => '!=',
-						'value' => '1',
+						'field' => 'field_66bd08a336412',
+						'operator' => '==',
+						'value' => 'manual',
 					),
 				),
 			),
@@ -883,10 +895,11 @@ acf_add_local_field_group( array(
 				'class' => '',
 				'id' => '',
 			),
-			'collapsed' => '',
+			'layout' => 'row',
+			'pagination' => 0,
 			'min' => 0,
 			'max' => 0,
-			'layout' => 'row',
+			'collapsed' => '',
 			'button_label' => 'Add Item',
 			'rows_per_page' => 20,
 			'sub_fields' => array(
@@ -940,6 +953,28 @@ acf_add_local_field_group( array(
 					'parent_repeater' => 'field_62effcd636d00',
 				),
 			),
+		),
+		array(
+			'key' => 'field_62f01742bde25',
+			'label' => 'Buttons (copy)',
+			'name' => 'buttons_copy',
+			'aria-label' => '',
+			'type' => 'clone',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'clone' => array(
+				0 => 'group_62efae3375c73',
+			),
+			'display' => 'seamless',
+			'layout' => 'block',
+			'prefix_label' => 0,
+			'prefix_name' => 0,
 		),
 	),
 	'location' => array(
