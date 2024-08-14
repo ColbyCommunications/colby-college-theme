@@ -4532,7 +4532,6 @@ acf_add_local_field_group( array(
 			'bidirectional_target' => array(
 			),
 		),
-	),
 	array(
 		'key' => 'field_6682ca3641df8',
 		'label' => 'Post Limit',
@@ -4563,6 +4562,7 @@ acf_add_local_field_group( array(
 		'prepend' => '',
 		'append' => '',
 	),
+),
 	'location' => array(
 		array(
 			array(
