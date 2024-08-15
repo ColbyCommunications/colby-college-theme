@@ -190,8 +190,8 @@ class StarterSite extends Timber\Site {
 			);
 
 			// register an advanced accordion block (parent)
-			register_block_type( __DIR__ . '/src/twig/components/advanced-accordion');
-			register_block_type( __DIR__ . '/src/twig/components/advanced-accordion-panel');
+			register_block_type( __DIR__ . '/src/twig/components/advanced-accordion', array( 'icon' => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' )));
+			register_block_type( __DIR__ . '/src/twig/components/advanced-accordion-panel', array( 'icon' => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' )));
 
 			// register a home hero
 			acf_register_block(
