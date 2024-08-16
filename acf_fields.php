@@ -319,7 +319,7 @@ acf_add_local_field_group( array(
 				'id' => '',
 			),
 			'choices' => array(
-				'internal: Internal Posts' => 'internal: Internal Posts',
+				'internal' => 'Internal Posts',
 				'api' => 'External API',
 				'manual' => 'Add Posts Manually',
 			),
