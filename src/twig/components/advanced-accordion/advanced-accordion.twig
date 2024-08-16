@@ -1,7 +1,7 @@
 {% set panel_template = 'advanced-accordion-panel.twig' %}
 
 <div class="advanced-accordion max-w-screen-2xl w-full mx-auto" data-single="{{ single }}">
-    <div class="colby-accordion-block border-b border-gray-300">
+    <div class="colby-advanced-accordion-block border-b border-gray-300">
         <InnerBlocks
         template="{{ panel_template }}"
         />
@@ -11,17 +11,17 @@
 // we need to wait for jQuery to load
 setTimeout(() => {
   jQuery.fn.accordion = function(speed){
-    this.on('click', '.accordion__button', function(e){
+    this.on('click', '.advanced-accordion__button', function(e){
       e.preventDefault();
       var $accordion = jQuery(this).closest('.advanced-accordion');
-      var $panel = jQuery(this).closest('.accordion__panel');
-      var $window = $panel.children('.accordion__window');
-      var $content = $window.children('.accordion__content');
-      var $blocks = $window.children('.accordion__content').children();
+      var $panel = jQuery(this).closest('.advanced-accordion__panel');
+      var $window = $panel.children('.advanced-accordion__window');
+      var $content = $window.children('.advanced-accordion__content');
+      var $blocks = $window.children('.advanced-accordion__content').children();
       
       if ($accordion.data('single') === 1) {
         // Close all other panels
-        $accordion.find('.accordion__window').not($window).css({'height': '0px', 'visibility': 'hidden'});
+        $accordion.find('.advanced-accordion__window').not($window).css({'height': '0px', 'visibility': 'hidden'});
       }
       
       if ($window.css('visibility') === 'hidden' || $window.outerHeight(true) === 0) {
@@ -35,7 +35,7 @@ setTimeout(() => {
     return this;
   }
   jQuery('.advanced-accordion').accordion(250).fadeIn();
-}, 1500);
+}, 500);
 
 
 </script>
