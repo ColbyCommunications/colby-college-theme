@@ -300,10 +300,37 @@ acf_add_local_field_group( array(
 	'show_in_rest' => 0,
 ) );
 
-	acf_add_local_field_group( array(
+acf_add_local_field_group( array(
 	'key' => 'group_63233b2156686',
 	'title' => 'Article Section',
 	'fields' => array(
+		array(
+			'key' => 'field_66bfa57d1645f',
+			'label' => 'Display Posts Method',
+			'name' => 'display_posts_method',
+			'aria-label' => '',
+			'type' => 'select',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'choices' => array(
+				'internal: Internal Posts' => 'internal: Internal Posts',
+				'api' => 'External API',
+				'manual' => 'Add Posts Manually',
+			),
+			'default_value' => false,
+			'return_format' => 'value',
+			'multiple' => 0,
+			'allow_null' => 0,
+			'ui' => 0,
+			'ajax' => 0,
+			'placeholder' => '',
+		),
 		array(
 			'key' => 'field_634f6657dda40',
 			'label' => 'Render API',
@@ -312,7 +339,15 @@ acf_add_local_field_group( array(
 			'type' => 'true_false',
 			'instructions' => '',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_66bfa57d1645f',
+						'operator' => '==',
+						'value' => 'api',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
@@ -338,6 +373,11 @@ acf_add_local_field_group( array(
 						'field' => 'field_634f6657dda40',
 						'operator' => '==',
 						'value' => '1',
+					),
+					array(
+						'field' => 'field_66bfa57d1645f',
+						'operator' => '==',
+						'value' => 'api',
 					),
 				),
 			),
@@ -422,6 +462,11 @@ acf_add_local_field_group( array(
 						'operator' => '!=',
 						'value' => '1',
 					),
+					array(
+						'field' => 'field_66bfa57d1645f',
+						'operator' => '==',
+						'value' => 'manual',
+					),
 				),
 			),
 			'wrapper' => array(
@@ -496,7 +541,15 @@ acf_add_local_field_group( array(
 			'type' => 'true_false',
 			'instructions' => '',
 			'required' => 0,
-			'conditional_logic' => 0,
+			'conditional_logic' => array(
+				array(
+					array(
+						'field' => 'field_66bfa57d1645f',
+						'operator' => '==',
+						'value' => 'internal',
+					),
+				),
+			),
 			'wrapper' => array(
 				'width' => '',
 				'class' => '',
@@ -504,9 +557,9 @@ acf_add_local_field_group( array(
 			),
 			'message' => '',
 			'default_value' => 0,
+			'ui' => 0,
 			'ui_on_text' => '',
 			'ui_off_text' => '',
-			'ui' => 0,
 		),
 		array(
 			'key' => 'field_63571e9ac5c2b',
@@ -523,6 +576,11 @@ acf_add_local_field_group( array(
 						'operator' => '==',
 						'value' => '1',
 					),
+					array(
+						'field' => 'field_66bfa57d1645f',
+						'operator' => '==',
+						'value' => 'internal',
+					),
 				),
 			),
 			'wrapper' => array(
@@ -537,6 +595,7 @@ acf_add_local_field_group( array(
 			'return_format' => 'id',
 			'field_type' => 'radio',
 			'allow_null' => 0,
+			'bidirectional' => 0,
 			'multiple' => 0,
 			'bidirectional_target' => array(
 			),
