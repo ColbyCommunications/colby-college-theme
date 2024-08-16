@@ -1,6 +1,6 @@
 {
     "name": "acf/advanced-accordion-panel",
-    "title": "Panel Test",
+    "title": "Panel",
     "description": "A custom accordion panel block.",
     "category": "layout",
     "keywords": ["accordion", "panels"],
