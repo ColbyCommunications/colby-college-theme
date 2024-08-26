@@ -13,6 +13,7 @@ setTimeout(() => {
   jQuery.fn.accordion = function(speed){
     this.on('click', '.advanced-accordion__button', function(e){
       e.preventDefault();
+      
       var $accordion = jQuery(this).closest('.advanced-accordion');
       var $panel = jQuery(this).closest('.advanced-accordion__panel');
       var $window = $panel.children('.advanced-accordion__window');
@@ -22,14 +23,17 @@ setTimeout(() => {
       if ($accordion.data('single') === 1) {
         // Close all other panels
         $accordion.find('.advanced-accordion__window').not($window).css({'height': '0px', 'visibility': 'hidden'});
+        $accordion.find('.advanced-accordion__button').not(this).removeClass('.rotate-90');
       }
       
       if ($window.css('visibility') === 'hidden' || $window.outerHeight(true) === 0) {
         $blocks.children('div').css({'marginBottom': '2rem'});  // Add margin bottom to all child elements
         $window.css({'height': $content.outerHeight(true) + 'px', 'visibility': 'visible', 'paddingBottom': '2rem'});
+        jQuery(this).addClass('.rotate-90');
       } else {
          $window.css({'height': '0px', 'visibility': 'hidden', 'paddingBottom': 0});
          $blocks.children().css({'marginBottom': '2rem'});
+         jQuery(this).removeClass('.rotate-90');
       }
     });
     return this;
