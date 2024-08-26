@@ -20,11 +20,12 @@ setTimeout(() => {
       var $content = $window.children('.advanced-accordion__content');
       var $blocks = $window.children('.advanced-accordion__content').children();
       var $iconContainer = jQuery(this).find('.icon-container');
-      
+
       if ($accordion.data('single') === 1) {
         // Close all other panels
         $accordion.find('.advanced-accordion__window').not($window).css({'height': '0px', 'visibility': 'hidden'});
-        $accordion.find('.advanced-accordion__button').not(this).removeClass('rotate-90');
+        $accordion.find('.icon-container').removeClass('rotate-90');
+        $accordion.find('.icon-container').addClass('-rotate-90');
       }
       
       if ($window.css('visibility') === 'hidden' || $window.outerHeight(true) === 0) {
