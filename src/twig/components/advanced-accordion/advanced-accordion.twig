@@ -19,6 +19,7 @@ setTimeout(() => {
       var $window = $panel.children('.advanced-accordion__window');
       var $content = $window.children('.advanced-accordion__content');
       var $blocks = $window.children('.advanced-accordion__content').children();
+      var $iconContainer = jQuery(this).find('.icon-container');
       
       if ($accordion.data('single') === 1) {
         // Close all other panels
@@ -29,11 +30,13 @@ setTimeout(() => {
       if ($window.css('visibility') === 'hidden' || $window.outerHeight(true) === 0) {
         $blocks.children('div').css({'marginBottom': '2rem'});  // Add margin bottom to all child elements
         $window.css({'height': $content.outerHeight(true) + 'px', 'visibility': 'visible', 'paddingBottom': '2rem'});
-        jQuery(this).addClass('rotate-90');
+        $iconContainer.addClass('rotate-90');
+        $iconContainer.removeClass('-rotate-90');
       } else {
          $window.css({'height': '0px', 'visibility': 'hidden', 'paddingBottom': 0});
          $blocks.children().css({'marginBottom': '2rem'});
-         jQuery(this).removeClass('rotate-90');
+         $iconContainer.addClass('-rotate-90');
+         $iconContainer.removeClass('rotate-90');
       }
     });
     return this;
