@@ -43,7 +43,7 @@
     {% if (image) and (align_image == 'left') %}
         <div class="flex flex-col md:block">
           <div class="self-center md:!mr-4 !mb-4 float-left {{ media_caption ? '!mb-4' : ''}}">
-            <img width="{{image_width}}" height="{{image_height}}" src="{{ image['url'] }}" alt="{{ image['alt'] }}" class="max-w-full" />
+            <img width="{{image_width}}" height="{{image_height}}" src="{{ image['url'] }}" alt="{{ image['alt']|escape }}" class="max-w-full" />
             {% if media_caption %}
               <figcaption class="text-center text-indigo text-12 pt-2" style="width:{{image_width}}px;">{{ image['caption'] }}</figcaption>
             {% endif %}
@@ -65,7 +65,7 @@
     {% if (image) and (align_image == 'right') %}
         <div class="flex flex-col md:block">
           <div class="self-center md:!ml-4 !mb-4 float-right {{ media_caption ? '!mb-4' : ''}}">
-            <img width="{{image_width}}" height="{{image_height}}" src="{{ image['url'] }}" alt="{{ image['alt'] }}" class="max-w-full" />
+            <img width="{{image_width}}" height="{{image_height}}" src="{{ image['url'] }}" alt="{{ image['alt']|escape }}" class="max-w-full" />
             {% if media_caption %}
               <figcaption class="text-center text-indigo text-12 pt-2" style="width:{{image_width}}px;">{{ image['caption'] }}</figcaption>
             {% endif %}
@@ -88,7 +88,7 @@
     {% if (image) and (align_image == 'left') %}
         <div class="flex flex-col md:flex-row md:flex-wrap">
           <div class="mb-4 flex flex-col items-center md:mr-4 shrink-0 {% if image_scale == '75' %}md:max-w-75{% elseif image_scale == '50' %}md:max-w-50{% elseif image_scale == '25' %}md:max-w-25{% else %}max-w-full{% endif %}" style="flex-basis: {{image_width}}px;">
-            <img width="{{image_width}}" height="{{image_height}}" src="{{ image['url'] }}" alt="{{ image['alt'] }}" class="max-w-full" />
+            <img width="{{image_width}}" height="{{image_height}}" src="{{ image['url'] }}" alt="{{ image['alt']|escape }}" class="max-w-full" />
             {% if media_caption %}
               <figcaption class="text-center text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
             {% endif %}
@@ -114,7 +114,7 @@
     {% if (image) and (align_image == 'right') %}
         <div class="flex flex-col md:flex-row-reverse md:flex-wrap">
           <div class="mb-4 flex flex-col items-center md:ml-4 shrink-0 {% if image_scale == '75' %}md:max-w-75{% elseif image_scale == '50' %}md:max-w-50{% elseif image_scale == '25' %}md:max-w-25{% else %}max-w-full{% endif %}" style="flex-basis: {{image_width}}px;">
-            <img width="{{image_width}}" height="{{image_height}}" src="{{ image['url'] }}" alt="{{ image['alt'] }}" class="max-w-full" />
+            <img width="{{image_width}}" height="{{image_height}}" src="{{ image['url'] }}" alt="{{ image['alt']|escape }}" class="max-w-full" />
             {% if media_caption %}
               <figcaption class="text-center text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
             {% endif %}

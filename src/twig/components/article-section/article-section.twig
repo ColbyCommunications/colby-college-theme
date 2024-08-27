@@ -10,6 +10,10 @@
   {% set image_orientation = 'rectangle' %}
 {% endif %}
 
+{% if not render_api  %}
+  {% set render_api = false %}
+{% endif %}
+
 <component
   is="carousel"
   v-slot="carousel"
@@ -29,7 +33,7 @@
         heading: heading,
         paragraph: paragraph,
         buttons: {
-          items: render_posts ? [{button: { title: 'See More', url: '/category/' ~ fn('get_term', render_posts_category, '', 'ARRAY_A')['slug'] ~ '/'}}] : buttons,
+          items: buttons,
         },
       } %}
       {% if carousel %}

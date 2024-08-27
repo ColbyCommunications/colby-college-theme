@@ -185,7 +185,7 @@
       <img
         class="{{ class }}"
         src="{{ src }}"
-        alt="{{ alt }}"
+        alt="{{ alt|escape }}"
       />
     </picture>
   {% else %}
@@ -194,7 +194,7 @@
       <img
         class="{{ class }}"
         src="{{ sizeMobile }}"
-        alt="{{ alt }}"
+        alt="{{ alt|escape }}"
       />
     </picture>
   {% endif %}

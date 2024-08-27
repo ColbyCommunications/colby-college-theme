@@ -12,6 +12,7 @@ add_theme_support( 'responsive-embeds' );
 
 include __DIR__ . '/acf_fields.php';
 
+
 /**
  * If you are installing Timber as a Composer dependency in your theme, you'll need this block
  * to load your dependencies and initialize Timber. If you are using Timber via the WordPress.org
@@ -152,6 +153,20 @@ class StarterSite extends Timber\Site {
 		);
 	}
 
+	function get_current_url() {
+    global $wp;
+    return home_url(add_query_arg(array(), $wp->request));
+	}
+
+	function my_acf_block_render_callback($block) {
+    // Get the current URL
+    $context = Timber::context();
+    $context['current_url'] = get_current_url();
+
+    // Render the Twig template
+    Timber::render('blocks/people-grid.twig', $context);
+	}
+
 	public function my_acf_init() {
 
 		// check function exists
@@ -173,6 +188,10 @@ class StarterSite extends Timber\Site {
 					),
 				)
 			);
+
+			// register an advanced accordion block (parent)
+			register_block_type( __DIR__ . '/src/twig/components/advanced-accordion', array( 'icon' => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' )));
+			register_block_type( __DIR__ . '/src/twig/components/advanced-accordion-panel', array( 'icon' => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' )));
 
 			// register a home hero
 			acf_register_block(
@@ -371,6 +390,23 @@ class StarterSite extends Timber\Site {
 					'category'        => 'layout',
 					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
 					'keywords'        => array( 'layout', 'article', 'grid', 'image' ),
+					'mode'            => 'edit',
+					'supports'        => array(
+						'align' => false,
+					),
+				)
+			);
+
+			// register article grid
+			acf_register_block(
+				array(
+					'name'            => 'people-grid',
+					'title'           => __( 'People Grid' ),
+					'description'     => __( 'Layout dedicated to displaying people posts for academic department and office pages.' ),
+					'render_callback' => 'my_acf_block_render_callback',
+					'category'        => 'layout',
+					'icon'            => file_get_contents( get_template_directory() . '/src/images/svg/c.svg' ),
+					'keywords'        => array( 'people', 'layout', 'article', 'grid', 'image' ),
 					'mode'            => 'edit',
 					'supports'        => array(
 						'align' => false,
@@ -914,27 +950,48 @@ class StarterSite extends Timber\Site {
 
 		global $wp;
 		if ( ! is_404() ) {
-			$crumbs = get_post_ancestors( $context['post']->ID );
+    // Get the current URL
+    $current_url = $_SERVER['REQUEST_URI'];
+    
+    // Parse the URL and get segments
+    $url_segments = explode('/', trim($current_url, '/'));
+    
+    // Initialize breadcrumbs menu array
+    $breadcrumbs_menu = array();
 
-			if ( $crumbs ) {
-				$breadcrumbs_menu = array();
+    // Loop through the first four segments to build dynamic breadcrumbs
+    $current_path = '';
+    for ($i = 0; $i < min(4, count($url_segments)); $i++) {
+        $segment = $url_segments[$i];
+        $current_path .= '/' . $segment;
 
-				foreach ( $crumbs as $ancestor ) {
-					array_push(
-						$breadcrumbs_menu,
-						array(
-							'id'    => $ancestor,
-							'title' => get_the_title( $ancestor ),
-							'url'   => get_permalink( $ancestor ),
-						)
-					);
-				}
-			}
+        $breadcrumbs_menu[] = array(
+            'title' => ucfirst(str_replace('-', ' ', $segment)),
+            'url'   => $current_path,
+        );
+    }
 
-			if ( isset( $breadcrumbs_menu ) ) {
-				$context['breadcrumbs_menu'] = array_reverse( $breadcrumbs_menu );
-			}
-		}
+    // Handle the fifth segment as a post
+    if (isset($url_segments[4])) {
+        $post_slug = $url_segments[4];
+        $post = get_page_by_path($post_slug, OBJECT, 'post');
+
+        if ($post) {
+            $breadcrumbs_menu[] = array(
+                'id'    => $post->ID,
+                'title' => get_the_title($post->ID),
+                'url'   => get_permalink($post->ID),
+            );
+        }
+    }
+
+
+
+    // If we have breadcrumbs, add them to the context
+    if (!empty($breadcrumbs_menu)) {
+        $context['breadcrumbs_menu'] = $breadcrumbs_menu;
+    }
+}
 
 		$context['current_url']    = home_url( $wp->request );
 		$context['foo']            = 'bar';
@@ -1075,6 +1132,76 @@ function theme_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'theme_scripts' );
 
+function get_current_url_path() {
+    return $_SERVER['REQUEST_URI'];
+}
+
+function get_people_posts_by_department($segment3) {
+
+	// Handle cases where departments have commas in their name
+	switch ($segment3) {
+		case 'performance theater and dance':
+			$segment3 = "performance, theater, and dance";
+			break;
+		case 'science technology and society':
+			$segment3 = "science, technology, and society";
+			break;
+		case 'womens gender and sexuality studies':
+			$segment3 = "women's, gender, and sexuality studies";
+			break;
+	}
+    // Define query arguments
+    $args = array(
+        'post_type' => 'people', // Specify the post type
+        'posts_per_page' => -1, // Retrieve all posts
+        'post_status' => 'publish', // Retrieve only published posts
+        'meta_query' => array(
+            array(
+                'key' => 'department', // Custom field key
+                'value' => $segment3, // Value to match
+                'compare' => '=', // Match exactly
+            ),
+        ),
+    );
+
+    // Instantiate WP_Query
+    $query = new WP_Query($args);
+
+    // Initialize an array to hold the posts
+    $posts = [];
+
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $post = get_post();
+            if ($post) { // Check if get_post() returns a valid post object
+                $posts[] = ['post' => $post];
+            }
+        }
+        wp_reset_postdata();
+    }
+
+    return $posts;
+}
+
+function get_people($segment1, $segment2, $segment3) {
+    switch ($segment1) {
+        case 'academics':
+            switch ($segment2) {
+                case 'departments-and-programs':
+                    if ($segment3 !== '') {
+                        return get_people_posts_by_department($segment3);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
 /**
  *  This is the callback that displays the block.
  *
@@ -1095,6 +1222,9 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 	$context['is_preview'] = $is_preview;
 
 	$context['block_name'] = substr( $block['name'], 4 );
+
+	// Store the current URL.
+  $context['current_url_path'] = get_current_url_path();
 
 	$context['recent_people'] = Timber::get_posts(
 		array(
@@ -1154,6 +1284,49 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 		);
 	} else {
 		$context_merged = $context['fields'];
+	}
+
+	if ($context['block_name'] == 'people-grid') {
+			// Split the URL path into segments
+			$url_segments = explode('/', trim($context['current_url_path'], '/'));
+
+			// Retrieve segments 1, 2, and 3 from the URL (if they exist)
+			$segment1 = $url_segments[0] ?? '';
+			$segment2 = $url_segments[1] ?? '';
+			$segment3 = $url_segments[2] ?? '';
+
+			// Replace dashes in third url segment with spaces
+			$segment3 = strtolower(str_replace('-', ' ', trim($segment3)));
+
+			// Handle auto populate if enabled
+			$is_enabled_auto_populate = get_field('auto_populate');
+
+			$is_enabled_auto_populate = get_field('auto_populate');
+      $people_posts = $is_enabled_auto_populate ? get_people($segment1, $segment2, $segment3) : [];
+      $acf_items = get_field('items') ?: [];
+	
+			// Merge ACF items and people posts
+			$merged_items = array_merge(is_array($acf_items) ? $acf_items : [], is_array($people_posts) ? $people_posts : []);
+
+			foreach ($merged_items as &$item) {
+            if (isset($item['post'])) {
+                $post_id = $item['post']->ID;
+                if ($post_id) { // Ensure $post_id is valid
+                    $item['last_name'] = strtolower(get_post_meta($post_id, 'last_name', true));
+                }
+            }
+        }
+        unset($item);
+
+			// Sort the merged_items array by last_name
+			usort($merged_items, function($a, $b) {
+    		return strcmp(strtolower($a['last_name']), strtolower($b['last_name']));
+			});
+
+			// Update context with merged items
+			$context_merged['acf_items'] = $acf_items;
+			$context_merged['people_posts'] = $people_posts;
+			$context_merged['people'] = $merged_items;
 	}
 
 	// Render the block.
@@ -2119,3 +2292,30 @@ function public_post_preview_time_window() {
 	// one month
 	return 2628288;
 }
+
+// Handles 404 for trying to visit category pages in the url, such as colby.edu/academics/news
+function return_404_for_category_archives() {
+    if (is_category()) {
+        global $wp_query;
+        $wp_query->set_404();
+        status_header(404);
+        nocache_headers();
+        include(get_query_template('404'));
+        exit();
+    }
+}
+add_action('template_redirect', 'return_404_for_category_archives');
+
+function exclude_specific_posts_from_algolia_index( $should_index, $post ) {
+    // Array of post IDs to exclude
+    $excluded_post_ids = array(7443, 7441); // Replace these IDs with the IDs of the posts you want to exclude
+
+    if ( in_array( $post->ID, $excluded_post_ids ) ) {
+        return false;
+    }
+
+    return $should_index;
+}
+add_filter( 'algolia_should_index_searchable_post', 'exclude_specific_posts_from_algolia_index', 10, 2 );
+
+

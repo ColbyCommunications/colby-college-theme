@@ -1,6 +1,6 @@
 @import '~variables';
 
-.accordion {
+.advanced-accordion {
     &__panel + &__panel {
         // border-top: 1px solid #dcdcdc;
     }
@@ -42,4 +42,16 @@
         line-height: 1.125;
         font-weight: 700;
     }
+}
+
+.rotate-90 {
+    transform: rotate(90deg);
+}
+
+.-rotate-90 {
+    transform: rotate(-90deg); /* Optional: For an initial rotated state */
+}
+
+.transition-all {
+    transition: all 0.2s ease-in-out;
 }

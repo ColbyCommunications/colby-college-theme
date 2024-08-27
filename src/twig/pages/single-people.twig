@@ -17,6 +17,15 @@
         items: people_menu.items,
         menu_obj: true,
       } %}
+          {% include 'widget.twig' with {
+      heading: 'Resources',
+      buttons: [{
+        button: {
+          title: "Update Your Directory Profile",
+          url: "/directory-profile-update-form/"
+        }
+      }]
+    }%}
     </div>
     <div class="sidebar-page__main directory-person-main xl:col-start-4 md:col-span-9 space-y-16">
       {% include 'directory-card.twig' with {

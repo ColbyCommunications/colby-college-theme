@@ -3,6 +3,7 @@
 @import 'tailwindcss/utilities';
 @import 'global/variables';
 @import 'global/layout';
+@import '../twig/components/advanced-accordion/advanced-accordion';
 
 /* Body No Scroll */
 .no-scroll {

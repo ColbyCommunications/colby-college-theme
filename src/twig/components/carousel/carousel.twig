@@ -50,7 +50,7 @@
                     <img
                       class="w-full h-full object-cover"
                       src="{{ item.image.src }}"
-                      alt="{{ item.image.alt }}"
+                      alt="{{ item.image.alt|escape }}"
                     />
                   </picture>
                 {% else %}
@@ -59,7 +59,7 @@
                     <img
                       class="w-full h-full object-cover"
                       src="{{ item.image.sizes.Rectangle_mobile }}"
-                      alt="{{ item.image.alt }}"
+                      alt="{{ item.image.alt|escape }}"
                     />
                   </picture>
                 {% endif %}
