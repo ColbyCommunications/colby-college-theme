@@ -950,16 +950,42 @@ class StarterSite extends Timber\Site {
 
 		global $wp;
 		if ( ! is_404() ) {
+    
+    $breadcrumbs_menu = array();
+
+$post = Timber::get_post();
+
+if (is_page()) {
+    // Logic for pages
+    $ancestors = get_post_ancestors($post->ID);
+    $ancestors = array_reverse($ancestors);
+
+    foreach ($ancestors as $ancestor) {
+        $title = get_the_title($ancestor);
+        $link = get_permalink($ancestor);
+        
+        $breadcrumbs_menu[] = array(
+            'title' => $title,
+            'url'   => $link,
+        );
+    }
+
+    // Add the current page to the breadcrumb array
+    $breadcrumbs_menu[] = array(
+        'title' => $post->title(),
+        'url'   => $post->link(),
+    );
+
+} elseif (is_single()) {
+    // Logic for posts (faking hierarchical relationship)
+
     // Get the current URL
     $current_url = $_SERVER['REQUEST_URI'];
     
-    // Parse the URL and get segments
     $url_segments = explode('/', trim($current_url, '/'));
-    
-    // Initialize breadcrumbs menu array
+
     $breadcrumbs_menu = array();
 
-    // Loop through the first four segments to build dynamic breadcrumbs
     $current_path = '';
     for ($i = 0; $i < min(4, count($url_segments)); $i++) {
         $segment = $url_segments[$i];
@@ -971,7 +997,6 @@ class StarterSite extends Timber\Site {
         );
     }
 
-    // Handle the fifth segment as a post
     if (isset($url_segments[4])) {
         $post_slug = $url_segments[4];
         $post = get_page_by_path($post_slug, OBJECT, 'post');
@@ -984,13 +1009,14 @@ class StarterSite extends Timber\Site {
             );
         }
     }
+}
+
+// If we have breadcrumbs, add them to the context
+if (!empty($breadcrumbs_menu)) {
+    $context['breadcrumbs_menu'] = $breadcrumbs_menu;
+}
 
 
-
-    // If we have breadcrumbs, add them to the context
-    if (!empty($breadcrumbs_menu)) {
-        $context['breadcrumbs_menu'] = $breadcrumbs_menu;
-    }
 }
 
 		$context['current_url']    = home_url( $wp->request );
