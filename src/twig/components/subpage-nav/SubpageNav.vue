@@ -8,7 +8,7 @@
                 <div
                     class="relative w-full px-6 md:px-0 py-4 md:py-0 font-extended font-bold text-14 md:text-12 leading-130 text-azure tracking-8 uppercase text-left"
                 >
-                    <a href="#" class="pointer-events-none md:pointer-events-auto"
+                    <a :href="parentpermalink" class="pointer-events-none md:pointer-events-auto"
                         >{{ heading }}
                         <svg
                             class="absolute top-5 right-6 md:hidden w-1.5 fill-azure"
@@ -80,6 +80,10 @@
             },
             items: {
                 type: Array,
+                required: false,
+            },
+            parentpermalink: {
+                type: String,
                 required: false,
             },
         },
