@@ -953,70 +953,75 @@ class StarterSite extends Timber\Site {
     
     $breadcrumbs_menu = array();
 
-$post = Timber::get_post();
+		$post = Timber::get_post();
 
-if (is_page()) {
-    // Logic for pages
-    $ancestors = get_post_ancestors($post->ID);
-    $ancestors = array_reverse($ancestors);
+		if (is_page()) {
+				// Logic for pages
+				$ancestors = get_post_ancestors($post->ID);
 
-    foreach ($ancestors as $ancestor) {
-        $title = get_the_title($ancestor);
-        $link = get_permalink($ancestor);
-        
-        $breadcrumbs_menu[] = array(
-            'title' => $title,
-            'url'   => $link,
-        );
-    }
+				// Reverse the order of ancestors to go from the top-level ancestor to the direct parent
+				$ancestors = array_reverse($ancestors);
 
-    // Add the current page to the breadcrumb array
-    $breadcrumbs_menu[] = array(
-        'title' => $post->title(),
-        'url'   => $post->link(),
-    );
+				foreach ($ancestors as $ancestor) {
+						$title = get_the_title($ancestor);
+						$link = get_permalink($ancestor);
+						
+						$breadcrumbs_menu[] = array(
+								'title' => $title,
+								'url'   => $link,
+						);
+				}
 
-} elseif (is_single()) {
-    // Logic for posts (faking hierarchical relationship)
+				// Add the current page to the breadcrumb array
+				$breadcrumbs_menu[] = array(
+						'title' => $post->title(),
+						'url'   => $post->link(),
+				);
 
-    // Get the current URL
-    $current_url = $_SERVER['REQUEST_URI'];
-    
-    $url_segments = explode('/', trim($current_url, '/'));
+		} elseif (is_single()) {
+    // Logic for posts
 
-    $breadcrumbs_menu = array();
+			$categories = get_the_category($post->ID);
 
-    $current_path = '';
-    for ($i = 0; $i < min(4, count($url_segments)); $i++) {
-        $segment = $url_segments[$i];
-        $current_path .= '/' . $segment;
+			if (!empty($categories)) {
+					$primary_category = $categories[0];
+					
+					$category_ancestors = get_ancestors($primary_category->term_id, 'category');
+					$category_ancestors = array_reverse($category_ancestors);
 
-        $breadcrumbs_menu[] = array(
-            'title' => ucfirst(str_replace('-', ' ', $segment)),
-            'url'   => $current_path,
-        );
-    }
+					// Add ancestor categories to breadcrumbs
+					foreach ($category_ancestors as $ancestor_id) {
+							$ancestor = get_category($ancestor_id);
+							$category_link = get_category_link($ancestor->term_id);
 
-    if (isset($url_segments[4])) {
-        $post_slug = $url_segments[4];
-        $post = get_page_by_path($post_slug, OBJECT, 'post');
+							// Check if 'category' is the first segment after the domain
+							$cleaned_link = preg_replace('/\/category\//', '/', $category_link, 1);
 
-        if ($post) {
-            $breadcrumbs_menu[] = array(
-                'id'    => $post->ID,
-                'title' => get_the_title($post->ID),
-                'url'   => get_permalink($post->ID),
-            );
-        }
-    }
-}
+							$breadcrumbs_menu[] = array(
+									'title' => $ancestor->name,
+									'url'   => $cleaned_link,
+							);
+					}
 
-// If we have breadcrumbs, add them to the context
-if (!empty($breadcrumbs_menu)) {
-    $context['breadcrumbs_menu'] = $breadcrumbs_menu;
-}
+							$primary_category_link = get_category_link($primary_category->term_id);
+							$cleaned_primary_link = preg_replace('/\/category\//', '/', $primary_category_link, 1);
 
+							$breadcrumbs_menu[] = array(
+									'title' => $primary_category->name,
+									'url'   => $cleaned_primary_link,
+							);
+    		}
 
+				// Add the current post to the breadcrumb array
+				$breadcrumbs_menu[] = array(
+						'title' => $post->title(),
+						'url'   => $post->link(),
+				);
+		}
+
+	if (!empty($breadcrumbs_menu)) {
+			$context['breadcrumbs_menu'] = $breadcrumbs_menu;
+	}
 }
 
 		$context['current_url']    = home_url( $wp->request );
