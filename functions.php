@@ -1019,7 +1019,7 @@ class StarterSite extends Timber\Site {
 				// Add the "News" breadcrumb
 				$breadcrumbs_menu[] = array(
 						'title' => 'News',
-						'url'   => $news_url,
+						'url'   => $news_url . '/',
 				);
 
 
