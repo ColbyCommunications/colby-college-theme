@@ -1012,6 +1012,17 @@ class StarterSite extends Timber\Site {
 							);
     		}
 
+				// Construct the "News" breadcrumb
+				$current_url = $_SERVER['REQUEST_URI']; // Get the current URL path
+				$news_url = rtrim(str_replace(trailingslashit($post->post_name), '', $current_url), '/');
+
+				// Add the "News" breadcrumb
+				$breadcrumbs_menu[] = array(
+						'title' => 'News',
+						'url'   => $news_url,
+				);
+
+
 				// Add the current post to the breadcrumb array
 				$breadcrumbs_menu[] = array(
 						'title' => $post->title(),
