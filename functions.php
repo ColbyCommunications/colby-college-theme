@@ -1194,17 +1194,23 @@ function get_people_posts_by_department($segment3) {
 	}
     // Define query arguments
     $args = array(
-        'post_type' => 'people', // Specify the post type
-        'posts_per_page' => -1, // Retrieve all posts
-        'post_status' => 'publish', // Retrieve only published posts
-        'meta_query' => array(
-            array(
-                'key' => 'department', // Custom field key
-                'value' => $segment3, // Value to match
-                'compare' => '=', // Match exactly
-            ),
+    'post_type'      => 'people',       // Specify the post type
+    'posts_per_page' => -1,             // Retrieve all posts
+    'post_status'    => 'publish',      // Retrieve only published posts
+    'meta_query'     => array(
+        'relation' => 'AND',            // Ensure both conditions must be true
+        array(
+            'key'     => 'department',  // Custom field key
+            'value'   => $segment3,     // Value to match
+            'compare' => '=',           // Match exactly
         ),
-    );
+        array(
+            'key'     => 'is_retiree',  // Custom field key for retirees
+            'value'   => '1',           // Exclude people with '1' for is_retiree
+            'compare' => '!=',          // Exclude if the value is 1
+        ),
+    ),
+	);
 
     // Instantiate WP_Query
     $query = new WP_Query($args);
@@ -1504,6 +1510,11 @@ function getNewPeople( $directory_data ) {
 			$WDDepartment = $orgResult;
 		}
 
+		$WDIsRetiree = 0;
+		if (!is_null($WDPerson['Is_Retiree'])) {
+			$WDIsRetiree = 1;
+		}
+
 		// Set api endpoint url with $emailSlug
 		$url = 'https://www.colby.edu/endpoints/v1/profile/' . $emailSlug;
 
@@ -1559,6 +1570,7 @@ function getNewPeople( $directory_data ) {
 				'current_courses'  => json_encode( $CXCourses ),
 				'fax'              => $WDFax,
 				'mailing_address'  => $CXMailing,
+				'is_retiree'	=> $WDIsRetiree
 			),
 		);
 
@@ -1622,6 +1634,7 @@ function getNewPeople( $directory_data ) {
 			update_post_meta( $ID, 'fax', $WDFax );
 			update_post_meta( $ID, 'mailing_address', $CXMailing );
 			update_post_meta( $ID, 'pronouns', $wd_pronouns );
+			update_post_meta( $ID, 'is_retiree', $WDIsRetiree );
 
 			if ( empty( $person_metadata['unsync_department'][0] ) ) {
 				update_post_meta( $ID, 'department', $WDDepartment );
