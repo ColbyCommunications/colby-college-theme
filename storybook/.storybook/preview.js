@@ -1,4 +1,4 @@
-/** @type { import('@storybook/react').Preview } */
+/** @type { import('@storybook/html').Preview } */
 const preview = {
   parameters: {
     controls: {
