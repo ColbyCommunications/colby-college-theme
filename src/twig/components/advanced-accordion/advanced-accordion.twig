@@ -8,7 +8,7 @@
     </div>
 </div>
 <script>
-// we need to wait for jQuery to load
+// Wait for jQuery to load
 setTimeout(() => {
   jQuery.fn.accordion = function(speed){
     this.on('click', '.advanced-accordion__button', function(e){
@@ -18,32 +18,50 @@ setTimeout(() => {
       var $panel = jQuery(this).closest('.advanced-accordion__panel');
       var $window = $panel.children('.advanced-accordion__window');
       var $content = $window.children('.advanced-accordion__content');
-      var $blocks = $window.children('.advanced-accordion__content').children();
       var $iconContainer = jQuery(this).find('.icon-container');
 
       if ($accordion.data('single') === 1) {
         // Close all other panels
-        $accordion.find('.advanced-accordion__window').not($window).css({'height': '0px', 'visibility': 'hidden'});
-        $accordion.find('.icon-container').removeClass('rotate-90');
-        $accordion.find('.icon-container').addClass('-rotate-90');
+        $accordion.find('.advanced-accordion__window').not($window).each(function() {
+          jQuery(this).animate({
+            'height': '0px'
+          }, speed, function() {
+            jQuery(this).css({'visibility': 'hidden'});  // Hide once collapsed
+          });
+        });
+        $accordion.find('.icon-container').removeClass('rotate-90').addClass('-rotate-90');
       }
-      
-      if ($window.css('visibility') === 'hidden' || $window.outerHeight(true) === 0) {
-        $blocks.children('div').css({'marginBottom': '2rem'});  // Add margin bottom to all child elements
-        $window.css({'height': $content.outerHeight(true) + 'px', 'visibility': 'visible', 'paddingBottom': '2rem'});
-        $iconContainer.addClass('rotate-90');
-        $iconContainer.removeClass('-rotate-90');
+
+      if ($window.css('visibility') === 'hidden' || $window.height() === 0) {
+        // Get the actual height of the content
+        var contentHeight = $content.outerHeight(true);
+
+        // Show the panel and animate the height to the content's full height
+        $window.css({'visibility': 'visible', 'height': '0px'});  // Start from collapsed height
+        $window.stop().animate({
+          'height': contentHeight + 'px'  // Animate to the content height
+        }, speed, function() {
+          // After animation, set the height to auto to allow for dynamic content
+          $window.css('height', 'auto');
+        });
+
+        $iconContainer.addClass('rotate-90').removeClass('-rotate-90');
       } else {
-         $window.css({'height': '0px', 'visibility': 'hidden', 'paddingBottom': 0});
-         $blocks.children().css({'marginBottom': '2rem'});
-         $iconContainer.addClass('-rotate-90');
-         $iconContainer.removeClass('rotate-90');
+        // Collapse the panel by animating the height to 0
+        $window.stop().animate({
+          'height': '0px'
+        }, speed, function() {
+          $window.css({'visibility': 'hidden'});  // Hide after collapsing
+        });
+
+        $iconContainer.addClass('-rotate-90').removeClass('rotate-90');
       }
     });
     return this;
-  }
+  };
+
+  // Initialize the accordion with a speed (e.g., 250ms)
   jQuery('.advanced-accordion').accordion(250).fadeIn();
 }, 500);
-
-
 </script>
+
