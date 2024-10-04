@@ -319,6 +319,11 @@
         @apply md:mt-[100px];
     }
 
+    .advanced-accordion {
+        @apply px-4;
+        @apply xl:px-0;
+    }
+
     > .wp-block-acf-advanced-accordion {
         @apply font-extended;
         @apply max-w-[1200px];
