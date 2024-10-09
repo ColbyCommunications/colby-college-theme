@@ -1487,7 +1487,7 @@ function getNewPeople( $directory_data ) {
 		$args = array(
 			'numberposts' => -1,
 			'post_type'   => 'people',
-			'post_status' => 'publish',
+			'post_status' => array('publish', 'draft'),
 			'meta_query'  => array(
 				array(
 					'key'     => 'employee_id',
