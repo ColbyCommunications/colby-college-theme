@@ -226,7 +226,7 @@
                         class="block p-2 py-1 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
                         :class="{ 'bg-indigo-200': currentPage == index }"
                         v-text="index"
-                        @click="currentPage = index"
+                        @click="navigateFn(index)"
                     />
                 </li>
             </ul>
@@ -278,6 +278,8 @@
         },
         computed: {
             filteredItems() {
+                console.log(this.searchTerm);
+                console.log(this.$data);
                 let f = [];
                 if (this.api !== 'Departments') {
                     f = this.items.filter((item) => {
@@ -293,7 +295,9 @@
                     );
                 }
                 if (this.selectedDepartment !== 'All Departments') {
-                    g = g.filter((item) => this.filterTerm.includes(item.department));
+                    g = g.filter((item) => {
+                        return this.filterTerm.includes(item.department);
+                    });
                 }
                 if (this.selectedDivision !== 'All Divisions') {
                     g = g.filter((item) => this.filterTerm.includes(item.department));
@@ -329,6 +333,29 @@
             },
         },
         async mounted() {
+            console.log(this.$data);
+            const params = new URLSearchParams(window.location.search);
+
+            if (params.has('department')) {
+                this.selectedDepartment = params.get('department');
+                this.filterTerm.push(params.get('department'));
+            }
+
+            if (params.has('division')) {
+                this.selectedDivision = params.get('division');
+            }
+
+            if (params.has('pag')) {
+                this.currentPage = params.get('pag');
+            }
+
+            if (params.has('term')) {
+                this.filterTerm.push(params.get('term'));
+            }
+
+            // if (params.has('search')) {
+            //     this.searchTerm = params.get('search');
+            // }
             if (this.renderApi) {
                 switch (this.api) {
                     case 'Department Courses':
@@ -535,6 +562,49 @@
             },
         },
         methods: {
+            navigateFn(index) {
+                this.currentPage = index;
+                this.updateQueryParams();
+            },
+            updateQueryParams() {
+                const params = new URLSearchParams();
+
+                // Handle department separately
+                if (this.selectedDepartment !== 'All Departments') {
+                    params.set('department', this.selectedDepartment);
+                }
+
+                // Handle division separately
+                if (this.selectedDivision !== 'All Divisions') {
+                    params.set('division', this.selectedDivision);
+                }
+
+                // Handle pagination if on any page except the first
+                if (this.currentPage > 1) {
+                    params.set('pag', this.currentPage);
+                }
+
+                // Only allow a single term from filterOptions
+                const validFilterTerm = this.filterTerm.find(
+                    (t) => this.filterOptions.includes(t) && t !== 'All'
+                );
+
+                if (validFilterTerm) {
+                    // Set the valid single term in the 'term' query parameter
+                    params.set('term', validFilterTerm);
+                }
+
+                // Handle search term if necessary
+                // if (this.searchTerm) {
+                //     params.set('search', this.searchTerm);
+                // }
+
+                // Push new URL with parameters without reloading the page
+                const newUrl = `${window.location.pathname}?${params.toString()}`;
+                window.history.pushState({ path: newUrl }, '', newUrl);
+                console.log(this.$data);
+            },
+
             navigatePages(dir) {
                 if (dir == 'prev') {
                     if (this.currentPage !== 1) {
@@ -545,14 +615,17 @@
                         this.currentPage += 1;
                     }
                 }
+                this.updateQueryParams();
             },
             toggleTerm(term, event) {
+                console.log(this.$data);
                 if (this.selectedDivision != 'All Divisions') {
                     this.selectedDivision = 'All Divisions';
                 }
                 this.currentPage = 1;
                 let select;
                 if (term == 'SELECT') {
+                    this.filterTerm = [];
                     term = event.target.value;
                     select = true;
                 }
@@ -571,30 +644,37 @@
                     }
                     this.filterTerm.push(term);
                 }
+                this.updateQueryParams();
             },
             toggleTermType(term, event) {
+                console.log(this.$data);
                 this.currentPage = 1;
-                let select;
-                if (term == 'SELECT') {
-                    term = event.target.value;
-                    select = true;
-                }
-                if (this.filterTerm.includes(term)) {
-                    this.filterTerm.splice(this.filterTerm.indexOf(term));
+
+                // If 'All' is clicked, only remove the term but retain the department
+                if (term === 'All') {
+                    // Reset filterTerm to just keep the selected department (if it exists)
+                    if (this.selectedDepartment !== 'All Departments') {
+                        this.filterTerm = [this.selectedDepartment]; // Retain the department
+                    } else {
+                        this.filterTerm = []; // Clear filterTerm if no department is selected
+                    }
                 } else {
-                    if (select) {
-                        this.filterTerm = [];
+                    // If a specific term is selected
+                    const termIndex = this.filterTerm.indexOf(term);
+
+                    // If the term is already present, remove it
+                    if (termIndex !== -1) {
+                        this.filterTerm.splice(termIndex, 1);
+                    } else {
+                        // If a new term is selected, clear existing term filters
+                        this.filterTerm = [this.selectedDepartment, term]; // Retain department and add new term
                     }
-                    if (this.filterTerm.some((t) => this.filterOptions.includes(t))) {
-                        this.filterTerm.forEach((t) => {
-                            if (this.filterOptions.includes(t)) {
-                                this.filterTerm.splice(this.filterTerm.indexOf(t));
-                            }
-                        });
-                    }
-                    this.filterTerm.push(term);
                 }
+
+                // Update the query parameters
+                this.updateQueryParams();
             },
+
             toggleTermDivision(term, event) {
                 if (this.selectedDepartment != 'All Departments') {
                     this.selectedDepartment = 'All Departments';
@@ -642,11 +722,12 @@
                         this.filterTerm = ['ANTH', 'ECON', 'GOVT', 'HIST', 'PSYC', 'SOCY'];
                         break;
                     default:
-                    // code block
                 }
+                this.updateQueryParams();
             },
             onSearchChange() {
                 this.currentPage = 1;
+                this.updateQueryParams();
             },
             initFuse() {
                 if (this.filteredItems) {
