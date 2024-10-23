@@ -91,7 +91,7 @@
         <select
             v-if="this.api != 'Department Courses' && this.api != 'Offices' && this.api != 'People'"
             v-model="selectedDivision"
-            @change="toggleTermDivision('SELECT', $event)"
+            @change="toggleTermDivision('SELECT', $event, true)"
             class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer mb-6 md:mb-0"
         >
             <option v-text="'All Divisions'" :value="'All Divisions'" />
@@ -281,8 +281,6 @@
         },
         computed: {
             filteredItems() {
-                console.log(this.searchTerm);
-                console.log(this.$data);
                 let f = [];
                 if (this.api !== 'Departments') {
                     f = this.items.filter((item) => {
@@ -344,7 +342,7 @@
             if (params.has('division')) {
                 this.selectedDivision = params.get('division');
                 this.filters.division = params.get('division');
-                this.toggleTermDivision(null, { target: { value: params.get('division') } });
+                this.toggleTermDivision(null, { target: { value: params.get('division') } }, false);
             }
 
             if (params.has('pag')) {
@@ -590,7 +588,6 @@
                 // Push new URL with parameters without reloading the page
                 const newUrl = `${window.location.pathname}?${params.toString()}`;
                 window.history.pushState({ path: newUrl }, '', newUrl);
-                console.log(this.$data);
             },
 
             navigatePages(dir) {
@@ -606,7 +603,6 @@
                 this.updateQueryParams();
             },
             toggleDepartment(department, event) {
-                console.log(department);
                 if (this.selectedDivision != 'All Divisions') {
                     this.selectedDivision = 'All Divisions';
                 }
@@ -620,7 +616,6 @@
                 this.updateQueryParams();
             },
             toggleTermType(term, event) {
-                console.log(this.$data);
                 this.currentPage = 1;
 
                 // If 'All' is clicked, only remove the term but retain the department
@@ -634,12 +629,11 @@
                 this.updateQueryParams();
             },
 
-            toggleTermDivision(term, event) {
+            toggleTermDivision(term, event, runUpdate) {
                 if (this.selectedDepartment != 'All Departments') {
                     this.selectedDepartment = 'All Departments';
                 }
                 this.currentPage = 1;
-                console.log(event.target.value);
                 switch (event.target.value) {
                     case 'Humanities':
                         this.filters.department = [
@@ -685,7 +679,10 @@
                         break;
                     default:
                 }
-                this.updateQueryParams();
+
+                if (runUpdate) {
+                    this.updateQueryParams();
+                }
             },
             onSearchChange() {
                 this.currentPage = 1;
