@@ -950,8 +950,8 @@ class StarterSite extends Timber\Site {
 
 		global $wp;
 		if ( ! is_404() ) {
-    // Get the current URL
-    $current_url = $_SERVER['REQUEST_URI'];
+    // Get the current URL and exclude any query parameters
+    $current_url = strtok($_SERVER['REQUEST_URI'], '?');
     
     // Parse the URL and get segments
     $url_segments = explode('/', trim($current_url, '/'));
