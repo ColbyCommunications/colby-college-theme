@@ -950,47 +950,92 @@ class StarterSite extends Timber\Site {
 
 		global $wp;
 		if ( ! is_404() ) {
-    // Get the current URL and exclude any query parameters
-    $current_url = strtok($_SERVER['REQUEST_URI'], '?');
+			
+		// Get the current URL path
+    $current_url = $_SERVER['REQUEST_URI'];
     
-    // Parse the URL and get segments
-    $url_segments = explode('/', trim($current_url, '/'));
-    
-    // Initialize breadcrumbs menu array
     $breadcrumbs_menu = array();
 
-    // Loop through the first four segments to build dynamic breadcrumbs
-    $current_path = '';
-    for ($i = 0; $i < min(4, count($url_segments)); $i++) {
-        $segment = $url_segments[$i];
-        $current_path .= '/' . $segment;
+		$post = Timber::get_post();
 
-        $breadcrumbs_menu[] = array(
-            'title' => ucfirst(str_replace('-', ' ', $segment)),
-            'url'   => $current_path,
-        );
-    }
+		if (is_page()) {
+				// Logic for pages
+				$ancestors = get_post_ancestors($post->ID);
 
-    // Handle the fifth segment as a post
-    if (isset($url_segments[4])) {
-        $post_slug = $url_segments[4];
-        $post = get_page_by_path($post_slug, OBJECT, 'post');
+				// Reverse the order of ancestors to go from the top-level ancestor to the direct parent
+				$ancestors = array_reverse($ancestors);
 
-        if ($post) {
-            $breadcrumbs_menu[] = array(
-                'id'    => $post->ID,
-                'title' => get_the_title($post->ID),
-                'url'   => get_permalink($post->ID),
-            );
-        }
-    }
+				foreach ($ancestors as $ancestor) {
+						$title = get_the_title($ancestor);
+						$link = get_permalink($ancestor);
+						
+						$breadcrumbs_menu[] = array(
+								'title' => $title,
+								'url'   => $link,
+						);
+				}
+
+				// Add the current page to the breadcrumb array
+				$breadcrumbs_menu[] = array(
+						'title' => $post->title(),
+						'url'   => $post->link(),
+				);
+
+		} elseif (is_single()) {
+    // Logic for posts
+
+			$categories = get_the_category($post->ID);
+
+			if (!empty($categories)) {
+					$primary_category = $categories[0];
+					
+					$category_ancestors = get_ancestors($primary_category->term_id, 'category');
+					$category_ancestors = array_reverse($category_ancestors);
+
+					// Add ancestor categories to breadcrumbs
+					foreach ($category_ancestors as $ancestor_id) {
+							$ancestor = get_category($ancestor_id);
+							$category_link = get_category_link($ancestor->term_id);
+
+							// Check if 'category' is the first segment after the domain
+							$cleaned_link = preg_replace('/\/category\//', '/', $category_link, 1);
+
+							$breadcrumbs_menu[] = array(
+									'title' => $ancestor->name,
+									'url'   => $cleaned_link,
+							);
+					}
+
+							$primary_category_link = get_category_link($primary_category->term_id);
+							$cleaned_primary_link = preg_replace('/\/category\//', '/', $primary_category_link, 1);
+
+							$breadcrumbs_menu[] = array(
+									'title' => $primary_category->name,
+									'url'   => $cleaned_primary_link,
+							);
+    		}
+
+				// Construct the "News" breadcrumb
+				$current_url = $_SERVER['REQUEST_URI']; // Get the current URL path
+				$news_url = rtrim(str_replace(trailingslashit($post->post_name), '', $current_url), '/');
+
+				// Add the "News" breadcrumb
+				$breadcrumbs_menu[] = array(
+						'title' => 'News',
+						'url'   => $news_url . '/',
+				);
 
 
+				// Add the current post to the breadcrumb array
+				$breadcrumbs_menu[] = array(
+						'title' => $post->title(),
+						'url'   => $post->link(),
+				);
+		}
 
-    // If we have breadcrumbs, add them to the context
-    if (!empty($breadcrumbs_menu)) {
-        $context['breadcrumbs_menu'] = $breadcrumbs_menu;
-    }
+	if (!empty($breadcrumbs_menu)) {
+			$context['breadcrumbs_menu'] = $breadcrumbs_menu;
+	}
 }
 
 		$context['current_url']    = home_url( $wp->request );
@@ -1152,17 +1197,23 @@ function get_people_posts_by_department($segment3) {
 	}
     // Define query arguments
     $args = array(
-        'post_type' => 'people', // Specify the post type
-        'posts_per_page' => -1, // Retrieve all posts
-        'post_status' => 'publish', // Retrieve only published posts
-        'meta_query' => array(
-            array(
-                'key' => 'department', // Custom field key
-                'value' => $segment3, // Value to match
-                'compare' => '=', // Match exactly
-            ),
+    'post_type'      => 'people',       // Specify the post type
+    'posts_per_page' => -1,             // Retrieve all posts
+    'post_status'    => 'publish',      // Retrieve only published posts
+    'meta_query'     => array(
+        'relation' => 'AND',            // Ensure both conditions must be true
+        array(
+            'key'     => 'department',  // Custom field key
+            'value'   => $segment3,     // Value to match
+            'compare' => '=',           // Match exactly
         ),
-    );
+        array(
+            'key'     => 'is_retiree',  // Custom field key for retirees
+            'value'   => '1',           // Exclude people with '1' for is_retiree
+            'compare' => '!=',          // Exclude if the value is 1
+        ),
+    ),
+	);
 
     // Instantiate WP_Query
     $query = new WP_Query($args);
@@ -1462,6 +1513,11 @@ function getNewPeople( $directory_data ) {
 			$WDDepartment = $orgResult;
 		}
 
+		$WDIsRetiree = 0;
+		if (!is_null($WDPerson['Is_Retiree'])) {
+			$WDIsRetiree = 1;
+		}
+
 		// Set api endpoint url with $emailSlug
 		$url = 'https://www.colby.edu/endpoints/v1/profile/' . $emailSlug;
 
@@ -1517,6 +1573,7 @@ function getNewPeople( $directory_data ) {
 				'current_courses'  => json_encode( $CXCourses ),
 				'fax'              => $WDFax,
 				'mailing_address'  => $CXMailing,
+				'is_retiree'	=> $WDIsRetiree
 			),
 		);
 
@@ -1580,6 +1637,7 @@ function getNewPeople( $directory_data ) {
 			update_post_meta( $ID, 'fax', $WDFax );
 			update_post_meta( $ID, 'mailing_address', $CXMailing );
 			update_post_meta( $ID, 'pronouns', $wd_pronouns );
+			update_post_meta( $ID, 'is_retiree', $WDIsRetiree );
 
 			if ( empty( $person_metadata['unsync_department'][0] ) ) {
 				update_post_meta( $ID, 'department', $WDDepartment );
@@ -1861,7 +1919,7 @@ function wpse248405_custom_column( $col, $post_id ) {
 			echo "</strong>\n";
 
 			if ( 'excerpt' === $mode
-				&& ! is_post_type_hierarchical( $this->screen->post_type )
+				&& ! is_post_type_hierarchical( $post->post_type )
 				&& current_user_can( 'read_post', $post->ID )
 			) {
 				if ( post_password_required( $post ) ) {

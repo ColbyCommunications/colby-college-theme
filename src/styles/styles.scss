@@ -12,7 +12,8 @@
 }
 
 /* Page w/ sidebar content styles */
-.wysiwyg {
+.wysiwyg,
+.advanced-accordion__content > .acf-innerblocks-container {
     h2,
     h3,
     h4,
@@ -309,6 +310,51 @@
     background-color: #002878;
     color: #fff;
     padding: 1px 10px;
+}
+
+// Styles used for the page__main class in the default template
+.page_main_template_styles {
+    > div + div {
+        @apply mt-20;
+        @apply md:mt-[100px];
+    }
+
+    .advanced-accordion {
+        @apply px-4;
+        @apply xl:px-0;
+    }
+
+    > .wp-block-acf-advanced-accordion {
+        @apply font-extended;
+        @apply max-w-[1200px];
+        @apply mx-auto;
+    }
+
+    > .overlay-hero + .featured-events {
+        @apply mt-0;
+    }
+
+    > .full-bleed + .full-bleed {
+        @apply mt-0;
+    }
+
+    .colby-image-text-block {
+        @apply mb-4;
+    }
+
+    > .article-grid,
+    .overlay-wide-image,
+    .media-aside,
+    .media-context,
+    .list-context,
+    .image-grid,
+    .list-block-grid,
+    .accordion,
+    .inset-widget,
+    .block-quote,
+    .embed {
+        @apply px-5;
+    }
 }
 
 @media (max-width: 768px) {

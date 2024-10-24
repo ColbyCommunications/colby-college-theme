@@ -5524,10 +5524,30 @@ acf_add_local_field_group( array(
 	'show_in_rest' => 0,
 ) );
 
-	acf_add_local_field_group( array(
+acf_add_local_field_group( array(
 	'key' => 'group_632338712124f',
 	'title' => 'Section Nav',
 	'fields' => array(
+		array(
+			'key' => 'field_64d3f2ef6f857',
+			'label' => 'Title',
+			'name' => 'title',
+			'aria-label' => '',
+			'type' => 'text',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'default_value' => 'In this section:',
+			'maxlength' => '',
+			'placeholder' => '',
+			'prepend' => '',
+			'append' => '',
+		),
 		array(
 			'key' => 'field_6323387e9b95b',
 			'label' => 'Items',
@@ -5564,6 +5584,27 @@ acf_add_local_field_group( array(
 						'id' => '',
 					),
 					'return_format' => 'array',
+					'parent_repeater' => 'field_6323387e9b95b',
+				),
+				array(
+					'key' => 'field_64d3fccef90ad',
+					'label' => 'Icon Class',
+					'name' => 'icon_class',
+					'aria-label' => '',
+					'type' => 'text',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => 0,
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'default_value' => '',
+					'maxlength' => '',
+					'placeholder' => '',
+					'prepend' => '',
+					'append' => '',
 					'parent_repeater' => 'field_6323387e9b95b',
 				),
 			),

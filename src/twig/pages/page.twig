@@ -1,21 +1,6 @@
 {% extends "base.twig" %}
-
 {% block content %}
-	<div class="page__main
-	[&>div+div]:mt-20 md:[&>div+div]:mt-[100px]
-	[&>.overlay-hero+.featured-events]:mt-0
-	[&>.full-bleed+.full-bleed]:mt-0
-	[&>.article-grid]:px-5
-	[&>.overlay-wide-image]:px-5
-	[&>.media-aside]:px-5
-	[&>.media-context]:px-5
-	[&>.list-context]:px-5
-	[&>.image-grid]:px-5
-	[&>.list-block-grid]:px-5
-	[&>.accordion]:px-5
-	[&>.inset-widget]:px-5
-	[&>.block-quote]:pr-5
-	[&>.embed]:px-5">
+	<div class="page__main page_main_template_styles">
 		{{ post.content }}
 	</div>
 {% endblock %}
