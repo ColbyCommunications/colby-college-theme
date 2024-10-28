@@ -1,251 +1,260 @@
 <template>
-    <slot v-if="renderApi == false && !externalItems" />
-    <div v-if="renderApi || externalItems" class="md:flex justify-between !mb-10">
-        <h2
-            class="font-extended font-normal text-24 leading-110 -tracking-3 text-indigo"
-            v-text="heading"
-        />
-    </div>
-    <div
-        v-if="renderApi || externalItems"
-        class="flex flex-wrap md:flex-nowrap justify-between md:space-x-12 mt-6 md:mt-0 !mb-8"
-    >
-        <label class="relative flex shrink-0 md:shrink mb-6 md:mb-0 text-[0] w-full max-w-sm">
-            Search
-            <svg class="absolute top-3 left-3 fill-indigo-800 w-2.5" viewBox="0 0 9.6 9.6">
-                <path
-                    d="M3.6 1.2c-1.3 0-2.4 1.1-2.4 2.4C1.2 4.9 2.3 6 3.6 6 4.9 6 6 4.9 6 3.6c0-1.3-1.1-2.4-2.4-2.4zM0 3.6C0 1.6 1.6 0 3.6 0s3.6 1.6 3.6 3.6c0 .8-.2 1.5-.7 2.1l2.9 2.9c.2.2.2.6 0 .8-.2.2-.6.2-.8 0L5.7 6.5c-.6.5-1.3.7-2.1.7-2 0-3.6-1.6-3.6-3.6z"
-                    style="fill-rule: evenodd; clip-rule: evenodd"
-                />
-            </svg>
-            <input
-                class="w-full h-[34px] max-w-sm p-2.5 pl-7 border border-indigo-400 border-solid rounded-md font-body font-normal text-10 leading-130 text-indigo-800 placeholder-indigo-800 bg-white"
-                type="text"
-                name="search-input"
-                placeholder="Search"
-                v-model="searchTerm"
-                @input="(event) => (this.currentPage = 1)"
-            />
-            <svg
-                xmlns="https://www.w3.org/2000/svg"
-                height="12"
-                width="12"
-                class="absolute top-3 right-3 fill-indigo-800 cursor-pointer"
-                :class="{
-                    block: searchTerm.length > 0,
-                    hidden: searchTerm.length === 0,
-                }"
-                viewBox="0 0 48 48"
-                @click="(event) => (this.searchTerm = '')"
-            >
-                <path
-                    d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z"
-                />
-            </svg>
-        </label>
-        <select
-            v-if="this.api == 'Course Catalogue'"
-            v-model="selectedDepartment"
-            @change="toggleDepartment('SELECT', $event)"
-            class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer mb-6 md:mb-0"
-        >
-            <option v-text="'All Departments'" :value="'All Departments'" />
-            <option v-text="'African American Studies'" :value="'AFAM'" />
-            <option v-text="'American Studies'" :value="'AMER'" />
-            <option v-text="'Anthropology'" :value="'ANTH'" />
-            <option v-text="'Art'" :value="'ART'" />
-            <option v-text="'Biology'" :value="'BIOL'" />
-            <option v-text="'Chemistry'" :value="'CHEM'" />
-            <option v-text="'Cinema Studies'" :value="'CINE'" />
-            <option v-text="'Classics'" :value="'CLAS'" />
-            <option v-text="'Computer Science'" :value="'COMP'" />
-            <option v-text="'Creative Writing'" :value="'WRTG'" />
-            <option v-text="'East Asian Studies'" :value="'EAST'" />
-            <option v-text="'Economics'" :value="'ECON'" />
-            <option v-text="'Education'" :value="'EDUC'" />
-            <option v-text="'English'" :value="'ENGL'" />
-            <option v-text="'Environmental Studies'" :value="'ENVS'" />
-            <option v-text="'French and Italian'" :value="'FRIT'" />
-            <option v-text="'Geology'" :value="'GEOL'" />
-            <option v-text="'German and Russian'" :value="'GMRU'" />
-            <option v-text="'Global Studies'" :value="'GLST'" />
-            <option v-text="'Government'" :value="'GOVT'" />
-            <option v-text="'History'" :value="'History'" />
-            <option v-text="'Independent Major'" :value="'INDP'" />
-            <option v-text="'Integrated Studies'" :value="'ISP'" />
-            <option v-text="'Jewish Studies'" :value="'JWST'" />
-            <option v-text="'Latin American Studies'" :value="'LTAM'" />
-            <option v-text="'Mathematics'" :value="'MATH'" />
-            <option v-text="'Music'" :value="'MUSI'" />
-            <option v-text="'Performance, Theater, and Dance'" :value="'THEA'" />
-            <option v-text="'Philosophy'" :value="'PHIL'" />
-            <option v-text="'Physics and Astronomy'" :value="'PHYS'" />
-            <option v-text="'Psychology'" :value="'PSYC'" />
-            <option v-text="'Religious Studies'" :value="'RELG'" />
-            <option v-text="'Science, Technology, and Society'" :value="'SCIT'" />
-            <option v-text="'Sociology'" :value="'SOCY'" />
-            <option v-text="'Spanish'" :value="'SPAN'" />
-            <option v-text="'Statistics'" :value="'STAT'" />
-            <option v-text="'Women\'s, Gender, and Sexuality Studies'" :value="'WGST'" />
-        </select>
-        <select
-            v-if="this.api != 'Department Courses' && this.api != 'Offices' && this.api != 'People'"
-            v-model="selectedDivision"
-            @change="toggleTermDivision('SELECT', $event, true)"
-            class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer mb-6 md:mb-0"
-        >
-            <option v-text="'All Divisions'" :value="'All Divisions'" />
-            <option v-text="'Humanities'" :value="'Humanities'" />
-            <option v-text="'Interdisciplinary Studies'" :value="'Interdisciplinary Studies'" />
-            <option v-text="'Natural Sciences'" :value="'Natural Sciences'" />
-            <option v-text="'Social Sciences'" :value="'Social Sciences'" />
-        </select>
-        <div v-if="filterOptions.length > 0" class="flex mb-6 md:mb-0">
-            <button
-                class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
-                :class="{
-                    '!text-indigo font-bold': this.filters.term == 'all',
-                }"
-                v-text="'All'"
-                @click="toggleTermType('All', $event)"
-            />
-            <button
-                v-for="(term, index) in filterOptions"
-                class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
-                :class="{ '!text-indigo font-bold': this.filters.term == term }"
-                v-text="term"
-                @click="toggleTermType(term, $event)"
+    <div class="colby-table-block">
+        <slot v-if="renderApi == false && !externalItems" />
+        <div v-if="renderApi || externalItems" class="md:flex justify-between !mb-10">
+            <h2
+                class="font-extended font-normal text-24 leading-110 -tracking-3 text-indigo"
+                v-text="heading"
             />
         </div>
-    </div>
-    <table
-        v-if="renderApi || externalItems"
-        class="block md:table overflow-scroll md:overflow-auto w-full colby-table-block"
-    >
-        <tbody>
-            <tr v-if="headings">
-                <th
-                    v-for="(heading, index) in headings"
-                    v-text="heading"
-                    class="h-12 md:h-11 px-6 font-body text-18 md:text-14 font-semibold leading-120 text-indigo text-left bg-indigo-200 whitespace-nowrap"
+        <div
+            v-if="renderApi || externalItems"
+            class="flex flex-wrap md:flex-nowrap justify-between md:space-x-12 mt-6 md:mt-0 !mb-8"
+        >
+            <label class="relative flex shrink-0 md:shrink mb-6 md:mb-0 text-[0] w-full max-w-sm">
+                Search
+                <svg class="absolute top-3 left-3 fill-indigo-800 w-2.5" viewBox="0 0 9.6 9.6">
+                    <path
+                        d="M3.6 1.2c-1.3 0-2.4 1.1-2.4 2.4C1.2 4.9 2.3 6 3.6 6 4.9 6 6 4.9 6 3.6c0-1.3-1.1-2.4-2.4-2.4zM0 3.6C0 1.6 1.6 0 3.6 0s3.6 1.6 3.6 3.6c0 .8-.2 1.5-.7 2.1l2.9 2.9c.2.2.2.6 0 .8-.2.2-.6.2-.8 0L5.7 6.5c-.6.5-1.3.7-2.1.7-2 0-3.6-1.6-3.6-3.6z"
+                        style="fill-rule: evenodd; clip-rule: evenodd"
+                    />
+                </svg>
+                <input
+                    class="w-full h-[34px] max-w-sm p-2.5 pl-7 border border-indigo-400 border-solid rounded-md font-body font-normal text-10 leading-130 text-indigo-800 placeholder-indigo-800 bg-white"
+                    type="text"
+                    name="search-input"
+                    placeholder="Search"
+                    v-model="searchTerm"
+                    @input="(event) => (this.currentPage = 1)"
                 />
-            </tr>
-            <tr v-for="(item, index) in paginatedItems" class="w-full h-12 md:h-10 odd:bg-gray-100">
-                <td class="whitespace-normal px-6 py-2">
-                    <a
-                        v-if="item.link.url && !item.image"
-                        class="text-indigo hover:underline inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
-                        :href="item.link.url ? item.link.url : null"
-                    >
-                        {{ item.link.title }}
-                    </a>
-                    <div v-if="item.image">
-                        <a :href="item.link.url" class="flex">
-                            <picture>
-                                <source
-                                    media="(min-width:768px)"
-                                    srcset="{{ item.image.srcset }}"
-                                />
-                                <img
-                                    class="w-6 h-6 table__image hidden md:block relative mr-3 rounded-[50%] overflow-hidden"
-                                    :src="
-                                        item.image.src
-                                            ? item.image.src
-                                            : '/wp-content/uploads/2022/10/profile_placeholder.jpeg'
-                                    "
-                                    :alt="item.image.alt"
-                                />
-                            </picture>
-                            <span
-                                class="text-indigo hover:underline inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
-                                >{{ item.link.title }}</span
-                            >
+                <svg
+                    xmlns="https://www.w3.org/2000/svg"
+                    height="12"
+                    width="12"
+                    class="absolute top-3 right-3 fill-indigo-800 cursor-pointer"
+                    :class="{
+                        block: searchTerm.length > 0,
+                        hidden: searchTerm.length === 0,
+                    }"
+                    viewBox="0 0 48 48"
+                    @click="(event) => (this.searchTerm = '')"
+                >
+                    <path
+                        d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z"
+                    />
+                </svg>
+            </label>
+            <select
+                v-if="this.api == 'Course Catalogue'"
+                v-model="selectedDepartment"
+                @change="toggleDepartment('SELECT', $event)"
+                class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer mb-6 md:mb-0"
+            >
+                <option v-text="'All Departments'" :value="'All Departments'" />
+                <option v-text="'African American Studies'" :value="'AFAM'" />
+                <option v-text="'American Studies'" :value="'AMER'" />
+                <option v-text="'Anthropology'" :value="'ANTH'" />
+                <option v-text="'Art'" :value="'ART'" />
+                <option v-text="'Biology'" :value="'BIOL'" />
+                <option v-text="'Chemistry'" :value="'CHEM'" />
+                <option v-text="'Cinema Studies'" :value="'CINE'" />
+                <option v-text="'Classics'" :value="'CLAS'" />
+                <option v-text="'Computer Science'" :value="'COMP'" />
+                <option v-text="'Creative Writing'" :value="'WRTG'" />
+                <option v-text="'East Asian Studies'" :value="'EAST'" />
+                <option v-text="'Economics'" :value="'ECON'" />
+                <option v-text="'Education'" :value="'EDUC'" />
+                <option v-text="'English'" :value="'ENGL'" />
+                <option v-text="'Environmental Studies'" :value="'ENVS'" />
+                <option v-text="'French and Italian'" :value="'FRIT'" />
+                <option v-text="'Geology'" :value="'GEOL'" />
+                <option v-text="'German and Russian'" :value="'GMRU'" />
+                <option v-text="'Global Studies'" :value="'GLST'" />
+                <option v-text="'Government'" :value="'GOVT'" />
+                <option v-text="'History'" :value="'History'" />
+                <option v-text="'Independent Major'" :value="'INDP'" />
+                <option v-text="'Integrated Studies'" :value="'ISP'" />
+                <option v-text="'Jewish Studies'" :value="'JWST'" />
+                <option v-text="'Latin American Studies'" :value="'LTAM'" />
+                <option v-text="'Mathematics'" :value="'MATH'" />
+                <option v-text="'Music'" :value="'MUSI'" />
+                <option v-text="'Performance, Theater, and Dance'" :value="'THEA'" />
+                <option v-text="'Philosophy'" :value="'PHIL'" />
+                <option v-text="'Physics and Astronomy'" :value="'PHYS'" />
+                <option v-text="'Psychology'" :value="'PSYC'" />
+                <option v-text="'Religious Studies'" :value="'RELG'" />
+                <option v-text="'Science, Technology, and Society'" :value="'SCIT'" />
+                <option v-text="'Sociology'" :value="'SOCY'" />
+                <option v-text="'Spanish'" :value="'SPAN'" />
+                <option v-text="'Statistics'" :value="'STAT'" />
+                <option v-text="'Women\'s, Gender, and Sexuality Studies'" :value="'WGST'" />
+            </select>
+            <select
+                v-if="
+                    this.api != 'Department Courses' &&
+                    this.api != 'Offices' &&
+                    this.api != 'People'
+                "
+                v-model="selectedDivision"
+                @change="toggleTermDivision('SELECT', $event)"
+                class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer mb-6 md:mb-0"
+            >
+                <option v-text="'All Divisions'" :value="'All Divisions'" />
+                <option v-text="'Humanities'" :value="'Humanities'" />
+                <option v-text="'Interdisciplinary Studies'" :value="'Interdisciplinary Studies'" />
+                <option v-text="'Natural Sciences'" :value="'Natural Sciences'" />
+                <option v-text="'Social Sciences'" :value="'Social Sciences'" />
+            </select>
+            <div v-if="filterOptions.length > 0" class="flex mb-6 md:mb-0">
+                <button
+                    class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
+                    :class="{
+                        '!text-indigo font-bold': this.filters.term == 'all',
+                    }"
+                    v-text="'All'"
+                    @click="toggleTermType('All', $event)"
+                />
+                <button
+                    v-for="(term, index) in filterOptions"
+                    class="font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5"
+                    :class="{ '!text-indigo font-bold': this.filters.term == term }"
+                    v-text="term"
+                    @click="toggleTermType(term, $event)"
+                />
+            </div>
+        </div>
+        <table
+            v-if="renderApi || externalItems"
+            class="block md:table overflow-scroll md:overflow-auto w-full colby-table-block"
+        >
+            <tbody>
+                <tr v-if="headings">
+                    <th
+                        v-for="(heading, index) in headings"
+                        v-text="heading"
+                        class="h-12 md:h-11 px-6 font-body text-18 md:text-14 font-semibold leading-120 text-indigo text-left bg-indigo-200 whitespace-nowrap"
+                    />
+                </tr>
+                <tr
+                    v-for="(item, index) in paginatedItems"
+                    class="w-full h-12 md:h-10 odd:bg-gray-100"
+                >
+                    <td class="whitespace-normal px-6 py-2">
+                        <a
+                            v-if="item.link.url && !item.image"
+                            class="text-indigo hover:underline inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
+                            :href="item.link.url ? item.link.url : null"
+                        >
+                            {{ item.link.title }}
                         </a>
-                    </div>
-                    <modal v-if="item.description">
-                        <template v-slot:content>
-                            <h3
-                                class="flex items-center px-5 py-2 font-body text-20 md:text-14 font-semibold leading-120 text-indigo text-left bg-indigo-200"
-                                v-text="item.title"
-                            />
-                            <p
-                                class="font-body text-20 md:text-12 font-normal leading-140 text-indigo-800 p-5"
-                                v-html="item.description"
-                            />
-                        </template>
-                        <template v-slot:button>
-                            <span
-                                class="text-indigo hover:underline inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
-                                v-html="item.link.title"
-                            />
-                        </template>
-                    </modal>
-                    <span
-                        v-if="!item.description && !item.image && !item.link.url"
-                        class="text-indigo inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140"
-                    >
-                        {{ item.link.title }}
-                    </span>
-                </td>
-                <td
-                    v-for="(column, index) in item.columns"
-                    class="px-6 font-body text-16 md:text-12 font-normal leading-140 text-indigo-800 py-2"
-                    v-text="column"
-                />
-            </tr>
-        </tbody>
-    </table>
-    <div v-if="totalPages > 0" class="pagination flex items-center justify-between mt-10">
-        <span
-            class="pagination__text font-body font-normal text-12 leading-140 text-indigo-800"
-            v-text="`Showing ${paginatedItems.length} of ${filteredItems.length}`"
-        />
+                        <div v-if="item.image">
+                            <a :href="item.link.url" class="flex">
+                                <picture>
+                                    <source
+                                        media="(min-width:768px)"
+                                        srcset="{{ item.image.srcset }}"
+                                    />
+                                    <img
+                                        class="w-6 h-6 table__image hidden md:block relative mr-3 rounded-[50%] overflow-hidden"
+                                        :src="
+                                            item.image.src
+                                                ? item.image.src
+                                                : '/wp-content/uploads/2022/10/profile_placeholder.jpeg'
+                                        "
+                                        :alt="item.image.alt"
+                                    />
+                                </picture>
+                                <span
+                                    class="text-indigo hover:underline inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
+                                    >{{ item.link.title }}</span
+                                >
+                            </a>
+                        </div>
+                        <modal v-if="item.description">
+                            <template v-slot:content>
+                                <h3
+                                    class="flex items-center px-5 py-2 font-body text-20 md:text-14 font-semibold leading-120 text-indigo text-left bg-indigo-200"
+                                    v-text="item.title"
+                                />
+                                <p
+                                    class="font-body text-20 md:text-12 font-normal leading-140 text-indigo-800 p-5"
+                                    v-html="item.description"
+                                />
+                            </template>
+                            <template v-slot:button>
+                                <span
+                                    class="text-indigo hover:underline inline-flex items-center font-body text-16 md:text-12 font-semibold leading-140"
+                                    v-html="item.link.title"
+                                />
+                            </template>
+                        </modal>
+                        <span
+                            v-if="!item.description && !item.image && !item.link.url"
+                            class="text-indigo inline-flex items-center font-body text-20 md:text-12 font-semibold leading-140"
+                        >
+                            {{ item.link.title }}
+                        </span>
+                    </td>
+                    <td
+                        v-for="(column, index) in item.columns"
+                        class="px-6 font-body text-16 md:text-12 font-normal leading-140 text-indigo-800 py-2"
+                        v-text="column"
+                    />
+                </tr>
+            </tbody>
+        </table>
+        <div v-if="totalPages > 0" class="pagination flex items-center justify-between mt-10">
+            <span
+                class="pagination__text font-body font-normal text-12 leading-140 text-indigo-800"
+                v-text="`Showing ${paginatedItems.length} of ${filteredItems.length}`"
+            />
 
-        <div class="inline-flex items-center h-8 px-5 py-0.5 bg-gray-100 rounded-md space-x-1">
-            <button
-                v-if="currentPage !== 1"
-                class="block p-2 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
-                @click="navigatePages('prev')"
-            >
-                <svg
-                    class="w-1 fill-indigo-800"
-                    viewBox="0 0 4.2 7"
-                    style="enable-background: new 0 0 4.2 7"
-                    xml:space="preserve"
+            <div class="inline-flex items-center h-8 px-5 py-0.5 bg-gray-100 rounded-md space-x-1">
+                <button
+                    v-if="currentPage !== 1"
+                    class="block p-2 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
+                    @click="navigatePages('prev')"
                 >
-                    <path
-                        d="M4 .2c.3.3.3.7 0 1L1.7 3.5 4 5.8c.3.3.3.7 0 1-.3.3-.7.3-1 0L.2 4c-.3-.3-.3-.7 0-1L3 .2c.3-.3.7-.3 1 0z"
-                        style="fill-rule: evenodd; clip-rule: evenodd"
-                    />
-                </svg>
-            </button>
-            <ul class="pagination__container inline-flex space-x-1">
-                <li v-for="index in totalPages" class="pagination__item">
-                    <button
-                        class="block p-2 py-1 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
-                        :class="{ 'bg-indigo-200': currentPage == index }"
-                        v-text="index"
-                        @click="navigateFn(index)"
-                    />
-                </li>
-            </ul>
-            <button
-                v-if="currentPage !== totalPages"
-                class="block p-2 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
-                @click="navigatePages('next')"
-            >
-                <svg
-                    class="w-1 fill-indigo-800 rotate-180"
-                    viewBox="0 0 4.2 7"
-                    style="enable-background: new 0 0 4.2 7"
-                    xml:space="preserve"
+                    <svg
+                        class="w-1 fill-indigo-800"
+                        viewBox="0 0 4.2 7"
+                        style="enable-background: new 0 0 4.2 7"
+                        xml:space="preserve"
+                    >
+                        <path
+                            d="M4 .2c.3.3.3.7 0 1L1.7 3.5 4 5.8c.3.3.3.7 0 1-.3.3-.7.3-1 0L.2 4c-.3-.3-.3-.7 0-1L3 .2c.3-.3.7-.3 1 0z"
+                            style="fill-rule: evenodd; clip-rule: evenodd"
+                        />
+                    </svg>
+                </button>
+                <ul class="pagination__container inline-flex space-x-1">
+                    <li v-for="index in totalPages" class="pagination__item">
+                        <button
+                            class="block p-2 py-1 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
+                            :class="{ 'bg-indigo-200': currentPage == index }"
+                            v-text="index"
+                            @click="navigateFn(index)"
+                        />
+                    </li>
+                </ul>
+                <button
+                    v-if="currentPage !== totalPages"
+                    class="block p-2 font-body font-normal text-14 md:text-10 leading-140 text-indigo-800 hover:text-indigo hover:underline hover:bg-indigo-200 transition-all duration-200 ease-in-out"
+                    @click="navigatePages('next')"
                 >
-                    <path
-                        d="M4 .2c.3.3.3.7 0 1L1.7 3.5 4 5.8c.3.3.3.7 0 1-.3.3-.7.3-1 0L.2 4c-.3-.3-.3-.7 0-1L3 .2c.3-.3.7-.3 1 0z"
-                        style="fill-rule: evenodd; clip-rule: evenodd"
-                    />
-                </svg>
-            </button>
+                    <svg
+                        class="w-1 fill-indigo-800 rotate-180"
+                        viewBox="0 0 4.2 7"
+                        style="enable-background: new 0 0 4.2 7"
+                        xml:space="preserve"
+                    >
+                        <path
+                            d="M4 .2c.3.3.3.7 0 1L1.7 3.5 4 5.8c.3.3.3.7 0 1-.3.3-.7.3-1 0L.2 4c-.3-.3-.3-.7 0-1L3 .2c.3-.3.7-.3 1 0z"
+                            style="fill-rule: evenodd; clip-rule: evenodd"
+                        />
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 </template>
