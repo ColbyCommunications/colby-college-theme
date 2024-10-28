@@ -292,7 +292,6 @@
             filteredItems() {
                 let f = [];
                 if (this.api !== 'Departments' && this.api !== 'People' && this.api !== 'Offices') {
-                    console.log(this.items);
                     f = this.items.filter((item) => {
                         return item.type.includes(this.filters.term);
                     });
