@@ -342,24 +342,29 @@
         },
         async mounted() {
             const params = new URLSearchParams(window.location.search);
+            if (this.api !== 'Departments' && this.api !== 'People' && this.api !== 'Offices') {
+                if (params.has('department')) {
+                    this.selectedDepartment = params.get('department');
+                    this.filters.department = params.get('department');
+                }
 
-            if (params.has('department')) {
-                this.selectedDepartment = params.get('department');
-                this.filters.department = params.get('department');
-            }
+                if (params.has('division')) {
+                    this.selectedDivision = params.get('division');
+                    this.filters.division = params.get('division');
+                    this.toggleTermDivision(
+                        null,
+                        { target: { value: params.get('division') } },
+                        false
+                    );
+                }
 
-            if (params.has('division')) {
-                this.selectedDivision = params.get('division');
-                this.filters.division = params.get('division');
-                this.toggleTermDivision(null, { target: { value: params.get('division') } }, false);
+                if (params.has('term')) {
+                    this.filters.term = params.get('term');
+                }
             }
 
             if (params.has('pag')) {
                 this.currentPage = params.get('pag');
-            }
-
-            if (params.has('term')) {
-                this.filters.term = params.get('term');
             }
 
             if (this.renderApi) {
