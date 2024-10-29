@@ -352,7 +352,13 @@
                     this.selectedDepartment = params.get('department');
                     this.filters.department = params.get('department');
                 }
+            }
 
+            if (
+                this.api !== 'People' &&
+                this.api !== 'Offices' &&
+                this.api !== 'Department Courses'
+            ) {
                 if (params.has('division')) {
                     this.selectedDivision = params.get('division');
                     this.filters.division = params.get('division');
