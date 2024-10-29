@@ -342,7 +342,12 @@
         },
         async mounted() {
             const params = new URLSearchParams(window.location.search);
-            if (this.api !== 'Departments' && this.api !== 'People' && this.api !== 'Offices') {
+            if (
+                this.api !== 'Departments' &&
+                this.api !== 'People' &&
+                this.api !== 'Offices' &&
+                this.api !== 'Department Courses'
+            ) {
                 if (params.has('department')) {
                     this.selectedDepartment = params.get('department');
                     this.filters.department = params.get('department');
@@ -357,7 +362,9 @@
                         false
                     );
                 }
+            }
 
+            if (this.api !== 'Departments' && this.api !== 'People' && this.api !== 'Offices') {
                 if (params.has('term')) {
                     this.filters.term = params.get('term');
                 }
