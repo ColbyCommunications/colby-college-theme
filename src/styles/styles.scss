@@ -357,6 +357,75 @@
     }
 }
 
+/* statuspage.io system status styles */
+.color-description {
+    @apply font-body;
+    @apply text-indigo-900;
+    @apply font-normal;
+
+    display: inline-block !important;
+    margin-left: 5px;
+}
+
+/* statuspage.io system status styles */
+.critical {
+    display: inline-block !important;
+    background-color: #e74c3c;
+    font-family: FontAwesome;
+    border-radius: 16px;
+    padding: 4px;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    text-align: center;
+}
+
+.major {
+    display: inline-block !important;
+    background-color: #e67e22;
+    font-family: FontAwesome;
+    border-radius: 16px;
+    padding: 4px;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    text-align: center;
+}
+
+.minor,
+.maintenance {
+    display: inline-block !important;
+    background-color: #f1c40f;
+    font-family: FontAwesome;
+    border-radius: 16px;
+    padding: 4px;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    text-align: center;
+}
+
+.none {
+    display: inline-block !important;
+    background-color: #2ecc71;
+    font-family: FontAwesome;
+    border-radius: 16px;
+    padding: 4px;
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    text-align: center;
+}
+
+.new {
+    padding: 5px;
+    color: #fff;
+    background-color: #d12124;
+    border-radius: 6px;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
 @media (max-width: 768px) {
     .colby-image-text-block {
         > div > div {

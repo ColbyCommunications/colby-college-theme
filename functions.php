@@ -950,6 +950,9 @@ class StarterSite extends Timber\Site {
 
 		global $wp;
 		if ( ! is_404() ) {
+			
+		// Get the current URL path
+    $current_url = $_SERVER['REQUEST_URI'];
     
     $breadcrumbs_menu = array();
 
@@ -1540,7 +1543,7 @@ function getNewPeople( $directory_data ) {
 		$args = array(
 			'numberposts' => -1,
 			'post_type'   => 'people',
-			'post_status' => 'publish',
+			'post_status' => array('publish', 'draft'),
 			'meta_query'  => array(
 				array(
 					'key'     => 'employee_id',
