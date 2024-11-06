@@ -1353,13 +1353,29 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 			$is_enabled_auto_populate = get_field('auto_populate');
 
 			$is_enabled_auto_populate = get_field('auto_populate');
-      $people_posts = $is_enabled_auto_populate ? get_people($segment1, $segment2, $segment3) : [];
-      $acf_items = get_field('items') ?: [];
+			$people_posts = $is_enabled_auto_populate ? get_people($segment1, $segment2, $segment3) : [];
+			$acf_items = get_field('items') ?: [];
 	
 			// Merge ACF items and people posts
 			$merged_items = array_merge(is_array($acf_items) ? $acf_items : [], is_array($people_posts) ? $people_posts : []);
+			
+			// get people exclusions
+			$people_exclusions = get_field('exclude_from_listings');
 
-			foreach ($merged_items as &$item) {
+			$final_people_items = [];
+
+			// process/obtain the final list of folks
+			if ($people_exclusions){
+				foreach ( $merged_items as $person) {
+					if(!in_array($person, $people_exclusions)) {
+						$final_people_items[] = $person;
+					}
+				}
+			} else {
+				$final_people_items = $merged_items;
+			}
+
+			foreach ($final_people_items as &$item) {
             if (isset($item['post'])) {
                 $post_id = $item['post']->ID;
                 if ($post_id) { // Ensure $post_id is valid
@@ -1369,15 +1385,15 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
         }
         unset($item);
 
-			// Sort the merged_items array by last_name
-			usort($merged_items, function($a, $b) {
-    		return strcmp(strtolower($a['last_name']), strtolower($b['last_name']));
-			});
+		// Sort the merged_items array by last_name
+		usort($final_people_items, function($a, $b) {
+		return strcmp(strtolower($a['last_name']), strtolower($b['last_name']));
+		});
 
-			// Update context with merged items
-			$context_merged['acf_items'] = $acf_items;
-			$context_merged['people_posts'] = $people_posts;
-			$context_merged['people'] = $merged_items;
+		// Update context with merged items
+		$context_merged['acf_items'] = $acf_items;
+		$context_merged['people_posts'] = $people_posts;
+		$context_merged['people'] = $final_people_items;
 	}
 
 	// Render the block.
