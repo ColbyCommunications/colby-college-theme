@@ -1396,6 +1396,11 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 		$context_merged['people'] = $final_people_items;
 	}
 
+	if ($context['block_name'] == 'article-grid') {
+		$exclude_post_ids = array_map(function($o) { return $o['post']->ID;}, $context['fields']['exclude_internal_posts']);
+		$context_merged['internal_post_exclusions'] = $exclude_post_ids;
+	}
+
 	// Render the block.
 	Timber::render( 'src/twig/components/' . $context['block_name'] . '/' . $context['block_name'] . '.twig', $context_merged );
 }

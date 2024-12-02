@@ -10,18 +10,21 @@
                 >
                     <a :href="parentpermalink" class="pointer-events-none md:pointer-events-auto"
                         >{{ heading }}
-                        <svg
-                            class="absolute top-5 right-6 md:hidden w-1.5 fill-azure"
-                            :class="{ ['-rotate-90']: menuOpen, ['-rotate-180']: !menuOpen }"
-                            viewBox="0 0 4.2 7"
-                            style="enable-background: new 0 0 4.2 7"
-                            xml:space="preserve"
-                        >
-                            <path
-                                d="M4 .2c.3.3.3.7 0 1L1.7 3.5 4 5.8c.3.3.3.7 0 1-.3.3-.7.3-1 0L.2 4c-.3-.3-.3-.7 0-1L3 .2c.3-.3.7-.3 1 0z"
-                                style="fill-rule: evenodd; clip-rule: evenodd"
-                            />
-                        </svg>
+                        <div class="absolute top-6 right-8 md:hidden w-1.5">
+                            <span
+                                class="relative block w-6 h-0.5 bg-azure transition-all duration-200 ease-in-out"
+                                :class="{ 'bg-transparent': menuOpen }"
+                            >
+                                <span
+                                    class="absolute left-0 w-full h-full bg-azure origin-center top-[-6px] transition-all duration-200 ease-in-out"
+                                    :class="{ '!top-0 rotate-45': menuOpen }"
+                                ></span>
+                                <span
+                                    class="absolute left-0 w-full h-full bg-azure origin-center top-[6px] transition-all duration-200 ease-in-out"
+                                    :class="{ '!top-0 rotate-[-45deg]': menuOpen }"
+                                ></span>
+                            </span>
+                        </div>
                     </a>
                 </div>
             </h2>

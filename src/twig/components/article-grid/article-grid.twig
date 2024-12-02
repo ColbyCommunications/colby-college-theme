@@ -9,6 +9,7 @@
   {% if render_posts %}
      {% set items = fn('Timber::get_posts', {
       post_type: 'post',
+      post__not_in: internal_post_exclusions,
       posts_per_page: post_limit,
       tax_query: [
         {

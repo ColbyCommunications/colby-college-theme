@@ -1,6 +1,6 @@
 {% import "macros.twig" as macros %}
 
-<div class="image-grid grid grid-cols-8 gap-10 max-w-screen-2xl w-full">
+<div class="image-grid grid grid-cols-8 gap-10 max-w-screen-2xl w-full mx-auto">
   {% for image in images %}
     <div class="image-grid__item col-span-8 {% if not (image_orientation == 'landscape') %}md:col-span-4{% endif %}">
       <div class="image-grid__image relative {% if image_orientation == 'landscape' %}pb-[69.04761904761905%] md:pb-[48.86363636363636%]{% elseif image_orientation == 'rectangle' %}pb-[69.04761904761905%]{% elseif image_orientation == 'portrait' %}pb-[152.63157894736844%]{% else %}pb-[100%]{% endif %}">
