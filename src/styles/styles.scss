@@ -412,6 +412,10 @@
     .colby-table-block {
         @apply mx-auto;
     }
+
+    > .article-grid {
+        @apply px-4;
+    }
 }
 
 /* statuspage.io system status styles */
