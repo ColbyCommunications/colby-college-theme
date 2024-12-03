@@ -6,7 +6,7 @@
   {% set context = 'context.twig' %}
 {% endif %}
 
-<div class="full-bleed-hero py-24 relative {% if type == 'dark' %} bg-bluemarble__pattern {% else %} bg-marble__pattern {% endif %} bg-cover bg-center">
+<div class="full-bleed-hero py-24 relative {% if type == 'dark' %} bg-bluemarble__pattern {% else %} bg-marble__pattern {% endif %} bg-cover bg-center !max-w-full">
   <div class="full-bleed-hero__inner grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto">
     <div class="full-bleed-hero__context md:col-span-8 md:col-start-3">
       {% include context with {

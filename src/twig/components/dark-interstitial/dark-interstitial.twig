@@ -4,7 +4,7 @@
   {% set context = 'context.twig' %}
 {% endif %}
 
-<div class="dark-interstitial py-24 {% if icon %}md:pt-12 relative{% endif %} bg-indigo [&+.dark-interstitial]:mt-0">
+<div class="dark-interstitial py-24 {% if icon %}md:pt-12 relative{% endif %} bg-indigo [&+.dark-interstitial]:mt-0 !max-w-full">
   {% if icon %}
     <div class="relative hidden md:flex justify-end max-w-screen-2xl w-full px-5 my-0 mx-auto mb-16">
       <svg class="w-5 fill-canary" viewBox="0 0 20.83 30">

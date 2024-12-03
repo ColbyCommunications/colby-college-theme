@@ -6,8 +6,8 @@
   {% set buttonGroup = 'button-group.twig' %}
 {% endif %}
 
-<div class="full-bleed-image relative">
-  <div class="relative full-bleed-image__image lg:h-[calc(100vh_-_100px)] overflow-hidden">
+<div class="full-bleed-image relative !max-w-full">
+  <div class="relative full-bleed-image__image lg:h-[calc(100vh_-_100px)] overflow-hidden ">
     {{ macros.picture(
       'w-full h-full object-cover',
       image.srcset,
