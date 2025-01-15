@@ -1,0 +1,51 @@
+{
+    "name": "simplesamlphp/simplesamlphp-test-framework",
+    "description": "Test framework for SimpleSAMLphp and related repositories ",
+    "type": "project",
+    "keywords": ["test-framework"],
+    "license": "LGPL-2.1-or-later",
+    "authors": [
+        {
+            "name": "Tim van Dijen",
+            "email": "tvdijen@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SimpleSAML\\TestUtils\\": "lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SimpleSAML\\Test\\TestUtils\\": "tests/src/"
+        }
+    },
+    "require": {
+        "php": "^8.1",
+        "ext-curl": "*",
+
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^1.11",
+        "phpstan/phpstan-mockery": "^1.1",
+        "phpunit/phpunit": "^10.0 || ^11.0",
+        "psr/log": "^2.0 || ^3.0",
+        "slevomat/coding-standard": "^8.15",
+        "symfony/phpunit-bridge": "^6.4 || ^7.0"
+    },
+    "require-dev": {
+        "simplesamlphp/simplesamlphp": "^2.2"
+    },
+    "support": {
+        "issues": "https://github.com/simplesamlphp/simplesamlphp-test-framework/issues",
+        "source": "https://github.com/simplesamlphp/simplesamlphp-test-framework"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "simplesamlphp/composer-module-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true,
+            "simplesamlphp/composer-xmlprovider-installer": true
+        }
+    }
+}

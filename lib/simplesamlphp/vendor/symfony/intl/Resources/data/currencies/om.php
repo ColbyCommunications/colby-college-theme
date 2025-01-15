@@ -2,41 +2,57 @@
 
 return [
     'Names' => [
+        'BMD' => [
+            'BMD',
+            'Doolaara Beermudaa',
+        ],
         'BRL' => [
-            0 => 'R$',
-            1 => 'Brazilian Real',
+            'R$',
+            'Brazilian Real',
+        ],
+        'BZD' => [
+            'BZD',
+            'Doolaara Beliizee',
+        ],
+        'CAD' => [
+            'CA$',
+            'Doolaara Kanaadaa',
         ],
         'CNY' => [
-            0 => 'CN¥',
-            1 => 'Chinese Yuan Renminbi',
+            'CN¥',
+            'Chinese Yuan Renminbi',
+        ],
+        'CRC' => [
+            'CRC',
+            'Koloonii Kostaa Rikaa',
         ],
         'ETB' => [
-            0 => 'Br',
-            1 => 'Itoophiyaa Birrii',
+            'Br',
+            'Itoophiyaa Birrii',
         ],
         'EUR' => [
-            0 => '€',
-            1 => 'Euro',
+            '€',
+            'Euro',
         ],
         'GBP' => [
-            0 => '£',
-            1 => 'British Pound',
+            '£',
+            'British Pound',
         ],
         'INR' => [
-            0 => '₹',
-            1 => 'Indian Rupee',
+            '₹',
+            'Indian Rupee',
         ],
         'JPY' => [
-            0 => 'JP¥',
-            1 => 'Japanese Yen',
+            'JP¥',
+            'Japanese Yen',
         ],
         'RUB' => [
-            0 => 'RUB',
-            1 => 'Russian Ruble',
+            'RUB',
+            'Russian Ruble',
         ],
         'USD' => [
-            0 => 'US$',
-            1 => 'US Dollar',
+            'US$',
+            'Doolaara Ameerikaa',
         ],
     ],
 ];

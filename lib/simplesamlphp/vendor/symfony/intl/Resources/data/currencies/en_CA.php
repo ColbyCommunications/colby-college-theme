@@ -3,60 +3,52 @@
 return [
     'Names' => [
         'BMD' => [
-            0 => 'BMD',
-            1 => 'Bermudian Dollar',
+            'BMD',
+            'Bermudian Dollar',
         ],
         'BYB' => [
-            0 => 'BYB',
-            1 => 'Belarusian New Rouble (1994–1999)',
-        ],
-        'BYN' => [
-            0 => 'BYN',
-            1 => 'Belarusian Rouble',
+            'BYB',
+            'Belarusian New Rouble (1994–1999)',
         ],
         'BYR' => [
-            0 => 'BYR',
-            1 => 'Belarusian Rouble (2000–2016)',
+            'BYR',
+            'Belarusian Rouble (2000–2016)',
         ],
         'CAD' => [
-            0 => '$',
-            1 => 'Canadian Dollar',
+            '$',
+            'Canadian Dollar',
         ],
         'JPY' => [
-            0 => 'JP¥',
-            1 => 'Japanese Yen',
+            'JP¥',
+            'Japanese Yen',
         ],
         'LVR' => [
-            0 => 'LVR',
-            1 => 'Latvian Rouble',
-        ],
-        'RUB' => [
-            0 => 'RUB',
-            1 => 'Russian Rouble',
+            'LVR',
+            'Latvian Rouble',
         ],
         'RUR' => [
-            0 => 'RUR',
-            1 => 'Russian Rouble (1991–1998)',
+            'RUR',
+            'Russian Rouble (1991–1998)',
         ],
         'SHP' => [
-            0 => 'SHP',
-            1 => 'Saint Helena Pound',
+            'SHP',
+            'Saint Helena Pound',
         ],
         'STN' => [
-            0 => 'STN',
-            1 => 'São Tomé and Príncipe Dobra',
+            'STN',
+            'São Tomé and Príncipe Dobra',
         ],
         'TJR' => [
-            0 => 'TJR',
-            1 => 'Tajikistani Rouble',
+            'TJR',
+            'Tajikistani Rouble',
         ],
         'TTD' => [
-            0 => 'TTD',
-            1 => 'Trinidad and Tobago Dollar',
+            'TTD',
+            'Trinidad and Tobago Dollar',
         ],
         'USD' => [
-            0 => 'US$',
-            1 => 'US Dollar',
+            'US$',
+            'US Dollar',
         ],
     ],
 ];

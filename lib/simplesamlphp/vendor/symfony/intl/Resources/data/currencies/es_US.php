@@ -2,49 +2,37 @@
 
 return [
     'Names' => [
-        'BDT' => [
-            0 => 'BDT',
-            1 => 'taka bangladesí',
-        ],
         'BTN' => [
-            0 => 'BTN',
-            1 => 'ngultrum butanés',
+            'BTN',
+            'ngultrum butanés',
         ],
         'ETB' => [
-            0 => 'ETB',
-            1 => 'birr',
+            'ETB',
+            'birr',
         ],
         'JPY' => [
-            0 => '¥',
-            1 => 'yen',
-        ],
-        'LAK' => [
-            0 => 'LAK',
-            1 => 'kip laosiano',
+            '¥',
+            'yen japonés',
         ],
         'THB' => [
-            0 => 'THB',
-            1 => 'bat',
+            'THB',
+            'bat',
         ],
         'USD' => [
-            0 => '$',
-            1 => 'dólar estadounidense',
+            '$',
+            'dólar estadounidense',
         ],
         'UZS' => [
-            0 => 'UZS',
-            1 => 'sum',
-        ],
-        'VND' => [
-            0 => 'VND',
-            1 => 'dong vietnamita',
+            'UZS',
+            'sum',
         ],
         'XAF' => [
-            0 => 'XAF',
-            1 => 'franco CFA de África central',
+            'XAF',
+            'franco CFA de África central',
         ],
         'ZMW' => [
-            0 => 'ZMW',
-            1 => 'kwacha zambiano',
+            'ZMW',
+            'kwacha zambiano',
         ],
     ],
 ];

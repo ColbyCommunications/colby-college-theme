@@ -142,12 +142,11 @@ class LanguageDataGenerator extends AbstractDataGenerator
                     $localizedNames[$language] = $name;
                 }
             }
-            $data = [
+
+            return [
                 'Names' => $names,
                 'LocalizedNames' => $localizedNames,
             ];
-
-            return $data;
         }
 
         return null;
@@ -243,7 +242,7 @@ class LanguageDataGenerator extends AbstractDataGenerator
 
         foreach ($metadataBundle['alias']['language'] as $alias => $data) {
             $language = $data['replacement'];
-            if (2 === \strlen($language) && 3 === \strlen($alias) && 'overlong' === $data['reason']) {
+            if (2 === \strlen($language) && 3 === \strlen($alias) && \in_array($data['reason'], ['overlong', 'bibliographic'], true)) {
                 $alpha3ToAlpha2[$alias] = $language;
             }
         }

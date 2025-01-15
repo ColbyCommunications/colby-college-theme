@@ -133,6 +133,11 @@ return static function (ContainerConfigurator $container) {
             ])
             ->deprecate('symfony/framework-bundle', '5.3', 'The "%service_id%" service is deprecated, use "session.storage.factory.mock_file" instead.')
 
+        ->set('session.handler.native', StrictSessionHandler::class)
+            ->args([
+                inline_service(\SessionHandler::class),
+            ])
+
         ->set('session.handler.native_file', StrictSessionHandler::class)
             ->args([
                 inline_service(NativeFileSessionHandler::class)
@@ -151,6 +156,7 @@ return static function (ContainerConfigurator $container) {
                     'initialized_session' => service('.session.do-not-use')->ignoreOnUninitialized(),
                     'logger' => service('logger')->ignoreOnInvalid(),
                     'session_collector' => service('data_collector.request.session_collector')->ignoreOnInvalid(),
+                    'request_stack' => service('request_stack')->ignoreOnInvalid(),
                 ]),
                 param('kernel.debug'),
                 param('session.storage.options'),

@@ -21,7 +21,7 @@ include __DIR__ . '/acf_fields.php';
 $composer_autoload = __DIR__ . '/vendor/autoload.php';
 if ( file_exists( $composer_autoload ) ) {
 	include_once $composer_autoload;
-	$timber = new Timber\Timber();
+	Timber\Timber::init();
 }
 
 /**
@@ -1042,12 +1042,12 @@ class StarterSite extends Timber\Site {
 		$context['foo']            = 'bar';
 		$context['stuff']          = 'I am a value set in your functions.php file';
 		$context['notes']          = 'These values are available everytime you call Timber::context();';
-		$context['menu']           = new Timber\Menu();
-		$context['main_menu']      = new Timber\Menu( 'Main Menu' );
-		$context['utility_menu']   = new Timber\Menu( 'Utility Menu' );
-		$context['footer_menu']    = new Timber\Menu( 'Footer Menu' );
-		$context['action_menu']    = new Timber\Menu( 'Action Menu' );
-		$context['people_menu']    = new Timber\Menu( 'People Menu' );
+		$context['menu']           = Timber::get_menu();
+		$context['main_menu']      = Timber::get_menu( 'Main Menu' );
+		$context['utility_menu']   = Timber::get_menu( 'Utility Menu' );
+		$context['footer_menu']    = Timber::get_menu( 'Footer Menu' );
+		$context['action_menu']    = Timber::get_menu( 'Action Menu' );
+		$context['people_menu']    = Timber::get_menu( 'People Menu' );
 		$context['global_address'] = get_field( 'address', 'options' );
 		$context['global_phone']   = get_field( 'phone', 'options' );
 		$context['global_social']  = get_field( 'social_media', 'options' );
