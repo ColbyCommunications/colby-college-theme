@@ -14,7 +14,7 @@
  */
 
 $context          = Timber::context();
-$context['posts'] = new Timber\PostQuery();
+$context['posts'] = Timber::get_posts();
 $context['foo']   = 'bar';
 $context['archive_id'] = get_queried_object_id();
 

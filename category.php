@@ -14,7 +14,7 @@
  */
 
 $context          = Timber::context();
-$context['posts'] = new Timber\PostQuery();
+$context['posts'] = Timber::get_posts();
 $context['category_obj']   = get_the_category();
 
 $templates        = array( 'category.twig' );

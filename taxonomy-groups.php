@@ -14,7 +14,7 @@
  */
 
 $context          = Timber::context();
-$context['posts'] = new Timber\PostQuery();
+$context['posts'] = Timber::get_posts();
 $context['foo']   = 'bar';
 $context['title'] = single_term_title('', false);
 
