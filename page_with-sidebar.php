@@ -24,7 +24,7 @@
 
 $context = Timber::context();
 
-$timber_post            = new Timber\Post();
+$timber_post            = Timber::get_post();
 $context['post']        = $timber_post;
 $context['page_blocks'] = parse_blocks( $timber_post->post_content );
 
