@@ -25,9 +25,9 @@ p {
     .video {
         height: 100%;
 
-        @include breakpoint(medium) {
-            height: auto;
-        }
+        // @include breakpoint(medium) {
+        //     height: auto;
+        // }
     }
 }
 
@@ -42,9 +42,9 @@ p {
     flex-grow: 1;
     width: 50%;
 
-    @include breakpoint(medium) {
-        width: 33%;
-    }
+    // @include breakpoint(medium) {
+    //     width: 33%;
+    // }
 }
 
 .lw-event-date {

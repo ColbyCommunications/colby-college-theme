@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import gsap from 'gsap';
+    import { gsap } from 'gsap';
     import Letterize from 'letterizejs';
     import 'waypoints/lib/noframework.waypoints';
 

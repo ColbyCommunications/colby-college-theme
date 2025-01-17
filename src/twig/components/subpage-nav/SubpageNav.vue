@@ -54,7 +54,7 @@
 </template>
 
 <script>
-    import gsap from 'gsap';
+    import { gsap } from 'gsap';
     import 'waypoints/lib/noframework.waypoints';
 
     export default {

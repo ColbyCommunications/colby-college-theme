@@ -648,5 +648,5 @@
 </script>
 
 <style lang="scss">
-    @import 'node_modules/@glidejs/glide/src/assets/sass/glide.core';
+    @use '~@glidejs/glide/src/assets/sass/glide.core';
 </style>
