@@ -7,7 +7,7 @@
         >
             <div
                 v-for="(item, index) in data"
-                class="article-grid__item glide__slide col-span-4"
+                class="article-grid__item glide__slide"
                 :class="{
                     'col-span-12 md:col-span-6': columns == 2,
                     'col-span-12 md:col-span-6 lg:col-span-4': columns == 3,
