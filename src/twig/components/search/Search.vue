@@ -115,7 +115,7 @@
 </template>
 
 <script>
-    import algoliasearch from 'algoliasearch/lite';
+    import { liteClient } from 'algoliasearch/lite';
     import Searchbox from './Searchbox.vue';
     export default {
         components: {
@@ -131,7 +131,7 @@
         },
         data() {
             return {
-                searchClient: algoliasearch('2XJQHYFX2S', '63c304c04c478fd0c4cb1fb36cd666cb'),
+                searchClient: liteClient('2XJQHYFX2S', '63c304c04c478fd0c4cb1fb36cd666cb'),
                 modalOpen: false,
                 query: '',
             };
