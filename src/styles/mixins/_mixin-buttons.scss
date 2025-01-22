@@ -1,3 +1,5 @@
+@use '~foundation-sites/scss/foundation' as f;
+
 @mixin btn($color, $background, $hover-color: '', $hover-background: '', $border: '') {
     display: inline-block;
     align-items: center;
@@ -23,7 +25,7 @@
     transition: color 0.2s $ease-default, background-color 0.2s $ease-default,
         border-color 0.2s $ease-default;
 
-    @include breakpoint(medium) {
+    @include f.breakpoint(medium) {
         width: auto;
     }
 

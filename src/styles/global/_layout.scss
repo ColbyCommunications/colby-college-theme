@@ -1,3 +1,5 @@
+@use '~foundation-sites/scss/foundation' as f;
+
 html {
     scroll-behavior: smooth;
 }
@@ -25,7 +27,7 @@ p {
     .video {
         height: 100%;
 
-        @include breakpoint(medium) {
+        @include f.breakpoint(medium) {
             height: auto;
         }
     }
@@ -42,7 +44,7 @@ p {
     flex-grow: 1;
     width: 50%;
 
-    @include breakpoint(medium) {
+    @include f.breakpoint(medium) {
         width: 33%;
     }
 }
