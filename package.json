@@ -58,7 +58,7 @@
         "@glidejs/glide": "3.6.0",
         "algoliasearch": "^5.19.0",
         "axios": "^1.7.9",
-        "foundation-sites": "^6.9.0",
+        "foundation-sites": "6.7.4",
         "fuse.js": "^7.0.0",
         "gsap": "^3.12.7",
         "letterizejs": "^2.0.1",
