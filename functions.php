@@ -1397,8 +1397,10 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 	}
 
 	if ($context['block_name'] == 'article-grid' && isset($context['fields']['exclude_internal_posts'])) {
-		$exclude_post_ids = array_map(function($o) { return $o['post']->ID;}, $context['fields']['exclude_internal_posts']);
-		$context_merged['internal_post_exclusions'] = $exclude_post_ids;
+		if (is_array($context['fields']['exclude_internal_posts'])){
+			$exclude_post_ids = array_map(function($o) { return $o['post']->ID;}, $context['fields']['exclude_internal_posts']);
+			$context_merged['internal_post_exclusions'] = $exclude_post_ids;
+		}
 	}
 
 	// Render the block.
