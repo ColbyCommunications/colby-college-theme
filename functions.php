@@ -2398,3 +2398,169 @@ function exclude_specific_posts_from_algolia_index( $should_index, $post ) {
 add_filter( 'algolia_should_index_searchable_post', 'exclude_specific_posts_from_algolia_index', 10, 2 );
 
 
+add_filter( 'rest_page_collection_params', 'big_json_change_post_per_page', 10, 1 );
+function big_json_change_post_per_page( $params ) {
+    if ( isset( $params['per_page'] ) ) {
+        $params['per_page']['maximum'] = 1000;
+    }
+    return $params;
+}
+
+
+// Function 1: Gets the post IDs based on page category slug
+function get_post_ids_to_convert($term_slug) {
+    if (empty($term_slug)) {
+        return [];
+    }
+
+    $args = array(
+        'post_type' => 'page',
+        'posts_per_page' => -1,
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'page-categories',
+                'field'    => 'slug',
+                'terms'    => $term_slug,
+            ),
+        ),
+    );
+
+    $query = new WP_Query($args);
+
+    // Collect post IDs
+    $post_ids = [];
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $post_ids[] = get_the_ID();
+        }
+    }
+
+    wp_reset_postdata();
+
+    return $post_ids; // Return the array of IDs
+}
+
+
+// Function 2: Converts HTML in pages to Colby blocks
+function convert_content_to_colby_blocks($term_slug) {
+    global $wpdb;
+
+    // Get post IDs from the first function
+    $post_ids = get_post_ids_to_convert($term_slug);
+
+    // Ensure there are post IDs to process
+    if (empty($post_ids)) {
+        echo 'No posts found.';
+        return;
+    }
+
+    $upload_dir = wp_get_upload_dir();
+    $base_upload_url = $upload_dir['baseurl'];
+
+    // Iterate through the post IDs
+    foreach ($post_ids as $post_id) {
+        // Get the raw post content for the current post ID
+        $post_content = get_post_field('post_content', $post_id);
+
+        // Step 1: Remove any wrapping <p> and </p> tags surrounding the entire post content
+        $post_content = preg_replace('/<p(.*?)>/i', '', $post_content);
+        $post_content = preg_replace('/<\/p>/i', '', $post_content);
+
+        // Step 2: Convert all headings (H1 through H6) to the custom heading block
+        $post_content = preg_replace_callback(
+            '/<h([1-6])(.*?)>(.*?)<\/h\1>/s',
+            function ($matches) {
+                $heading_level = $matches[1]; // Extract the heading level (e.g., 1, 2, etc.)
+                $heading_text = preg_replace('/<br\s*\/?>/i', '', $matches[3]); // Remove <br> tags
+                $heading_text = strip_tags(trim($heading_text)); // Strip all other tags and trim whitespace
+
+                return "<!-- wp:heading {\"level\":$heading_level} -->\n<h$heading_level class=\"wp-block-heading\">$heading_text</h$heading_level>\n<!-- /wp:heading -->";
+            },
+            $post_content
+        );
+
+        // Step 3: Convert all <img> tags to the custom ACF image block
+        $post_content = preg_replace_callback(
+            '/<img[^>]+src=["\']([^"\']+)["\'][^>]*>/i',
+            function ($matches) use ($base_upload_url, $wpdb) {
+                $img_url = $matches[1]; // Extract the image URL
+
+                // Parse the image URL to get the relative path
+                $parsed_url = parse_url($img_url);
+                $relative_path = isset($parsed_url['path']) ? $parsed_url['path'] : '';
+
+                // Remove size suffixes from filenames (e.g., -229x300)
+                $relative_path = preg_replace('/^(.+)-\d+x\d+(\.[a-zA-Z]+)$/', '$1$2', $relative_path);
+
+                // Reconstruct the image URL for the current environment
+                if (strpos($relative_path, '/wp-content/uploads/') === 0) {
+                    $converted_url = $base_upload_url . str_replace('/wp-content/uploads', '', $relative_path);
+                } else {
+                    $converted_url = $base_upload_url . $relative_path;
+                }
+
+                // Extract just the filename (e.g., Example-Image-2.jpg)
+                $filename = basename($converted_url);
+
+                // Remove file extensions for fuzzy matching (e.g., Example-Image-2)
+                $base_filename = preg_replace('/\.[a-zA-Z]+$/', '', $filename);
+
+                // Query the database for a matching GUID (fuzzy match)
+                $query = $wpdb->prepare("
+                    SELECT ID, guid
+                    FROM {$wpdb->posts}
+                    WHERE post_type = 'attachment'
+                    AND guid LIKE %s
+                    LIMIT 1
+                ", '%' . $wpdb->esc_like($base_filename) . '%');
+
+                $attachment = $wpdb->get_row($query);
+
+                // Get the image ID
+                $image_id = $attachment ? $attachment->ID : null;
+
+                // If no image ID is found, return the original <img> tag
+                if (!$image_id) {
+                    return $matches[0];
+                }
+
+                // Build the custom ACF image block
+                $acf_image_block = '<!-- wp:acf/image {"name":"acf/image","data":{"image":' . $image_id . ',"_image":"field_637648002429f","media_caption":"0","_media_caption":"field_638783ea00b86","align_center":"","_align_center":"field_6377adbc99a0b","image_scale":"100","_image_scale":"field_637ba00835500","image_path":"","_image_path":"field_637bc1cb68bf0"},"mode":"edit"} /-->';
+
+                // Replace the <img> tag with the ACF block
+                return $acf_image_block;
+            },
+            $post_content
+        );
+
+        // Update the post content with the converted content
+        wp_update_post(array(
+            'ID' => $post_id,
+            'post_content' => $post_content,
+        ));
+
+        // Output a message indicating the post was updated
+        WP_CLI::log("Post ID: $post_id - Content converted and updated.");
+    }
+}
+
+// CLI command is wp convert_content --term=page-category-slug
+if (defined('WP_CLI') && WP_CLI) {
+    WP_CLI::add_command('convert_content', function ($args, $assoc_args) {
+        // Retrieve the 'term' parameter from the command line
+        $term_slug = $assoc_args['term'] ?? null;
+
+        if (empty($term_slug)) {
+            WP_CLI::error('You must provide a term slug using --term=<page-category-slug>.');
+        }
+
+        WP_CLI::log("Starting content conversion for term: $term_slug");
+
+        convert_content_to_colby_blocks($term_slug);
+
+        WP_CLI::success('Content conversion completed.');
+    });
+}
+
+
