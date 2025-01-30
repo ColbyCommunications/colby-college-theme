@@ -2408,46 +2408,66 @@ function big_json_change_post_per_page( $params ) {
 
 
 // Function 1: Gets the post IDs based on page category slug
-function get_post_ids_to_convert($term_slug) {
-    if (empty($term_slug)) {
+function get_post_ids_to_convert($post_type, $term_slug) {
+    global $wpdb;
+
+    // Ensure post type and term slug are provided
+    if (empty($post_type) || empty($term_slug)) {
         return [];
     }
 
-    $args = array(
-        'post_type' => 'page',
-        'posts_per_page' => -1,
-        'tax_query' => array(
-            array(
-                'taxonomy' => 'page-categories',
-                'field'    => 'slug',
-                'terms'    => $term_slug,
-            ),
-        ),
-    );
-
-    $query = new WP_Query($args);
-
-    // Collect post IDs
-    $post_ids = [];
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            $post_ids[] = get_the_ID();
-        }
+    // Set taxonomy based on post type and log
+    if ($post_type === 'page') {
+        $taxonomy = 'page-categories';
+    } elseif ($post_type === 'post') {
+        $taxonomy = 'category';
+    } else {
+        WP_CLI::error("Invalid post type '$post_type'. Supported types are 'page' and 'post'.");
     }
 
-    wp_reset_postdata();
+    // Log details
+    WP_CLI::log("Post Type: $post_type");
+    WP_CLI::log("Taxonomy: $taxonomy");
+    WP_CLI::log("Term Slug: $term_slug");
+
+    // SQL query to fetch post IDs
+    $sql = "
+        SELECT p.ID
+        FROM {$wpdb->posts} p
+        INNER JOIN {$wpdb->term_relationships} tr ON p.ID = tr.object_id
+        INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+        INNER JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
+        WHERE p.post_type = %s
+        AND p.post_status = %s
+        AND tt.taxonomy = %s
+        AND t.slug = %s
+    ";
+
+    $post_status = 'any';
+
+    // Prepare the query with variables
+    $query = $wpdb->prepare($sql, $post_type, $post_status, $taxonomy, $term_slug);
+
+    // Run the query to get post IDs
+    $post_ids = $wpdb->get_col($query);
+
+    // Check if posts were found
+    if (!empty($post_ids)) {
+        WP_CLI::log("Number of posts found: " . count($post_ids));
+    } else {
+        WP_CLI::log("No posts found for the given parameters.");
+    }
 
     return $post_ids; // Return the array of IDs
 }
 
 
 // Function 2: Converts HTML in pages to Colby blocks
-function convert_content_to_colby_blocks($term_slug) {
+function convert_content_to_colby_blocks($post_type, $term_slug) {
     global $wpdb;
 
     // Get post IDs from the first function
-    $post_ids = get_post_ids_to_convert($term_slug);
+    $post_ids = get_post_ids_to_convert($post_type, $term_slug);
 
     // Ensure there are post IDs to process
     if (empty($post_ids)) {
@@ -2540,26 +2560,29 @@ function convert_content_to_colby_blocks($term_slug) {
             'post_content' => $post_content,
         ));
 
-        // Output a message indicating the post was updated
         WP_CLI::log("Post ID: $post_id - Content converted and updated.");
     }
 }
 
-// CLI command is wp convert_content --term=page-category-slug
+// CLI command: wp convert_content --type=page --term=page-category-slug
+// CLI command: wp convert_content --type=post --term=post-category-slug
 if (defined('WP_CLI') && WP_CLI) {
     WP_CLI::add_command('convert_content', function ($args, $assoc_args) {
-        // Retrieve the 'term' parameter from the command line
+        $post_type = $assoc_args['type'] ?? null;
         $term_slug = $assoc_args['term'] ?? null;
 
+        if (empty($post_type)) {
+            WP_CLI::error('Error: You must provide a post type using --type=<post_type>.');
+        }
         if (empty($term_slug)) {
-            WP_CLI::error('You must provide a term slug using --term=<page-category-slug>.');
+            WP_CLI::error('Error: You must provide a term slug using --term=<slug>.');
         }
 
-        WP_CLI::log("Starting content conversion for term: $term_slug");
+        WP_CLI::log("Starting conversion for $post_type(s) with term slug: $term_slug...");
 
-        convert_content_to_colby_blocks($term_slug);
+        convert_content_to_colby_blocks($post_type, $term_slug);
 
-        WP_CLI::success('Content conversion completed.');
+        WP_CLI::success("Content conversion for $post_type(s) completed successfully.");
     });
 }
 
