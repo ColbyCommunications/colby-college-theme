@@ -1284,7 +1284,7 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 		)
 	);
 
-	$context['departments'] = Timber::get_posts(
+	$retrieved_departments = Timber::get_posts(
 		array(
 			'post_type'      => 'page',
 			'posts_per_page' => -1,
@@ -1299,6 +1299,13 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 			),
 		)
 	);
+	$departments  = [];
+	foreach ($retrieved_departments->to_array() as $department) {
+		$department_code = get_post_meta($department->ID, 'department_code');
+		$department->department_code = $department_code[0];
+		array_push($departments, $department);
+	}
+	$context['departments'] = $departments;
 
 	$context['offices'] = Timber::get_posts(
 		array(

@@ -321,6 +321,10 @@
         @apply mx-auto;
     }
 
+    .full-bleed {
+        @apply max-w-full;
+    }
+
     > div.colby-paragraph-block:first-child {
         @apply mt-10;
     }
