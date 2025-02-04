@@ -2443,7 +2443,7 @@ function get_post_ids_to_convert($post_type, $term_slug) {
         AND t.slug = %s
     ";
 
-    $post_status = 'any';
+    $post_status = 'publish';
 
     // Prepare the query with variables
     $query = $wpdb->prepare($sql, $post_type, $post_status, $taxonomy, $term_slug);
@@ -2554,6 +2554,11 @@ function convert_content_to_colby_blocks($post_type, $term_slug) {
             $post_content
         );
 
+				// Step 4: Wrap remaining non-block content in paragraph blocks
+        $post_content = wrap_paragraph_after_headings($post_content);
+        $post_content = wrap_paragraph_after_acf_blocks($post_content);
+				$post_content = wrap_paragraph_before_blocks($post_content);
+
         // Update the post content with the converted content
         wp_update_post(array(
             'ID' => $post_id,
@@ -2563,6 +2568,73 @@ function convert_content_to_colby_blocks($post_type, $term_slug) {
         WP_CLI::log("Post ID: $post_id - Content converted and updated.");
     }
 }
+
+// Function 3
+function wrap_paragraph_after_headings($content) {
+    $pattern = '/(<!--\s*\/wp:[^ ]+\s*-->)(\s*(?:(?!<!--\s*wp:).)+)/s';
+
+    $content = preg_replace_callback($pattern, function ($matches) {
+        $trimmed_text = trim($matches[2]);
+
+        // Convert special characters to Unicode
+        $unicode_text = preg_replace_callback('/[\x00-\x1F\x22\x5C]/u', function ($char) {
+            return sprintf('\u%04x', ord($char[0]));
+        }, $trimmed_text);
+
+				$unicode_text = str_replace("\u0009", "", $unicode_text);
+				$unicode_text = str_replace("\u000a", "", $unicode_text);
+				$unicode_text = str_replace("\u0022", "", $unicode_text);
+
+        return $matches[1] . '<!-- wp:acf/paragraph {"name":"acf/paragraph","data":{"paragraph_text":"' . $unicode_text . '","_paragraph_text":"field_637634c55da0b"},"mode":"edit"} /-->';
+    }, $content);
+
+    return $content;
+}
+
+// Function 4
+function wrap_paragraph_after_acf_blocks($content) {
+    $pattern = '/(<!--\s*wp:acf[^>]*\/-->)(\s*(?:(?!<!--\s*wp:).)+)/s';
+
+    $content = preg_replace_callback($pattern, function ($matches) {
+        $trimmed_text = trim($matches[2]);
+
+        // Convert special characters to Unicode
+        $unicode_text = preg_replace_callback('/[\x00-\x1F\x22\x5C]/u', function ($char) {
+            return sprintf('\u%04x', ord($char[0]));
+        }, $trimmed_text);
+
+				$unicode_text = str_replace("\u0009", "", $unicode_text);
+				$unicode_text = str_replace("\u000a", "", $unicode_text);
+				$unicode_text = str_replace("\u0022", "", $unicode_text);
+
+        return $matches[1] . '<!-- wp:acf/paragraph {"name":"acf/paragraph","data":{"paragraph_text":"' . $unicode_text . '","_paragraph_text":"field_637634c55da0b"},"mode":"edit"} /-->';
+    }, $content);
+
+    return $content;
+}
+
+// Function 5
+function wrap_paragraph_before_blocks($content) {
+    $pattern = '/^(?!<!--\s*wp:)(.*?)(?=<!--\s*wp:)/s';
+
+    $content = preg_replace_callback($pattern, function ($matches) {
+        $trimmed_text = trim($matches[1]);
+
+        // Convert special characters to Unicode
+        $unicode_text = preg_replace_callback('/[\x00-\x1F\x22\x5C]/u', function ($char) {
+            return sprintf('\u%04x', ord($char[0]));
+        }, $trimmed_text);
+
+				$unicode_text = str_replace("\u0009", "", $unicode_text);
+				$unicode_text = str_replace("\u000a", "", $unicode_text);
+				$unicode_text = str_replace("\u0022", "", $unicode_text);
+
+        return '<!-- wp:acf/paragraph {"name":"acf/paragraph","data":{"paragraph_text":"' . $unicode_text . '","_paragraph_text":"field_637634c55da0b"},"mode":"edit"} /-->';
+    }, $content);
+
+    return $content;
+}
+
 
 // CLI command: wp convert_content --type=page --term=page-category-slug
 // CLI command: wp convert_content --type=post --term=post-category-slug
