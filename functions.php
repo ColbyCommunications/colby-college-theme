@@ -2397,4 +2397,5 @@ function exclude_specific_posts_from_algolia_index( $should_index, $post ) {
 }
 add_filter( 'algolia_should_index_searchable_post', 'exclude_specific_posts_from_algolia_index', 10, 2 );
 
+// test
 
