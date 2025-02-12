@@ -25,8 +25,20 @@
             let headingText;
 
             if (subheading) {
+                let words = subheading.innerHTML.split(' ');
+                subheading.innerHTML = '';
+
+                words.forEach((word) => {
+                    let wordWrap = document.createElement('span');
+                    wordWrap.classList.add('word-wrap');
+                    wordWrap.innerHTML = word;
+
+                    subheading.append(wordWrap);
+                    subheading.append(' ');
+                });
+
                 this.subheading = new Letterize({
-                    targets: subheading,
+                    targets: '.text-group__subheading .word-wrap',
                 });
             }
 
@@ -105,6 +117,9 @@
 </script>
 
 <style lang="scss">
+    .text-group__subheading span {
+        display: inline-block;
+    }
     .text-group--animated {
         .text-group__subheading span {
             display: inline-block;
