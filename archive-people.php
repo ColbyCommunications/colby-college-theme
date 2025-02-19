@@ -18,14 +18,21 @@ $context['posts'] = Timber::get_posts();
 $context['foo']   = 'bar';
 $context['archive_id'] = get_queried_object_id();
 
-$people_args = array(
+$people_args = Timber::get_posts(array(
   'posts_per_page' => -1,
   'post_type'=> 'people',
   'order' => 'ASC',
   'orderby' => 'name',
-);
+));
 
-$context['people'] = Timber::get_posts($people_args);
+$people = [];
+foreach ($people_args->to_array() as $person) {
+  $title = get_post_meta($person->ID, 'title');
+  $person->business_title = $title[0];
+  array_push($people, $person);
+}
+
+$context['people'] = $people;
 
 $templates         = array( 'archive-people.twig' );
 

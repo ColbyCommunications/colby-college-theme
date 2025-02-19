@@ -524,7 +524,10 @@
                                     title: item.post_title,
                                     url: `/people/people-directory/${item.post_name}/`,
                                 },
-                                columns: [item.custom.title, item.department],
+                                columns: [
+                                    item.business_title,
+                                    item.department ? item.department : '',
+                                ],
                             };
                         });
                         this.headings = ['Name', 'Title', 'Department'];
