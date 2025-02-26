@@ -1325,6 +1325,8 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 
 	// Store latest 3 posts and then merging it into the fields object before rendering component
 	// Check for whether or not block is a related-articles block should be placed here for optimization
+	$context_merged = $context['fields'];
+
 	if ( $context['block_name'] == 'context-article-grid' ) {
 		$context_merged = array_merge(
 			$context['fields'],
@@ -1332,7 +1334,9 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 				'recent_people' => $context['recent_people'],
 			)
 		);
-	} elseif ( $context['block_name'] == 'table' ) {
+	} 
+	
+	if ( $context['block_name'] == 'table' ) {
 		$context_merged = array_merge(
 			$context['fields'],
 			array(
@@ -1340,8 +1344,6 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 				'offices'     => $context['offices'],
 			)
 		);
-	} else {
-		$context_merged = $context['fields'];
 	}
 
 	if ($context['block_name'] == 'people-grid') {
