@@ -13,8 +13,8 @@ $context         = Timber::context();
 $timber_post     = Timber::query_post();
 $context['post'] = $timber_post;
 
-if (get_field('current_courses')) {
-	$context['person_decoded_courses'] = json_decode(stripslashes(get_field('current_courses')));
+if ($timber_post.meta('current_courses')) {
+	$context['person_decoded_courses'] = json_decode(stripslashes($timber_post.meta('current_courses')));
 }
 
 if ( post_password_required( $timber_post->ID ) ) {
