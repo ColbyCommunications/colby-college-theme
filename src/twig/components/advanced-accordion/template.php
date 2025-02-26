@@ -53,7 +53,7 @@ $inner_blocks_template = array(
     <!-- Front end view -->
     <?php
     $context = Timber::context();
-    $context['single'] = get_field('single');
+    $context['single'] = true;
 
     $data = [
         'single' => $context['single']

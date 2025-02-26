@@ -73,7 +73,7 @@ $allowed_blocks = ["acf/paragraph", "acf/image", "acf/image-text", "core/heading
 <?php else : ?>
     <?php
     $context2 = Timber::context();
-    $context2['heading'] = get_field('heading');
+    $context2['heading'] = 'foo';
     $context2['single'] = $context['acf/fields'];
 
     // Render the block.
