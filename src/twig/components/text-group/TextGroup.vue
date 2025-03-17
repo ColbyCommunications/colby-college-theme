@@ -77,7 +77,6 @@
                     duration: 0.7,
                     stagger: 0.1,
                     opacity: 1,
-                    y: 0,
                     ease: 'power3.easeInOut',
                     onComplete: () => {
                         this.animateHeading();
@@ -119,7 +118,6 @@
         .text-group__subheading span {
             display: inline-block;
             opacity: 0;
-            transform: translate(0, 5px);
         }
 
         .text-group__heading span {
