@@ -74,7 +74,7 @@
                 );
 
                 gsap.to(target, {
-                    duration: 0.7,
+                    duration: 0.5,
                     stagger: 0.1,
                     opacity: 1,
                     ease: 'power3.easeInOut',
