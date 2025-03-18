@@ -49,6 +49,7 @@
                 v-model="selectedDepartment"
                 @change="toggleDepartment('SELECT', $event)"
                 class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer mb-6 md:mb-0"
+                aria-label="Select a department"
             >
                 <option v-text="'All Departments'" :value="'All Departments'" />
                 <option v-text="'African American Studies'" :value="'AFAM'" />
@@ -98,6 +99,7 @@
                 v-model="selectedDivision"
                 @change="toggleTermDivision('SELECT', $event, true)"
                 class="w-full max-w-[120px] font-body font-normal text-10 leading-130 text-indigo-900 hover:underline mr-5 cursor-pointer mb-6 md:mb-0"
+                aria-label="Select a division"
             >
                 <option v-text="'All Divisions'" :value="'All Divisions'" />
                 <option v-text="'Humanities'" :value="'Humanities'" />
