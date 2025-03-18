@@ -245,6 +245,21 @@
     }
 }
 
+.colby-table-styles {
+    @apply font-body;
+    @apply text-indigo;
+    @apply text-16;
+    @apply md:text-12;
+}
+
+.wysiwyg .colby-table-styles tbody a {
+    text-decoration: underline;
+}
+
+.wysiwyg .colby-table-styles > tbody a:hover {
+    text-decoration: none;
+}
+
 /* Directory Gravity Form */
 .gform_wrapper {
     input:not([type='file']):not([type='submit']) {

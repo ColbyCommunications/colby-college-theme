@@ -6,7 +6,6 @@
 
 <script>
     import { gsap } from 'gsap';
-    import Letterize from 'letterizejs';
     import 'waypoints/lib/noframework.waypoints';
 
     export default {
@@ -35,10 +34,6 @@
 
                     subheading.append(wordWrap);
                     subheading.append(' ');
-                });
-
-                this.subheading = new Letterize({
-                    targets: '.text-group__subheading .word-wrap',
                 });
             }
 
@@ -75,14 +70,13 @@
         methods: {
             animateSubheading() {
                 const target = this.$refs.container.querySelectorAll(
-                    '.text-group__subheading span'
+                    '.text-group__subheading > .word-wrap'
                 );
 
                 gsap.to(target, {
-                    duration: 0.2,
-                    stagger: 0.04,
+                    duration: 0.7,
+                    stagger: 0.1,
                     opacity: 1,
-                    y: 0,
                     ease: 'power3.easeInOut',
                     onComplete: () => {
                         this.animateHeading();
@@ -124,7 +118,6 @@
         .text-group__subheading span {
             display: inline-block;
             opacity: 0;
-            transform: translate(0, 5px);
         }
 
         .text-group__heading span {

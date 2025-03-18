@@ -77,23 +77,3 @@ p {
     color: #012169;
     margin-top: 0.5rem;
 }
-
-// These are animation specific styles for easy access
-
-.text-group--animated {
-    .text-group__subheading span {
-        display: inline-block;
-        opacity: 0;
-        transform: translate(0, 5px);
-    }
-
-    .text-group__heading span {
-        display: inline-block;
-        opacity: 0;
-        transform: translate(0, 10px);
-    }
-
-    .text-group__p {
-        opacity: 0;
-    }
-}
