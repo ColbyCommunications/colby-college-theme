@@ -1841,6 +1841,9 @@ function wporg_block_wrapper( $block_content, $block ) {
 		$content  = '<div class="wp-block-table">';
 		$content .= $block_content;
 		$content .= '</div>';
+		
+		$content = str_replace('<table', '<table class="colby-table-styles"', $block_content);
+		
 		return $content;
 	}
 	return $block_content;
@@ -2406,13 +2409,5 @@ function exclude_specific_posts_from_algolia_index( $should_index, $post ) {
 }
 add_filter( 'algolia_should_index_searchable_post', 'exclude_specific_posts_from_algolia_index', 10, 2 );
 
-
-function custom_add_table_block_class($block_content, $block) {
-    if ($block['blockName'] === 'core/table') {
-        $block_content = str_replace('<table', '<table class="colby-table-styles"', $block_content);
-    }
-    return $block_content;
-}
-add_filter('render_block', 'custom_add_table_block_class', 10, 2);
 
 
