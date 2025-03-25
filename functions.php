@@ -2409,5 +2409,21 @@ function exclude_specific_posts_from_algolia_index( $should_index, $post ) {
 }
 add_filter( 'algolia_should_index_searchable_post', 'exclude_specific_posts_from_algolia_index', 10, 2 );
 
+function filter_image_pre_upload($file)
+{
+    $allowed_types = ['image/jpeg', 'image/png'];
 
+    // 1 MB.
+    $max_allowed_size = 1000 * 1024;
+
+    if (in_array($file['type'], $allowed_types)) {
+        if ($file['size'] > $max_allowed_size) {
+            $file['error'] = 'Please reduce the size of your image to 1 MB or less before uploading it. Despite the maximum file upload size of the server, files less than 1MB are much more SEO and accessibility friendly.';
+        }
+    }
+
+    return $file;
+}
+
+add_filter('wp_handle_upload_prefilter', 'filter_image_pre_upload', 20);
 
