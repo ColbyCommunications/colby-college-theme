@@ -2380,8 +2380,8 @@ add_action( 'save_post', 'on_save_post' );
 
 add_filter( 'ppp_nonce_life', 'public_post_preview_time_window' );
 function public_post_preview_time_window() {
-	// one month
-	return 2628288;
+	// one year
+	return 31539456;
 }
 
 // Handles 404 for trying to visit category pages in the url, such as colby.edu/academics/news
