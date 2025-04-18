@@ -1342,6 +1342,11 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 		);
 	} else {
 		$context_merged = $context['fields'];
+
+		// added these 4/18/25 to fix image-grids on Alumni
+		$context_merged['block'] = $context['block'];
+		$context_merged['is_preview'] = $context['is_preview'];
+		$context_merged['block_name'] = $context['block_name'];
 	}
 
 	if ($context['block_name'] == 'people-grid') {
