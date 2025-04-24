@@ -53,7 +53,7 @@
         hide_photo: post.meta('hide_photo'),
         hide_email: post.meta('hide_email'),
       } %}
-      {% if person_decoded_courses %}
+      {% if post.meta('hide_courses') and person_decoded_courses %}
         {% set current_courses = person_decoded_courses|map(i => {
           title: i.crs,
           columns: [

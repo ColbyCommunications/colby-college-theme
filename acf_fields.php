@@ -5830,6 +5830,33 @@ acf_add_local_field_group( array(
 			'ajax' => 0,
 			'placeholder' => '',
 		),
+		array(
+			'key' => 'field_680a5b18fce2a',
+			'label' => 'Hide Current Courses',
+			'name' => 'hide_courses',
+			'aria-label' => '',
+			'type' => 'select',
+			'instructions' => '',
+			'required' => 0,
+			'conditional_logic' => 0,
+			'wrapper' => array(
+				'width' => '',
+				'class' => '',
+				'id' => '',
+			),
+			'choices' => array(
+				0 => 'No',
+				1 => 'Yes',
+			),
+			'default_value' => 0,
+			'return_format' => 'value',
+			'multiple' => 0,
+			'allow_null' => 0,
+			'allow_in_bindings' => 1,
+			'ui' => 0,
+			'ajax' => 0,
+			'placeholder' => '',
+		),
 	),
 	'location' => array(
 		array(
