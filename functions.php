@@ -1735,6 +1735,7 @@ function update_directory_profile( $entry, $form ) {
 	$unsync_department = $entry['43.1'];
 	$hide_photo        = $entry[44];
 	$hide_email        = $entry[51];
+	$hide_courses        = $entry[52];
 
 	// get person post by employee ID
 	$args = array(
@@ -1770,6 +1771,7 @@ function update_directory_profile( $entry, $form ) {
 		'hide_bio'          => $hide_bio === 'yes' ? 1 : 0,
 		'hide_photo'        => $hide_photo === 'yes' ? 1 : 0,
 		'hide_email'        => $hide_email === 'yes' ? 1 : 0,
+		'hide_courses'        => $hide_courses === 'yes' ? 1 : 0,
 		'unsync_department' => $unsync_department === 'yes' ? 1 : 0,
 	);
 
@@ -2277,6 +2279,15 @@ function hide_bio_prepopulation( $value ) {
 add_filter( 'gform_field_value_directory_hide_email', 'hide_email_prepopulation' );
 function hide_email_prepopulation( $value ) {
 	if ( empty( $_SESSION['person']['hide_email'][0] ) || $_SESSION['person']['hide_email'][0] == 0 ) {
+		return 'no';
+	}
+	return 'yes';
+}
+
+// Hide Courses
+add_filter( 'gform_field_value_directory_hide_courses', 'hide_courses_prepopulation' );
+function hide_courses_prepopulation( $value ) {
+	if ( empty( $_SESSION['person']['hide_courses'][0] ) || $_SESSION['person']['hide_courses'][0] == 0 ) {
 		return 'no';
 	}
 	return 'yes';
