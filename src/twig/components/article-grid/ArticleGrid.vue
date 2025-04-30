@@ -32,11 +32,11 @@
                                 <h2
                                     class="text-group__heading font-extended font-normal text-20 leading-110 -tracking-3 text-left text-indigo"
                                     :class="{ 'lg:text-16': columns == 4 }"
-                                    v-text="decodeHtmlEntities(item.title.rendered)"
+                                    v-html="item.title.rendered"
                                 />
                                 <p
                                     class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
-                                    v-text="item['post-meta-fields'].summary[0]"
+                                    v-html="item['post-meta-fields'].summary[0]"
                                 />
                             </div>
                         </component>
@@ -115,12 +115,15 @@
                         .map((item) => {
                             return {
                                 title: {
-                                    rendered: item.title.rendered.replace(/<\/?[^>]+(>|$)/g, ''),
+                                    rendered: item.title.rendered.replace(
+                                        /<(?!\/?(i|em)\b)[^>]+>/gi,
+                                        ''
+                                    ),
                                 },
                                 'post-meta-fields': {
                                     summary: [
                                         `${item.content.rendered
-                                            .replace(/<\/?[^>]+(>|$)/g, '')
+                                            .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, '')
                                             .substring(0, 120)}...`,
                                     ],
                                 },
@@ -161,12 +164,6 @@
             columns: {
                 type: Number,
                 required: false,
-            },
-        },
-        methods: {
-            decodeHtmlEntities(input) {
-                const doc = new DOMParser().parseFromString(input, 'text/html');
-                return doc.documentElement.textContent;
             },
         },
     };
