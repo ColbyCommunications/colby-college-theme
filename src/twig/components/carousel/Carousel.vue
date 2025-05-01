@@ -431,15 +431,11 @@
                                                     'mt-2': item['post-meta-fields']
                                                         .primary_category,
                                                 }"
-                                                v-text="decodeHtmlEntities(item.title.rendered)"
+                                                v-html="item.title.rendered"
                                             />
                                             <p
                                                 class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
-                                                v-text="
-                                                    decodeHtmlEntities(
-                                                        item['post-meta-fields'].summary[0]
-                                                    )
-                                                "
+                                                v-html="item['post-meta-fields'].summary[0]"
                                             />
                                         </div>
                                         <div class="button-group flex flex-wrap gap-4">
@@ -511,13 +507,16 @@
                                     ],
                                 },
                                 title: {
-                                    rendered: item.title.rendered.replace(/<\/?[^>]+(>|$)/g, ''),
+                                    rendered: item.title.rendered.replace(
+                                        /<(?!\/?(i|em)\b)[^>]+>/gi,
+                                        ''
+                                    ),
                                 },
                                 'post-meta-fields': {
                                     primary_category: '',
                                     summary: [
                                         `${item.content.rendered
-                                            .replace(/<\/?[^>]+(>|$)/g, '')
+                                            .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, '')
                                             .substring(0, 120)}...`,
                                     ],
                                 },
