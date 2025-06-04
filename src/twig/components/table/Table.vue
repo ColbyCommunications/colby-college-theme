@@ -72,7 +72,7 @@
                 <option v-text="'German and Russian'" :value="'GMRU'" />
                 <option v-text="'Global Studies'" :value="'GLST'" />
                 <option v-text="'Government'" :value="'GOVT'" />
-                <option v-text="'History'" :value="'History'" />
+                <option v-text="'History'" :value="'HIST'" />
                 <option v-text="'Independent Major'" :value="'INDP'" />
                 <option v-text="'Integrated Studies'" :value="'ISP'" />
                 <option v-text="'Jewish Studies'" :value="'JWST'" />
