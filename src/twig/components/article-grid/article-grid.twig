@@ -90,7 +90,7 @@
                     desktop: (image_size_array and image_size_array[1] >= 300 and image_size_array[2] >= 300) ? fn('get_the_post_thumbnail_url', item.post.ID, 'Square_mobile') : '/wp-content/uploads/2022/11/directory-placeholder_E4E8F0_90_100-380x430_square.jpg',
                     mobile: (image_size_array and image_size_array[1] >= 300 and image_size_array[2] >= 300) ? fn('get_the_post_thumbnail_url', item.post.ID, 'Square_mobile') : '/wp-content/uploads/2022/11/directory-placeholder_E4E8F0_90_100-380x430_square.jpg',
                   },
-                  alt: item.image.alt ? item.image.alt : 'Placeholder image',
+                  alt: item.post._thumbnail_id and image_size_array and image_size_array[1] >= 300 ? 'Image of ' ~ item.post.first_name ~ ' ' ~ item.post.last_name : 'Placeholder image',
                 } %}
               {% endif %}
             {% else %}
