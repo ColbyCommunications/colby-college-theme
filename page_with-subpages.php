@@ -16,7 +16,7 @@
  *
  * Methods for TimberHelper can be found in the /lib sub-directory
  *
- * Template Name: Page with Sidebar
+ * Template Name: Page with Subpages
  * @package  WordPress
  * @subpackage  Timber
  * @since    Timber 0.1
@@ -28,61 +28,16 @@ $timber_post            = Timber::get_post();
 $context['post']        = $timber_post;
 $context['page_blocks'] = parse_blocks( $timber_post->post_content );
 
-if ( has_term( array( 'department', 'office', 'site' ), 'page-categories' ) ) {
 	$parent = $post->ID;
-} else {
-	if ( $post->post_parent ) {
-		$ancestors = get_post_ancestors( $post->ID );
-
-		$ancestor_found = false;
-
-		// First check for 'page-with-subpages.php' template among ancestors i.e. dual departments
-		foreach ( $ancestors as $ancestor ) {
-			$template_slug = get_page_template_slug( $ancestor );
-			if ( $template_slug === 'page_with-subpages.php' ) {
-				$parent = $ancestor;
-				$ancestor_found = true;
-				break;
-			}
-		}
-
-		if ( ! $ancestor_found ) {
-			foreach ( $ancestors as $ancestor ) {
-				if ( has_term( array( 'department', 'office', 'site' ), 'page-categories', $ancestor ) ) {
-					$parent = $ancestor;
-					$ancestor_found = true;
-					break;
-				}
-			}
-		}
-
-		// Final fallback: use the root ancestor
-		if ( ! $ancestor_found ) {
-			$root   = count( $ancestors ) - 1;
-			$parent = $ancestors[ $root ];
-		}
-	} else {
-		$parent = $post->ID;
-	}
-}
 
 if ( has_term( 'office', 'page-categories' ) && !has_term( 'site', 'page-categories' )) {
 	$template = 'single-office.twig';
 } else {
-	$template = 'page_with-sidebar.twig';
+	$template = 'page_with-subpages.twig';
 }
 
-if ( get_post( $post->post_parent )->post_name == 'people' ) {
 	$menu_items = wp_get_nav_menu_items( 'People Menu' );
 
-	$parent_map = array(
-		'id'        => $parent,
-		'title'     => get_the_title( $parent ),
-		'permalink' => get_permalink( $parent ),
-		'children'  => $menu_items,
-		'menu'      => true,
-	);
-} else {
 	$parent_map = array(
 		'id'        => $parent,
 		'title'     => get_the_title( $parent ),
@@ -94,7 +49,6 @@ if ( get_post( $post->post_parent )->post_name == 'people' ) {
 			)
 		),
 	);
-}
 
 $context['alpha_parent'] = $parent_map;
 
