@@ -159,7 +159,7 @@
                                     <img
                                         class="w-6 h-6 table__image hidden md:block relative mr-3 rounded-[50%] overflow-hidden"
                                         :src="
-                                            item.image.src
+                                            item.image.src && item.showPhoto
                                                 ? item.image.src
                                                 : '/wp-content/uploads/2022/10/profile_placeholder.jpeg'
                                         "
@@ -521,6 +521,7 @@
                                     src: item.thumbnail,
                                     alt: item.post_title,
                                 },
+                                showPhoto: item.hide_photo ? false : true,
                                 title: item.post_title,
                                 link: {
                                     title: item.post_title,
