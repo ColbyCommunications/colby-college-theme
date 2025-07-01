@@ -2443,3 +2443,55 @@ function filter_image_pre_upload($file)
 
 add_filter('wp_handle_upload_prefilter', 'filter_image_pre_upload', 20);
 
+
+// Replace OpenGraph image with placeholder image if hide_photo is enabled.
+function alter_opengraph_image_for_person( $image ) {
+	if ( is_singular( 'people' ) ) {
+		$post_id = get_queried_object_id();
+		$hide_photo = get_post_meta( $post_id, 'hide_photo', true );
+		if ( $hide_photo == '1' ) {
+			$fallback_image_id = 11432;
+			$image_src = wp_get_attachment_image_src( $fallback_image_id, 'full' );
+			if ( $image_src && ! empty( $image_src[0] ) ) {
+				return $image_src[0];
+			}
+		}
+	}
+	return $image;
+}
+add_filter( 'wpseo_opengraph_image', 'alter_opengraph_image_for_person', 99 );
+
+// Remove ImageObject and thumbnailUrl from Yoast schema if hide_photo is enabled.
+add_filter( 'wpseo_schema_graph', function( $graph ) {
+	if ( is_singular( 'people' ) ) {
+		$post_id = get_queried_object_id();
+		$hide_photo = get_post_meta( $post_id, 'hide_photo', true );
+
+		if ( $hide_photo == '1' ) {
+			$graph = array_filter( $graph, function( $piece ) {
+				// Remove ImageObject types
+				return !( isset( $piece['@type'] ) && $piece['@type'] === 'ImageObject' );
+			} );
+
+			// Remove image references in WebPage
+			foreach ( $graph as &$piece ) {
+				if ( isset( $piece['@type'] ) && $piece['@type'] === 'WebPage' ) {
+					unset( $piece['thumbnailUrl'] );
+					unset( $piece['primaryImageOfPage'] );
+					unset( $piece['image'] );
+				}
+			}
+			unset( $piece );
+		}
+	}
+	return $graph;
+}, 11 );
+
+
+
+
+
+
+
+
+
