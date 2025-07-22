@@ -1809,12 +1809,12 @@ function gravity_forms_buttons() {
 
 add_filter( 'gform_rich_text_editor_buttons', 'gravity_forms_buttons', 1, 1 );
 
-add_action( 'directory_sync', 'updateStaffDirectory' );
+// add_action( 'directory_sync', 'updateStaffDirectory' );
 
-if ( ! wp_next_scheduled( 'directory_sync' ) ) {
-	$time = strtotime( 'today' );
-	wp_schedule_event( $time, 'daily', 'directory_sync' );
-}
+// if ( ! wp_next_scheduled( 'directory_sync' ) ) {
+// 	$time = strtotime( 'today' );
+// 	wp_schedule_event( $time, 'daily', 'directory_sync' );
+// }
 
 // Disables WordPress partial match URL redirects
 add_filter( 'do_redirect_guess_404_permalink', 'stop_redirect_guess' );
@@ -2486,6 +2486,16 @@ add_filter( 'wpseo_schema_graph', function( $graph ) {
 	}
 	return $graph;
 }, 11 );
+
+add_filter('acf/fields/wysiwyg/toolbars', function( $toolbars ) {
+    $toolbars['limited'] = array();
+    $toolbars['limited'][1] = array('bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist');
+
+    $toolbars['full'] = array();
+    $toolbars['full'][1] = array('formatselect', 'bold', 'italic', 'underline', 'bullist', 'numlist', 'blockquote', 'alignleft', 'aligncenter', 'alignright', 'link', 'unlink', 'undo', 'redo', 'removeformat');
+
+    return $toolbars;
+});
 
 
 
