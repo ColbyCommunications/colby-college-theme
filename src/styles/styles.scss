@@ -432,7 +432,8 @@
         @apply mx-auto;
     }
 
-    > .article-grid {
+    > .wp-block-group,
+    .article-grid {
         @apply px-4;
     }
 }
