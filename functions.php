@@ -1039,9 +1039,6 @@ class StarterSite extends Timber\Site {
 }
 
 		$context['current_url']    = home_url( $wp->request );
-		$context['foo']            = 'bar';
-		$context['stuff']          = 'I am a value set in your functions.php file';
-		$context['notes']          = 'These values are available everytime you call Timber::context();';
 		$context['menu']           = Timber::get_menu();
 		$context['main_menu']      = Timber::get_menu( 'Main Menu' );
 		$context['utility_menu']   = Timber::get_menu( 'Utility Menu' );
@@ -1053,6 +1050,25 @@ class StarterSite extends Timber\Site {
 		$context['global_social']  = get_field( 'social_media', 'options' );
 		$context['global_alert']   = get_field( 'alert', 'options' );
 		$context['site']           = $this;
+
+		$header_logo_id = get_theme_mod( 'header_logo' );
+        $header_logo_styles = get_theme_mod( 'header_logo_styles' );
+
+		$headerlogo = wp_get_attachment_image_src( $header_logo_id , 'full' );
+		$context['headerlogo'] = esc_url( $headerlogo[0] );
+		$context['headerlogo_styles'] = $header_logo_styles;
+		
+		$footer_logo_id = get_theme_mod( 'footer_logo' );
+        $footer_logo_styles = get_theme_mod( 'footer_logo_styles' );
+
+		$footerlogo = wp_get_attachment_image_src( $footer_logo_id , 'full' );
+		$context['footerlogo'] = esc_url( $footerlogo[0] );
+		$context['footerlogo_styles'] = $footer_logo_styles;
+
+		$display_athletics_logo = get_theme_mod( 'display_athletics_logo', true );
+		$context['display_athletics_logo'] = $display_athletics_logo;
+
+
 		return $context;
 	}
 
@@ -1130,16 +1146,14 @@ class StarterSite extends Timber\Site {
 				)
 			);
 		}
-	}
-
-	/**
-	 * This Would return 'foo bar!'.
-	 *
-	 * @param string $text being 'foo', then returned 'foo bar!'.
-	 */
-	public function myfoo( $text ) {
-		$text .= ' bar!';
-		return $text;
+		$defaults = array(
+			'height'               => 100,
+			'width'                => 400,
+			'flex-height'          => true,
+			'flex-width'           => true,
+			'header-text'          => array( 'site-title', 'site-description' ),
+			'unlink-homepage-logo' => true, 
+		);
 	}
 
 	/**
@@ -2695,4 +2709,119 @@ if (defined('WP_CLI') && WP_CLI) {
 
         WP_CLI::success("Content conversion for $post_type(s) completed successfully.");
     });
+}
+
+function mytheme_add_customizer_panels( $wp_customize ) {
+
+    // --- Header Settings Panel ---
+    $wp_customize->add_panel( 'colby_theme_settings_panel', array(
+        'title'       => __( 'Colby Theme Settings', 'mytheme' ),
+        'description' => __( 'Manage your website header settings, including logo and styles.', 'mytheme' ),
+        'priority'    => 25, // Placed after Site Identity (priority 20)
+    ) );
+
+    // Header Logo Section
+    $wp_customize->add_section( 'header_settings_section', array(
+        'title'    => __( 'Header Settings', 'mytheme' ),
+        'panel'    => 'colby_theme_settings_panel', // Associate with Header Settings panel
+        'priority' => 10,
+    ) );
+
+    // Header Logo Setting (Media Select)
+    $wp_customize->add_setting( 'header_logo', array(
+        'default'           => '', // No default logo
+        'type'              => 'theme_mod', // Stores in theme_mod options
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'absint', // Sanitize as absolute integer (attachment ID)
+    ) );
+
+    // Header Logo Control (Media Upload)
+    $wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'header_logo', array(
+        'label'       => __( 'Upload Header Logo', 'mytheme' ),
+        'section'     => 'header_settings_section',
+        'settings'    => 'header_logo',
+        'mime_type'   => 'image', // Only allow image uploads
+        'description' => __( 'Select an image for your website header logo.', 'mytheme' ),
+    ) ) );
+
+    // Header Logo Styles Setting (Text Field)
+    $wp_customize->add_setting( 'header_logo_styles', array(
+        'default'           => '',
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'sanitize_text_field', // Sanitize as plain text
+    ) );
+
+    // Header Logo Styles Control (Text Input)
+    $wp_customize->add_control( 'header_logo_styles', array(
+        'label'       => __( 'Header Logo Styles (CSS)', 'mytheme' ),
+        'section'     => 'header_settings_section',
+        'settings'    => 'header_logo_styles',
+        'type'        => 'text',
+        'description' => __( 'Enter custom CSS styles for the header logo (e.g., "width: 150px;").', 'mytheme' ),
+    ) );
+
+
+    // Footer Logo Section
+    $wp_customize->add_section( 'footer_settings_section', array(
+        'title'    => __( 'Footer Settings', 'mytheme' ),
+        'panel'    => 'colby_theme_settings_panel', // Associate with Footer Settings panel
+        'priority' => 10,
+    ) );
+
+    // Footer Logo Setting (Media Select)
+    $wp_customize->add_setting( 'footer_logo', array(
+        'default'           => '',
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'absint',
+    ) );
+
+    // Footer Logo Control (Media Upload)
+    $wp_customize->add_control( new WP_Customize_Media_Control( $wp_customize, 'footer_logo', array(
+        'label'       => __( 'Upload Footer Logo', 'mytheme' ),
+        'section'     => 'footer_settings_section',
+        'settings'    => 'footer_logo',
+        'mime_type'   => 'image',
+        'description' => __( 'Select an image for your website footer logo.', 'mytheme' ),
+    ) ) );
+
+    // Footer Logo Styles Setting (Text Field)
+    $wp_customize->add_setting( 'footer_logo_styles', array(
+        'default'           => '',
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+
+    // Footer Logo Styles Control (Text Input)
+    $wp_customize->add_control( 'footer_logo_styles', array(
+        'label'       => __( 'Footer Logo Styles (CSS)', 'mytheme' ),
+        'section'     => 'footer_settings_section',
+        'settings'    => 'footer_logo_styles',
+        'type'        => 'text',
+        'description' => __( 'Enter custom CSS styles for the footer logo (e.g., "width: 100px;").', 'mytheme' ),
+    ) );
+
+	// Display Athletics Logo Checkbox Setting
+    $wp_customize->add_setting( 'display_athletics_logo', array(
+        'default'           => 1, // Default to not displayed
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+        'sanitize_callback' => 'mytheme_sanitize_checkbox', // Custom sanitize function
+    ) );
+
+    // Display Athletics Logo Checkbox Control
+    $wp_customize->add_control( 'display_athletics_logo', array(
+        'label'       => __( 'Display Athletics Logo', 'mytheme' ),
+        'section'     => 'footer_settings_section',
+        'settings'    => 'display_athletics_logo',
+        'type'        => 'checkbox',
+        'description' => __( 'Check to display a separate athletics logo in the footer.', 'mytheme' ),
+    ) );
+}
+add_action( 'customize_register', 'mytheme_add_customizer_panels' );
+
+function mytheme_sanitize_checkbox( $checked ) {
+    return ( ( isset( $checked ) && true == $checked ) ? true : false );
 }

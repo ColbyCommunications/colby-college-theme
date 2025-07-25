@@ -11,9 +11,8 @@
 <footer class="footer bg-indigo py-14 space-y-14">
   <div class="footer__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto space-y-8 md:space-y-0">
     <div class="footer__left md:col-span-5 flex justify-between md:justify-start items-start md:space-x-8 lg:space-x-12 md:border-r border-indigo-900 border-solid">
-      <div><a class="block hover:text-white hover:underline transition-all duration-200 ease-in-out mb-4" href="{{ address.url }}" aria-label="Go to colby.edu homepage">{% include logo with {
-        class: 'fill-white w-[125px] md:w-[100px]',
-      } %}</a>
+      <div><a class="block hover:text-white hover:underline transition-all duration-200 ease-in-out mb-4" href="{{ address.url }}" aria-label="Go to colby.edu homepage"><img src="{{ footerlogo }}" style="{{ footerlogo_styles }}"></a>
+      {% if display_athletics_logo == true %}
       <a class="block lg:hidden hover:text-white hover:underline transition-all duration-200 ease-in-out relative" href="https://colbyathletics.com" aria-label="Go to colbyathletics.com homepage">
         <svg role="img" id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 625" class=" w-[125px] md:w-[100px] relative left-[-11px]">
           <title>Colby Athletics logo</title>
@@ -27,11 +26,13 @@
           <path d="" fill="#13216A" transform="translate(0,0)"/>
         </svg>
       </a>
+      {% endif %}
       </div>
       <address class="footer__address font-body font-normal text-20 md:text-12 text-indigo-500 not-italic leading-140 space-y-2 w-[225px] md:w-[120px]">
         {{ address.text }}
         <a class="block hover:text-white hover:underline transition-all duration-200 ease-in-out" href="tel:{{ phone }}">{{ phone }}</a>
       </address>
+      {% if display_athletics_logo == true %}
             <a class="hidden lg:block hover:text-white hover:underline transition-all duration-200 ease-in-out relative" href="https://colbyathletics.com" aria-label="Go to colbyathletics.com homepage">
 
        <svg role="img" id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 625" class="w-[125px] md:w-[100px] hidden md:block absolute top-[-14px] left-[-20px]">
@@ -46,6 +47,7 @@
           <path d="" fill="#13216A" transform="translate(0,0)"/>
         </svg>
       </a>
+      {% endif %}
     </div>
     <div class="footer__right lg:col-start-7 md:col-span-6">
       <ul class="footer__links flex flex-wrap space-between pt-8 md:pt-0 pb-4 md:pb-0 border-y md:border-y-0 border-indigo-900 border-solid">
