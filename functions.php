@@ -1057,10 +1057,11 @@ class StarterSite extends Timber\Site {
 		$headerlogo = wp_get_attachment_image_src( $header_logo_id , 'full' );
 		if($headerlogo) {
 			$context['headerlogo'] = esc_url( $headerlogo[0] );
+			$context['headerlogo_styles'] = $header_logo_styles;
 		} else {
 			$context['headerlogo'] = get_template_directory_uri() . '/src/images/svg/logo_header.svg';
+			$context['headerlogo_styles'] = 'width:100px';
 		}
-		$context['headerlogo_styles'] = $header_logo_styles;
 		
 		$footer_logo_id = get_theme_mod( 'footer_logo' );
         $footer_logo_styles = get_theme_mod( 'footer_logo_styles' );
@@ -1068,10 +1069,12 @@ class StarterSite extends Timber\Site {
 		$footerlogo = wp_get_attachment_image_src( $footer_logo_id , 'full' );
 		if($footerlogo) {
 			$context['footerlogo'] = esc_url( $footerlogo[0] );
+			$context['footerlogo_styles'] = $footer_logo_styles;
 		} else {
 			$context['footerlogo'] = get_template_directory_uri() . '/src/images/svg/logo_footer.svg';
+			$context['footerlogo_styles'] = 'width:100px';
 		}
-		$context['footerlogo_styles'] = $footer_logo_styles;
+		
 
 		$display_athletics_logo = get_theme_mod( 'display_athletics_logo', true );
 		$context['display_athletics_logo'] = $display_athletics_logo;
