@@ -23,16 +23,29 @@
           Sorry, no content
         {% endblock %}
       </main>
-      {% include 'footer.twig' with {
-        address: global_address,
-        phone: global_phone,
-        main: footer_menu.items,
-        utility: action_menu.items,
-        social: global_social,
-        display_athletics_logo: display_athletics_logo,
-        footerlogo: footerlogo,
-        footerlogo_styles: footerlogo_styles
-      } %}
+      {% if footer_style == "colby.edu" %}
+        {% include 'footer.twig' with {
+          address: global_address,
+          phone: global_phone,
+          main: footer_menu.items,
+          utility: action_menu.items,
+          social: global_social,
+          display_athletics_logo: display_athletics_logo,
+          footerlogo: footerlogo,
+          footerlogo_styles: footerlogo_styles
+        } %}
+      {% else %}
+        {% include 'footer-child.twig' with {
+          address: global_address,
+          phone: global_phone,
+          main: footer_menu.items,
+          utility: action_menu.items,
+          social: global_social,
+          display_athletics_logo: display_athletics_logo,
+          footerlogo: footerlogo,
+          footerlogo_styles: footerlogo_styles
+        } %}
+      {% endif %}
       {% block footer %}
         {{ function('wp_footer') }}
       {% endblock %}

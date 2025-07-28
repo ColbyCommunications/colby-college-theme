@@ -1078,7 +1078,9 @@ class StarterSite extends Timber\Site {
 
 		$display_athletics_logo = get_theme_mod( 'display_athletics_logo', true );
 		$context['display_athletics_logo'] = $display_athletics_logo;
-
+		
+		$footer_style = get_theme_mod( 'footer_style', 'colby.edu' ); 
+		$context['footer_style'] = $footer_style;
 
 		return $context;
 	}
@@ -2760,7 +2762,6 @@ function mytheme_add_customizer_panels( $wp_customize ) {
         'default'           => '',
         'type'              => 'theme_mod',
         'capability'        => 'edit_theme_options',
-        'sanitize_callback' => 'sanitize_text_field', // Sanitize as plain text
     ) );
 
     // Header Logo Styles Control (Text Input)
@@ -2802,7 +2803,6 @@ function mytheme_add_customizer_panels( $wp_customize ) {
         'default'           => '',
         'type'              => 'theme_mod',
         'capability'        => 'edit_theme_options',
-        'sanitize_callback' => 'sanitize_text_field',
     ) );
 
     // Footer Logo Styles Control (Text Input)
@@ -2829,6 +2829,24 @@ function mytheme_add_customizer_panels( $wp_customize ) {
         'settings'    => 'display_athletics_logo',
         'type'        => 'checkbox',
         'description' => __( 'Check to display a separate athletics logo in the footer.', 'mytheme' ),
+    ) );
+
+	$wp_customize->add_setting( 'footer_style', array(
+        'default'           => 'colby.edu', // Default option
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+    ) );
+
+    $wp_customize->add_control( 'footer_style', array(
+        'label'       => __( 'Footer Style', 'mytheme' ),
+        'section'     => 'footer_settings_section',
+        'settings'    => 'footer_style',
+        'type'        => 'select', // Specifies a dropdown
+        'choices'     => array(
+            'colby.edu'  => __( 'colby.edu', 'mytheme' ),
+            'child_site' => __( 'Child Site', 'mytheme' ), // Using 'child_site' as value for consistency
+        ),
+        'description' => __( 'Choose the desired style for the website footer.', 'mytheme' ),
     ) );
 }
 add_action( 'customize_register', 'mytheme_add_customizer_panels' );
