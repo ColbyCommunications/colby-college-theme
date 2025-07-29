@@ -21,7 +21,8 @@
         <img src="{{ headerlogo }}" style="{{ headerlogo_styles }}">
       </a>
       {% include actionMenu with {
-        breakpoints: 'flex md:hidden'
+        breakpoints: 'flex md:hidden',
+        footer_style: footer_style
       } %}
       <div class="header__hamburger-group flex md:hidden items-center space-x-4">
         <label class="header__hamburger-label font-body font-normal text-20 text-indigo-800">Menu</label>
