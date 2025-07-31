@@ -494,6 +494,12 @@
     > .wp-block-heading {
         @apply px-4;
     }
+
+    .wp-block-group__inner-container {
+        > div {
+            @apply mb-4;
+        }
+    }
 }
 
 /* statuspage.io system status styles */
