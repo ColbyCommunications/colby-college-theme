@@ -355,6 +355,7 @@
         @apply text-24;
         @apply leading-110;
         @apply -tracking-3;
+        @apply text-indigo;
     }
 
     > .wp-block-heading h3,
@@ -489,7 +490,8 @@
     }
 
     > .wp-block-group,
-    > .article-grid {
+    > .article-grid,
+    > .wp-block-heading {
         @apply px-4;
     }
 }
