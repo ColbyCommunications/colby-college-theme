@@ -383,6 +383,36 @@
         @apply uppercase;
     }
 
+    > .colby-paragraph-block {
+        @apply font-body;
+
+        > p {
+            @apply text-indigo-900;
+        }
+
+        > p,
+        > table,
+        hr {
+            @apply mb-4;
+        }
+
+        &:last-child {
+            @apply mb-0;
+        }
+
+        p:last-child,
+        ul:last-child,
+        ol:last-child {
+            @apply mb-0;
+        }
+
+        table,
+        tr,
+        td {
+            border: 1px solid #ccc;
+        }
+    }
+
     .full-bleed {
         @apply max-w-full;
     }
