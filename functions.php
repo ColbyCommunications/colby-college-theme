@@ -1088,6 +1088,9 @@ class StarterSite extends Timber\Site {
 		$algolia_qs_index = get_theme_mod( 'algolia_qs_index'); 
 		$context['algolia_qs_index'] = $algolia_qs_index;
 
+		$utility_menu_style = get_theme_mod( 'utility_menu_style', 'colby.edu' ); 
+		$context['utility_menu_style'] = $utility_menu_style;
+
 		return $context;
 	}
 
@@ -2777,6 +2780,24 @@ function mytheme_add_customizer_panels( $wp_customize ) {
         'settings'    => 'header_logo_styles',
         'type'        => 'text',
         'description' => __( 'Enter custom CSS styles for the header logo (e.g., "width: 150px;").', 'mytheme' ),
+    ) );
+
+	$wp_customize->add_setting( 'utility_menu_style', array(
+        'default'           => 'colby.edu', // Default option
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+    ) );
+
+    $wp_customize->add_control( 'utility_menu_style', array(
+        'label'       => __( 'Utility Menu Style', 'mytheme' ),
+        'section'     => 'header_settings_section',
+        'settings'    => 'utility_menu_style',
+        'type'        => 'select', // Specifies a dropdown
+        'choices'     => array(
+            'colby.edu'  => __( 'colby.edu', 'mytheme' ),
+            'child_site' => __( 'Child Site', 'mytheme' ), // Using 'child_site' as value for consistency
+        ),
+        'description' => __( 'Choose the desired style for the website utility menu.', 'mytheme' ),
     ) );
 
 
