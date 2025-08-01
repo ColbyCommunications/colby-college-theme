@@ -1081,6 +1081,12 @@ class StarterSite extends Timber\Site {
 		
 		$footer_style = get_theme_mod( 'footer_style', 'colby.edu' ); 
 		$context['footer_style'] = $footer_style;
+		
+		$algolia_index = get_theme_mod( 'algolia_index'); 
+		$context['algolia_index'] = $algolia_index;
+		
+		$algolia_qs_index = get_theme_mod( 'algolia_qs_index'); 
+		$context['algolia_qs_index'] = $algolia_qs_index;
 
 		return $context;
 	}
@@ -2774,6 +2780,43 @@ function mytheme_add_customizer_panels( $wp_customize ) {
     ) );
 
 
+	// Algolia
+    $wp_customize->add_section( 'algolia_settings_section', array(
+        'title'    => __( 'Algolia Settings', 'mytheme' ),
+        'panel'    => 'colby_theme_settings_panel', // Associate with Header Settings panel
+        'priority' => 10,
+    ) );
+
+	// Algolia Index (Text Field)
+    $wp_customize->add_setting( 'algolia_index', array(
+        'default'           => '',
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+    ) );
+
+    // Algolia Index Control (Text Input)
+    $wp_customize->add_control( 'algolia_index', array(
+        'label'       => __( 'Algoia Index', 'mytheme' ),
+        'section'     => 'algolia_settings_section',
+        'settings'    => 'algolia_index',
+        'type'        => 'text',
+    ) );
+
+	// Algolia Query Suggestion Index (Text Field)
+    $wp_customize->add_setting( 'algolia_qs_index', array(
+        'default'           => '',
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+    ) );
+
+    // Algolia Query Suggestion Index Control (Text Input)
+    $wp_customize->add_control( 'algolia_qs_index', array(
+        'label'       => __( 'Algoia Query Suggestion Index', 'mytheme' ),
+        'section'     => 'algolia_settings_section',
+        'settings'    => 'algolia_qs_index',
+        'type'        => 'text',
+    ) );
+
     // Footer Logo Section
     $wp_customize->add_section( 'footer_settings_section', array(
         'title'    => __( 'Footer Settings', 'mytheme' ),
@@ -2854,3 +2897,11 @@ add_action( 'customize_register', 'mytheme_add_customizer_panels' );
 function mytheme_sanitize_checkbox( $checked ) {
     return ( ( isset( $checked ) && true == $checked ) ? true : false );
 }
+
+function post_shared_attributes( array $shared_attributes, WP_Post $post ) {
+	$shared_attributes['cleaned_title'] = preg_replace('/<\/?[^>]+(>|$)/', '', $post->post_title);
+	
+	return $shared_attributes;
+}
+
+add_filter( 'algolia_searchable_post_shared_attributes', 'post_shared_attributes', 10, 2 );

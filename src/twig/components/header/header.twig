@@ -22,7 +22,9 @@
       </a>
       {% include actionMenu with {
         breakpoints: 'flex md:hidden',
-        footer_style: footer_style
+        footer_style: footer_style,
+        algolia_index: algolia_index,
+        algolia_qs_index: algolia_qs_index,
       } %}
       <div class="header__hamburger-group flex md:hidden items-center space-x-4">
         <label class="header__hamburger-label font-body font-normal text-20 text-indigo-800">Menu</label>
@@ -84,7 +86,9 @@
           {% endfor %}
         </ul>
         {% include actionMenu with {
-          breakpoints: 'hidden md:block float-right'
+          breakpoints: 'hidden md:block float-right',
+          algolia_index: algolia_index,
+          algolia_qs_index: algolia_qs_index,
         } %}
       </nav>
       <ul class="header__main flex md:flex-row flex-col justify-center md:justify-end h-[calc(100%_-_170px)] md:h-auto md:space-x-12 md:space-y-0 space-y-6 md:px-6 pl-24 md:px-4  w-full overflow-y-auto" aria-label="Main menu">
