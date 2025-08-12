@@ -181,15 +181,20 @@
     range="{{ range }}"
     border="{{ border }}"
     :columns="{{ columns }}"
+    :style="'{{ style }}'"
+    :size="'{{ size }}'"
+    :items="{{ items|json_encode(constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE')) | e  }}"
   >
     <div class="article-grid grid {% if columns == 3 %}grid-cols-9{% else %}grid-cols-8{% endif %} gap-10 max-w-screen-2xl w-full my-0 mx-auto">
-      {% for item in items %}
-        {% if item.heading %}
-          <div class="article-grid__item {% if columns == 4 %}md:col-span-2 col-span-4{% elseif columns == 3 %}md:col-span-3 col-span-9{% else %}col-span-4{% endif %}">
-            {% include article with item %}
-          </div>
-        {% endif %}
-      {% endfor %}
+      {% if style != 'accordion' %}
+        {% for item in items %}
+          {% if item.heading %}
+            <div class="article-grid__item {% if columns == 4 %}md:col-span-2 col-span-4{% elseif columns == 3 %}md:col-span-3 col-span-9{% else %}col-span-4{% endif %}">
+              {% include article with item %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
     </div>
   </component>
 {% endif %}
