@@ -69,7 +69,9 @@
                                 class="cursor-pointer btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 font-body font-normal text-10 leading-130 text-indigo bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1 px-3 transition-all duration-200 ease-in-out !no-underline"
                                 @click="toggleAccordion(i)"
                             >
-                                <span class="btn__text">Read More</span>
+                                <button class="btn__text">
+                                    {{ expandedIndex === i ? 'Close' : 'Read More' }}
+                                </button>
                             </a>
                         </div>
                     </div>
@@ -86,15 +88,46 @@
                 >
                     <div
                         v-if="expandedIndex === i"
-                        class="absolute top-0 h-full bg-white"
+                        class="absolute top-0 bg-indigo-200 text-indigo-800 text-14 border-[1px] border-indigo-500 flex flex-col h-full"
                         :class="
-                            accordionDirection(i) === 'right'
-                                ? 'left-full ml-4 pr-4'
-                                : 'right-full mr-4 pl-4'
+                            accordionDirection(i) === 'right' ? 'left-full ml-4' : 'right-full mr-4'
                         "
-                        :style="{ width: accordionWidth }"
-                        v-html="item.paragraph"
-                    ></div>
+                        :style="{ width: accordionWidth, maxHeight: '80vh' }"
+                    >
+                        <div
+                            :class="[
+                                'pt-4 pl-4 pr-4 flex w-full',
+                                accordionDirection(i) === 'left' ? 'justify-end' : 'justify-start',
+                            ]"
+                        >
+                            <button @click="toggleAccordion(i)">
+                                <span class="material-icons-sharp text-indigo-800">close</span>
+                            </button>
+                        </div>
+
+                        <div class="mb-4 p-4 flex-grow overflow-auto" v-html="item.paragraph"></div>
+
+                        <div
+                            v-if="Array.isArray(items[i].buttons)"
+                            :class="[
+                                'px-4 pb-4 flex mt-auto',
+                                accordionDirection(i) === 'left' ? 'justify-start' : 'justify-end',
+                            ]"
+                        >
+                            <a
+                                v-for="(buttonObj, buttonIndex) in items[i].buttons"
+                                :key="buttonIndex"
+                                :href="buttonObj.button.url"
+                                :target="buttonObj.button.target || '_self'"
+                                :class="[
+                                    'cursor-pointer btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 font-body font-normal text-10 leading-130 text-indigo bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1 px-3 transition-all duration-200 ease-in-out !no-underline',
+                                    accordionDirection(i) === 'left' ? 'mr-2' : 'ml-2',
+                                ]"
+                            >
+                                {{ buttonObj.button.title }}
+                            </a>
+                        </div>
+                    </div>
                 </Transition>
             </div>
         </div>
@@ -133,6 +166,7 @@
         },
         mounted() {
             window.addEventListener('resize', this.handleResize);
+            console.log(this.items);
         },
         beforeUnmount() {
             window.removeEventListener('resize', this.handleResize);
@@ -157,7 +191,7 @@
             },
             pickedUpStyle(index) {
                 const positionInRow = index % this.columns;
-                const gap = '1.25rem'; // Half of gap-10 (2.5rem) to reduce overshoot
+                const gap = '1.25rem';
 
                 if (positionInRow === 0 || positionInRow === this.columns - 1) {
                     return {};
@@ -190,11 +224,17 @@
 
                 const remainingWidth = containerWidth - currentWidth;
 
+                // Tailwind m-4 equals 1rem = 16px (assuming 16px root font size)
+                const tailwindM4px = 16;
+
+                // Subtract margin for both directions
+                const adjustedWidth = remainingWidth - tailwindM4px;
+
                 console.log(`Item ${index} width: ${currentWidth}px`);
                 console.log(`Remaining width in row: ${remainingWidth}px`);
+                console.log(`Adjusted accordion width (both directions): ${adjustedWidth}px`);
 
-                // Set accordion width as remaining width in pixels
-                this.accordionWidth = remainingWidth + 'px';
+                this.accordionWidth = adjustedWidth + 'px';
             },
             handleResize() {
                 if (this.expandedIndex !== null) {
