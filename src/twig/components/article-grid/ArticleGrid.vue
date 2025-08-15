@@ -2,8 +2,15 @@
     <div class="relative">
         <div
             v-if="!renderApi && style === 'accordion'"
+            ref="gridContainer"
             class="article-grid relative grid gap-10 max-w-screen-2xl w-full my-0 mx-auto"
-            :class="columns === 4 ? 'grid-cols-8' : columns === 3 ? 'grid-cols-9' : 'grid-cols-4'"
+            :class="
+                columns === 4
+                    ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+                    : columns === 3
+                    ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+                    : 'grid-cols-1 sm:grid-cols-2'
+            "
         >
             <div
                 v-for="(item, i) in items"
@@ -12,11 +19,6 @@
                 :class="[
                     'article-grid__item transition-transform duration-500',
                     expandedIndex === i ? 'z-10 bg-white' : 'z-0',
-                    columns === 4
-                        ? 'md:col-span-2 col-span-4'
-                        : columns === 3
-                        ? 'md:col-span-3 col-span-9'
-                        : 'col-span-4',
                 ]"
                 :style="expandedIndex === i ? pickedUpStyle(i) : {}"
                 :ref="(el) => (itemRefs[i] = el)"
@@ -26,25 +28,26 @@
                     :class="{ 'pt-1 border-t-2 border-solid border-indigo-600': border }"
                 >
                     <!-- Normal Item Content -->
-                    <a class="article__image relative block overflow-hidden">
-                        <a
-                            class="article__image relative block overflow-hidden article__image__person"
-                            :href="item.url"
-                            :aria-label="item.heading"
-                        >
-                            <picture>
-                                <source
-                                    media="(min-width: 768px)"
-                                    :srcset="item.image.sizes.desktop"
-                                />
-                                <img
-                                    decoding="async"
-                                    class="w-full object-cover hover:scale-105 transition-all duration-500 ease-in-out"
-                                    :src="item.image.sizes.mobile"
-                                    :alt="item.title"
-                                />
-                            </picture>
-                        </a>
+                    <a
+                        v-if="
+                            item.image &&
+                            item.image.sizes &&
+                            item.image.sizes.desktop &&
+                            item.image.sizes.mobile
+                        "
+                        class="article__image relative block overflow-hidden"
+                        :href="item.url"
+                        :aria-label="item.heading"
+                    >
+                        <picture>
+                            <source media="(min-width: 768px)" :srcset="item.image.sizes.desktop" />
+                            <img
+                                decoding="async"
+                                class="w-full object-cover hover:scale-105 transition-all duration-500 ease-in-out"
+                                :src="item.image.sizes.mobile"
+                                :alt="item.title"
+                            />
+                        </picture>
                     </a>
 
                     <div class="context w-full space-y-5">
@@ -77,8 +80,49 @@
                     </div>
                 </article>
 
-                <!-- Floating Accordion Panel -->
+                <!-- MOBILE: Inline Accordion (pushes content down) -->
                 <Transition
+                    v-if="isMobileAccordion()"
+                    enter-active-class="transition-all duration-300 ease-out"
+                    enter-from-class="opacity-0 -translate-y-2"
+                    enter-to-class="opacity-100 translate-y-0"
+                    leave-active-class="transition-all duration-200 ease-in"
+                    leave-from-class="opacity-100 translate-y-0"
+                    leave-to-class="opacity-0 -translate-y-2"
+                >
+                    <div
+                        v-if="expandedIndex === i"
+                        class="bg-indigo-200 text-indigo-800 text-14 border-[1px] border-indigo-500 flex flex-col mt-4 w-full"
+                        :style="{ maxHeight: '80vh' }"
+                    >
+                        <div class="pt-4 pl-4 pr-4 flex w-full justify-end">
+                            <button @click="toggleAccordion(i)">
+                                <span class="material-icons-sharp text-indigo-800">close</span>
+                            </button>
+                        </div>
+
+                        <div class="mb-4 p-4 flex-grow overflow-auto" v-html="item.paragraph"></div>
+
+                        <div
+                            v-if="Array.isArray(items[i].buttons)"
+                            class="px-4 pb-4 flex mt-auto justify-end"
+                        >
+                            <a
+                                v-for="(buttonObj, buttonIndex) in items[i].buttons"
+                                :key="buttonIndex"
+                                :href="buttonObj.button.url"
+                                :target="buttonObj.button.target || '_self'"
+                                class="cursor-pointer btn group inline-flex flex-row items-center space-x-1.5 rounded border border-solid border-indigo-300 font-body font-normal text-10 leading-130 text-indigo bg-indigo-100 hover:bg-indigo-200 focus:bg-indigo-200 focus:outline focus:outline-2 focus:outline-canary outline-offset-[-1px] py-1 px-3 transition-all duration-200 ease-in-out !no-underline ml-2"
+                            >
+                                {{ buttonObj.button.title }}
+                            </a>
+                        </div>
+                    </div>
+                </Transition>
+
+                <!-- DESKTOP: Side-Flyout Accordion -->
+                <Transition
+                    v-else
                     enter-active-class="transition-opacity duration-300"
                     enter-from-class="opacity-0"
                     enter-to-class="opacity-100"
@@ -139,19 +183,14 @@
     import TextGroup from '../text-group/TextGroup.vue';
 
     export default {
-        components: {
-            TextGroup,
-        },
+        components: { TextGroup },
         props: {
             renderApi: Boolean,
             posts: String,
             api: String,
             range: Number,
             border: String,
-            cta: {
-                type: String,
-                default: 'Read Story',
-            },
+            cta: { type: String, default: 'Read Story' },
             columns: Number,
             style: String,
             size: String,
@@ -160,58 +199,70 @@
         data() {
             return {
                 expandedIndex: null,
+                closingIndex: null,
                 itemRefs: [],
                 accordionWidth: 'auto',
+                currentColumns: this.columns,
             };
         },
         mounted() {
-            window.addEventListener('resize', this.handleResize);
-            console.log(this.items);
+            this.updateColumns();
+            window.addEventListener('resize', this.updateColumns);
         },
         beforeUnmount() {
-            window.removeEventListener('resize', this.handleResize);
+            window.removeEventListener('resize', this.updateColumns);
         },
         methods: {
+            isMobileAccordion() {
+                return this.currentColumns === 1;
+            },
+            updateColumns() {
+                const container = this.$refs.gridContainer;
+                if (!container || container.children.length === 0) return;
+
+                const itemWidth = container.children[0].offsetWidth;
+                const containerWidth = container.clientWidth;
+
+                const newColumns = Math.floor(containerWidth / itemWidth) || 1;
+
+                if (newColumns !== this.currentColumns) {
+                    this.currentColumns = newColumns;
+                    if (this.expandedIndex !== null) {
+                        this.expandedIndex = null;
+                        this.accordionWidth = 'auto';
+                    }
+                } else {
+                    this.currentColumns = newColumns;
+                }
+
+                if (this.expandedIndex !== null && !this.isMobileAccordion()) {
+                    this.printWidths(this.expandedIndex);
+                }
+            },
             toggleAccordion(index) {
                 this.expandedIndex = this.expandedIndex === index ? null : index;
                 this.$nextTick(() => {
-                    this.$nextTick(() => {
-                        // second nextTick to wait for content rendering
-                        if (this.expandedIndex !== null) {
-                            this.printWidths(this.expandedIndex);
-                        } else {
-                            this.accordionWidth = 'auto';
-                        }
-                    });
+                    if (this.expandedIndex !== null && !this.isMobileAccordion()) {
+                        this.printWidths(this.expandedIndex);
+                    } else {
+                        this.accordionWidth = 'auto';
+                    }
                 });
             },
             accordionDirection(index) {
-                const positionInRow = index % this.columns;
-                return positionInRow < this.columns / 2 ? 'right' : 'left';
+                if (this.isMobileAccordion()) return 'down';
+                const positionInRow = index % this.currentColumns;
+                return positionInRow < this.currentColumns / 2 ? 'right' : 'left';
             },
             pickedUpStyle(index) {
-                const positionInRow = index % this.columns;
+                if (this.isMobileAccordion()) return {};
+                const positionInRow = index % this.currentColumns;
                 const gap = '1.25rem';
-
-                if (positionInRow === 0 || positionInRow === this.columns - 1) {
-                    return {};
-                }
-
+                if (positionInRow === 0 || positionInRow === this.currentColumns - 1) return {};
                 const direction = this.accordionDirection(index);
-
-                if (direction === 'right') {
-                    // Shift left by 100% plus half gap
-                    return {
-                        transform: `translateX(calc(-100% - ${gap}))`,
-                        zIndex: 10,
-                    };
-                } else {
-                    // Shift right by 100% plus half gap
-                    return {
-                        transform: `translateX(calc(100% + ${gap}))`,
-                        zIndex: 10,
-                    };
-                }
+                return direction === 'right'
+                    ? { transform: `translateX(calc(-100% - ${gap}))`, zIndex: 10 }
+                    : { transform: `translateX(calc(100% + ${gap}))`, zIndex: 10 };
             },
             printWidths(index) {
                 const currentItem = this.itemRefs[index];
@@ -223,23 +274,9 @@
                 const containerWidth = container.clientWidth;
 
                 const remainingWidth = containerWidth - currentWidth;
-
-                // Tailwind m-4 equals 1rem = 16px (assuming 16px root font size)
                 const tailwindM4px = 16;
-
-                // Subtract margin for both directions
                 const adjustedWidth = remainingWidth - tailwindM4px;
-
-                console.log(`Item ${index} width: ${currentWidth}px`);
-                console.log(`Remaining width in row: ${remainingWidth}px`);
-                console.log(`Adjusted accordion width (both directions): ${adjustedWidth}px`);
-
                 this.accordionWidth = adjustedWidth + 'px';
-            },
-            handleResize() {
-                if (this.expandedIndex !== null) {
-                    this.printWidths(this.expandedIndex);
-                }
             },
         },
     };
