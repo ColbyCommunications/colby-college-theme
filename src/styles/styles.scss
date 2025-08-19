@@ -435,6 +435,9 @@
         @apply mx-auto;
         @apply px-4;
         @include colby-paragraph-block();
+        a {
+            @include body-links();
+        }
     }
 
     .advanced-accordion {
@@ -489,10 +492,6 @@
     }
 
     @include lists();
-
-    a {
-        @include body-links();
-    }
 }
 
 /* statuspage.io system status styles */
