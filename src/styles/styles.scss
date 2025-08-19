@@ -382,10 +382,6 @@
         @apply mx-auto;
     }
 
-    a {
-        @include body-links();
-    }
-
     > .wp-block-heading h2,
     > .wp-block-group h2 {
         @include heading2();
