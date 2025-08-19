@@ -426,14 +426,11 @@
         @include block-quote();
     }
 
-    > .colby-paragraph-block {
+    > .colby-paragraph-block,
+    .wp-block-group .colby-paragraph-block {
         @apply w-full;
         @apply mx-auto;
-        @apply px-4;
         @include colby-paragraph-block();
-        a {
-            @include body-links();
-        }
     }
 
     .advanced-accordion {
