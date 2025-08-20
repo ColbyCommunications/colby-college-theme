@@ -5,68 +5,7 @@
 @use 'global/layout';
 @use '../twig/components/advanced-accordion/advanced-accordion';
 
-/* Body No Scroll */
-.no-scroll {
-    overflow: hidden;
-    height: 100vh;
-}
-
-/* Page w/ sidebar content styles */
-.wysiwyg,
-.advanced-accordion__content > .acf-innerblocks-container {
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        @apply font-extended;
-        @apply font-normal;
-    }
-
-    h2 {
-        @apply text-24;
-        @apply leading-110;
-        @apply -tracking-3;
-    }
-
-    h3 {
-        @apply text-20;
-        @apply leading-110;
-        @apply -tracking-3;
-        @apply text-indigo;
-    }
-
-    h4 {
-        @apply text-16;
-        @apply leading-110;
-        @apply -tracking-3;
-        @apply text-indigo;
-    }
-
-    h5 {
-        @apply text-14;
-        @apply font-bold;
-        @apply leading-130;
-        @apply -tracking-8;
-        @apply text-azure;
-        @apply uppercase;
-    }
-
-    h6 {
-        @apply text-12;
-        @apply leading-110;
-        @apply -tracking-8;
-        @apply text-azure;
-        @apply uppercase;
-    }
-
-    a {
-        @apply underline;
-        @apply hover:no-underline;
-        @apply hover:text-indigo;
-    }
-
-    // lists
+@mixin lists() {
     ul:not(.pagination__container):not(.directiory_information) {
         @apply list-disc;
         @apply pl-10;
@@ -106,6 +45,139 @@
             }
         }
     }
+}
+
+@mixin colby-paragraph-block() {
+    @apply font-body;
+
+    > p {
+        @apply text-indigo-900;
+    }
+
+    > p,
+    > table,
+    hr {
+        @apply mb-4;
+    }
+
+    &:last-child {
+        @apply mb-0;
+    }
+
+    p:last-child,
+    ul:last-child,
+    ol:last-child {
+        @apply mb-0;
+    }
+
+    table,
+    tr,
+    td {
+        border: 1px solid #ccc;
+    }
+}
+
+@mixin heading2() {
+    @apply text-24;
+    @apply leading-110;
+    @apply -tracking-3;
+    @apply text-indigo;
+    @apply font-extended;
+    @apply font-normal;
+}
+
+@mixin heading3() {
+    @apply text-20;
+    @apply leading-110;
+    @apply -tracking-3;
+    @apply text-indigo;
+    @apply font-extended;
+    @apply font-normal;
+}
+
+@mixin heading4() {
+    @apply text-16;
+    @apply leading-110;
+    @apply -tracking-3;
+    @apply text-indigo;
+    @apply font-extended;
+    @apply font-normal;
+}
+
+@mixin heading5() {
+    @apply text-14;
+    @apply font-bold;
+    @apply leading-130;
+    @apply -tracking-8;
+    @apply text-azure;
+    @apply uppercase;
+    @apply font-extended;
+    @apply font-normal;
+}
+
+@mixin heading6() {
+    @apply text-12;
+    @apply leading-110;
+    @apply -tracking-8;
+    @apply text-azure;
+    @apply uppercase;
+    @apply font-extended;
+    @apply font-normal;
+}
+
+@mixin block-quote() {
+    @apply w-full;
+    @apply mx-auto;
+    @apply pl-24;
+    @apply max-w-screen-2xl;
+    > svg {
+        @apply left-10;
+    }
+}
+
+@mixin body-links() {
+    @apply underline;
+    @apply hover:no-underline;
+    @apply hover:text-indigo;
+    @apply font-body;
+    @apply text-indigo-900;
+}
+
+/* Body No Scroll */
+.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* Page w/ sidebar content styles */
+.wysiwyg,
+.advanced-accordion__content > .acf-innerblocks-container {
+    h2 {
+        @include heading2();
+    }
+
+    h3 {
+        @include heading3();
+    }
+
+    h4 {
+        @include heading4();
+    }
+
+    h5 {
+        @include heading5();
+    }
+
+    h6 {
+        @include heading6();
+    }
+
+    a {
+        @include body-links();
+    }
+
+    // lists
+    @include lists();
 
     // general divs for blocks, etc
     > div {
@@ -144,33 +216,7 @@
 
     // paragraph block
     .colby-paragraph-block {
-        @apply font-body;
-
-        > p {
-            @apply text-indigo-900;
-        }
-
-        > p,
-        > table,
-        hr {
-            @apply mb-4;
-        }
-
-        &:last-child {
-            @apply mb-0;
-        }
-
-        p:last-child,
-        ul:last-child,
-        ol:last-child {
-            @apply mb-0;
-        }
-
-        table,
-        tr,
-        td {
-            border: 1px solid #ccc;
-        }
+        @include colby-paragraph-block();
     }
 
     // image with text block
@@ -336,6 +382,31 @@
         @apply mx-auto;
     }
 
+    > .wp-block-heading h2,
+    > .wp-block-group h2 {
+        @include heading2();
+    }
+
+    > .wp-block-heading h3,
+    > .wp-block-group h3 {
+        @include heading3();
+    }
+
+    > .wp-block-heading h4,
+    > .wp-block-group h4 {
+        @include heading4();
+    }
+
+    > .wp-block-heading h5,
+    > .wp-block-group h5 {
+        @include heading5();
+    }
+
+    > .wp-block-heading h6,
+    > .wp-block-group h6 {
+        @include heading6();
+    }
+
     .full-bleed {
         @apply max-w-full;
     }
@@ -352,45 +423,20 @@
     }
 
     .block-quote {
-        @apply w-full;
-        @apply mx-auto;
-        @apply pl-24;
-        @apply max-w-screen-2xl;
-        > svg {
-            @apply left-10;
-        }
+        @include block-quote();
     }
 
-    .colby-paragraph-block {
+    > .colby-paragraph-block {
+        @apply px-4;
         @apply w-full;
         @apply mx-auto;
-        @apply font-body;
+        @include colby-paragraph-block();
+    }
 
-        > p {
-            @apply text-indigo-900;
-        }
-
-        > p,
-        > table,
-        hr {
-            @apply mb-4;
-        }
-
-        &:last-child {
-            @apply mb-0;
-        }
-
-        p:last-child,
-        ul:last-child,
-        ol:last-child {
-            @apply mb-0;
-        }
-
-        table,
-        tr,
-        td {
-            border: 1px solid #ccc;
-        }
+    .wp-block-group .colby-paragraph-block {
+        @apply w-full;
+        @apply mx-auto;
+        @include colby-paragraph-block();
     }
 
     .advanced-accordion {
@@ -433,9 +479,18 @@
     }
 
     > .wp-block-group,
-    > .article-grid {
+    > .article-grid,
+    > .wp-block-heading {
         @apply px-4;
     }
+
+    .wp-block-group__inner-container {
+        > div {
+            @apply mb-4;
+        }
+    }
+
+    @include lists();
 }
 
 /* statuspage.io system status styles */
