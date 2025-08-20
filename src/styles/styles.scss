@@ -383,27 +383,27 @@
     }
 
     > .wp-block-heading h2,
-    > .wp-block-group h2 {
+    > .wp-block-group .wp-block-heading h2 {
         @include heading2();
     }
 
     > .wp-block-heading h3,
-    > .wp-block-group h3 {
+    > .wp-block-group .wp-block-heading h3 {
         @include heading3();
     }
 
     > .wp-block-heading h4,
-    > .wp-block-group h4 {
+    > .wp-block-group .wp-block-heading h4 {
         @include heading4();
     }
 
     > .wp-block-heading h5,
-    > .wp-block-group h5 {
+    > .wp-block-group .wp-block-heading h5 {
         @include heading5();
     }
 
     > .wp-block-heading h6,
-    > .wp-block-group h6 {
+    > .wp-block-group .wp-block-heading h6 {
         @include heading6();
     }
 
