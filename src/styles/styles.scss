@@ -431,12 +431,14 @@
         @apply w-full;
         @apply mx-auto;
         @include colby-paragraph-block();
+        @include lists();
     }
 
     .wp-block-group .colby-paragraph-block {
         @apply w-full;
         @apply mx-auto;
         @include colby-paragraph-block();
+        @include lists();
     }
 
     .advanced-accordion {
@@ -466,6 +468,7 @@
             @apply text-indigo-900;
             @apply font-body;
         }
+        @include lists();
     }
 
     .image-grid {
@@ -489,8 +492,6 @@
             @apply mb-4;
         }
     }
-
-    @include lists();
 }
 
 /* statuspage.io system status styles */
