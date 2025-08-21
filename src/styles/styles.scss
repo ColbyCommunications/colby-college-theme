@@ -75,13 +75,18 @@
     td {
         border: 1px solid #ccc;
     }
+
+    a {
+        @apply font-body;
+        @apply text-indigo-900;
+        @include body-links();
+    }
 }
 
 @mixin heading2() {
     @apply text-24;
     @apply leading-110;
     @apply -tracking-3;
-    @apply text-indigo;
     @apply font-extended;
     @apply font-normal;
 }
@@ -139,8 +144,6 @@
     @apply underline;
     @apply hover:no-underline;
     @apply hover:text-indigo;
-    @apply font-body;
-    @apply text-indigo-900;
 }
 
 /* Body No Scroll */
@@ -384,6 +387,7 @@
 
     > .wp-block-heading h2,
     > .wp-block-group .wp-block-heading h2 {
+        @apply text-indigo;
         @include heading2();
     }
 
