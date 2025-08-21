@@ -75,13 +75,18 @@
     td {
         border: 1px solid #ccc;
     }
+
+    a {
+        @apply font-body;
+        @apply text-indigo-900;
+        @include body-links();
+    }
 }
 
 @mixin heading2() {
     @apply text-24;
     @apply leading-110;
     @apply -tracking-3;
-    @apply text-indigo;
     @apply font-extended;
     @apply font-normal;
 }
@@ -139,8 +144,6 @@
     @apply underline;
     @apply hover:no-underline;
     @apply hover:text-indigo;
-    @apply font-body;
-    @apply text-indigo-900;
 }
 
 /* Body No Scroll */
@@ -383,27 +386,28 @@
     }
 
     > .wp-block-heading h2,
-    > .wp-block-group h2 {
+    > .wp-block-group .wp-block-heading h2 {
+        @apply text-indigo;
         @include heading2();
     }
 
     > .wp-block-heading h3,
-    > .wp-block-group h3 {
+    > .wp-block-group .wp-block-heading h3 {
         @include heading3();
     }
 
     > .wp-block-heading h4,
-    > .wp-block-group h4 {
+    > .wp-block-group .wp-block-heading h4 {
         @include heading4();
     }
 
     > .wp-block-heading h5,
-    > .wp-block-group h5 {
+    > .wp-block-group .wp-block-heading h5 {
         @include heading5();
     }
 
     > .wp-block-heading h6,
-    > .wp-block-group h6 {
+    > .wp-block-group .wp-block-heading h6 {
         @include heading6();
     }
 
@@ -426,11 +430,19 @@
         @include block-quote();
     }
 
-    > .colby-paragraph-block,
+    > .colby-paragraph-block {
+        @apply px-4;
+        @apply w-full;
+        @apply mx-auto;
+        @include colby-paragraph-block();
+        @include lists();
+    }
+
     .wp-block-group .colby-paragraph-block {
         @apply w-full;
         @apply mx-auto;
         @include colby-paragraph-block();
+        @include lists();
     }
 
     .advanced-accordion {
@@ -460,6 +472,7 @@
             @apply text-indigo-900;
             @apply font-body;
         }
+        @include lists();
     }
 
     .image-grid {
@@ -483,8 +496,6 @@
             @apply mb-4;
         }
     }
-
-    @include lists();
 }
 
 /* statuspage.io system status styles */
