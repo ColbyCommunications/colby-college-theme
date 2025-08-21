@@ -61,7 +61,6 @@
                 <option v-text="'Cinema Studies'" :value="'CINE'" />
                 <option v-text="'Classics'" :value="'CLAS'" />
                 <option v-text="'Computer Science'" :value="'COMP'" />
-                <option v-text="'Creative Writing'" :value="'WRTG'" />
                 <option v-text="'East Asian Studies'" :value="'EAST'" />
                 <option v-text="'Economics'" :value="'ECON'" />
                 <option v-text="'Education'" :value="'EDUC'" />
