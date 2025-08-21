@@ -89,6 +89,7 @@
                 <option v-text="'Spanish'" :value="'SPAN'" />
                 <option v-text="'Statistics'" :value="'STAT'" />
                 <option v-text="'Women\'s, Gender, and Sexuality Studies'" :value="'WGST'" />
+                <option v-text="'Writing Department'" :value="'WRTG'" />
             </select>
             <select
                 v-if="
@@ -680,6 +681,7 @@
                             'PHIL',
                             'RELG',
                             'SPAN',
+                            'WRTG',
                         ];
                         break;
                     case 'Interdisciplinary Studies':
@@ -943,6 +945,8 @@
                         return 'statistics';
                     case 'thea':
                         return 'performance-theater-and-dance';
+                    case 'wrtg':
+                        return 'writing-department';
                     case 'wgst':
                         return 'womens-gender-and-sexuality-studies';
                     case 'intd':
