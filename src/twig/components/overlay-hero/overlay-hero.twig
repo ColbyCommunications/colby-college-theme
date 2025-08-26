@@ -63,6 +63,16 @@
       video: video,
       image: image,
     } %}
+  {% elseif from_page %}
+    {{ macros.picture(
+      'z-[-10] absolute top-0 left-0 w-full h-full object-cover',
+      image.srcset,
+      image.src,
+      image.sizes.Hero,
+      image.sizes.Hero,
+      image.alt,
+      in_component_library
+    ) }}
   {% else %}
     <div
       class="overlay-hero__screen absolute top-0 left-0 w-full h-full"
