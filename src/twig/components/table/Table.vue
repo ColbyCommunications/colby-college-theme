@@ -61,7 +61,6 @@
                 <option v-text="'Cinema Studies'" :value="'CINE'" />
                 <option v-text="'Classics'" :value="'CLAS'" />
                 <option v-text="'Computer Science'" :value="'COMP'" />
-                <option v-text="'Creative Writing'" :value="'WRTG'" />
                 <option v-text="'East Asian Studies'" :value="'EAST'" />
                 <option v-text="'Economics'" :value="'ECON'" />
                 <option v-text="'Education'" :value="'EDUC'" />
@@ -72,7 +71,7 @@
                 <option v-text="'German and Russian'" :value="'GMRU'" />
                 <option v-text="'Global Studies'" :value="'GLST'" />
                 <option v-text="'Government'" :value="'GOVT'" />
-                <option v-text="'History'" :value="'History'" />
+                <option v-text="'History'" :value="'HIST'" />
                 <option v-text="'Independent Major'" :value="'INDP'" />
                 <option v-text="'Integrated Studies'" :value="'ISP'" />
                 <option v-text="'Jewish Studies'" :value="'JWST'" />
@@ -89,6 +88,7 @@
                 <option v-text="'Spanish'" :value="'SPAN'" />
                 <option v-text="'Statistics'" :value="'STAT'" />
                 <option v-text="'Women\'s, Gender, and Sexuality Studies'" :value="'WGST'" />
+                <option v-text="'Writing Department'" :value="'WRTG'" />
             </select>
             <select
                 v-if="
@@ -681,6 +681,7 @@
                             'PHIL',
                             'RELG',
                             'SPAN',
+                            'WRTG',
                         ];
                         break;
                     case 'Interdisciplinary Studies':
@@ -944,6 +945,8 @@
                         return 'statistics';
                     case 'thea':
                         return 'performance-theater-and-dance';
+                    case 'wrtg':
+                        return 'writing-department';
                     case 'wgst':
                         return 'womens-gender-and-sexuality-studies';
                     case 'intd':
