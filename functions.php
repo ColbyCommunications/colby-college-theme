@@ -2696,3 +2696,48 @@ if (defined('WP_CLI') && WP_CLI) {
         WP_CLI::success("Content conversion for $post_type(s) completed successfully.");
     });
 }
+
+add_filter('map_meta_cap', function ($caps, $cap, $user_id, $args) {
+    // Which primitive caps are we going to block?
+    $caps_to_block = ['edit_post'];
+
+    if (!in_array($cap, $caps_to_block, true)) {
+        return $caps;
+    }
+
+    // Safety: ensure we have a post ID
+    $post_id = isset($args[0]) ? intval($args[0]) : 0;
+    if (!$post_id) {
+        return $caps;
+    }
+
+    // Only target PAGES (not posts or CPTs). Remove this check if you want posts/CPTs too.
+    if (get_post_type($post_id) !== 'page') {
+        return $caps;
+    }
+
+    // === CONFIGURE HERE ===
+    // Page IDs to protect
+    $protected_page_ids = [7436, 7441]; // <-- replace with your page IDs
+
+    // Roles to block from editing those pages
+    $blocked_roles = ['editor']; // e.g., block Editors and below
+    // ======================
+
+    if (!in_array($post_id, $protected_page_ids, true)) {
+        return $caps; // not a protected page
+    }
+
+    $user = get_userdata($user_id);
+    if (!$user || empty($user->roles)) {
+        return $caps;
+    }
+
+    // If the user has ANY of the blocked roles, deny
+    if (array_intersect($blocked_roles, (array) $user->roles)) {
+        // 'do_not_allow' ensures WP hard-stops the action with a permissions error
+        return ['do_not_allow'];
+    }
+
+    return $caps;
+}, 10, 4);
