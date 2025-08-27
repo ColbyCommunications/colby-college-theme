@@ -266,6 +266,8 @@
     import Fuse from 'fuse.js';
     import _map from 'lodash/map';
     import _uniq from 'lodash/uniq';
+    import _groupBy from 'lodash/groupBy';
+    import _pick from 'lodash/pick';
     import Modal from '../modal/Modal.vue';
     export default {
         components: {
@@ -385,11 +387,11 @@
             if (this.renderApi) {
                 switch (this.api) {
                     case 'Department Courses':
-                        this.endpoint = 'https://www.colby.edu/endpoints/v1/courses/';
+                        this.endpoint = 'https://www.colby.edu/endpoints/v2/courses/';
                         this.heading = `Department Courses`;
                         break;
                     case 'Course Catalogue':
-                        this.endpoint = 'https://www.colby.edu/endpoints/v1/courses/';
+                        this.endpoint = 'https://www.colby.edu/endpoints/v2/courses/';
                         this.heading = this.api;
                         break;
                     case 'Majors and Minors':
@@ -398,9 +400,39 @@
                         break;
                 }
                 await axios.get(this.endpoint).then((outputa) => {
+                    const lookup = _groupBy(outputa.data.data, 'crsno');
+                    let items = [];
                     switch (this.api) {
                         case 'Department Courses':
-                            const deptItems = outputa.data.courses.filter(
+                            Object.keys(lookup).forEach((crs) => {
+                                let newItem = _pick(lookup[crs][0], [
+                                    'crsno',
+                                    'dept',
+                                    'longTitle',
+                                    'maxhrs',
+                                    'minhrs',
+                                    'area',
+                                    'prereq',
+                                    'diversity',
+                                    'writing',
+                                    'abstr',
+                                    'sessOffered',
+                                ]);
+                                newItem.labsci = '';
+                                newItem.sections = [];
+                                for (let i; i < lookup[crs].length; i++) {
+                                    newItem.sections.push({
+                                        faculty: [
+                                            {
+                                                faculty_name: lookup[crs][i].instructor,
+                                            },
+                                        ],
+                                    });
+                                }
+
+                                items.push(newItem);
+                            });
+                            const deptItems = items.filter(
                                 (item) => item.dept == this.departmentCode && item.longTitle
                             );
                             this.items = deptItems.map((item) => {
@@ -438,9 +470,35 @@
                             this.filterOptions = ['Fall', 'Spring', 'January'];
                             break;
                         case 'Course Catalogue':
-                            const filteredItems = outputa.data.courses.filter(
-                                (item) => item.longTitle
-                            );
+                            Object.keys(lookup).forEach((crs) => {
+                                let newItem = _pick(lookup[crs][0], [
+                                    'crsno',
+                                    'dept',
+                                    'longTitle',
+                                    'maxhrs',
+                                    'minhrs',
+                                    'area',
+                                    'prereq',
+                                    'diversity',
+                                    'writing',
+                                    'abstr',
+                                    'sessOffered',
+                                ]);
+                                newItem.labsci = '';
+                                newItem.sections = [];
+                                for (let i; i < lookup[crs].length; i++) {
+                                    newItem.sections.push({
+                                        faculty: [
+                                            {
+                                                faculty_name: lookup[crs][i].instructor,
+                                            },
+                                        ],
+                                    });
+                                }
+
+                                items.push(newItem);
+                            });
+                            const filteredItems = items.filter((item) => item.longTitle);
                             this.items = filteredItems.map((item) => {
                                 let itemTypes = item.sessOffered.split(',');
                                 itemTypes.forEach((type, index) => {
@@ -457,18 +515,12 @@
                                     }
                                 });
                                 return {
-                                    title:
-                                        item.secTitle && !item.secTitle.includes('See ')
-                                            ? item.secTitle
-                                            : item.longTitle,
+                                    title: item.longTitle,
                                     description: this.renderDesc(item),
                                     type: itemTypes,
                                     department: item.dept,
                                     link: {
-                                        title:
-                                            item.secTitle && !item.secTitle.includes('See ')
-                                                ? item.secTitle
-                                                : item.longTitle,
+                                        title: item.longTitle,
                                         url: null,
                                     },
                                     columns: [item.crsno, item.dept],
