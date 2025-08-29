@@ -83,7 +83,7 @@
         class="video__overlay group z-10 absolute flex items-center justify-center w-full h-full cursor-pointer transition-all duration-200 ease-in-out"
       >
         {% if video_loop %}
-          <video class="block z-[1] absolute min-w-full min-h-full w-auto h-auto bg-repeat bg-cover top-0 right-0 bottom-0 left-0 object-cover" autoplay muted loop poster="{{poster}}">
+          <video class="z-[-10] absolute min-w-full min-h-full w-auto h-auto bg-repeat bg-cover top-0 right-0 bottom-0 left-0 object-cover" playsinline autoplay muted loop poster="{{poster}}">
             <source src="{{ video_loop }}" type="video/mp4">
           </video>
         {% else %}
