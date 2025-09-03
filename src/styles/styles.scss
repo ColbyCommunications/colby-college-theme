@@ -466,6 +466,7 @@
 
     .colby-image-text-block {
         @appy mx-auto;
+        @apply px-4;
         @apply max-w-screen-2xl;
         p {
             @apply mb-4;
