@@ -61,13 +61,13 @@
                 <option v-text="'Cinema Studies'" :value="'CINE'" />
                 <option v-text="'Classics'" :value="'CLAS'" />
                 <option v-text="'Computer Science'" :value="'COMP'" />
+                <option v-text="'Earth Sciences'" :value="'ERSC'" />
                 <option v-text="'East Asian Studies'" :value="'EAST'" />
                 <option v-text="'Economics'" :value="'ECON'" />
                 <option v-text="'Education'" :value="'EDUC'" />
                 <option v-text="'English'" :value="'ENGL'" />
                 <option v-text="'Environmental Studies'" :value="'ENVS'" />
                 <option v-text="'French and Italian'" :value="'FRIT'" />
-                <option v-text="'Geology'" :value="'GEOL'" />
                 <option v-text="'German and Russian'" :value="'GMRU'" />
                 <option v-text="'Global Studies'" :value="'GLST'" />
                 <option v-text="'Government'" :value="'GOVT'" />
@@ -400,13 +400,13 @@
                         break;
                 }
                 await axios.get(this.endpoint).then((outputa) => {
-                    const lookup = _groupBy(outputa.data.data, 'crsno');
+                    const lookup = _groupBy(outputa.data.data, 'secCrsNo');
                     let items = [];
                     switch (this.api) {
                         case 'Department Courses':
                             Object.keys(lookup).forEach((crs) => {
                                 let newItem = _pick(lookup[crs][0], [
-                                    'crsno',
+                                    'secCrsNo',
                                     'dept',
                                     'longTitle',
                                     'maxhrs',
@@ -439,13 +439,13 @@
                                 let itemTypes = item.sessOffered.split(',');
                                 itemTypes.forEach((type, index) => {
                                     switch (type) {
-                                        case 'FA':
+                                        case 'Fall Semester':
                                             itemTypes[index] = 'Fall';
                                             break;
-                                        case 'SP':
+                                        case 'Spring Semester':
                                             itemTypes[index] = 'Spring';
                                             break;
-                                        case 'JP':
+                                        case 'Jan Plan':
                                             itemTypes[index] = 'January';
                                             break;
                                     }
@@ -463,7 +463,7 @@
                                                 : item.longTitle,
                                         url: null,
                                     },
-                                    columns: [item.crsno, this.removeTags(item.abstr)],
+                                    columns: [item.secCrsNo, this.removeTags(item.abstr)],
                                 };
                             });
                             this.headings = ['Name', 'Course Number', 'Description'];
@@ -472,7 +472,7 @@
                         case 'Course Catalogue':
                             Object.keys(lookup).forEach((crs) => {
                                 let newItem = _pick(lookup[crs][0], [
-                                    'crsno',
+                                    'secCrsNo',
                                     'dept',
                                     'longTitle',
                                     'maxhrs',
@@ -503,13 +503,13 @@
                                 let itemTypes = item.sessOffered.split(',');
                                 itemTypes.forEach((type, index) => {
                                     switch (type) {
-                                        case 'FA':
+                                        case 'Fall Semester':
                                             itemTypes[index] = 'Fall';
                                             break;
-                                        case 'SP':
+                                        case 'Spring Semester':
                                             itemTypes[index] = 'Spring';
                                             break;
-                                        case 'JP':
+                                        case 'Jan Plan':
                                             itemTypes[index] = 'January';
                                             break;
                                     }
@@ -523,7 +523,7 @@
                                         title: item.longTitle,
                                         url: null,
                                     },
-                                    columns: [item.crsno, item.dept],
+                                    columns: [item.secCrsNo, item.dept],
                                     faculty: this._faculty(item.sections),
                                 };
                             });
@@ -754,7 +754,7 @@
                             'BIOL',
                             'CHEM',
                             'COMP',
-                            'GEOL',
+                            'ERSC',
                             'MATH',
                             'STAT',
                         ];
@@ -850,10 +850,10 @@
 
                 return toReturn;
             },
-            _creditHours(crsno, minhrs, maxhrs) {
+            _creditHours(secCrsNo, minhrs, maxhrs) {
                 let creditHours = '';
                 if (maxhrs !== 0) {
-                    if (crsno !== 'MU193') {
+                    if (secCrsNo !== 'MU193') {
                         creditHours =
                             ' <em class="creditHours">' + this._numberToString(minhrs, true);
                         if (minhrs != maxhrs) {
@@ -907,7 +907,7 @@
                 return facultyStr;
             },
             renderDesc(item) {
-                const creditHours = this._creditHours(item.crsno, item.minhrs, item.maxhrs);
+                const creditHours = this._creditHours(item.secCrsNo, item.minhrs, item.maxhrs);
                 let reqs = '';
                 let prereq = '';
                 if (item.prereq !== '') {
@@ -917,7 +917,7 @@
                         '</span>';
                 }
 
-                if (item.crsno.substring(0, 2) !== 'IS') {
+                if (item.secCrsNo.substring(0, 2) !== 'IS') {
                     reqs = this._reqs(item.area, item.labsci, item.writing, item.diversity);
                 }
 
@@ -962,8 +962,8 @@
                         return 'environmental-studies';
                     case 'frit':
                         return 'french-and-italian';
-                    case 'geol':
-                        return 'geology';
+                    case 'ersc':
+                        return 'earth-sciences';
                     case 'glst':
                         return 'global-studies';
                     case 'gmru':
