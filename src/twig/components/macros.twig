@@ -84,7 +84,16 @@
     <{{ headingTag }} class="text-group__heading font-extended {{ headingWeight }} {{ headingSizeMobile }} {{ headingSize }} leading-110 -tracking-3 {{ textAlign }} {{ headingColor }} mt-2">{{ heading|striptags }}</{{ headingTag }}>
   {% endif %}
   {% if paragraph %}
-    <p class="text-group__p font-body font-normal {{ paragraphSizeMobile }} {{ paragraphSize }} leading-130 {{ textAlign }} {{ paragraphColor }} mt-2">{{ paragraph }}</p>
+    {% set paragraph_with_classes = paragraph
+    |replace({
+        '<p>':'<p class="text-group__p font-body font-normal ' ~ paragraphSizeMobile ~ ' ' ~ paragraphSize ~ ' leading-130 ' ~ textAlign ~ ' ' ~ paragraphColor ~ ' mt-2">',
+        '<ul>':'<ul class="list-disc font-body font-normal ' ~ paragraphSizeMobile ~ ' ' ~ paragraphSize ~ ' leading-130 ' ~ ' ' ~ paragraphColor ~ ' mt-2">',
+        '<ol>':'<ol class="list-decimal font-body font-normal ' ~ paragraphSizeMobile ~ ' ' ~ paragraphSize ~ ' leading-130 ' ~ ' ' ~ paragraphColor ~ ' mt-2">',
+        '<li>':'<li class="' ~ paragraphColor ~ '">'
+
+    }) %}
+
+{{ paragraph_with_classes|raw }}
   {% endif %}
 </component>
 {% endmacro %}

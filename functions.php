@@ -2741,3 +2741,28 @@ add_filter('map_meta_cap', function ($caps, $cap, $user_id, $args) {
 
     return $caps;
 }, 10, 4);
+
+add_filter('acf/fields/wysiwyg/toolbars', function( $toolbars ) {
+    $toolbars['limited'] = array();
+    $toolbars['limited'][1] = array('bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist');
+
+    $toolbars['full'] = array();
+    $toolbars['full'][1] = array('formatselect', 'bold', 'italic', 'underline', 'bullist', 'numlist', 'blockquote', 'alignleft', 'aligncenter', 'alignright', 'link', 'unlink', 'undo', 'redo', 'removeformat');
+
+    return $toolbars;
+});
+
+add_filter('tiny_mce_before_init', function($init){
+    // Make sure advlist is enabled so custom styles are respected
+    if (empty($init['plugins']) || strpos($init['plugins'], 'advlist') === false) {
+        $init['plugins'] .= ' advlist';
+    }
+
+    // Allowed bullet styles (only the normal disc bullet)
+    $init['advlist_bullet_styles'] = 'default';
+
+    // Allowed number styles (decimal + roman numerals)
+    $init['advlist_number_styles'] = 'default,lower-roman,upper-roman';
+
+    return $init;
+}, 20);
