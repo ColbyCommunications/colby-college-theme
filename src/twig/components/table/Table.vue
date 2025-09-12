@@ -401,6 +401,7 @@
                 }
                 await axios.get(this.endpoint).then((outputa) => {
                     const lookup = _groupBy(outputa.data.data, 'secCrsNo');
+                    console.log(lookup);
                     let items = [];
                     switch (this.api) {
                         case 'Department Courses':
@@ -420,8 +421,9 @@
                                 ]);
                                 newItem.labsci = '';
                                 newItem.sections = [];
-                                for (let i; i < lookup[crs].length; i++) {
+                                for (let i = 0; i < lookup[crs].length; i++) {
                                     newItem.sections.push({
+                                        sessOffered: lookup[crs][i].sessOffered,
                                         faculty: [
                                             {
                                                 faculty_name: lookup[crs][i].instructor,
@@ -436,16 +438,16 @@
                                 (item) => item.dept == this.departmentCode && item.longTitle
                             );
                             this.items = deptItems.map((item) => {
-                                let itemTypes = item.sessOffered.split(',');
+                                let itemTypes = _uniq(_map(item.sections, 'sessOffered'));
                                 itemTypes.forEach((type, index) => {
-                                    switch (type) {
-                                        case 'Fall Semester':
+                                    switch (type.slice(0, 2)) {
+                                        case 'FA':
                                             itemTypes[index] = 'Fall';
                                             break;
-                                        case 'Spring Semester':
+                                        case 'SP':
                                             itemTypes[index] = 'Spring';
                                             break;
-                                        case 'Jan Plan':
+                                        case 'JP':
                                             itemTypes[index] = 'January';
                                             break;
                                     }
@@ -486,8 +488,9 @@
                                 ]);
                                 newItem.labsci = '';
                                 newItem.sections = [];
-                                for (let i; i < lookup[crs].length; i++) {
+                                for (let i = 0; i < lookup[crs].length; i++) {
                                     newItem.sections.push({
+                                        sessOffered: lookup[crs][i].sessOffered,
                                         faculty: [
                                             {
                                                 faculty_name: lookup[crs][i].instructor,
@@ -498,22 +501,25 @@
 
                                 items.push(newItem);
                             });
+                            // console.log(items);
                             const filteredItems = items.filter((item) => item.longTitle);
+
                             this.items = filteredItems.map((item) => {
-                                let itemTypes = item.sessOffered.split(',');
+                                let itemTypes = _uniq(_map(item.sections, 'sessOffered'));
                                 itemTypes.forEach((type, index) => {
-                                    switch (type) {
-                                        case 'Fall Semester':
+                                    switch (type.slice(0, 2)) {
+                                        case 'FA':
                                             itemTypes[index] = 'Fall';
                                             break;
-                                        case 'Spring Semester':
+                                        case 'SP':
                                             itemTypes[index] = 'Spring';
                                             break;
-                                        case 'Jan Plan':
+                                        case 'JP':
                                             itemTypes[index] = 'January';
                                             break;
                                     }
                                 });
+
                                 return {
                                     title: item.longTitle,
                                     description: this.renderDesc(item),
