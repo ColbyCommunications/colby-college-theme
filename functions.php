@@ -2698,6 +2698,12 @@ if (defined('WP_CLI') && WP_CLI) {
 }
 
 add_filter('map_meta_cap', function ($caps, $cap, $user_id, $args) {
+
+	/*
+ 	* This requires adding edit permissions for each of the parent pages up to the
+    * department, office, or section HP
+	*/
+	
     // Which primitive caps are we going to block?
     $caps_to_block = ['edit_post'];
 
