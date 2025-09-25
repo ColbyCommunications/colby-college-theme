@@ -5,6 +5,15 @@
 @use 'global/layout';
 @use '../twig/components/advanced-accordion/advanced-accordion';
 
+@layer base {
+    .text-group ul,
+    .text-group ol {
+        list-style: revert;
+        margin: revert;
+        padding: revert;
+    }
+}
+
 @mixin lists() {
     ul:not(.pagination__container):not(.directiory_information) {
         @apply list-disc;

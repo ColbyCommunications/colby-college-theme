@@ -106,7 +106,7 @@
                         </picture>
                     </a>
 
-                    <div class="context w-full space-y-5">
+                    <div class="context w-full space-y-5" :ref="(el) => (contextRefs[i] = el)">
                         <component is="text-group" class="text-group">
                             <div class="mr-6 flex flex-col justify-start shrink-0">
                                 <div
@@ -157,7 +157,10 @@
                             </button>
                         </div>
 
-                        <div class="mb-4 p-4 flex-grow overflow-auto" v-html="item.paragraph"></div>
+                        <div
+                            class="text-group text-20 sm:text-18 md:text-20 lg:text-20 mb-4 p-4 flex-grow overflow-auto"
+                            v-html="item.paragraph"
+                        ></div>
 
                         <div
                             v-if="Array.isArray(items[i].buttons)"
@@ -188,11 +191,11 @@
                 >
                     <div
                         v-if="expandedIndex === i"
-                        class="absolute top-0 bg-indigo-200 text-indigo-800 text-14 border-[1px] border-indigo-500 flex flex-col h-full"
+                        class="absolute top-0 bg-indigo-200 text-indigo-800 text-14 border-[1px] border-indigo-500 flex flex-col"
                         :class="
                             accordionDirection(i) === 'right' ? 'left-full ml-4' : 'right-full mr-4'
                         "
-                        :style="{ width: accordionWidth, maxHeight: '80vh' }"
+                        :style="{ width: accordionWidth, height: calculateAccordionHeight(i) }"
                     >
                         <div
                             :class="[
@@ -205,7 +208,10 @@
                             </button>
                         </div>
 
-                        <div class="mb-4 p-4 flex-grow overflow-auto" v-html="item.paragraph"></div>
+                        <div
+                            class="text-group sm:text-18 md:text-20 lg:text-20 mb-4 p-4 flex-grow overflow-auto"
+                            v-html="item.paragraph"
+                        ></div>
 
                         <div
                             v-if="Array.isArray(items[i].buttons)"
@@ -262,6 +268,7 @@
                 itemRefs: [],
                 accordionWidth: 'auto',
                 currentColumns: this.columns,
+                contextRefs: [],
             };
         },
         mounted() {
@@ -400,6 +407,16 @@
                 const tailwindM4px = 16;
                 const adjustedWidth = remainingWidth - tailwindM4px;
                 this.accordionWidth = adjustedWidth + 'px';
+            },
+            calculateAccordionHeight(index) {
+                const itemEl = this.itemRefs[index];
+                const contextEl = this.contextRefs[index];
+                if (!itemEl || !contextEl) return 'auto';
+
+                const rowHeight = itemEl.offsetHeight;
+                const contextHeight = contextEl.offsetHeight;
+
+                return rowHeight + 'px';
             },
         },
     };
