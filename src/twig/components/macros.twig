@@ -76,6 +76,12 @@
   {% set headingTag = 'h2' %}
 {% endif %}
 
+
+{% set htmlTagRegex = '/<[^>]*>/' %}
+{% if not function('preg_match', htmlTagRegex, paragraph) %}
+    {% set paragraph = '<p>' ~ paragraph ~ '</p>' %}
+{% endif %}
+
 <component is="text-group" class="text-group text-group--animated">
   {% if subheading %}
     <{{ subheadingTag }} class="text-group__subheading font-extended font-bold {{ subheadingSize }} leading-130 tracking-8 {{ textAlign }} {{ subheadingColor }} uppercase">{{ subheading }}</{{ subheadingTag }}>
@@ -90,10 +96,9 @@
         '<ul>':'<ul class="list-disc font-body font-normal ' ~ paragraphSizeMobile ~ ' ' ~ paragraphSize ~ ' leading-130 ' ~ ' ' ~ paragraphColor ~ ' mt-2">',
         '<ol>':'<ol class="list-decimal font-body font-normal ' ~ paragraphSizeMobile ~ ' ' ~ paragraphSize ~ ' leading-130 ' ~ ' ' ~ paragraphColor ~ ' mt-2">',
         '<li>':'<li class="' ~ paragraphColor ~ '">'
-
     }) %}
 
-{{ paragraph_with_classes|raw }}
+    {{ paragraph_with_classes|raw }}
   {% endif %}
 </component>
 {% endmacro %}
