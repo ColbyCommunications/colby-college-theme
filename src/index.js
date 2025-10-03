@@ -16,6 +16,7 @@ import Accordion from './twig/components/accordion/Accordion.vue';
 import ArticleGrid from './twig/components/article-grid/ArticleGrid.vue';
 import MediaAside from './twig/components/media-aside/MediaAside.vue';
 import EndpointFilter from './twig/components/endpoint-filter/EndpointFilter.vue';
+import FloatingAskBar from './twig/components/floating-ask-bar/FloatingAskBar.vue';
 
 // Animated
 import TextGroup from './twig/components/text-group/TextGroup.vue';
@@ -61,6 +62,7 @@ const app = createApp({
         ArticleGrid,
         MediaAside,
         EndpointFilter,
+        FloatingAskBar,
     },
 });
 
