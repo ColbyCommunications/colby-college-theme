@@ -46,9 +46,9 @@
     </div>
     <form
       @submit.prevent="handleSubmit"
-      class="group relative flex items-center gap-3 rounded-full border border-white/30 transition-all duration-500 ease-in-out overflow-hidden"
+      class="group relative flex items-center gap-3 rounded-full border border-white/30 transition-all duration-500 ease-in-out overflow-hidden hover-scale"
       :class="[
-        !showAnswer && 'sm:hover:scale-105',
+        showAnswer && 'answer-active',
         animationClass
       ]"
       :style="{
@@ -546,5 +546,17 @@ export default {
 .overflow-y-auto {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* Only apply hover zoom on devices with hover capability (not touch devices) */
+@media (hover: hover) and (pointer: fine) {
+  .hover-scale:hover:not(.answer-active) {
+    transform: scale(1.05);
+  }
+}
+
+/* Ensure no transform when answer is active */
+.answer-active {
+  transform: scale(1);
 }
 </style>
