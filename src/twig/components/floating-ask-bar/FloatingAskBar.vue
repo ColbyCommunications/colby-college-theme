@@ -38,6 +38,7 @@
       <button
         @click="closeAnswer"
         class="absolute top-2 right-2 w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+        style="touch-action: manipulation;"
       >
         <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -93,7 +94,7 @@
         :placeholder="placeholder"
         @focus="handleFocus"
         @blur="handleBlur"
-        class="flex-1 bg-transparent text-white placeholder:text-white/80 py-3.5 px-4 pr-12 focus:outline-none text-[15px] search-input-clean relative z-10"
+        class="flex-1 bg-transparent text-white placeholder:text-white/80 py-3.5 px-4 pr-12 focus:outline-none text-base sm:text-[15px] search-input-clean relative z-10"
         :style="{
           textShadow: '0px 2px 8px rgba(0, 0, 0, 0.8)'
         }"
@@ -104,6 +105,7 @@
         type="submit"
         aria-label="Search"
         class="relative z-10 mr-1.5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white dark:bg-neutral-800 border border-white/60 dark:border-white/10 shadow-sm transition-transform active:scale-95 after:pointer-events-none after:absolute after:inset-0 after:rounded-full after:ring-1 after:ring-black/5 dark:after:ring-white/5"
+        style="touch-action: manipulation;"
       >
         <svg
           class="h-4 w-4 text-neutral-800"
