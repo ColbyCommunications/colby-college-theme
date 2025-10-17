@@ -146,6 +146,22 @@
     @apply hover:text-indigo;
 }
 
+@mixin accordion() {
+    p {
+        @apply mb-4;
+        @apply text-indigo-900;
+    }
+
+    p,
+    ul,
+    ol {
+        @apply font-normal;
+        @apply font-body;
+        @apply text-16;
+        @apply leading-140;
+    }
+}
+
 /* Body No Scroll */
 .no-scroll {
     overflow: hidden;
@@ -484,6 +500,11 @@
 
     .colby-table-block {
         @apply mx-auto;
+    }
+
+    // accordion block
+    .colby-accordion-block {
+        @include accordion();
     }
 
     > .wp-block-group,
