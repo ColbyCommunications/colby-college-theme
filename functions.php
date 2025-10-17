@@ -1523,7 +1523,7 @@ function getNewPeople( $directory_data ) {
 	// Loop through the WD array
 	foreach ( $directory_data as $WDPerson ) {
 		// Assign variables to desired WD fields
-		$WDEmployeeID    = str_pad( $WDPerson['employeeID'], 7, '0', STR_PAD_LEFT );
+		$WDEmployeeID    = $WDPerson['employeeID'];
 		$WDPrefFirstName = $WDPerson['preferredFirstName'];
 		$WDPrefLastName  = $WDPerson['preferredLastName'];
 

@@ -22,7 +22,8 @@
     heading: template_heading,
     paragraph: template_paragraph,
     image: post.meta('image'),
-    buttons: post.meta('buttons')
+    buttons: post.meta('buttons'),
+    from_page: true
   } %}
 {% else %}
   {% include 'hero.twig' with {
