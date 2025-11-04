@@ -29,7 +29,7 @@
                 </div>
             </h2>
             <ul
-                class="subpage-nav__items md:block py-4 md:py-0 border-t md:border-t-0 border-solid border-indigo-200 mt-0"
+                class="subpage-nav__items md:block py-4 md:py-0 border-t md:border-t-0 border-solid border-indigo-200 mt-0 md:mt-6"
                 :class="{ hidden: !menuOpen }"
             >
                 <li
