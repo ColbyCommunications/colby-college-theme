@@ -39,13 +39,13 @@
   {% endif %}
 {% endif %}
 
-{% set orientation = image_orientation ?? 'square' %}
+{% set orientation = image_orientation == 'default' ? '' : 'square' %}
 {% set image_size_key = {
   'landscape': 'Landscape',
   'portrait': 'Portrait',
   'rectangle': 'Rectangle',
   'square': 'Square'
-}[orientation]|default('Square') %}
+}[orientation] %}
 {% set sized_image_url = image.sizes[image_size_key] ?? image.url %}
 
 {% if wrapping_text == 'wrap' %}
