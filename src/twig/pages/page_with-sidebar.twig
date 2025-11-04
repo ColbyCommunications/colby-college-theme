@@ -45,6 +45,8 @@
       >
         {% include 'subpage-nav.twig' with {
           heading: alpha_parent.title,
+          parent_page_heading: alpha_parent.parent_page_heading,
+          parent_page_url: alpha_parent.parent_page_url,
           items: alpha_parent.children,
           menu_obj: alpha_parent.menu,
           parent_permalink: alpha_parent.permalink
