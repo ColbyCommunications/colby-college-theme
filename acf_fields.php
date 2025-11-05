@@ -6068,7 +6068,7 @@ acf_add_local_field_group( array(
 				'EDUC' => 'Education',
 				'ENGL' => 'English',
 				'ENVS' => 'Environmental Studies',
-				'GEOL' => 'Geology',
+				'ERSC' => 'Earth Sciences',
 				'GMRU' => 'German and Russian',
 				'GOVT' => 'Government',
 				'GLST' => 'Global Studies',
