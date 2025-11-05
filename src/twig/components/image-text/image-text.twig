@@ -39,7 +39,7 @@
   {% endif %}
 {% endif %}
 
-{% set orientation = image_orientation == 'default' ? '' : 'square' %}
+{% set orientation = image_orientation == 'default' or not image_orientation ? '' : image_orientation %}
 {% set image_size_key = {
   'landscape': 'Landscape',
   'portrait': 'Portrait',

@@ -32,13 +32,13 @@
 
   <figure class="inline-block">
     {% if image %}
-      {% set orientation = image_orientation ?? 'square' %}
+      {% set orientation = image_orientation == 'default' or not image_orientation ? '' : image_orientation %}
       {% set image_size_key = {
         'landscape': 'Landscape',
         'portrait': 'Portrait',
         'rectangle': 'Rectangle',
         'square': 'Square'
-      }[orientation]|default('Square') %}
+      }[orientation] %}
 
       {% set sized_image_url = image.sizes[image_size_key] ?? image.url %}
 
