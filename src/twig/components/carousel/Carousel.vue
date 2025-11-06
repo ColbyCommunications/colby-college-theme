@@ -202,7 +202,7 @@
                         />
                         <p
                             class="text-group__p font-body font-normal text-18 md:text-14 leading-130 text-left text-indigo-800 mt-2"
-                            v-text="paragraph"
+                            v-html="paragraph"
                         />
                     </div>
                     <div class="button-group flex flex-wrap gap-4">
@@ -341,7 +341,7 @@
                         />
                         <p
                             class="text-group__p font-body font-normal text-18 md:text-14 leading-130 text-left text-indigo-800 mt-2"
-                            v-text="paragraph"
+                            v-html="paragraph"
                         />
                     </div>
                     <div class="button-group flex flex-wrap gap-4">

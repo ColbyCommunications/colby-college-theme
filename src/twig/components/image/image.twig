@@ -32,7 +32,22 @@
 
   <figure class="inline-block">
     {% if image %}
-      <img src="{{ image['url'] }}" alt="{{ image['alt']|escape }}" style="width: {{image_width}}px;" />
+      {% set orientation = image_orientation == 'default' or not image_orientation ? '' : image_orientation %}
+      {% set image_size_key = {
+        'landscape': 'Landscape',
+        'portrait': 'Portrait',
+        'rectangle': 'Rectangle',
+        'square': 'Square'
+      }[orientation] %}
+
+      {% set sized_image_url = image.sizes[image_size_key] ?? image.url %}
+
+      <img 
+        src="{{ sized_image_url }}" 
+        alt="{{ image.alt|escape }}"
+        style="width: {{ image_width }}px;" 
+      />
+
       {% if media_caption %}
         <figcaption class="text-center text-indigo text-12 pt-2">{{ image['caption'] }}</figcaption>
       {% endif %}

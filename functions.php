@@ -1845,12 +1845,12 @@ function gravity_forms_buttons() {
 
 add_filter( 'gform_rich_text_editor_buttons', 'gravity_forms_buttons', 1, 1 );
 
-add_action( 'directory_sync', 'updateStaffDirectory' );
+// add_action( 'directory_sync', 'updateStaffDirectory' );
 
-if ( ! wp_next_scheduled( 'directory_sync' ) ) {
-	$time = strtotime( 'today' );
-	wp_schedule_event( $time, 'daily', 'directory_sync' );
-}
+// if ( ! wp_next_scheduled( 'directory_sync' ) ) {
+// 	$time = strtotime( 'today' );
+// 	wp_schedule_event( $time, 'daily', 'directory_sync' );
+// }
 
 // Disables WordPress partial match URL redirects
 add_filter( 'do_redirect_guess_404_permalink', 'stop_redirect_guess' );
@@ -2479,7 +2479,48 @@ function filter_image_pre_upload($file)
 
 add_filter('wp_handle_upload_prefilter', 'filter_image_pre_upload', 20);
 
+// Replace OpenGraph image with placeholder image if hide_photo is enabled.
+function alter_opengraph_image_for_person( $image ) {
+	if ( is_singular( 'people' ) ) {
+		$post_id = get_queried_object_id();
+		$hide_photo = get_post_meta( $post_id, 'hide_photo', true );
+		if ( $hide_photo == '1' ) {
+			$fallback_image_id = 11432;
+			$image_src = wp_get_attachment_image_src( $fallback_image_id, 'full' );
+			if ( $image_src && ! empty( $image_src[0] ) ) {
+				return $image_src[0];
+			}
+		}
+	}
+	return $image;
+}
+add_filter( 'wpseo_opengraph_image', 'alter_opengraph_image_for_person', 99 );
 
+// Remove ImageObject and thumbnailUrl from Yoast schema if hide_photo is enabled.
+add_filter( 'wpseo_schema_graph', function( $graph ) {
+	if ( is_singular( 'people' ) ) {
+		$post_id = get_queried_object_id();
+		$hide_photo = get_post_meta( $post_id, 'hide_photo', true );
+
+		if ( $hide_photo == '1' ) {
+			$graph = array_filter( $graph, function( $piece ) {
+				// Remove ImageObject types
+				return !( isset( $piece['@type'] ) && $piece['@type'] === 'ImageObject' );
+			} );
+
+			// Remove image references in WebPage
+			foreach ( $graph as &$piece ) {
+				if ( isset( $piece['@type'] ) && $piece['@type'] === 'WebPage' ) {
+					unset( $piece['thumbnailUrl'] );
+					unset( $piece['primaryImageOfPage'] );
+					unset( $piece['image'] );
+				}
+			}
+			unset( $piece );
+		}
+	}
+	return $graph;
+}, 11 );
 
 
 // Function 1: Gets the post IDs based on page category slug
@@ -2733,7 +2774,6 @@ if (defined('WP_CLI') && WP_CLI) {
     });
 }
 
-function mytheme_add_customizer_panels( $wp_customize ) {
 
     // --- Header Settings Panel ---
     $wp_customize->add_panel( 'colby_theme_settings_panel', array(
@@ -2926,3 +2966,77 @@ function post_shared_attributes( array $shared_attributes, WP_Post $post ) {
 }
 
 add_filter( 'algolia_searchable_post_shared_attributes', 'post_shared_attributes', 10, 2 );
+add_filter('map_meta_cap', function ($caps, $cap, $user_id, $args) {
+	/*
+ 	* This requires adding edit permissions for each of the parent pages up to the
+    * department, office, or section HP
+	*/
+	
+    // Which primitive caps are we going to block?
+    $caps_to_block = ['edit_post'];
+
+    if (!in_array($cap, $caps_to_block, true)) {
+        return $caps;
+    }
+
+    // Safety: ensure we have a post ID
+    $post_id = isset($args[0]) ? intval($args[0]) : 0;
+    if (!$post_id) {
+        return $caps;
+    }
+
+    // Only target PAGES (not posts or CPTs). Remove this check if you want posts/CPTs too.
+    if (get_post_type($post_id) !== 'page') {
+        return $caps;
+    }
+
+    // === CONFIGURE HERE ===
+    // Page IDs to protect
+    $protected_page_ids = [7436, 7441, 7443, 7439]; // <-- replace with your page IDs
+
+    // Roles to block from editing those pages
+    $blocked_roles = ['editor']; // e.g., block Editors and below
+    // ======================
+
+    if (!in_array($post_id, $protected_page_ids, true)) {
+        return $caps; // not a protected page
+    }
+
+    $user = get_userdata($user_id);
+    if (!$user || empty($user->roles)) {
+        return $caps;
+    }
+
+    // If the user has ANY of the blocked roles, deny
+    if (array_intersect($blocked_roles, (array) $user->roles)) {
+        // 'do_not_allow' ensures WP hard-stops the action with a permissions error
+        return ['do_not_allow'];
+    }
+
+    return $caps;
+}, 10, 4);
+
+add_filter('acf/fields/wysiwyg/toolbars', function( $toolbars ) {
+    $toolbars['limited'] = array();
+    $toolbars['limited'][1] = array('bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist');
+
+    $toolbars['full'] = array();
+    $toolbars['full'][1] = array('formatselect', 'bold', 'italic', 'underline', 'bullist', 'numlist', 'blockquote', 'alignleft', 'aligncenter', 'alignright', 'link', 'unlink', 'undo', 'redo', 'removeformat');
+
+    return $toolbars;
+});
+
+add_filter('tiny_mce_before_init', function($init){
+    // Make sure advlist is enabled so custom styles are respected
+    if (empty($init['plugins']) || strpos($init['plugins'], 'advlist') === false) {
+        $init['plugins'] .= ' advlist';
+    }
+
+    // Allowed bullet styles (only the normal disc bullet)
+    $init['advlist_bullet_styles'] = 'default';
+
+    // Allowed number styles (decimal + roman numerals)
+    $init['advlist_number_styles'] = 'default,lower-roman,upper-roman';
+
+    return $init;
+}, 20);
