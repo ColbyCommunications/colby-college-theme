@@ -2774,6 +2774,7 @@ if (defined('WP_CLI') && WP_CLI) {
     });
 }
 
+function mytheme_add_customizer_panels( $wp_customize ) {
 
     // --- Header Settings Panel ---
     $wp_customize->add_panel( 'colby_theme_settings_panel', array(
@@ -2967,6 +2968,7 @@ function post_shared_attributes( array $shared_attributes, WP_Post $post ) {
 
 add_filter( 'algolia_searchable_post_shared_attributes', 'post_shared_attributes', 10, 2 );
 add_filter('map_meta_cap', function ($caps, $cap, $user_id, $args) {
+
 	/*
  	* This requires adding edit permissions for each of the parent pages up to the
     * department, office, or section HP
