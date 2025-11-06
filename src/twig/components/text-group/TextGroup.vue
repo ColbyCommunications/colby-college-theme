@@ -67,8 +67,15 @@
                 offset: 'bottom-in-view',
             });
         },
+        beforeUnmount() {
+            if (this.waypoint && typeof this.waypoint.destroy === 'function') {
+                this.waypoint.destroy();
+            }
+        },
         methods: {
             animateSubheading() {
+                if (!this.$refs.container) return;
+
                 const target = this.$refs.container.querySelectorAll(
                     '.text-group__subheading > .word-wrap'
                 );
@@ -84,7 +91,10 @@
                     },
                 });
             },
+
             animateHeading() {
+                if (!this.$refs.container) return;
+
                 const target = this.$refs.container.querySelectorAll('.text-group__heading span');
 
                 gsap.to(target, {
@@ -95,7 +105,10 @@
                     ease: 'power3.easeInOut',
                 });
             },
+
             animateParagraph() {
+                if (!this.$refs.container) return;
+
                 const target = this.$refs.container.querySelectorAll('p');
 
                 gsap.to(target, {
