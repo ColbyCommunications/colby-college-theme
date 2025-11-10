@@ -45,7 +45,7 @@
   class="context-article-grid space-y-20"
   subheading="{{ subheading }}"
   heading="{{ heading }}"
-  paragraph="{{ paragraph }}"
+  paragraph="{{ paragraph|e('html_attr') }}"
   :render-api="{{ render_api|json_encode }}"
   api="{{ api }}"
   :per-page="{{ per_page }}"
