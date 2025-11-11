@@ -18,7 +18,7 @@
                         <h2
                             class="text-group__heading font-extended font-normal text-28 md:text-36 leading-100 -tracking-3 text-left text-indigo mt-2"
                             v-html="heading"
-                        ></h2
+                        />
                         <p
                             class="text-group__p font-body font-normal text-18 md:text-18 leading-130 text-left text-indigo-800 mt-2"
                             v-text="paragraph"
@@ -511,10 +511,7 @@
                                 },
                                 'post-meta-fields': {
                                     primary_category: '',
-                                    summary: [
-                                        `${item.content.rendered
-                                            .substring(0, 120)}...`,
-                                    ],
+                                    summary: [`${item.content.rendered.substring(0, 120)}...`],
                                 },
                                 guid: {
                                     // use item.external_url for faculty accomplishments instead of item.guid.rendered
