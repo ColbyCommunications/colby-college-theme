@@ -292,7 +292,7 @@
                                                     'mt-2': item['post-meta-fields']
                                                         .primary_category,
                                                 }"
-                                                v-text="decodeHtmlEntities(item.title.rendered)"
+                                                v-html="decodeHtmlEntities(item.title.rendered)"
                                             />
                                             <p
                                                 class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
@@ -431,7 +431,7 @@
                                                     'mt-2': item['post-meta-fields']
                                                         .primary_category,
                                                 }"
-                                                v-html="item.title.rendered"
+                                                v-html="decodeHtmlEntities(item.title.rendered)"
                                             />
                                             <p
                                                 class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
@@ -490,7 +490,7 @@
                         break;
                     case 'Faculty Accomplishments':
                         this.endpoint =
-                            'https://news.colby.edu/wp-json/wp/v2/external_post?story_type_slug=faculty-accomplishments&per_page=5&_embed=1';
+                            'https://news.colby.edu/wp/v2/external_post?story_type_slug=faculty-accomplishments&per_page=5&_embed=1';
                         this.subheading = this.api;
                         break;
                 }
