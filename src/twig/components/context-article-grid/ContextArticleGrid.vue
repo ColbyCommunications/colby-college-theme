@@ -21,7 +21,7 @@
                         <p
                             v-if="paragraph"
                             class="text-group__p font-body font-normal text-18 md:text-16 leading-130 text-center text-indigo-800 mt-2"
-                            v-text="paragraph"
+                            v-html="paragraph"
                         />
                     </div>
                 </div>
