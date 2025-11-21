@@ -25,22 +25,21 @@
             },
         },
         mounted() {
-            if (
-                this.openByDefault &&
-                this.$refs.accordion.querySelector('[data-accordion-panel]')
-            ) {
+            const firstPanel = this.$refs.accordion
+                ? this.$refs.accordion.querySelector('[data-accordion-panel]')
+                : null;
+            if (this.openByDefault && this.$refs.accordion && firstPanel) {
                 this.active.push(0);
-
                 this.$nextTick(() => {
-                    const firstPanel = this.$refs.accordion.querySelector('[data-accordion-panel]');
-                    const windowEl = firstPanel.querySelector('[data-accordion-window]');
-                    const content = firstPanel.querySelector('[data-accordion-content]');
-
-                    if (windowEl && content) {
-                        windowEl.setAttribute(
-                            'style',
-                            `height: ${content.offsetHeight}px; visibility: visible;`
-                        );
+                    if (this.$refs.accordion && firstPanel) {
+                        const windowEl = firstPanel.querySelector('[data-accordion-window]');
+                        const content = firstPanel.querySelector('[data-accordion-content]');
+                        if (windowEl && content) {
+                            windowEl.setAttribute(
+                                'style',
+                                `height: ${content.offsetHeight}px; visibility: visible;`
+                            );
+                        }
                     }
                 });
             }
