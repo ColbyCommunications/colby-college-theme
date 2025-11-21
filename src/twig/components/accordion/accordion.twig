@@ -13,6 +13,7 @@
   {% if single %}
     :single="{{ single }}"
   {% endif %}
+    :open-by-default="{{ open_by_default ? 'true' : 'false' }}"
 >
   <div class="colby-accordion-block border-b border-gray-300">
     {% for item in panels %}
