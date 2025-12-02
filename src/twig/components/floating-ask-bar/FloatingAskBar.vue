@@ -1,14 +1,47 @@
 <template>
-  <div
-    role="search"
-    aria-label="Site search"
-      class="fixed left-1/2 bottom-[calc(1rem+env(safe-area-inset-bottom))] -translate-x-1/2 z-50 transition-all duration-500 ease-in-out"
-      :class="showAnswer ? 'w-[min(500px,calc(100vw-2rem))] sm:w-[min(500px,65vw)]' : isExpanded ? 'w-[min(405px,calc(100vw-2rem))] sm:w-[min(405px,52vw)]' : 'w-[min(320px,calc(100vw-2rem))] sm:w-80'"
-  >
-    <!-- Answer Modal -->
-    <div
-      v-if="showAnswer"
-      class="absolute bottom-full left-0 right-0 mb-4 p-4 rounded-2xl border border-white/30 transition-all duration-500 ease-out transform-gpu"
+  <div ref="containerRef">
+    <!-- Collapsed Question Mark Button -->
+    <Transition name="fab">
+      <button
+        v-if="isCollapsed"
+        @click.stop="expandAskBar"
+        class="fixed right-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-50 group flex items-center justify-center w-12 h-12 rounded-full border border-white/20 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-105 hover:border-white/40 active:scale-[0.97]"
+        :style="{
+          background: 'rgba(0, 0, 0, 0.4)',
+          backdropFilter: 'blur(24px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 0 0.5px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
+        }"
+        aria-label="Ask a question"
+      >
+        <!-- Inner highlight -->
+        <span 
+          class="absolute inset-0 rounded-full pointer-events-none"
+          :style="{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%)'
+          }"
+        ></span>
+        
+        <!-- Question Mark -->
+        <span 
+          class="relative text-white text-2xl font-medium transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110"
+          style="text-shadow: 0 2px 8px rgba(0,0,0,0.3); font-family: 'Libre Franklin', sans-serif; line-height: 1;"
+        >?</span>
+      </button>
+    </Transition>
+
+    <!-- Expanded Ask Bar -->
+    <Transition name="askbar">
+      <div 
+        v-if="!isCollapsed" 
+        class="fixed left-1/2 bottom-[calc(1rem+env(safe-area-inset-bottom))] -translate-x-1/2 z-50 transition-[width] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+        :class="showAnswer ? 'w-[min(500px,calc(100vw-2rem))] sm:w-[min(500px,65vw)]' : 'w-[min(405px,calc(100vw-2rem))] sm:w-[min(405px,52vw)]'"
+      >
+        <!-- Answer Modal -->
+        <div
+          v-if="showAnswer"
+          @click.stop
+      class="absolute bottom-full left-0 right-0 mb-4 p-4 rounded-2xl border border-white/30 transition-[transform,opacity,border-color] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu"
       :class="showAnswer ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95'"
       :style="{
         background: 'rgba(0, 0, 0, 0.5)',
@@ -17,8 +50,19 @@
         boxShadow: '0px 20px 80px rgba(0, 0, 0, 0.8), 0 0 0 0.5px rgba(255, 255, 255, 0.5) inset, 0 1px 3px rgba(255, 255, 255, 0.25) inset'
       }"
     >
+      <!-- Close button -->
+      <button
+        @click="closeAnswer"
+        class="absolute top-3 right-3 w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors z-10"
+        style="touch-action: manipulation;"
+      >
+        <svg class="w-3.5 h-3.5 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
       <!-- Loading Skeletons -->
-      <div v-if="isLoading" class="space-y-3 min-h-[8rem]">
+      <div v-if="isLoading" class="space-y-3 min-h-[8rem] pr-10">
         <div class="h-4 bg-white/20 rounded skeleton-wave skeleton-1"></div>
         <div class="h-4 bg-white/20 rounded skeleton-wave skeleton-1 w-4/5"></div>
         <div class="h-4 bg-white/20 rounded skeleton-wave skeleton-1 w-3/4"></div>
@@ -27,29 +71,20 @@
       </div>
       
       <!-- Answer Content -->
-      <div v-else class="text-white text-xs leading-relaxed min-h-[8rem] max-h-[20rem] overflow-y-auto transition-all duration-300" :style="{ textShadow: '0px 2px 8px rgba(0, 0, 0, 0.8)' }">
+      <div v-else class="text-white text-sm leading-relaxed min-h-[8rem] max-h-[20rem] overflow-y-auto pr-10" :style="{ textShadow: '0px 1px 3px rgba(0, 0, 0, 0.5)' }">
         <p v-if="displayedTitle" class="mb-2 font-medium">{{ displayedTitle }}</p>
-        <div class="text-white/90 prose prose-invert max-w-none">
+        <div class="text-white/90">
           <div v-html="processedContent"></div>
         </div>
       </div>
-      
-      <!-- Close button -->
-      <button
-        @click="closeAnswer"
-        class="absolute top-2 right-2 w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-        style="touch-action: manipulation;"
-      >
-        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
     </div>
     <form
       @submit.prevent="handleSubmit"
-      class="group relative flex items-center gap-3 rounded-full border border-white/30 transition-all duration-500 ease-in-out overflow-hidden hover-scale"
+      @click.stop
+      class="group relative flex items-center gap-3 rounded-full border border-white/30 transition-[transform,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden hover-scale"
       :class="[
         showAnswer && 'answer-active',
+        (isExpanded || query.trim()) && 'input-active',
         animationClass
       ]"
       :style="{
@@ -123,6 +158,8 @@
         </svg>
       </button>
     </form>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -147,6 +184,7 @@ export default {
     return {
       query: '',
       animationClass: 'animate-fade-in-up',
+      isCollapsed: true,
       isExpanded: false,
       showAnswer: false,
       isLoading: false,
@@ -190,6 +228,9 @@ export default {
     setTimeout(() => {
       this.animationClass = 'opacity-100 translate-y-0';
     }, 100);
+    
+    // Add click outside listener
+    document.addEventListener('click', this.handleClickOutside);
   },
   beforeUnmount() {
     // Clean up any ongoing requests
@@ -197,8 +238,36 @@ export default {
       this.abortController.abort();
     }
     this.clearStreaming();
+    
+    // Remove click outside listener
+    document.removeEventListener('click', this.handleClickOutside);
   },
   methods: {
+    expandAskBar() {
+      this.isCollapsed = false;
+      this.isExpanded = true;
+      // Focus the input after the DOM updates
+      this.$nextTick(() => {
+        this.$refs.inputRef?.focus();
+      });
+    },
+    collapseAskBar() {
+      // Only collapse if no query text and no answer showing
+      if (!this.query.trim() && !this.showAnswer) {
+        this.isCollapsed = true;
+        this.isExpanded = false;
+      }
+    },
+    handleClickOutside(event) {
+      // Don't collapse if already collapsed
+      if (this.isCollapsed) return;
+      
+      // Check if click was outside the container
+      const container = this.$refs.containerRef;
+      if (container && !container.contains(event.target)) {
+        this.collapseAskBar();
+      }
+    },
     handleSubmit() {
       if (this.query.trim()) {
         this.showAnswerModal();
@@ -222,22 +291,8 @@ export default {
       } catch (error) {
         console.error('API Error:', error);
         this.isLoading = false;
-        this.answerTitle = 'Error';
-        
-        // Provide more specific error messages for debugging
-        let errorMessage = 'Sorry, there was an error processing your request.';
-        
-        if (error.message.includes('Failed to fetch') || error.name === 'TypeError') {
-          errorMessage = 'Network error: Unable to connect to the API. Check if ngrok is running and the URL is correct.';
-        } else if (error.message.includes('404')) {
-          errorMessage = 'API endpoint not found (404). Please check that the /ask/stream endpoint exists and the URL is correct.';
-        } else if (error.message.includes('CORS')) {
-          errorMessage = 'CORS error: The API server needs to allow requests from this domain.';
-        } else {
-          errorMessage += ' Error: ' + error.message;
-        }
-        
-        this.answerContent = errorMessage;
+        this.answerTitle = '';
+        this.answerContent = 'Something went wrong. Please try again later.';
         this.startStreaming();
       }
     },
@@ -346,6 +401,11 @@ export default {
       this.answerContent = '';
       this.displayedTitle = '';
       this.displayedContent = '';
+      this.query = '';
+      
+      // Collapse back to question mark
+      this.isCollapsed = true;
+      this.isExpanded = false;
     },
     handleFocus() {
       this.isExpanded = true;
@@ -399,8 +459,31 @@ export default {
     processMarkdown(text) {
       if (!text) return '';
       
-      let processed = text
-        // Convert [source] links to clipboard icon with punctuation
+      // Store code blocks to protect them from other transformations
+      const codeBlocks = [];
+      const inlineCodes = [];
+      
+      let processed = text;
+      
+      // 1. Extract and protect code blocks first (```code```)
+      processed = processed.replace(/```(\w*)\n?([\s\S]*?)```/g, (match, lang, code) => {
+        const index = codeBlocks.length;
+        codeBlocks.push({ lang, code: code.trim() });
+        return `__CODE_BLOCK_${index}__`;
+      });
+      
+      // 2. Extract and protect inline code (`code`)
+      processed = processed.replace(/`([^`]+)`/g, (match, code) => {
+        const index = inlineCodes.length;
+        inlineCodes.push(code);
+        return `__INLINE_CODE_${index}__`;
+      });
+      
+      // 3. Convert images ![alt](url) - before links
+      processed = processed.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg my-2">');
+      
+      // 4. Convert [source] links to clipboard icon with punctuation
+      processed = processed
         .replace(/\[source\]\(([^)]+)\)([.,!?;:])/gi, '<a href="$1" target="_blank" rel="noopener noreferrer" class="inline text-blue-300 hover:text-blue-200 transition-colors mx-0.5" title="View source" style="display: inline; vertical-align: middle;"><span style="display: inline-flex; align-items: center; background: rgba(0, 0, 0, 0.3); border-radius: 4px; padding: 2px 4px;"><svg style="width: 14px; height: 14px; display: block;" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></span></a>$2')
         // Convert remaining [source] links (without trailing punctuation)
         .replace(/\[source\]\(([^)]+)\)/gi, '<a href="$1" target="_blank" rel="noopener noreferrer" class="inline text-blue-300 hover:text-blue-200 transition-colors mx-0.5" title="View source" style="display: inline; vertical-align: middle;"><span style="display: inline-flex; align-items: center; background: rgba(0, 0, 0, 0.3); border-radius: 4px; padding: 2px 4px;"><svg style="width: 14px; height: 14px; display: block;" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></span></a>')
@@ -411,20 +494,86 @@ export default {
         // Convert markdown links [text](url) to HTML links with spacing after punctuation
         .replace(/\[([^\]]+)\]\(([^)]+)\)([.,!?;:])/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline">$1</a>$3 ')
         // Convert remaining markdown links (without trailing punctuation)
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline">$1</a> ')
-        // Convert bold text **text** to HTML bold
-        .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold">$1</strong>')
-        // Add space after punctuation if followed by newline and capital letter (new sentence)
-        .replace(/([.,!?;:])\n([A-Z])/g, '$1 $2')
-        // Convert remaining single line breaks to <br> with spacing
-        .replace(/\n/g, '<br class="mb-3">')
-        // Style the cursor to make it blink
-        .replace(/\|$/, '<span class="inline-block animate-pulse ml-0.5 font-bold">|</span>');
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-300 hover:text-blue-200 underline">$1</a> ');
       
-      // Wrap in a div for proper spacing
-      processed = '<div class="space-y-2">' + processed + '</div>';
+      // 5. Convert headings (process before other formatting)
+      processed = processed
+        .replace(/^### (.+)$/gm, '<h3 class="text-base font-semibold mt-3 mb-1.5 text-white">$1</h3>')
+        .replace(/^## (.+)$/gm, '<h2 class="text-lg font-semibold mt-4 mb-2 text-white">$1</h2>')
+        .replace(/^# (.+)$/gm, '<h1 class="text-xl font-bold mt-4 mb-2 text-white">$1</h1>');
+      
+      // 6. Convert horizontal rules (---, ***, ___)
+      processed = processed.replace(/^(-{3,}|\*{3,}|_{3,})$/gm, '<hr class="border-white/20 my-3">');
+      
+      // 7. Convert blockquotes (> text)
+      processed = processed.replace(/^> (.+)$/gm, '<blockquote class="border-l-2 border-blue-400 pl-3 my-2 text-white/80 italic">$1</blockquote>');
+      
+      // 8. Convert text formatting (order matters: bold+italic, then bold, then italic)
+      processed = processed
+        // Bold + Italic (***text*** or ___text___)
+        .replace(/\*\*\*([^*]+)\*\*\*/g, '<strong class="font-semibold"><em class="italic">$1</em></strong>')
+        .replace(/___([^_]+)___/g, '<strong class="font-semibold"><em class="italic">$1</em></strong>')
+        // Bold (**text** or __text__)
+        .replace(/\*\*([^*]+)\*\*/g, '<strong class="font-semibold">$1</strong>')
+        .replace(/__([^_]+)__/g, '<strong class="font-semibold">$1</strong>')
+        // Italic (*text* or _text_) - use word boundaries to avoid matching underscores in words
+        .replace(/\*([^*\n]+)\*/g, '<em class="italic">$1</em>')
+        .replace(/\b_([^_\n]+)_\b/g, '<em class="italic">$1</em>');
+      
+      // 9. Convert strikethrough (~~text~~)
+      processed = processed.replace(/~~([^~]+)~~/g, '<del class="line-through text-white/60">$1</del>');
+      
+      // 10. Convert highlighted/marked text (==text==)
+      processed = processed.replace(/==([^=]+)==/g, '<mark class="bg-yellow-500/30 px-0.5 rounded text-white">$1</mark>');
+      
+      // 11. Convert lists
+      // Numbered lists (1. item, 2. item)
+      processed = processed.replace(/^(\d+)\.\s+(.+)$/gm, '<div class="flex ml-2"><span class="mr-2 text-white/70 min-w-[1.5em]">$1.</span><span>$2</span></div>');
+      // Bullet points (- item or * item)
+      processed = processed.replace(/^[-*]\s+(.+)$/gm, '<div class="flex ml-2"><span class="mr-2 text-white/70">•</span><span>$1</span></div>');
+      
+      // 12. Collapse multiple newlines into double line break
+      processed = processed.replace(/\n{3,}/g, '\n\n');
+      
+      // 13. Convert double line breaks to paragraph break
+      processed = processed.replace(/\n\n/g, '</p><p class="mt-2">');
+      
+      // 14. Convert single line breaks to space (for wrapped text)
+      processed = processed.replace(/\n/g, ' ');
+      
+      // 14. Restore inline code
+      inlineCodes.forEach((code, index) => {
+        processed = processed.replace(
+          `__INLINE_CODE_${index}__`,
+          `<code class="bg-white/10 px-1.5 py-0.5 rounded text-[11px] font-mono text-blue-200">${this.escapeHtml(code)}</code>`
+        );
+      });
+      
+      // 15. Restore code blocks
+      codeBlocks.forEach((block, index) => {
+        processed = processed.replace(
+          `__CODE_BLOCK_${index}__`,
+          `<pre class="bg-white/10 p-3 rounded-lg overflow-x-auto my-2 text-[11px]"><code class="font-mono text-blue-100">${this.escapeHtml(block.code)}</code></pre>`
+        );
+      });
+      
+      // 16. Style the cursor to make it blink
+      processed = processed.replace(/\|$/, '<span class="inline-block animate-pulse ml-0.5 font-bold">|</span>');
+      
+      // Wrap content in paragraph structure
+      processed = '<p>' + processed + '</p>';
+      
+      // Clean up empty paragraphs
+      processed = processed.replace(/<p><\/p>/g, '');
+      processed = processed.replace(/<p>\s*<\/p>/g, '');
       
       return processed;
+    },
+    
+    escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
     }
   },
   emits: ['submit']
@@ -432,17 +581,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.animate-fade-in-up {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.3s ease-out forwards;
+/* FAB button transitions - simple fade */
+.fab-enter-active {
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.fab-leave-active {
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.fab-enter-from,
+.fab-leave-to {
+  opacity: 0;
+}
+
+/* Askbar transitions - slide from right (no opacity to preserve backdrop-filter) */
+.askbar-enter-active {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.askbar-leave-active {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 1, 1), 
+              opacity 0.2s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.askbar-enter-from {
+  transform: translateX(80px);
+}
+
+.askbar-leave-to {
+  opacity: 0;
+  transform: translateX(80px);
 }
 
 /* Ensure backdrop blur works properly */
@@ -560,13 +729,15 @@ export default {
 
 /* Only apply hover zoom on devices with hover capability (not touch devices) */
 @media (hover: hover) and (pointer: fine) {
-  .hover-scale:hover:not(.answer-active) {
+  .hover-scale:hover:not(.answer-active):not(.input-active) {
     transform: scale(1.05);
   }
 }
 
-/* Ensure no transform when answer is active */
-.answer-active {
+/* Ensure no transform when answer is active or input has focus/text */
+.answer-active,
+.input-active {
   transform: scale(1);
 }
+
 </style>
