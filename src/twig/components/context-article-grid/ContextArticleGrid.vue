@@ -64,11 +64,11 @@
                                 />
                                 <h2
                                     class="text-group__heading font-extended font-normal text-20 leading-110 -tracking-3 text-left text-indigo mt-2"
-                                    v-text="decodeHtmlEntities(item.title.rendered)"
+                                    v-html="item.title.rendered"
                                 />
                                 <p
                                     class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
-                                    v-text="decodeHtmlEntities(item['post-meta-fields'].summary[0])"
+                                    v-html="item['post-meta-fields'].summary[0]"
                                 />
                             </div>
                             <div class="button-group flex flex-wrap gap-4">
@@ -119,7 +119,27 @@
                 }
 
                 await axios.get(this.endpoint).then((outputa) => {
-                    this.featuredNews = outputa.data.slice(0, 6);
+                    const parser = new DOMParser();
+
+                    const decodedNews = outputa.data.slice(0, 6).map((item) => {
+                        const decode = (html) => {
+                            if (typeof html !== 'string') return html;
+                            const doc = parser.parseFromString(html, 'text/html');
+                            return doc.documentElement.textContent;
+                        };
+
+                        item.title.rendered = decode(item.title.rendered);
+
+                        if (item['post-meta-fields']?.summary?.[0]) {
+                            item['post-meta-fields'].summary[0] = decode(
+                                item['post-meta-fields'].summary[0]
+                            );
+                        }
+
+                        return item;
+                    });
+
+                    this.featuredNews = decodedNews;
                 });
             }
         },
@@ -155,12 +175,6 @@
                 type: Number,
                 required: false,
                 default: 3,
-            },
-        },
-        methods: {
-            decodeHtmlEntities(input) {
-                const doc = new DOMParser().parseFromString(input, 'text/html');
-                return doc.documentElement.textContent;
             },
         },
     };
