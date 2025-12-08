@@ -178,6 +178,25 @@ export default {
     apiUrl: {
       type: String,
       default: null
+    },
+    sources: {
+      type: Array,
+      default: null
+    },
+    sourceHostMap: {
+      type: Object,
+      default: () => ({
+        'afa.colby.edu': 'Admissions',
+        'alumni.colby.edu': 'Advancement',
+        'life.colby.edu': 'Campus Life',
+        'jewishlife.colby.edu': 'Center for Small Town Jewish Life',
+        'cah.colby.edu': 'Center for the Arts and Humanities',
+        'arts.colby.edu': 'Colby Arts',
+        'davisinstituteai.colby.edu': 'Davis Institute for Artificial Intelligence',
+        'davisconnects.colby.edu': 'DavisConnects',
+        'libraries.colby.edu': 'Libraries',
+        'museum.colby.edu': 'Museum'
+      })
     }
   },
   data() {
@@ -199,23 +218,21 @@ export default {
   },
   computed: {
     effectiveApiUrl() {
-      // 1. Use prop if explicitly provided
-      if (this.apiUrl) {
-        return this.apiUrl;
-      }
-      
-      // 2. Production: use relative path to chatbot-api
-      if (window.location.hostname.includes('colby.edu')) {
-        return '/chatbot-api';
-      }
-      
-      // 3. Platform.sh preview environment (contains platformsh.site)
-      if (window.location.hostname.includes('platformsh.site')) {
-        return '/chatbot-api';
-      }
-      
-      // 4. Local development
+      if (this.apiUrl) return this.apiUrl;
+      if (window.location.hostname.includes('colby.edu')) return '/chatbot-api';
+      if (window.location.hostname.includes('platformsh.site')) return '/chatbot-api';
       return 'http://localhost:7777';
+    },
+    effectiveSources() {
+      // Use explicit prop if provided
+      if (this.sources) return this.sources;
+      
+      // Detect source from hostname (subdomain)
+      const host = window.location.hostname.toLowerCase();
+      if (this.sourceHostMap[host]) {
+        return [this.sourceHostMap[host]];
+      }
+      return null;
     },
     processedContent() {
       // Append cursor before markdown processing so it stays inline
@@ -312,7 +329,7 @@ export default {
             'Content-Type': 'application/json',
             'ngrok-skip-browser-warning': 'true'
           },
-          body: JSON.stringify({ message: message }),
+          body: JSON.stringify({ message: message, sources: this.effectiveSources }),
           signal: this.abortController.signal
         });
         
