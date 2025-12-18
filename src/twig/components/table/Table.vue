@@ -437,6 +437,16 @@
                             const deptItems = items.filter(
                                 (item) => item.dept == this.departmentCode && item.longTitle
                             );
+
+                            // Sort alphabetically by longTitle
+                            deptItems.sort((a, b) => {
+                                const titleA = a.longTitle.toUpperCase();
+                                const titleB = b.longTitle.toUpperCase();
+                                if (titleA < titleB) return -1;
+                                if (titleA > titleB) return 1;
+                                return 0;
+                            });
+
                             this.items = deptItems.map((item) => {
                                 let itemTypes = _uniq(_map(item.sections, 'sessOffered'));
                                 itemTypes.forEach((type, index) => {
