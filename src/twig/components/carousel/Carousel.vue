@@ -490,7 +490,7 @@
                         break;
                     case 'Faculty Accomplishments':
                         this.endpoint =
-                            'https://news.colby.edu/wp/v2/external_post?story_type_slug=faculty-accomplishments&per_page=5&_embed=1';
+                            'https://news.colby.edu/wp-json/wp/v2/external_post?story_type_slug=faculty-accomplishments&per_page=5&_embed=1';
                         this.subheading = this.api;
                         break;
                 }
