@@ -401,7 +401,7 @@
                 }
                 await axios.get(this.endpoint).then((outputa) => {
                     const lookup = _groupBy(outputa.data.data, 'secCrsNo');
-                    console.log(lookup);
+
                     let items = [];
                     switch (this.api) {
                         case 'Department Courses':
