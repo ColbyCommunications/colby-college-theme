@@ -1430,9 +1430,10 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 function updateStaffDirectory() {
 	if ( ! is_admin() ) {
 		$directory_data = json_decode( file_get_contents( WP_CONTENT_DIR . '/directory_data/Colby_Directory_Webservice_Output.json' ), true )['Report_Entry'];
+		$directory_course_data = json_decode( file_get_contents( WP_CONTENT_DIR . '/directory_data/Colby_Directory_FacCrs_Webservice_Output.json' ), true )['Report_Entry'];
 		// $directory_data = json_decode(file_get_contents(WP_CONTENT_DIR . "/directory_data/Colby_Directory_Webservice_Output.json"), true)['Report_Entry'];
 		deletePeople( $directory_data );
-		getNewPeople( $directory_data );
+		getNewPeople( $directory_data, $directory_course_data );
 	}
 }
 // herexyz
@@ -1479,7 +1480,7 @@ require_once ABSPATH . 'wp-admin/includes/media.php';
 require_once ABSPATH . 'wp-admin/includes/file.php';
 require_once ABSPATH . 'wp-admin/includes/image.php';
 
-function getNewPeople( $directory_data ) {
+function getNewPeople( $directory_data, $course_data ) {
 
 	$sftp = new SFTP( 'colby0.colby.edu' );
 	$sftp->login( PLATFORM_VARIABLES['sftp_username'], PLATFORM_VARIABLES['sftp_pw'] );
@@ -1553,27 +1554,42 @@ function getNewPeople( $directory_data ) {
 			$WDIsRetiree = 1;
 		}
 
-		// Set api endpoint url with $emailSlug
-		$url = 'https://www.colby.edu/endpoints/v1/profile/' . $emailSlug;
+		// [{"crs":"AY257","sec":"A","title":"Anthropology of Slowness"}]
 
-		// Initialize a CURL session.
-		$ch = curl_init();
-		// Return Page contents.
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-		// grab URL and pass it to the variable.
-		curl_setopt( $ch, CURLOPT_URL, $url );
-		$CXPerson = json_decode( curl_exec( $ch ), true );
+		$WDCourses = '';
 
-		$CXCourses = '';
+		$filteredCourses = array_filter($course_data, function($course) use ($WDEmployeeID) {
+    
+			// Loop through the instgroup (in case there are multiple instructors)
+			foreach ($course['instgroup'] as $instructor) {
+				// Check if this instructor matches our target
+				if ($instructor['employeeID'] === $WDEmployeeID) {
+					return true; // Keep this course
+				}
+			}
+			
+			return false; // No match found, discard this course
+		});
 
-		if ( isset( $CXPerson['courses'] ) ) {
-			$CXCourses = $CXPerson['courses'];
+		if ((count($filteredCourses) > 0)) {
+			$filteredCourses = array_values($filteredCourses);
+
+			$WDCourses = array_map(function($course) {
+				return [
+					// "AA 125" -> "AA125" (Removing space to match your 'AY257' example format)
+					'crs'   => str_replace(' ', '', $course['courseNumber']),
+					
+					// "A" -> "A"
+					'sec'   => $course['sectionNumber'],
+					
+					// "Introduction to..." -> "Introduction to..."
+					'title' => $course['sectionTitle']
+				];
+			}, $filteredCourses);
 		}
 
-		$CXMailing = '';
-		if ( isset( $CXPerson['box'] ) && $CXPerson['box'] ) {
-			$CXMailing = $CXPerson['box'] . " Mayflower Hill \nWaterville, Maine 04901-8853";
-		}
+
+		$WDMailing = $WDPerson['boxNumber'] . " Mayflower Hill \nWaterville, Maine 04901-8853";
 
 		$args = array(
 			'numberposts' => -1,
@@ -1605,9 +1621,9 @@ function getNewPeople( $directory_data ) {
 				'email'            => $WDEmail,
 				'building'         => $WDBuilding,
 				'curriculum_vitae' => '',
-				'current_courses'  => json_encode( $CXCourses ),
+				'current_courses'  => json_encode( $WDCourses ),
 				'fax'              => $WDFax,
-				'mailing_address'  => $CXMailing,
+				'mailing_address'  => $WDMailing,
 				'is_retiree'	=> $WDIsRetiree
 			),
 		);
