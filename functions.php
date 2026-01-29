@@ -1563,7 +1563,7 @@ function getNewPeople( $directory_data, $course_data ) {
 			// Loop through the instgroup (in case there are multiple instructors)
 			foreach ($course['instgroup'] as $instructor) {
 				// Check if this instructor matches our target
-				if ($instructor['employeeID'] === $WDEmployeeID) {
+				if ($instructor && $instructor['employeeID'] === $WDEmployeeID) {
 					return true; // Keep this course
 				}
 			}
@@ -1663,8 +1663,8 @@ function getNewPeople( $directory_data, $course_data ) {
 			update_post_meta( $ID, 'title', $WDTitle );
 
 			// Update courses metadata with latest courses from CX
-			if ( $CXCourses ) {
-				update_post_meta( $ID, 'current_courses', json_encode( $CXCourses ) );
+			if ( $WDCourses ) {
+				update_post_meta( $ID, 'current_courses', json_encode( $WDCourses ) );
 			}
 
 			// Update metadata for fields not changed in Gravity Forms with latest WD data
@@ -1686,7 +1686,7 @@ function getNewPeople( $directory_data, $course_data ) {
 			update_post_meta( $ID, 'phone', $WDPhone );
 			update_post_meta( $ID, 'building', $WDBuilding );
 			update_post_meta( $ID, 'fax', $WDFax );
-			update_post_meta( $ID, 'mailing_address', $CXMailing );
+			update_post_meta( $ID, 'mailing_address', $WDMailing );
 			update_post_meta( $ID, 'pronouns', $wd_pronouns );
 			update_post_meta( $ID, 'is_retiree', $WDIsRetiree );
 
