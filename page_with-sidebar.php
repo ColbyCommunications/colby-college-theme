@@ -22,27 +22,36 @@
  * @since    Timber 0.1
  */
 
-$context = Timber::context();
+ $context = Timber::context();
 
-$timber_post            = Timber::get_post();
-$context['post']        = $timber_post;
-$context['page_blocks'] = parse_blocks( $timber_post->post_content );
-
+ $timber_post            = Timber::get_post();
+ $context['post']        = $timber_post;
+ $context['page_blocks'] = parse_blocks( $timber_post->post_content );
+ 
+// $is_root = false;
+// $is_root_plus_1 = false;
 if ( has_term( array( 'department', 'office', 'site' ), 'page-categories' ) ) {
 	$parent = $post->ID;
+	// $is_root = true;
 } else {
 	if ( $post->post_parent ) {
 		$ancestors = get_post_ancestors( $post->ID );
 
 		$ancestor_found = false;
 
-		foreach ( $ancestors as $ancestor ) {
+		foreach ( $ancestors as $key => $ancestor ) {
 			if ( has_term( array( 'department', 'office', 'site' ), 'page-categories', $ancestor ) ) {
-				$parent         = $ancestor;
+				$parent = $ancestor;
 				$ancestor_found = true;
+				// if($key === 0) {
+				// 	$is_root_plus_1 = true;
+				// }
+				break;
 			}
 		}
+		
 
+		// Final fallback: use the root ancestor
 		if ( ! $ancestor_found ) {
 			$root   = count( $ancestors ) - 1;
 			$parent = $ancestors[ $root ];
@@ -51,12 +60,54 @@ if ( has_term( array( 'department', 'office', 'site' ), 'page-categories' ) ) {
 		$parent = $post->ID;
 	}
 }
+ 
 
 if ( has_term( 'office', 'page-categories' ) && !has_term( 'site', 'page-categories' )) {
 	$template = 'single-office.twig';
 } else {
 	$template = 'page_with-sidebar.twig';
 }
+
+$menu_items = wp_get_nav_menu_items( 'People Menu' );
+
+// uncomment to use new parent page with subpages look
+// if ( get_post( $post->post_parent )->post_name == 'people' ) {
+// 	$menu_items = wp_get_nav_menu_items( 'People Menu' );
+
+// 	$parent_map = array(
+// 		'id'        => $parent,
+// 		'title'     => get_the_title( $parent ),
+// 		'permalink' => get_permalink( $parent ),
+// 		'children'  => $menu_items,
+// 		'menu'      => true,
+// 	);
+// } else if ($is_root || $is_root_plus_1) {
+// 	$parent_map = array(
+// 		'id'        => $parent,
+// 		'title'     => get_the_title( $parent ),
+// 		'permalink' => get_permalink( $parent ),
+// 		'children'  => get_pages(
+// 			array(
+// 				'parent'      => $parent,
+// 				'sort_column' => 'menu_order',
+// 			)
+// 		),
+// 	);
+// } else {
+// 	$parent_map = array(
+// 		'id'        => $parent,
+// 		'title'     => get_the_title( $parent ),
+// 		'parent_page_heading' => get_the_title( $post->post_parent ),
+// 		'parent_page_url' => get_permalink( $post->post_parent ),
+// 		'permalink' => get_permalink( $parent ),
+// 		'children'  => get_pages(
+// 			array(
+// 				'parent'      => $post->post_parent,
+// 				'sort_column' => 'menu_order',
+// 			)
+// 		),
+// 	);
+// }
 
 if ( get_post( $post->post_parent )->post_name == 'people' ) {
 	$menu_items = wp_get_nav_menu_items( 'People Menu' );

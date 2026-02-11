@@ -5,6 +5,15 @@
 @use 'global/layout';
 @use '../twig/components/advanced-accordion/advanced-accordion';
 
+@layer base {
+    .text-group ul,
+    .text-group ol {
+        list-style: revert;
+        margin: revert;
+        padding: revert;
+    }
+}
+
 @mixin lists() {
     ul:not(.pagination__container):not(.directiory_information) {
         @apply list-disc;
@@ -13,7 +22,6 @@
         @apply mb-4;
 
         li {
-            @apply text-indigo-900;
             @apply mt-2;
             @apply font-body;
         }
@@ -26,7 +34,6 @@
         @apply mb-4;
 
         li {
-            @apply text-indigo-900;
             @apply mt-2;
             @apply font-body;
         }
@@ -146,6 +153,22 @@
     @apply hover:text-indigo;
 }
 
+@mixin accordion() {
+    p {
+        @apply mb-4;
+        @apply text-indigo-900;
+    }
+
+    p,
+    ul,
+    ol {
+        @apply font-normal;
+        @apply font-body;
+        @apply text-16;
+        @apply leading-140;
+    }
+}
+
 /* Body No Scroll */
 .no-scroll {
     overflow: hidden;
@@ -233,19 +256,7 @@
 
     // accordion block
     .colby-accordion-block {
-        p {
-            @apply mb-4;
-            @apply text-indigo-900;
-        }
-
-        p,
-        ul,
-        ol {
-            @apply font-normal;
-            @apply font-body;
-            @apply text-16;
-            @apply leading-140;
-        }
+        @include accordion();
     }
 
     // heading block
@@ -450,6 +461,11 @@
         @apply xl:px-0;
     }
 
+    // accordion block
+    .colby-accordion-block {
+        @include accordion();
+    }
+
     > .wp-block-acf-advanced-accordion {
         @apply font-extended;
         // @apply max-w-[1200px];
@@ -466,6 +482,7 @@
 
     .colby-image-text-block {
         @appy mx-auto;
+        @apply px-4;
         @apply max-w-screen-2xl;
         p {
             @apply mb-4;

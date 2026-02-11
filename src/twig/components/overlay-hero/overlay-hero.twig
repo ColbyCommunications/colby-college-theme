@@ -52,7 +52,8 @@
       </div>
     </div>
   </div>
-  {% if video %}
+
+  {% if video.id|length > 0 %}
     <div
       class="overlay-hero__screen absolute top-0 left-0 w-full h-full"
       :class="{'invisible opacity-0': overlayHero.active == true}"
@@ -62,21 +63,41 @@
       video: video,
       image: image,
     } %}
+  {% elseif from_page %}
+    {{ macros.picture(
+      'z-[-10] absolute top-0 left-0 w-full h-full object-cover',
+      image.srcset,
+      image.src,
+      image.sizes.Hero,
+      image.sizes.Hero,
+      image.alt,
+      in_component_library
+    ) }}
   {% else %}
-    {% if video_loop %}
-      <video class="z-[-10] absolute min-w-full min-h-full w-auto h-auto bg-repeat bg-cover top-0 right-0 bottom-0 left-0 object-cover" autoplay muted loop poster="{{poster}}">
-        <source src="{{ video_loop }}" type="video/mp4">
-      </video>
-    {% else %}
-      {{ macros.picture(
-        'z-[-10] absolute top-0 left-0 w-full h-full object-cover',
-        image.srcset,
-        image.src,
-        image.sizes.Hero,
-        image.sizes.Hero,
-        image.alt,
-        in_component_library
-      ) }}
-    {% endif %}
+    <div
+      class="overlay-hero__screen absolute top-0 left-0 w-full h-full"
+      :class="{'invisible opacity-0': overlayHero.active == true}"
+    ></div>
+    <div class="video relative w-full pb-[56.25%] overflow-hidden">
+      <div
+        class="video__overlay group z-10 absolute flex items-center justify-center w-full h-full cursor-pointer transition-all duration-200 ease-in-out"
+      >
+        {% if video_loop %}
+          <video class="z-[-10] absolute min-w-full min-h-full w-auto h-auto bg-repeat bg-cover top-0 right-0 bottom-0 left-0 object-cover" playsinline autoplay muted loop poster="{{poster}}">
+            <source src="{{ video_loop }}" type="video/mp4">
+          </video>
+        {% else %}
+          {{ macros.picture(
+            'z-[-10] absolute top-0 left-0 w-full h-full object-cover',
+            image.srcset,
+            image.src,
+            image.sizes.Hero,
+            image.sizes.Hero,
+            image.alt,
+            in_component_library
+          ) }}
+        {% endif %}
+      </div>
+    </div>
   {% endif %}
 </component>

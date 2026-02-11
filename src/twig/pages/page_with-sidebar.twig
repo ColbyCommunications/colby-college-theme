@@ -22,7 +22,8 @@
     heading: template_heading,
     paragraph: template_paragraph,
     image: post.meta('image'),
-    buttons: post.meta('buttons')
+    buttons: post.meta('buttons'),
+    from_page: true
   } %}
 {% else %}
   {% include 'hero.twig' with {
@@ -45,6 +46,8 @@
       >
         {% include 'subpage-nav.twig' with {
           heading: alpha_parent.title,
+          parent_page_heading: alpha_parent.parent_page_heading,
+          parent_page_url: alpha_parent.parent_page_url,
           items: alpha_parent.children,
           menu_obj: alpha_parent.menu,
           parent_permalink: alpha_parent.permalink

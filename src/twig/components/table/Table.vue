@@ -61,13 +61,13 @@
                 <option v-text="'Cinema Studies'" :value="'CINE'" />
                 <option v-text="'Classics'" :value="'CLAS'" />
                 <option v-text="'Computer Science'" :value="'COMP'" />
+                <option v-text="'Earth Sciences'" :value="'ERSC'" />
                 <option v-text="'East Asian Studies'" :value="'EAST'" />
                 <option v-text="'Economics'" :value="'ECON'" />
                 <option v-text="'Education'" :value="'EDUC'" />
                 <option v-text="'English'" :value="'ENGL'" />
                 <option v-text="'Environmental Studies'" :value="'ENVS'" />
                 <option v-text="'French and Italian'" :value="'FRIT'" />
-                <option v-text="'Geology'" :value="'GEOL'" />
                 <option v-text="'German and Russian'" :value="'GMRU'" />
                 <option v-text="'Global Studies'" :value="'GLST'" />
                 <option v-text="'Government'" :value="'GOVT'" />
@@ -159,7 +159,7 @@
                                     <img
                                         class="w-6 h-6 table__image hidden md:block relative mr-3 rounded-[50%] overflow-hidden"
                                         :src="
-                                            item.image.src
+                                            item.image.src && item.showPhoto
                                                 ? item.image.src
                                                 : '/wp-content/uploads/2022/10/profile_placeholder.jpeg'
                                         "
@@ -266,6 +266,8 @@
     import Fuse from 'fuse.js';
     import _map from 'lodash/map';
     import _uniq from 'lodash/uniq';
+    import _groupBy from 'lodash/groupBy';
+    import _pick from 'lodash/pick';
     import Modal from '../modal/Modal.vue';
     export default {
         components: {
@@ -385,11 +387,11 @@
             if (this.renderApi) {
                 switch (this.api) {
                     case 'Department Courses':
-                        this.endpoint = 'https://www.colby.edu/endpoints/v1/courses/';
+                        this.endpoint = 'https://www.colby.edu/endpoints/v2/courses/';
                         this.heading = `Department Courses`;
                         break;
                     case 'Course Catalogue':
-                        this.endpoint = 'https://www.colby.edu/endpoints/v1/courses/';
+                        this.endpoint = 'https://www.colby.edu/endpoints/v2/courses/';
                         this.heading = this.api;
                         break;
                     case 'Majors and Minors':
@@ -398,15 +400,57 @@
                         break;
                 }
                 await axios.get(this.endpoint).then((outputa) => {
+                    const lookup = _groupBy(outputa.data.data, 'secCrsNo');
+
+                    let items = [];
                     switch (this.api) {
                         case 'Department Courses':
-                            const deptItems = outputa.data.courses.filter(
+                            Object.keys(lookup).forEach((crs) => {
+                                let newItem = _pick(lookup[crs][0], [
+                                    'secCrsNo',
+                                    'dept',
+                                    'longTitle',
+                                    'maxhrs',
+                                    'minhrs',
+                                    'area',
+                                    'prereq',
+                                    'diversity',
+                                    'writing',
+                                    'abstr',
+                                    'sessOffered',
+                                ]);
+                                newItem.labsci = '';
+                                newItem.sections = [];
+                                for (let i = 0; i < lookup[crs].length; i++) {
+                                    newItem.sections.push({
+                                        sessOffered: lookup[crs][i].sessOffered,
+                                        faculty: [
+                                            {
+                                                faculty_name: lookup[crs][i].instructor,
+                                            },
+                                        ],
+                                    });
+                                }
+
+                                items.push(newItem);
+                            });
+                            const deptItems = items.filter(
                                 (item) => item.dept == this.departmentCode && item.longTitle
                             );
+
+                            // Sort alphabetically by longTitle
+                            deptItems.sort((a, b) => {
+                                const titleA = a.longTitle.toUpperCase();
+                                const titleB = b.longTitle.toUpperCase();
+                                if (titleA < titleB) return -1;
+                                if (titleA > titleB) return 1;
+                                return 0;
+                            });
+
                             this.items = deptItems.map((item) => {
-                                let itemTypes = item.sessOffered.split(',');
+                                let itemTypes = _uniq(_map(item.sections, 'sessOffered'));
                                 itemTypes.forEach((type, index) => {
-                                    switch (type) {
+                                    switch (type.slice(0, 2)) {
                                         case 'FA':
                                             itemTypes[index] = 'Fall';
                                             break;
@@ -431,20 +475,49 @@
                                                 : item.longTitle,
                                         url: null,
                                     },
-                                    columns: [item.crsno, this.removeTags(item.abstr)],
+                                    columns: [item.secCrsNo, this.removeTags(item.abstr)],
                                 };
                             });
                             this.headings = ['Name', 'Course Number', 'Description'];
                             this.filterOptions = ['Fall', 'Spring', 'January'];
                             break;
                         case 'Course Catalogue':
-                            const filteredItems = outputa.data.courses.filter(
-                                (item) => item.longTitle
-                            );
+                            Object.keys(lookup).forEach((crs) => {
+                                let newItem = _pick(lookup[crs][0], [
+                                    'secCrsNo',
+                                    'dept',
+                                    'longTitle',
+                                    'maxhrs',
+                                    'minhrs',
+                                    'area',
+                                    'prereq',
+                                    'diversity',
+                                    'writing',
+                                    'abstr',
+                                    'sessOffered',
+                                ]);
+                                newItem.labsci = '';
+                                newItem.sections = [];
+                                for (let i = 0; i < lookup[crs].length; i++) {
+                                    newItem.sections.push({
+                                        sessOffered: lookup[crs][i].sessOffered,
+                                        faculty: [
+                                            {
+                                                faculty_name: lookup[crs][i].instructor,
+                                            },
+                                        ],
+                                    });
+                                }
+
+                                items.push(newItem);
+                            });
+                            // console.log(items);
+                            const filteredItems = items.filter((item) => item.longTitle);
+
                             this.items = filteredItems.map((item) => {
-                                let itemTypes = item.sessOffered.split(',');
+                                let itemTypes = _uniq(_map(item.sections, 'sessOffered'));
                                 itemTypes.forEach((type, index) => {
-                                    switch (type) {
+                                    switch (type.slice(0, 2)) {
                                         case 'FA':
                                             itemTypes[index] = 'Fall';
                                             break;
@@ -456,22 +529,17 @@
                                             break;
                                     }
                                 });
+
                                 return {
-                                    title:
-                                        item.secTitle && !item.secTitle.includes('See ')
-                                            ? item.secTitle
-                                            : item.longTitle,
+                                    title: item.longTitle,
                                     description: this.renderDesc(item),
                                     type: itemTypes,
                                     department: item.dept,
                                     link: {
-                                        title:
-                                            item.secTitle && !item.secTitle.includes('See ')
-                                                ? item.secTitle
-                                                : item.longTitle,
+                                        title: item.longTitle,
                                         url: null,
                                     },
-                                    columns: [item.crsno, item.dept],
+                                    columns: [item.secCrsNo, item.dept],
                                     faculty: this._faculty(item.sections),
                                 };
                             });
@@ -521,6 +589,7 @@
                                     src: item.thumbnail,
                                     alt: item.post_title,
                                 },
+                                showPhoto: item.hide_photo ? false : true,
                                 title: item.post_title,
                                 link: {
                                     title: item.post_title,
@@ -702,7 +771,7 @@
                             'BIOL',
                             'CHEM',
                             'COMP',
-                            'GEOL',
+                            'ERSC',
                             'MATH',
                             'STAT',
                         ];
@@ -798,10 +867,10 @@
 
                 return toReturn;
             },
-            _creditHours(crsno, minhrs, maxhrs) {
+            _creditHours(secCrsNo, minhrs, maxhrs) {
                 let creditHours = '';
                 if (maxhrs !== 0) {
-                    if (crsno !== 'MU193') {
+                    if (secCrsNo !== 'MU193') {
                         creditHours =
                             ' <em class="creditHours">' + this._numberToString(minhrs, true);
                         if (minhrs != maxhrs) {
@@ -855,7 +924,7 @@
                 return facultyStr;
             },
             renderDesc(item) {
-                const creditHours = this._creditHours(item.crsno, item.minhrs, item.maxhrs);
+                const creditHours = this._creditHours(item.secCrsNo, item.minhrs, item.maxhrs);
                 let reqs = '';
                 let prereq = '';
                 if (item.prereq !== '') {
@@ -865,7 +934,7 @@
                         '</span>';
                 }
 
-                if (item.crsno.substring(0, 2) !== 'IS') {
+                if (item.secCrsNo.substring(0, 2) !== 'IS') {
                     reqs = this._reqs(item.area, item.labsci, item.writing, item.diversity);
                 }
 
@@ -910,8 +979,8 @@
                         return 'environmental-studies';
                     case 'frit':
                         return 'french-and-italian';
-                    case 'geol':
-                        return 'geology';
+                    case 'ersc':
+                        return 'earth-sciences';
                     case 'glst':
                         return 'global-studies';
                     case 'gmru':

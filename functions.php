@@ -1430,9 +1430,10 @@ function my_acf_block_render_callback( $block, $content = '', $is_preview = fals
 function updateStaffDirectory() {
 	if ( ! is_admin() ) {
 		$directory_data = json_decode( file_get_contents( WP_CONTENT_DIR . '/directory_data/Colby_Directory_Webservice_Output.json' ), true )['Report_Entry'];
+		$directory_course_data = json_decode( file_get_contents( WP_CONTENT_DIR . '/directory_data/Colby_Directory_FacCrs_Webservice_Output.json' ), true )['Report_Entry'];
 		// $directory_data = json_decode(file_get_contents(WP_CONTENT_DIR . "/directory_data/Colby_Directory_Webservice_Output.json"), true)['Report_Entry'];
 		deletePeople( $directory_data );
-		getNewPeople( $directory_data );
+		getNewPeople( $directory_data, $directory_course_data );
 	}
 }
 // herexyz
@@ -1479,7 +1480,7 @@ require_once ABSPATH . 'wp-admin/includes/media.php';
 require_once ABSPATH . 'wp-admin/includes/file.php';
 require_once ABSPATH . 'wp-admin/includes/image.php';
 
-function getNewPeople( $directory_data ) {
+function getNewPeople( $directory_data, $course_data ) {
 
 	$sftp = new SFTP( 'colby0.colby.edu' );
 	$sftp->login( PLATFORM_VARIABLES['sftp_username'], PLATFORM_VARIABLES['sftp_pw'] );
@@ -1487,7 +1488,7 @@ function getNewPeople( $directory_data ) {
 	// Loop through the WD array
 	foreach ( $directory_data as $WDPerson ) {
 		// Assign variables to desired WD fields
-		$WDEmployeeID    = str_pad( $WDPerson['employeeID'], 7, '0', STR_PAD_LEFT );
+		$WDEmployeeID    = $WDPerson['employeeID'];
 		$WDPrefFirstName = $WDPerson['preferredFirstName'];
 		$WDPrefLastName  = $WDPerson['preferredLastName'];
 
@@ -1553,27 +1554,42 @@ function getNewPeople( $directory_data ) {
 			$WDIsRetiree = 1;
 		}
 
-		// Set api endpoint url with $emailSlug
-		$url = 'https://www.colby.edu/endpoints/v1/profile/' . $emailSlug;
+		// [{"crs":"AY257","sec":"A","title":"Anthropology of Slowness"}]
 
-		// Initialize a CURL session.
-		$ch = curl_init();
-		// Return Page contents.
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-		// grab URL and pass it to the variable.
-		curl_setopt( $ch, CURLOPT_URL, $url );
-		$CXPerson = json_decode( curl_exec( $ch ), true );
+		$WDCourses = '';
 
-		$CXCourses = '';
+		$filteredCourses = array_filter($course_data, function($course) use ($WDEmployeeID) {
+    
+			// Loop through the instgroup (in case there are multiple instructors)
+			foreach ($course['instgroup'] as $instructor) {
+				// Check if this instructor matches our target
+				if ($instructor && $instructor['employeeID'] === $WDEmployeeID) {
+					return true; // Keep this course
+				}
+			}
+			
+			return false; // No match found, discard this course
+		});
 
-		if ( isset( $CXPerson['courses'] ) ) {
-			$CXCourses = $CXPerson['courses'];
+		if ((count($filteredCourses) > 0)) {
+			$filteredCourses = array_values($filteredCourses);
+
+			$WDCourses = array_map(function($course) {
+				return [
+					// "AA 125" -> "AA125" (Removing space to match your 'AY257' example format)
+					'crs'   => str_replace(' ', '', $course['courseNumber']),
+					
+					// "A" -> "A"
+					'sec'   => $course['sectionNumber'],
+					
+					// "Introduction to..." -> "Introduction to..."
+					'title' => $course['sectionTitle']
+				];
+			}, $filteredCourses);
 		}
 
-		$CXMailing = '';
-		if ( isset( $CXPerson['box'] ) && $CXPerson['box'] ) {
-			$CXMailing = $CXPerson['box'] . " Mayflower Hill \nWaterville, Maine 04901-8853";
-		}
+
+		$WDMailing = $WDPerson['boxNumber'] . " Mayflower Hill \nWaterville, Maine 04901-8853";
 
 		$args = array(
 			'numberposts' => -1,
@@ -1605,9 +1621,9 @@ function getNewPeople( $directory_data ) {
 				'email'            => $WDEmail,
 				'building'         => $WDBuilding,
 				'curriculum_vitae' => '',
-				'current_courses'  => json_encode( $CXCourses ),
+				'current_courses'  => json_encode( $WDCourses ),
 				'fax'              => $WDFax,
-				'mailing_address'  => $CXMailing,
+				'mailing_address'  => $WDMailing,
 				'is_retiree'	=> $WDIsRetiree
 			),
 		);
@@ -1647,8 +1663,8 @@ function getNewPeople( $directory_data ) {
 			update_post_meta( $ID, 'title', $WDTitle );
 
 			// Update courses metadata with latest courses from CX
-			if ( $CXCourses ) {
-				update_post_meta( $ID, 'current_courses', json_encode( $CXCourses ) );
+			if ( $WDCourses ) {
+				update_post_meta( $ID, 'current_courses', json_encode( $WDCourses ) );
 			}
 
 			// Update metadata for fields not changed in Gravity Forms with latest WD data
@@ -1670,7 +1686,7 @@ function getNewPeople( $directory_data ) {
 			update_post_meta( $ID, 'phone', $WDPhone );
 			update_post_meta( $ID, 'building', $WDBuilding );
 			update_post_meta( $ID, 'fax', $WDFax );
-			update_post_meta( $ID, 'mailing_address', $CXMailing );
+			update_post_meta( $ID, 'mailing_address', $WDMailing );
 			update_post_meta( $ID, 'pronouns', $wd_pronouns );
 			update_post_meta( $ID, 'is_retiree', $WDIsRetiree );
 
@@ -2443,7 +2459,48 @@ function filter_image_pre_upload($file)
 
 add_filter('wp_handle_upload_prefilter', 'filter_image_pre_upload', 20);
 
+// Replace OpenGraph image with placeholder image if hide_photo is enabled.
+function alter_opengraph_image_for_person( $image ) {
+	if ( is_singular( 'people' ) ) {
+		$post_id = get_queried_object_id();
+		$hide_photo = get_post_meta( $post_id, 'hide_photo', true );
+		if ( $hide_photo == '1' ) {
+			$fallback_image_id = 11432;
+			$image_src = wp_get_attachment_image_src( $fallback_image_id, 'full' );
+			if ( $image_src && ! empty( $image_src[0] ) ) {
+				return $image_src[0];
+			}
+		}
+	}
+	return $image;
+}
+add_filter( 'wpseo_opengraph_image', 'alter_opengraph_image_for_person', 99 );
 
+// Remove ImageObject and thumbnailUrl from Yoast schema if hide_photo is enabled.
+add_filter( 'wpseo_schema_graph', function( $graph ) {
+	if ( is_singular( 'people' ) ) {
+		$post_id = get_queried_object_id();
+		$hide_photo = get_post_meta( $post_id, 'hide_photo', true );
+
+		if ( $hide_photo == '1' ) {
+			$graph = array_filter( $graph, function( $piece ) {
+				// Remove ImageObject types
+				return !( isset( $piece['@type'] ) && $piece['@type'] === 'ImageObject' );
+			} );
+
+			// Remove image references in WebPage
+			foreach ( $graph as &$piece ) {
+				if ( isset( $piece['@type'] ) && $piece['@type'] === 'WebPage' ) {
+					unset( $piece['thumbnailUrl'] );
+					unset( $piece['primaryImageOfPage'] );
+					unset( $piece['image'] );
+				}
+			}
+			unset( $piece );
+		}
+	}
+	return $graph;
+}, 11 );
 
 
 // Function 1: Gets the post IDs based on page category slug
@@ -2696,3 +2753,79 @@ if (defined('WP_CLI') && WP_CLI) {
         WP_CLI::success("Content conversion for $post_type(s) completed successfully.");
     });
 }
+
+add_filter('map_meta_cap', function ($caps, $cap, $user_id, $args) {
+
+	/*
+ 	* This requires adding edit permissions for each of the parent pages up to the
+    * department, office, or section HP
+	*/
+	
+    // Which primitive caps are we going to block?
+    $caps_to_block = ['edit_post'];
+
+    if (!in_array($cap, $caps_to_block, true)) {
+        return $caps;
+    }
+
+    // Safety: ensure we have a post ID
+    $post_id = isset($args[0]) ? intval($args[0]) : 0;
+    if (!$post_id) {
+        return $caps;
+    }
+
+    // Only target PAGES (not posts or CPTs). Remove this check if you want posts/CPTs too.
+    if (get_post_type($post_id) !== 'page') {
+        return $caps;
+    }
+
+    // === CONFIGURE HERE ===
+    // Page IDs to protect
+    $protected_page_ids = [7436, 7441, 7443, 7439]; // <-- replace with your page IDs
+
+    // Roles to block from editing those pages
+    $blocked_roles = ['editor']; // e.g., block Editors and below
+    // ======================
+
+    if (!in_array($post_id, $protected_page_ids, true)) {
+        return $caps; // not a protected page
+    }
+
+    $user = get_userdata($user_id);
+    if (!$user || empty($user->roles)) {
+        return $caps;
+    }
+
+    // If the user has ANY of the blocked roles, deny
+    if (array_intersect($blocked_roles, (array) $user->roles)) {
+        // 'do_not_allow' ensures WP hard-stops the action with a permissions error
+        return ['do_not_allow'];
+    }
+
+    return $caps;
+}, 10, 4);
+
+add_filter('acf/fields/wysiwyg/toolbars', function( $toolbars ) {
+    $toolbars['limited'] = array();
+    $toolbars['limited'][1] = array('bold', 'italic', 'underline', 'link', 'unlink', 'bullist', 'numlist');
+
+    $toolbars['full'] = array();
+    $toolbars['full'][1] = array('formatselect', 'bold', 'italic', 'underline', 'bullist', 'numlist', 'blockquote', 'alignleft', 'aligncenter', 'alignright', 'link', 'unlink', 'undo', 'redo', 'removeformat');
+
+    return $toolbars;
+});
+
+add_filter('tiny_mce_before_init', function($init){
+    // Make sure advlist is enabled so custom styles are respected
+    if (empty($init['plugins']) || strpos($init['plugins'], 'advlist') === false) {
+        $init['plugins'] .= ' advlist';
+    }
+
+    // Allowed bullet styles (only the normal disc bullet)
+    $init['advlist_bullet_styles'] = 'default';
+
+    // Allowed number styles (decimal + roman numerals)
+    $init['advlist_number_styles'] = 'default,lower-roman,upper-roman';
+
+    return $init;
+}, 20);

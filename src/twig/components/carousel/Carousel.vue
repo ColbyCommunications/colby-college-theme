@@ -17,7 +17,7 @@
                     <div class="text-group">
                         <h2
                             class="text-group__heading font-extended font-normal text-28 md:text-36 leading-100 -tracking-3 text-left text-indigo mt-2"
-                            v-text="heading"
+                            v-html="heading"
                         />
                         <p
                             class="text-group__p font-body font-normal text-18 md:text-18 leading-130 text-left text-indigo-800 mt-2"
@@ -123,11 +123,11 @@
                                 />
                                 <h2
                                     class="text-group__heading font-extended font-normal text-28 md:text-20 leading-100 -tracking-3 text-left text-indigo mt-2"
-                                    v-text="decodeHtmlEntities(item.title.rendered)"
+                                    v-html="decodeHtmlEntities(item.title.rendered)"
                                 />
                                 <p
                                     class="text-group__p font-body font-normal text-18 md:text-14 leading-130 text-left text-indigo-800 mt-2"
-                                    v-text="decodeHtmlEntities(item['post-meta-fields'].summary[0])"
+                                    v-html="item['post-meta-fields'].summary[0]"
                                 />
                             </div>
                             <div class="button-group flex flex-wrap gap-4">
@@ -202,7 +202,7 @@
                         />
                         <p
                             class="text-group__p font-body font-normal text-18 md:text-14 leading-130 text-left text-indigo-800 mt-2"
-                            v-text="paragraph"
+                            v-html="paragraph"
                         />
                     </div>
                     <div class="button-group flex flex-wrap gap-4">
@@ -292,7 +292,7 @@
                                                     'mt-2': item['post-meta-fields']
                                                         .primary_category,
                                                 }"
-                                                v-text="decodeHtmlEntities(item.title.rendered)"
+                                                v-html="decodeHtmlEntities(item.title.rendered)"
                                             />
                                             <p
                                                 class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
@@ -341,7 +341,7 @@
                         />
                         <p
                             class="text-group__p font-body font-normal text-18 md:text-14 leading-130 text-left text-indigo-800 mt-2"
-                            v-text="paragraph"
+                            v-html="paragraph"
                         />
                     </div>
                     <div class="button-group flex flex-wrap gap-4">
@@ -431,7 +431,7 @@
                                                     'mt-2': item['post-meta-fields']
                                                         .primary_category,
                                                 }"
-                                                v-html="item.title.rendered"
+                                                v-html="decodeHtmlEntities(item.title.rendered)"
                                             />
                                             <p
                                                 class="text-group__p font-body font-normal text-14 leading-130 text-left text-indigo-800 mt-2"
@@ -507,18 +507,11 @@
                                     ],
                                 },
                                 title: {
-                                    rendered: item.title.rendered.replace(
-                                        /<(?!\/?(i|em)\b)[^>]+>/gi,
-                                        ''
-                                    ),
+                                    rendered: item.title.rendered,
                                 },
                                 'post-meta-fields': {
                                     primary_category: '',
-                                    summary: [
-                                        `${item.content.rendered
-                                            .replace(/<(?!\/?(i|em)\b)[^>]+>/gi, '')
-                                            .substring(0, 120)}...`,
-                                    ],
+                                    summary: [`${item.content.rendered.substring(0, 120)}...`],
                                 },
                                 guid: {
                                     // use item.external_url for faculty accomplishments instead of item.guid.rendered
