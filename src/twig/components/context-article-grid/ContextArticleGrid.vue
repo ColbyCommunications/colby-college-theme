@@ -104,6 +104,7 @@
             };
         },
         async mounted() {
+            console.log(this.api);
             if (this.renderApi) {
                 switch (this.api) {
                     case 'Arts':
@@ -111,6 +112,9 @@
                         break;
                     case 'Alumni':
                         this.endpoint = `https://news.colby.edu/wp-json/wp/v2/posts?per_page=${this.perPage}&categories=6&_embed=1`;
+                        break;
+                    case 'AI':
+                        this.endpoint = `https://news.colby.edu/wp-json/wp/v2/posts?per_page=${this.perPage}&categories=9&_embed=1`;
                         break;
                     default:
                         this.endpoint =
@@ -132,7 +136,7 @@
 
                         if (item['post-meta-fields']?.summary?.[0]) {
                             item['post-meta-fields'].summary[0] = decode(
-                                item['post-meta-fields'].summary[0]
+                                item['post-meta-fields'].summary[0],
                             );
                         }
 
