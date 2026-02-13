@@ -1571,21 +1571,35 @@ function getNewPeople( $directory_data, $course_data ) {
 			return false; // No match found, discard this course
 		});
 
+		// a list of courses grouped by unique title
+		$massagedCourses = [];
+
 		if ((count($filteredCourses) > 0)) {
 			$filteredCourses = array_values($filteredCourses);
 
-			$WDCourses = array_map(function($course) {
-				return [
-					// "AA 125" -> "AA125" (Removing space to match your 'AY257' example format)
-					'crs'   => str_replace(' ', '', $course['courseNumber']),
+			foreach ($filteredCourses as $crs) {
+				$matched_crs_index = array_key_exists($crs['sectionTitle'], $massagedCourses);
+		
+				if ($matched_crs_index) {
+					array_push($massagedCourses[$crs['sectionTitle']]['crs'],  str_replace(' ', '', $crs['courseNumber']));
+					array_push($massagedCourses[$crs['sectionTitle']]['sec'], $crs['sectionNumber']);
+				} else {
+					$massagedCourses[$crs['sectionTitle']] = ['crs' => [str_replace(' ', '', $crs['courseNumber'])], 'title' => $crs['sectionTitle'], 'sec' => [$crs['sectionNumber']]];
+				}
+			}
+
+			// $WDCourses = array_map(function($course) {
+			// 	return [
+			// 		// "AA 125" -> "AA125" (Removing space to match your 'AY257' example format)
+			// 		'crs'   => str_replace(' ', '', $course['courseNumber']),
 					
-					// "A" -> "A"
-					'sec'   => $course['sectionNumber'],
+			// 		// "A" -> "A"
+			// 		'sec'   => $course['sectionNumber'],
 					
-					// "Introduction to..." -> "Introduction to..."
-					'title' => $course['sectionTitle']
-				];
-			}, $filteredCourses);
+			// 		// "Introduction to..." -> "Introduction to..."
+			// 		'title' => $course['sectionTitle']
+			// 	];
+			// }, $filteredCourses);
 		}
 
 
@@ -1621,7 +1635,7 @@ function getNewPeople( $directory_data, $course_data ) {
 				'email'            => $WDEmail,
 				'building'         => $WDBuilding,
 				'curriculum_vitae' => '',
-				'current_courses'  => json_encode( $WDCourses ),
+				'current_courses'  => json_encode( array_values($massagedCourses) ),
 				'fax'              => $WDFax,
 				'mailing_address'  => $WDMailing,
 				'is_retiree'	=> $WDIsRetiree
@@ -1663,8 +1677,8 @@ function getNewPeople( $directory_data, $course_data ) {
 			update_post_meta( $ID, 'title', $WDTitle );
 
 			// Update courses metadata with latest courses from CX
-			if ( $WDCourses ) {
-				update_post_meta( $ID, 'current_courses', json_encode( $WDCourses ) );
+			if ( $massagedCourses ) {
+				update_post_meta( $ID, 'current_courses', json_encode( array_values($massagedCourses) ) );
 			}
 
 			// Update metadata for fields not changed in Gravity Forms with latest WD data
