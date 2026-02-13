@@ -21,7 +21,7 @@
                         <p
                             v-if="paragraph"
                             class="text-group__p font-body font-normal text-18 md:text-16 leading-130 text-center text-indigo-800 mt-2"
-                            v-text="paragraph"
+                            v-html="paragraph"
                         />
                     </div>
                 </div>
@@ -60,7 +60,11 @@
                             <div class="text-group">
                                 <div
                                     class="text-group__subheading font-extended font-bold text-12 leading-130 tracking-8 text-left text-azure uppercase"
-                                    v-text="item['post-meta-fields'].primary_category"
+                                    v-text="
+                                        item['post-meta-fields'].primary_category
+                                            ? item['post-meta-fields'].primary_category
+                                            : category
+                                    "
                                 />
                                 <h2
                                     class="text-group__heading font-extended font-normal text-20 leading-110 -tracking-3 text-left text-indigo mt-2"
@@ -101,20 +105,23 @@
             return {
                 endpoint: undefined,
                 featuredNews: undefined,
+                category: undefined,
             };
         },
         async mounted() {
-            console.log(this.api);
             if (this.renderApi) {
                 switch (this.api) {
                     case 'Arts':
                         this.endpoint = `https://news.colby.edu/wp-json/wp/v2/posts?per_page=${this.perPage}&categories=8&_embed=1`;
+                        this.category = 'Arts';
                         break;
                     case 'Alumni':
                         this.endpoint = `https://news.colby.edu/wp-json/wp/v2/posts?per_page=${this.perPage}&categories=6&_embed=1`;
+                        this.category = 'Alumni';
                         break;
                     case 'AI':
                         this.endpoint = `https://news.colby.edu/wp-json/wp/v2/posts?per_page=${this.perPage}&categories=9&_embed=1`;
+                        this.category = 'Artifical Intelligence';
                         break;
                     default:
                         this.endpoint =
