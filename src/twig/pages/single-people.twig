@@ -55,10 +55,10 @@
       } %}
       {% if not post.meta('hide_courses') and person_decoded_courses %}
         {% set current_courses = person_decoded_courses|map(i => {
-          title: i.crs,
+          title: i.title,
           columns: [
             {
-              column: i.title,
+              column: i.crs,
             },
             {
               column: i.sec,
@@ -71,13 +71,13 @@
           external_items: null,
           headings: [
             {
-              heading: 'CRS',
-            },
-            {
               heading: 'Title',
             },
             {
-              heading: 'Sec',
+              heading: 'Course Number(s)',
+            },
+            {
+              heading: 'Section(s)',
             }
           ],
           items: current_courses,
