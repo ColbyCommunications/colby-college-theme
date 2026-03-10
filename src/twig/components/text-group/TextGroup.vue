@@ -17,6 +17,10 @@
             };
         },
         mounted() {
+
+            isBot.value = window?.colby?.DISABLE_ANIMATIONS === true;
+            if (isBot.value) return;
+            
             const component = this;
             const subheading = this.$refs.container.querySelector('.text-group__subheading');
             const paragraph = this.$refs.container.querySelector('.text-group__p');

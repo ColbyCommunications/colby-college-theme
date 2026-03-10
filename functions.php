@@ -2843,3 +2843,23 @@ add_filter('tiny_mce_before_init', function($init){
 
     return $init;
 }, 20);
+
+add_action('wp_head', function() {
+
+	$user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+	$bots = [
+		'Googlebot', 'Bingbot', 'Slurp', 'DuckDuckBot', 'Baiduspider', 
+		'YandexBot', 'facebot', 'ia_archiver', 'Siteimprove'
+	];
+  
+	$is_bot = false;
+	foreach ($bots as $bot) {
+		if (stripos($user_agent, $bot) !== false) {
+			$is_bot = true;
+			break;
+		}
+	}
+  
+	// Output a small script to the head
+	echo '<script>window.colby = window.colby || {};window.colby.DISABLE_ANIMATIONS = ' . ($is_bot ? 'true' : 'false') . ';</script>';
+  }, 1);
