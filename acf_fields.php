@@ -2576,6 +2576,37 @@ acf_add_local_field_group(
 					'ui' => 0,
 					'ajax' => 0,
 					'placeholder' => '',
+					'create_options' => 0,
+					'save_options' => 0,
+				),
+				array(
+					'key' => 'field_6900c4065345f',
+					'label' => 'From Rave',
+					'name' => 'from_rave',
+					'aria-label' => '',
+					'type' => 'true_false',
+					'instructions' => '',
+					'required' => 0,
+					'conditional_logic' => array(
+						array(
+							array(
+								'field' => 'field_65088244f4473',
+								'operator' => '==',
+								'value' => 'emergency',
+							),
+						),
+					),
+					'wrapper' => array(
+						'width' => '',
+						'class' => '',
+						'id' => '',
+					),
+					'message' => '',
+					'default_value' => 1,
+					'allow_in_bindings' => 0,
+					'ui' => 0,
+					'ui_on_text' => '',
+					'ui_off_text' => '',
 				),
 			),
 		),
@@ -2598,6 +2629,7 @@ acf_add_local_field_group(
 	'active' => true,
 	'description' => '',
 	'show_in_rest' => 0,
+	'display_title' => '',
 ) );
 
 	acf_add_local_field_group( array(
