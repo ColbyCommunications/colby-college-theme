@@ -1,6 +1,7 @@
 <template>
     <div
         class="subpage-nav md:space-y-5 bg-white md:bg-transparent border md:border-0 border-solid border-indigo-300 rounded-md"
+        :class="{ 'is-bot-visitor': isBot }"
         @click="toggleMenu"
     >
         <div class="subpage-nav--animated" ref="container">
@@ -96,10 +97,17 @@
             return {
                 menuOpen: false,
                 waypoint: undefined,
+                isBot: false, // Local state for bot detection
             };
         },
         mounted() {
             const component = this;
+
+            // Check global variable
+            this.isBot = window?.colby?.DISABLE_ANIMATIONS === true;
+
+            // If it's a bot, skip Waypoints and GSAP entirely
+            if (this.isBot) return;
 
             this.waypoint = new Waypoint({
                 element: this.$refs.container,
@@ -141,6 +149,8 @@
         },
         methods: {
             animateButtons() {
+                if (this.isBot) return;
+
                 const target = this.$refs.container.querySelectorAll('li');
 
                 gsap.to(target, {
@@ -166,4 +176,14 @@
             transform: translate(0, 20px);
         }
     }
+
+
+    // Force visibility for crawlers/Siteimprove
+    .is-bot-visitor {
+        .subpage-nav--animated li {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    }
+
 </style>
