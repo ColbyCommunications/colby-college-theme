@@ -19,8 +19,8 @@
         },
         mounted() {
 
-            this.isBot.value = window?.colby?.DISABLE_ANIMATIONS === true;
-            if (this.isBot.value) return;
+            this.isBot = window?.colby?.DISABLE_ANIMATIONS === true;
+            if (this.isBot) return;
             
             const component = this;
             const subheading = this.$refs.container.querySelector('.text-group__subheading');
