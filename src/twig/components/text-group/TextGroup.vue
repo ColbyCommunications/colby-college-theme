@@ -14,6 +14,7 @@
                 subheading: undefined,
                 heading: undefined,
                 waypoint: undefined,
+                isBot: false, // Local state for bot detection
             };
         },
         mounted() {
