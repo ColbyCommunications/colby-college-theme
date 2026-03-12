@@ -1,5 +1,9 @@
 <template>
-    <div class="section-nav--animated" ref="container">
+    <div 
+        class="section-nav--animated" 
+        ref="container"
+        :class="{ 'is-bot-visitor': isBot }"
+    >
         <slot />
     </div>
 </template>
@@ -9,9 +13,20 @@
     import 'waypoints/lib/noframework.waypoints';
 
     export default {
+        data() {
+            return {
+                isBot: false,
+                waypoint: null
+            };
+        },
         mounted() {
-            const component = this;
+            // 1. Detect bot status from the global window variable
+            this.isBot = window?.colby?.DISABLE_ANIMATIONS === true;
 
+            // 2. If it's a bot, we stop here and don't initialize Waypoints or GSAP
+            if (this.isBot || !this.$refs.container) return;
+
+            const component = this;
             this.waypoint = new Waypoint({
                 element: this.$refs.container,
                 handler() {
@@ -22,6 +37,9 @@
         },
         methods: {
             animateButtons() {
+                // Double check bot status before running GSAP
+                if (this.isBot) return;
+
                 const target = this.$refs.container.querySelectorAll('li');
 
                 gsap.to(target, {
@@ -42,6 +60,15 @@
         li {
             opacity: 0;
             transform: translate(20px, 0);
+        }
+    }
+
+    // 3. CSS override for bots: forces immediate visibility of all slotted list items
+    .is-bot-visitor {
+        &.section-nav--animated li {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
         }
     }
 </style>

@@ -1,5 +1,10 @@
 <template>
-    <div class="dark-interstitial__fact--animated" ref="container">
+    <div 
+        class="dark-interstitial__fact--animated" 
+        ref="container"
+        :class="{ 'is-bot-visitor': isBot }"
+    >
+
         <slot />
     </div>
 </template>
@@ -9,7 +14,19 @@
     import 'waypoints/lib/noframework.waypoints';
 
     export default {
+        data() {
+            return {
+                isBot: false,
+                waypoint: null
+            };
+        },
         mounted() {
+            // 1. Set bot status from the global configuration
+            this.isBot = window?.colby?.DISABLE_ANIMATIONS === true;
+
+            // 2. If it is a bot, exit early to prevent Waypoint/GSAP initialization
+            if (this.isBot || !this.$refs.container) return;
+
             const component = this;
 
             this.waypoint = new Waypoint({
@@ -22,6 +39,9 @@
         },
         methods: {
             animateFact() {
+                // Secondary check for bot status
+                if (this.isBot) return;
+
                 const heading = this.$refs.container.querySelector('h3');
                 const paragraph = this.$refs.container.querySelector('p');
 
@@ -53,4 +73,20 @@
             opacity: 0;
         }
     }
+
+
+    // 3. Forced visibility for crawlers (Google, Siteimprove, etc.)
+    .is-bot-visitor {
+        &.dark-interstitial__fact--animated {
+            h3 {
+                opacity: 1 !important;
+                transform: scale(1) !important;
+            }
+
+            p {
+                opacity: 1 !important;
+            }
+        }
+    }
+
 </style>

@@ -1,6 +1,7 @@
 <template>
     <div
         class="subpage-nav md:space-y-5 bg-white md:bg-transparent border md:border-0 border-solid border-indigo-300 rounded-md"
+        :class="{ 'is-bot-visitor': isBot }"
         @click="toggleMenu"
     >
         <div class="subpage-nav--animated" ref="container">
@@ -29,6 +30,7 @@
                 </div>
             </h2>
             <ul
+                v-if="hasItems"
                 class="subpage-nav__items md:block py-4 md:py-0 border-t md:border-t-0 border-solid border-indigo-200 mt-0 md:mt-6"
                 :class="{ hidden: !menuOpen }"
             >
@@ -42,6 +44,7 @@
                         >{{ parentpageheading }}</a
                     >
                     <ul
+                        v-if="items && items.length"
                         class="subpage-nav__items md:block py-4 md:py-0 border-t md:border-t-0 border-solid border-indigo-200 mt-0 px-4"
                         :class="{ hidden: !menuOpen }"
                     >
@@ -94,10 +97,17 @@
             return {
                 menuOpen: false,
                 waypoint: undefined,
+                isBot: false, // Local state for bot detection
             };
         },
         mounted() {
             const component = this;
+
+            // Check global variable
+            this.isBot = window?.colby?.DISABLE_ANIMATIONS === true;
+
+            // If it's a bot, skip Waypoints and GSAP entirely
+            if (this.isBot) return;
 
             this.waypoint = new Waypoint({
                 element: this.$refs.container,
@@ -107,6 +117,13 @@
                 offset: this.$refs.container.getBoundingClientRect(),
                 // offset: 'bottom-in-view',
             });
+        },
+        computed: {
+            hasItems() {
+                return (
+                    (Array.isArray(this.items) && this.items.length > 0) || this.parentpageheading
+                );
+            },
         },
         props: {
             heading: {
@@ -132,6 +149,8 @@
         },
         methods: {
             animateButtons() {
+                if (this.isBot) return;
+
                 const target = this.$refs.container.querySelectorAll('li');
 
                 gsap.to(target, {
@@ -157,4 +176,14 @@
             transform: translate(0, 20px);
         }
     }
+
+
+    // Force visibility for crawlers/Siteimprove
+    .is-bot-visitor {
+        .subpage-nav--animated li {
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    }
+
 </style>
