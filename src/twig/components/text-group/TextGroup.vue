@@ -1,5 +1,5 @@
 <template>
-    <div class="text-group--animated" ref="container">
+    <div class="text-group--animated" ref="container" :class="{ 'is-bot-visitor': isBot }">
         <slot />
     </div>
 </template>
@@ -146,6 +146,18 @@
 
         .text-group__p {
             opacity: 0;
+        }
+    }
+
+    .is-bot-visitor {
+        // Force visibility on the child spans and paragraphs
+        .text-group__subheading span,
+        .text-group__heading span,
+        .text-group__p,
+        p {
+            opacity: 1 !important;
+            transform: none !important;
+            visibility: visible !important;
         }
     }
 </style>
