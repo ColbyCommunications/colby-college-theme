@@ -8,7 +8,7 @@
   {% set button = 'button.twig' %}
 {% endif %}
 
-<footer class="footer bg-indigo pt-14 space-y-14">
+<footer class="footer bg-indigo pt-14 space-y-14 {% if not fn('is_front_page') %} pb-14 {% endif %}">
   <div class="footer__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto space-y-8 md:space-y-0">
     <div class="footer__left md:col-span-5 flex justify-between md:justify-start items-start md:space-x-8 lg:space-x-12 md:border-r border-indigo-900 border-solid">
       <div><a class="block hover:text-white hover:underline transition-all duration-200 ease-in-out mb-4" href="{{ address.url }}" aria-label="Go to colby.edu homepage">{% include logo with {
