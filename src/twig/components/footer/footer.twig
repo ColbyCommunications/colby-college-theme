@@ -8,7 +8,7 @@
   {% set button = 'button.twig' %}
 {% endif %}
 
-<footer class="footer bg-indigo py-14 space-y-14">
+<footer class="footer bg-indigo pt-14 space-y-14 {% if not fn('is_front_page') %} pb-14 {% endif %}">
   <div class="footer__inner md:grid md:grid-cols-12 gap-x-10 max-w-screen-2xl w-full px-5 my-0 mx-auto space-y-8 md:space-y-0">
     <div class="footer__left md:col-span-5 flex justify-between md:justify-start items-start md:space-x-8 lg:space-x-12 md:border-r border-indigo-900 border-solid">
       <div><a class="block hover:text-white hover:underline transition-all duration-200 ease-in-out mb-4" href="{{ address.url }}" aria-label="Go to colby.edu homepage">{% include logo with {
@@ -91,4 +91,14 @@
       </div>
     </div>
   </div>
+  {% if fn('is_front_page') %}
+  <div class="py-8 px-10 bg-indigo-200 space-y-4 mx-auto">
+    <div class="footer__inner md:grid md:grid-cols-1 gap-x-1 max-w-screen-2xl w-full px-5 my-0 mx-auto space-y-8 md:space-y-0 font-normal">
+      <div>
+        <div><b class="text-indigo">NOTICE OF NONDISCRIMINATORY POLICY AS TO STUDENTS</b></div>
+        <div class="text-indigo-800">Colby College admits students of any race, color, national and ethnic origin to all the rights, privileges, programs, and activities generally accorded or made available to students at the school. It does not discriminate on the basis of race, color, national and ethnic origin in administration of its educational policies, admissions policies, scholarship and loan programs, and athletic and other school-administered programs. See <a href="https://afa.colby.edu/nondiscrimination-policy/" target="_blank" class="italic underline text-indigo hover:no-underline hover:text-indigo-800">Colby's Nondiscrimination Policy and Compliance Information.</a></div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </footer>
