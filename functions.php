@@ -1679,6 +1679,8 @@ function getNewPeople( $directory_data, $course_data ) {
 			// Update courses metadata with latest courses from CX
 			if ( $massagedCourses ) {
 				update_post_meta( $ID, 'current_courses', json_encode( array_values($massagedCourses) ) );
+			} else {
+				update_post_meta( $ID, 'current_courses', json_encode( array() ) );
 			}
 
 			// Update metadata for fields not changed in Gravity Forms with latest WD data
