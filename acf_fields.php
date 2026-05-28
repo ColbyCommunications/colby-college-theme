@@ -1544,6 +1544,8 @@ acf_add_local_field_group(
 					'manual' => 'Manual',
 					'people' => 'People',
 					'Alumni' => 'Alumni',
+					'AI' => 'Artificial Intelligence',
+					'Arts' => 'Arts',
 				),
 				'default_value' => '',
 				'return_format' => 'value',
