@@ -74,6 +74,10 @@ module.exports = {
                         loader: 'sass-loader', // compiles Sass to CSS
                         options: {
                             sourceMap: true,
+                            sassOptions: {
+                                quietDeps: true,
+                                silenceDeprecations: ['import', 'global-builtin', 'abs-percent'],
+                            },
                         },
                     },
                 ],

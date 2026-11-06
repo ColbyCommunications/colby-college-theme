@@ -29,6 +29,7 @@
                 </div>
             </h2>
             <ul
+                v-if="hasItems"
                 class="subpage-nav__items md:block py-4 md:py-0 border-t md:border-t-0 border-solid border-indigo-200 mt-0 md:mt-6"
                 :class="{ hidden: !menuOpen }"
             >
@@ -42,6 +43,7 @@
                         >{{ parentpageheading }}</a
                     >
                     <ul
+                        v-if="items && items.length"
                         class="subpage-nav__items md:block py-4 md:py-0 border-t md:border-t-0 border-solid border-indigo-200 mt-0 px-4"
                         :class="{ hidden: !menuOpen }"
                     >
@@ -107,6 +109,13 @@
                 offset: this.$refs.container.getBoundingClientRect(),
                 // offset: 'bottom-in-view',
             });
+        },
+        computed: {
+            hasItems() {
+                return (
+                    (Array.isArray(this.items) && this.items.length > 0) || this.parentpageheading
+                );
+            },
         },
         props: {
             heading: {

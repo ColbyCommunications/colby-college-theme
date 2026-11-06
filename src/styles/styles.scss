@@ -256,19 +256,7 @@
 
     // accordion block
     .colby-accordion-block {
-        p {
-            @apply mb-4;
-            @apply text-indigo-900;
-        }
-
-        p,
-        ul,
-        ol {
-            @apply font-normal;
-            @apply font-body;
-            @apply text-16;
-            @apply leading-140;
-        }
+        @include accordion();
     }
 
     // heading block
@@ -471,6 +459,11 @@
     .advanced-accordion {
         @apply px-4;
         @apply xl:px-0;
+    }
+
+    // accordion block
+    .colby-accordion-block {
+        @include accordion();
     }
 
     > .wp-block-acf-advanced-accordion {

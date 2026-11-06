@@ -4,7 +4,7 @@
 {% block content %}
 <section class="sidebar-page">
   <div class="sidebar-page__inner max-w-screen-2xl w-full px-5 my-0 mx-auto mt-8">
-    <a class="inline-flex items-center font-body text-14 md:text-10 font-normal md:font-medium leading-140 text-indigo-800 py-1.5 hover:text-indigo hover:underline" href="/people/people-directory">
+    <a class="inline-flex items-center font-body text-14 md:text-10 font-normal md:font-medium leading-140 text-indigo-800 py-1.5 hover:text-indigo hover:underline" href="/people/people-directory/">
       {{ icons.icon('chevron', 'w-1 fill-indigo-800 mr-2') }}Back to Index
     </a>
   </div>
@@ -55,10 +55,10 @@
       } %}
       {% if not post.meta('hide_courses') and person_decoded_courses %}
         {% set current_courses = person_decoded_courses|map(i => {
-          title: i.crs,
+          title: i.title,
           columns: [
             {
-              column: i.title,
+              column: i.crs,
             },
             {
               column: i.sec,
@@ -71,13 +71,13 @@
           external_items: null,
           headings: [
             {
-              heading: 'CRS',
-            },
-            {
               heading: 'Title',
             },
             {
-              heading: 'Sec',
+              heading: 'Course Number(s)',
+            },
+            {
+              heading: 'Section(s)',
             }
           ],
           items: current_courses,

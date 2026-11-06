@@ -60,10 +60,12 @@ p {
 }
 
 .lw-event-time {
-    font-family: Libre Franklin, sans-serif;
+    font-family:
+        Libre Franklin,
+        sans-serif;
     font-weight: 400;
     font-size: 14px;
-    line-height: (18 / 14);
+    line-height: calc(18 / 14);
     color: #365185;
     margin-top: 0.5rem;
 }
